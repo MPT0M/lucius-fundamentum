@@ -1,0 +1,5 @@
+# Line endings are the repository's decision, not each contributor's checkout.
+# Without this, a Windows clone with core.autocrlf writes CRLF into files that
+# CI on Linux then reads differently — and a text-position library cannot afford
+# a byte of ambiguity in its own fixtures.
+* text=auto eol=lf
