@@ -25,8 +25,12 @@ describe('package contract', () => {
         expect(pkg.type).toBe('module');
     });
 
-    it('publishes only the compiled output', () => {
-        expect(pkg.files).toEqual(['dist']);
+    it('publishes the compiled output and the NOTICE, nothing else', () => {
+        // Deliberate contract change with the abbreviation list: NOTICE carries
+        // the attribution Apache-2.0 §4(d) requires on redistribution, and npm
+        // does not include it on its own (it does LICENSE and README). Source,
+        // tests and configs still stay out of the tarball.
+        expect(pkg.files).toEqual(['dist', 'NOTICE']);
     });
 
     it('is Apache-2.0', () => {

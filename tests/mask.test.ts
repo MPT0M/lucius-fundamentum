@@ -97,3 +97,16 @@ describe('maskProtectedRegions — the same invariants as maskFormulas', () => {
         expect(count(withBlock)).toBeGreaterThan(count(withWord));
     });
 });
+
+describe('maskProtectedRegions — abbreviations come last', () => {
+    it('an abbreviation inside code, a URL or a formula belongs to the outer region', () => {
+        // Each text has exactly ONE protected region; a second span of one code
+        // point would mean the abbreviation pass saw a period it should not.
+        for (const text of ['x `Dr. Silva` y', 'x https://dr.example/Dr. y', 'x $Dr. X$ y']) {
+            const { spans } = maskProtectedRegions(text);
+            expect(spans, text).toHaveLength(1);
+        }
+        // And outside those regions the same word is still protected.
+        expect(maskProtectedRegions('O Dr. Silva').spans).toEqual([{ start: 4, end: 5 }]);
+    });
+});
