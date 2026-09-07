@@ -1,0 +1,51 @@
+{
+  "name": "@nihilo-dev/fundamentum",
+  "version": "0.1.0",
+  "description": "Document grounding and citation attribution that never loses a character. Hybrid search and span-level attribution for any LLM, with code-point-exact positions.",
+  "license": "Apache-2.0",
+  "author": "MPT0M <dev@nihilo.dev>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MPT0M/lucius-fundamentum.git"
+  },
+  "homepage": "https://github.com/MPT0M/lucius-fundamentum#readme",
+  "bugs": "https://github.com/MPT0M/lucius-fundamentum/issues",
+  "keywords": [
+    "grounding",
+    "citation",
+    "attribution",
+    "rag",
+    "retrieval",
+    "bm25",
+    "unicode",
+    "code-points",
+    "portuguese"
+  ],
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^26.4.1",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.0"
+  }
+}
