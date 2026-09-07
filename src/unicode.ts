@@ -7,6 +7,8 @@
  * the code point. These helpers are where the conversion happens, once.
  */
 
+import type { Span } from './types.js';
+
 /**
  * Number of Unicode code points in `text`.
  *
@@ -65,4 +67,22 @@ export function sliceByCodePoints(text: string, start: number, end?: number): st
 
 function clamp(value: number, lo: number, hi: number): number {
     return Math.max(lo, Math.min(hi, value));
+}
+
+/**
+ * Every match of `re` in `text`, as a code point span into `text`.
+ *
+ * `String.prototype.matchAll` reports `index` in UTF-16 units. Everything in
+ * this package positions in code points, so the conversion has to happen at
+ * the one place regex results enter — here — and nowhere else. `re` must carry
+ * the `g` flag; `matchAll` throws otherwise, which is the right failure.
+ */
+export function matchSpans(text: string, re: RegExp): Span[] {
+    const out: Span[] = [];
+    re.lastIndex = 0;
+    for (const m of text.matchAll(re)) {
+        const start = countCodePoints(text.slice(0, m.index));
+        out.push({ start, end: start + countCodePoints(m[0]) });
+    }
+    return out;
 }
