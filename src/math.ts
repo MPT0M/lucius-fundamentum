@@ -31,10 +31,18 @@
  * The identity of what was masked travels in the RETURN VALUE, as spans — not
  * in the character. Callers that need the formula text slice the original with
  * the span; nothing is ever restored, because nothing was removed.
+ *
+ * KNOWN LIMITATION: an input that already contains U+E000 is indistinguishable
+ * from a masked one to anything that inspects the character. Nothing in this
+ * package does — every consumer reads the spans — so there is no functional
+ * effect today. The Private Use Area has no assigned meaning by definition,
+ * which makes a collision unlikely, but "unlikely" is an assumption and not a
+ * guard. If a future consumer ever branches on the character itself, this
+ * needs a check on input, and this note is where that decision is recorded.
  */
 
 import type { Span } from './types.js';
-import { countCodePoints } from './unicode.js';
+import { matchSpans } from './unicode.js';
 
 /** U+E000: first code point of the Private Use Area. See the module comment. */
 export const MASK_CHAR = '';
@@ -100,13 +108,8 @@ export function maskFormulas(text: string): MaskResult {
  * block formula belongs to the block.
  */
 function collect(text: string, re: RegExp, out: Span[], skipInside: readonly Span[] = []): void {
-    re.lastIndex = 0;
-    for (const m of text.matchAll(re)) {
-        const utf16Start = m.index;
-        const utf16End = utf16Start + m[0].length;
-        const start = countCodePoints(text.slice(0, utf16Start));
-        const end = start + countCodePoints(m[0]);
-        if (skipInside.some((r) => start < r.end && end > r.start)) continue;
-        out.push({ start, end });
+    for (const span of matchSpans(text, re)) {
+        if (skipInside.some((r) => span.start < r.end && span.end > r.start)) continue;
+        out.push(span);
     }
 }

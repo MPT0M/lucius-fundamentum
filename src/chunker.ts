@@ -15,7 +15,7 @@
 
 import type { Span } from './types.js';
 import { countCodePoints, sliceByCodePoints } from './unicode.js';
-import { maskFormulas } from './math.js';
+import { maskProtectedRegions } from './mask.js';
 
 /**
  * A document as the core receives it: text already extracted. The core opens
@@ -109,7 +109,7 @@ interface Sentence {
  * spans are valid on the original.
  */
 function sentencesOf(text: string, segmenter: Segmenter): Sentence[] {
-    const masked = maskFormulas(text).text;
+    const masked = maskProtectedRegions(text).text;
     const out: Sentence[] = [];
     let utf16Cursor = 0;
     let cpCursor = 0;
