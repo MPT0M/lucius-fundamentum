@@ -1,12 +1,13 @@
 import { describe, it, expect } from 'vitest';
 import { countCodePoints, normalizeUnicode } from '../src/unicode.js';
 
-// Built from code points so no editor, formatter or line-ending pass can
-// silently recompose them. If a tool "fixed" these literals the test would
-// still test what it says it tests.
-const C_CEDILLA_COMPOSED = 'ç';                 // ç, one code point
-const C_CEDILLA_DECOMPOSED = 'ç';              // c + combining cedilla, two
-const A_TILDE_DECOMPOSED = 'ã';                // a + combining tilde
+// Built from code points, NOT typed as literals: an editor or a save hook that
+// normalizes on write would silently recompose a decomposed literal into one
+// code point, and the test would go on passing while testing nothing. This
+// happened to a sibling file during development.
+const C_CEDILLA_COMPOSED = String.fromCodePoint(0x00e7);            // ç, one code point
+const C_CEDILLA_DECOMPOSED = String.fromCodePoint(0x63, 0x0327);   // c + combining cedilla
+const A_TILDE_DECOMPOSED = String.fromCodePoint(0x61, 0x0303);     // a + combining tilde
 
 describe('countCodePoints — counts characters, not UTF-16 units', () => {
     it('agrees with .length on plain ASCII', () => {

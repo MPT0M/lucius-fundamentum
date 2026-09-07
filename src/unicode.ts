@@ -40,3 +40,29 @@ export function countCodePoints(text: string): number {
 export function normalizeUnicode(text: string): string {
     return text.normalize('NFC');
 }
+
+/**
+ * The substring of `text` between code point offsets `[start, end)`.
+ *
+ * `String.prototype.slice` works in UTF-16 units and will happily cut an emoji
+ * in half, leaving a lone surrogate that renders as � and breaks any equality
+ * check downstream. This walks code points, so a boundary can never fall
+ * inside a character.
+ *
+ * Bounds are clamped, not thrown. A caller with a span from an older index, or
+ * from a citation that overran the text, gets the honest prefix/suffix instead
+ * of an exception in the render path. Negative offsets count from the end, as
+ * in `slice`. `end` before `start` yields the empty string.
+ */
+export function sliceByCodePoints(text: string, start: number, end?: number): string {
+    const points = Array.from(text);
+    const total = points.length;
+    const from = clamp(start < 0 ? total + start : start, 0, total);
+    const rawTo = end === undefined ? total : end < 0 ? total + end : end;
+    const to = clamp(rawTo, from, total);
+    return points.slice(from, to).join('');
+}
+
+function clamp(value: number, lo: number, hi: number): number {
+    return Math.max(lo, Math.min(hi, value));
+}

@@ -6,4 +6,4 @@
  */
 
 export type { Span } from './types.js';
-export { countCodePoints, normalizeUnicode } from './unicode.js';
+export { countCodePoints, normalizeUnicode, sliceByCodePoints } from './unicode.js';
