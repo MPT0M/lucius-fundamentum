@@ -76,6 +76,19 @@ describe('normalization CHANGES LENGTH — why spans live on the raw text', () =
         expect(after).toBeLessThan(before);
     });
 
+    it('NFKC would shrink half-width katakana too — another script, same lesson', () => {
+        // Not what this package does (it uses NFC), but the proof that the rule
+        // "spans live on the raw text" is not a Portuguese peculiarity: in
+        // Japanese, a compatibility normalization merges two code points into
+        // one just the same.
+        const halfWidth = String.fromCodePoint(0xff76, 0xff9e);   // ｶ + ﾞ (half-width voiced mark)
+        expect(countCodePoints(halfWidth)).toBe(2);
+        expect(countCodePoints(halfWidth.normalize('NFKC'))).toBe(1);
+        // And NFC — what we use — leaves it alone, so our normalization does
+        // not shift Japanese either.
+        expect(countCodePoints(normalizeUnicode(halfWidth))).toBe(2);
+    });
+
     it('a sentence shifts every position after the first decomposed letter', () => {
         const raw = 'A a' + C_CEDILLA_DECOMPOSED + A_TILDE_DECOMPOSED + 'o vale.';
         const normalized = normalizeUnicode(raw);
