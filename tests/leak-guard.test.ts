@@ -4,7 +4,11 @@ import { join, relative, sep } from 'node:path';
 import { tmpdir } from 'node:os';
 import { execFileSync } from 'node:child_process';
 
-/** Built from pieces so this file cannot match itself. */
+/**
+ * Assembled from pieces so that the planted fixture below does not appear as a
+ * literal path in this source. What actually keeps this file out of the scan is
+ * `excludeFiles` in the first test — this is belt, that is braces.
+ */
 const WIN_PREFIX = ['C', ':', '\\', 'Users', '\\'].join('');
 const PERSONAL_PATH_SHAPES: readonly RegExp[] = [
     new RegExp('[A-Za-z]:\\\\Users\\\\[^\\\\/\\s"\'<>|]+'),
