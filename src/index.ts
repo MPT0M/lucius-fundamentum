@@ -9,3 +9,5 @@ export type { Span } from './types.js';
 export { countCodePoints, normalizeUnicode, sliceByCodePoints } from './unicode.js';
 export { maskFormulas, MASK_CHAR } from './math.js';
 export type { MaskResult } from './math.js';
+export { chunk, DEFAULT_CHUNK_OPTIONS } from './chunker.js';
+export type { SourceDoc, Chunk, BoundingBox, ChunkOptions, Segmenter } from './chunker.js';
