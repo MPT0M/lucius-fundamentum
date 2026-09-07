@@ -5,4 +5,5 @@
  * src/ is a public path.
  */
 
-export {};
+export type { Span } from './types.js';
+export { countCodePoints, normalizeUnicode } from './unicode.js';
