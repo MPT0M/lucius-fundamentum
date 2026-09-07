@@ -7,15 +7,17 @@
  * covers, so a citation can point at the character and not at the page.
  *
  * Boundaries fall on sentence ends, never inside a sentence, and never inside
- * a formula: formulas are masked before the segmenter sees the text, and the
- * mask is length-preserving, so every position the segmenter reports on the
- * masked text is a valid position on the original. `Chunk.text` is always cut
- * from the ORIGINAL — a chunk never carries a mask character.
+ * a formula, a code span, a URL, or right after an abbreviation: those regions
+ * are masked before the segmenter sees the text (see `mask.ts`), and the mask
+ * is length-preserving, so every position the segmenter reports on the masked
+ * text is a valid position on the original. `Chunk.text` is always cut from
+ * the ORIGINAL — a chunk never carries a mask character.
  */
 
 import type { Span } from './types.js';
 import { countCodePoints, sliceByCodePoints } from './unicode.js';
 import { maskProtectedRegions } from './mask.js';
+import type { AbbreviationList } from './abbreviations.js';
 
 /**
  * A document as the core receives it: text already extracted. The core opens
@@ -78,6 +80,8 @@ export interface ChunkOptions {
      */
     readonly maxOverlapCodePoints: number;
     readonly segmenter?: Segmenter;
+    /** Abbreviations whose period must not end a sentence. Default: the pt-BR list. */
+    readonly abbreviations?: AbbreviationList;
 }
 
 /**
@@ -105,11 +109,11 @@ interface Sentence {
 
 /**
  * Sentence spans of `text`, in code points, computed on the MASKED text so no
- * boundary can land inside a formula. Because the mask preserves length, the
- * spans are valid on the original.
+ * boundary can land inside a formula, code, URL or after an abbreviation.
+ * Because the mask preserves length, the spans are valid on the original.
  */
-function sentencesOf(text: string, segmenter: Segmenter): Sentence[] {
-    const masked = maskProtectedRegions(text).text;
+function sentencesOf(text: string, segmenter: Segmenter, abbreviations?: AbbreviationList): Sentence[] {
+    const masked = maskProtectedRegions(text, abbreviations ? { abbreviations } : {}).text;
     const out: Sentence[] = [];
     let utf16Cursor = 0;
     let cpCursor = 0;
@@ -164,7 +168,7 @@ export function chunk(doc: SourceDoc, opts: ChunkOptions): readonly Chunk[] {
         );
     }
 
-    const sentences = sentencesOf(doc.text, opts.segmenter ?? defaultSegmenter());
+    const sentences = sentencesOf(doc.text, opts.segmenter ?? defaultSegmenter(), opts.abbreviations);
     const chunks: Chunk[] = [];
     let i = 0;
     while (i < sentences.length) {

@@ -153,10 +153,13 @@ describe('chunk — coverage and overlap', () => {
 });
 
 describe('chunk — abbreviations and numerals do not end a sentence', () => {
-    // Measured on Node 24's Intl.Segmenter before these were written: the
-    // segmenter already keeps these whole. The tests pin that behaviour so a
-    // runtime with a different segmenter, or an injected one, cannot silently
-    // start cutting a citation at "art." or in the middle of "1.500".
+    // Two groups share this block. The numerals ("1.500", "R$ 2.000,00", "3.14",
+    // "n.º") pin the SEGMENTER: measured on Node 24's Intl.Segmenter, it keeps
+    // them whole on its own, and none matches the abbreviation pattern. The
+    // titles ("art.", "Fig.", "Dr.") pin the MASK: they are list entries, so
+    // the period the segmenter sees is already a mask character. Either way a
+    // different or injected segmenter cannot silently start cutting a citation
+    // at "art." or in the middle of "1.500".
     // Budget of ONE code point: every sentence is oversized, so every sentence
     // becomes its own chunk and `whole()` returns exactly what the segmenter
     // produced. A larger budget would let the chunker merge two short
@@ -189,13 +192,10 @@ describe('chunk — abbreviations and numerals do not end a sentence', () => {
         expect(whole('O item n.º 4 falta. Confira.')).toEqual(['O item n.º 4 falta.', 'Confira.']);
     });
 
-    // KNOWN GAP, kept visible on purpose. An abbreviation followed by a
-    // capitalized word — a title before a name — is exactly what a segmenter
-    // calls a sentence end, and Intl.Segmenter cuts it. Fixing this needs a
-    // list of abbreviations to protect, which is a scope decision the plan has
-    // not made. `it.fails` turns green the day it is fixed, and red again if
-    // someone claims to have fixed it and did not.
-    it.fails('"Dr." followed by a capitalized name is not a sentence end (KNOWN GAP)', () => {
+    // This was `it.fails` — a declared gap — until the abbreviation list
+    // landed. The segmenter alone cuts after "Dr."; the mask hides the period
+    // from it. The full behaviour is specified in abbreviations.test.ts.
+    it('"Dr." followed by a capitalized name is not a sentence end', () => {
         expect(whole('O Dr. Silva chegou cedo. Foi rápido.')).toEqual(['O Dr. Silva chegou cedo.', 'Foi rápido.']);
     });
 });

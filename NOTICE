@@ -1,0 +1,14 @@
+Lucius Fundamentum
+Copyright 2026 MPT0M
+
+This product includes data derived from the Moses decoder's non-breaking
+prefix list for Portuguese (nonbreaking_prefix.pt), adapted for Portuguese by
+H. Leal Fontes from the EN and DE lists published with moses-2009-04-13 (last
+updated 2009-11-10), as redistributed by the NLTK project
+(https://www.nltk.org/) under the Apache License, Version 2.0.
+
+The derived list lives in src/abbreviations.ts. Entries were kept as published;
+none were added. Where the source lists a prefix in both of its classes, the
+NUMERIC_ONLY class is applied, as the Moses loader's last-assignment-wins
+semantics would. See that file's header for what the list does and does not
+cover.
