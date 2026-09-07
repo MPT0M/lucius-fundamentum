@@ -152,6 +152,54 @@ describe('chunk — coverage and overlap', () => {
     });
 });
 
+describe('chunk — abbreviations and numerals do not end a sentence', () => {
+    // Measured on Node 24's Intl.Segmenter before these were written: the
+    // segmenter already keeps these whole. The tests pin that behaviour so a
+    // runtime with a different segmenter, or an injected one, cannot silently
+    // start cutting a citation at "art." or in the middle of "1.500".
+    // Budget of ONE code point: every sentence is oversized, so every sentence
+    // becomes its own chunk and `whole()` returns exactly what the segmenter
+    // produced. A larger budget would let the chunker merge two short
+    // sentences back together and hide a bad cut — which is what happened the
+    // first time these were written.
+    const whole = (text: string) =>
+        chunk(doc(text), { maxChunkCodePoints: 1, maxOverlapCodePoints: 0 }).map((c) => c.text);
+
+    it('a thousands separator is not a sentence end', () => {
+        expect(whole('Custa 1.500 reais. Caro.')).toEqual(['Custa 1.500 reais.', 'Caro.']);
+    });
+
+    it('a currency amount with separators is not a sentence end', () => {
+        expect(whole('Custam R$ 2.000,00 hoje. Amanhã sobe.')).toEqual(['Custam R$ 2.000,00 hoje.', 'Amanhã sobe.']);
+    });
+
+    it('a decimal point is not a sentence end', () => {
+        expect(whole('Pi vale 3.14 aproximadamente. Fim.')).toEqual(['Pi vale 3.14 aproximadamente.', 'Fim.']);
+    });
+
+    it('"art." followed by a number is not a sentence end', () => {
+        expect(whole('Ver art. 5º da lei. Depois vem.')).toEqual(['Ver art. 5º da lei.', 'Depois vem.']);
+    });
+
+    it('"Fig." followed by a number is not a sentence end', () => {
+        expect(whole('Veja a Fig. 3 abaixo. Ela explica.')).toEqual(['Veja a Fig. 3 abaixo.', 'Ela explica.']);
+    });
+
+    it('"n.º" is not a sentence end', () => {
+        expect(whole('O item n.º 4 falta. Confira.')).toEqual(['O item n.º 4 falta.', 'Confira.']);
+    });
+
+    // KNOWN GAP, kept visible on purpose. An abbreviation followed by a
+    // capitalized word — a title before a name — is exactly what a segmenter
+    // calls a sentence end, and Intl.Segmenter cuts it. Fixing this needs a
+    // list of abbreviations to protect, which is a scope decision the plan has
+    // not made. `it.fails` turns green the day it is fixed, and red again if
+    // someone claims to have fixed it and did not.
+    it.fails('"Dr." followed by a capitalized name is not a sentence end (KNOWN GAP)', () => {
+        expect(whole('O Dr. Silva chegou cedo. Foi rápido.')).toEqual(['O Dr. Silva chegou cedo.', 'Foi rápido.']);
+    });
+});
+
 describe('chunk — options are validated at the door', () => {
     it('refuses a non-positive chunk size, naming the parameter', () => {
         expect(() => chunk(doc('x.'), { maxChunkCodePoints: 0, maxOverlapCodePoints: 0 }))

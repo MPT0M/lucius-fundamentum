@@ -24,6 +24,19 @@ describe('sliceByCodePoints — a boundary never falls inside a character', () =
         expect(sliceByCodePoints(text, 5, 6)).toBe('𝒳');
     });
 
+    it('is exact in Japanese, where every character is multi-byte in UTF-8', () => {
+        // The claim behind this package is that getting Portuguese right gets
+        // everything right, because the defect class is bytes-vs-characters.
+        // Japanese is the stress case: in UTF-8 these are all 3-byte characters,
+        // so a byte-based offset is wrong on the very first one. In code points
+        // each is one, and the slice lands exactly.
+        const text = '東京は日本の首都です。';        // 11 code points
+        expect(countCodePoints(text)).toBe(11);
+        expect(Buffer.byteLength(text, 'utf8')).toBe(33);   // 3 bytes each
+        expect(sliceByCodePoints(text, 3, 5)).toBe('日本');
+        expect(sliceByCodePoints(text, 6, 8)).toBe('首都');
+    });
+
     it('counts a decomposed ç as its own two code points, and can split them', () => {
         // The raw text is what the user wrote; if they wrote two code points,
         // the slice sees two. That is the point of not normalizing before
