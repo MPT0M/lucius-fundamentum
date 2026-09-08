@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { maskProtectedRegions } from '../src/mask.js';
-import { MASK_CHAR } from '../src/math.js';
+import { MASK_CHAR, type MaskResult } from '../src/math.js';
 import { countCodePoints, sliceByCodePoints } from '../src/unicode.js';
 
 const at = (text: string, s: { start: number; end: number }) => sliceByCodePoints(text, s.start, s.end);
@@ -107,6 +107,57 @@ describe('maskProtectedRegions — abbreviations come last', () => {
             expect(spans, text).toHaveLength(1);
         }
         // And outside those regions the same word is still protected.
-        expect(maskProtectedRegions('O Dr. Silva').spans).toEqual([{ start: 4, end: 5 }]);
+        // Deliberate contract change (lot 2): spans now carry `kind`. The old
+        // assertion fixed the exact set of keys, which was more than the
+        // contract promised; the position it pinned is unchanged.
+        expect(maskProtectedRegions('O Dr. Silva').spans).toEqual([{ start: 4, end: 5, kind: 'abbreviation' }]);
+    });
+});
+
+describe('maskProtectedRegions — every region says which pass painted it', () => {
+    it('code, URL, formula and abbreviation each come back with their own kind', () => {
+        const text = 'Veja `a.b`, https://x.y/z, $x^2$ e o Dr. Silva.';
+        const { spans } = maskProtectedRegions(text);
+        expect(spans.map((s) => s.kind)).toEqual(['code', 'url', 'formula', 'abbreviation']);
+        expect(spans.map((s) => at(text, s))).toEqual(['`a.b`', 'https://x.y/z', '$x^2$', '.']);
+    });
+
+    it('a fenced block and an inline span are both "code"', () => {
+        const { spans } = maskProtectedRegions('```\nx\n``` e `y`');
+        expect(spans.map((s) => s.kind)).toEqual(['code', 'code']);
+    });
+
+    it('kinds stay attached after the final sort by position', () => {
+        // The abbreviation pass runs last but its period sits FIRST in this
+        // text; sorting must move the span, not detach its kind.
+        const text = 'Dr. X e $y$';
+        const { spans } = maskProtectedRegions(text);
+        expect(spans.map((s) => [at(text, s), s.kind])).toEqual([['.', 'abbreviation'], ['$y$', 'formula']]);
+    });
+
+    it('the classified result is a MaskResult — readers of start/end are untouched', () => {
+        // Assignability is guaranteed by the declaration itself —
+        // `ClassifiedMaskResult extends MaskResult` in src/mask.ts — so there is
+        // no type-level assertion here that could fail on its own. This
+        // assignment is what a caller of the old contract does, and the
+        // positions it reads are unchanged. What `tsc` over tests/ actually
+        // guards in this file are the `s.kind` reads: their only check is the
+        // declared type — widen the return type back to `MaskResult` and every
+        // one of them stops compiling, while the runtime value is still there.
+        const asPlain: MaskResult = maskProtectedRegions('O Dr. Silva');
+        expect(asPlain.spans[0]).toMatchObject({ start: 4, end: 5 });
+    });
+
+    // Declared debt, kept visible the way the chunker kept "Dr. Silva" visible
+    // until the abbreviation list landed. The URL pattern accepts `$` and a
+    // backtick inside a URL (5411978), so a URL glued to a formula delimiter
+    // swallows the delimiter — and now says so with a label. Fixing the pattern
+    // changes masking behaviour and is a separate decision; this test turns
+    // green the day it is taken.
+    it.fails('a URL glued to a formula delimiter reports the delimiter as url — debt from 5411978', () => {
+        const text = 'https://x.y$a$';
+        const { spans } = maskProtectedRegions(text);
+        expect(spans.map((s) => s.kind)).toEqual(['url', 'formula']);
+        expect(at(text, spans[0]!)).toBe('https://x.y');
     });
 });
