@@ -13,19 +13,19 @@ import {
 } from '../bench/src/manifest.js';
 import type { GoogleRawFixture } from '../bench/src/fixture.js';
 import type { LabeledFixture } from '../bench/src/score.js';
+// The labeler allowlist has one home, read by this test and by the harness
+// that scores labels kept outside the repository; the owner adds handles there.
+import { ALLOWED_LABELERS } from '../bench/src/allowlists.js';
 
 /**
- * The two allowlists live HERE, where the suite runs them, and the owner adds
- * to them. `public-domain-law` is text that is public domain by statute
+ * The license allowlist lives HERE, where the suite runs it, and the owner adds
+ * to it. `public-domain-law` is text that is public domain by statute
  * (Brazilian legislation, Lei 9.610 art. 8); `public-domain-term` is a work
  * whose protection has expired, verified work by work. Nothing share-alike,
  * nothing that asks for attribution: the corpus feeds a harness whose output
- * is committed, and the derived artifact would carry the origin's obligation.
+ * is kept, and a derived artifact would carry the origin's obligation.
  */
 const ALLOWED_CORPUS_LICENSES = ['public-domain-law', 'public-domain-term'] as const;
-
-/** Who may sign a label. A handle, never a civil name. */
-const ALLOWED_LABELERS = ['MPT0M'] as const;
 
 // `import.meta.dirname` needs Node 20.11; the package promises >= 20, so the URL form is used.
 const REPO_BENCH = fileURLToPath(new URL('../bench/', import.meta.url));

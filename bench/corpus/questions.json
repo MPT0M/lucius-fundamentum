@@ -1,0 +1,14 @@
+{
+  "questions": [
+    { "id": "q01", "derivedFrom": ["machado-memorias-posthumas"], "question": "A quem Brás Cubas dedica o livro, e por quê, segundo ele mesmo?" },
+    { "id": "q02", "derivedFrom": ["machado-memorias-posthumas"], "question": "Qual é a invenção que Brás Cubas quer criar antes de morrer, e o que espera ganhar com ela?" },
+    { "id": "q03", "derivedFrom": ["machado-memorias-posthumas"], "question": "Como o narrador descreve o delírio que teve pouco antes de morrer?" },
+    { "id": "q04", "derivedFrom": ["machado-memorias-posthumas"], "question": "Quem foi Marcela, e quanto tempo durou o amor de Brás por ela, nas palavras dele?" },
+    { "id": "q05", "derivedFrom": ["machado-memorias-posthumas"], "question": "Quem é Quincas Borba, e o que é o Humanitismo que ele defende?" },
+    { "id": "q06", "derivedFrom": ["machado-memorias-posthumas"], "question": "Qual foi a causa da morte de Brás Cubas, segundo o próprio?" },
+    { "id": "q07", "derivedFrom": ["machado-memorias-posthumas"], "question": "Como Brás Cubas descreve o pai, e que carreira o pai queria para ele?" },
+    { "id": "q08", "derivedFrom": ["machado-memorias-posthumas"], "question": "O que Brás Cubas conta sobre Virgília e sobre Lobo Neves?" },
+    { "id": "q09", "derivedFrom": ["machado-memorias-posthumas"], "question": "Quem é Dona Plácida, e como o narrador conta a origem dela?" },
+    { "id": "q10", "derivedFrom": ["machado-memorias-posthumas"], "question": "Qual é a última frase do livro, e o que ela conclui sobre a vida de Brás Cubas?" }
+  ]
+}

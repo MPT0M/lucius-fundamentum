@@ -136,8 +136,8 @@ function locateFor(origin: ResolvedOrigin, snippet: string, round: MaskedCorpus,
 
 /**
  * Turns one recorded response into citation candidates for the scorer.
- * `derivedFrom` comes from the manifest, read by the runner — the raw fixture
- * does not carry it, and this function does no I/O.
+ * `derivedFrom` comes from the question set, read by the runner — the raw
+ * fixture does not carry it, and this function does no I/O.
  */
 export function parseResponse(raw: GoogleRawFixture, round: MaskedCorpus, derivedFrom: readonly string[]): ParseResult {
     const view = viewOf(round, derivedFrom);
