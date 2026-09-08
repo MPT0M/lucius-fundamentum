@@ -88,13 +88,14 @@ async function main(): Promise<void> {
         providerId: null,
         formatVersion: null,
     };
+    const log = (line: string): void => console.log(line);
     const outcome = await runRound({
         benchRoot: fileURLToPath(new URL('../../../../bench/', import.meta.url)),
         outRoot,
-        client: createGoogleFileSearchClient(apiKey),
+        client: createGoogleFileSearchClient(apiKey, undefined, log),
         meta,
         variants: VARIANTS,
-        log: (line) => console.log(line),
+        log,
     });
     console.log(`recorded ${outcome.recorded.length}, reused ${outcome.reused.length}; reports: ${Object.keys(outcome.reports).join(', ') || 'none'}`);
 }

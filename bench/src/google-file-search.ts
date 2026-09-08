@@ -5,7 +5,7 @@
  * creates a store, imports documents, asks a question and returns what came
  * back, untouched, for `run.ts` to record.
  *
- * Three facts of the wire the round depends on, each checked against the
+ * Four facts of the wire the round depends on, each checked against the
  * official reference and then against the live API on 2026-09-08:
  *   - a store is created with `displayName` and `embeddingModel` (the model id
  *     with the `models/` prefix);
@@ -13,6 +13,9 @@
  *     (`[{ key, stringValue }]`) and `chunkingConfig.whiteSpaceConfig`
  *     (`maxTokensPerChunk`, `maxOverlapTokens`); the response names the
  *     document at once, and the document's `state` says when it is indexed;
+ *   - a document resource carries `state` and `sizeBytes`, and no error and no
+ *     reason when indexing fails; deleting one needs `?force=true`, and without
+ *     it the API answers 400 "Cannot delete non-empty Document" and keeps it;
  *   - the grounding a response returns carries, per chunk, `retrievedContext`
  *     with `title` (the display name) and `customMetadata`, and the tool's
  *     tokens are `usageMetadata.toolUsePromptTokenCount`.
@@ -27,10 +30,21 @@
  * `DELETE` can be repeated without a second effect, so a transient status
  * (measured: a 503 "Deadline expired" mid-round) is retried with growing
  * delays — a delete that is never retried would leave a live store billing
- * for a moment of overload. Creating a store and uploading a document are not
- * retried: a retry after the server had already accepted the request would
- * leave an orphan store or a duplicate document, and the round would rather
- * fail loudly.
+ * for a moment of overload. Creating a store is not retried: a retry after the
+ * server had already accepted it would leave an orphan store.
+ *
+ * An upload is not retried on a bad status either, for the same reason — but
+ * it IS retried when the document it produced comes back FAILED, and only
+ * after that document is deleted, so the second attempt cannot leave two under
+ * one name. Indexing fails intermittently and says nothing about why. Measured
+ * on 2026-09-08, the same 374,753-byte book, three uploads back to back, each
+ * into a store of its own: FAILED, FAILED, ACTIVE. In the morning the same
+ * book had indexed on the first try. Earlier that afternoon a sweep of sizes
+ * inside one store had drawn a clean staircase — small ones indexed, large
+ * ones failed — and these three uploads take that staircase away as evidence
+ * for size without explaining it: they hold size fixed, so they say nothing
+ * about size, only that at this one size the outcome varies and the protocol
+ * does not decide it. What does decide it is unknown.
  *
  * The key travels in the `x-goog-api-key` header, never in the URL.
  */
@@ -46,6 +60,22 @@ const POLL_TIMEOUT_MS = 20 * 60 * 1000;
 /** Statuses the API returns for a moment of overload, not for a wrong request. */
 const TRANSIENT_STATUSES = new Set([429, 500, 502, 503, 504]);
 const RETRY_DELAYS_MS = [5000, 15000, 45000];
+/**
+ * The waits between re-uploads of a document that came back FAILED. A policy of
+ * its own, not the HTTP backoff above: that one recoils from a server that
+ * answered a status, this one from an indexing pipeline that answered nothing.
+ * `IMPORT_ATTEMPTS - 1` waits, and the last is long because the failures come
+ * in windows.
+ */
+const IMPORT_RETRY_DELAYS_MS = [5000, 15000, 45000, 60000];
+/**
+ * How many uploads of one document before the round gives up. Measured on
+ * 2026-09-08, six uploads of the same book across two sessions minutes apart:
+ * two indexed. At one success in three, three attempts lose about a third of
+ * the time and five lose about one in eight — and an attempt costs ten seconds
+ * against a round the operator triggered by hand.
+ */
+const IMPORT_ATTEMPTS = 5;
 
 /**
  * What the multipart upload returns. Measured on 2026-09-08: the body carries
@@ -63,6 +93,8 @@ interface UploadOperation {
 interface FileSearchDocument {
     readonly name: string;
     readonly state?: 'STATE_UNSPECIFIED' | 'STATE_PENDING' | 'STATE_ACTIVE' | 'STATE_FAILED';
+    /** A decimal string, as the API sends it. Reported when indexing fails, since the resource carries no reason. */
+    readonly sizeBytes?: string;
 }
 
 interface GenerateResponse {
@@ -108,16 +140,49 @@ async function requestRetrying<T>(apiKey: string, url: string, init: RequestInit
     return (await (await sendRetrying(apiKey, url, init, sleep)).json()) as T;
 }
 
-export function createGoogleFileSearchClient(apiKey: string, sleep: Sleep = defaultSleep): FileSearchClient {
-    async function waitForDocument(documentName: string): Promise<void> {
+/**
+ * `log` is the round's own, so a retry is not silent: a corpus that needed
+ * three uploads is a fact about the round, and a mitigation that hides the
+ * thing it mitigates would make the instrument lie by omission.
+ */
+export function createGoogleFileSearchClient(apiKey: string, sleep: Sleep = defaultSleep, log: (line: string) => void = () => {}): FileSearchClient {
+    /**
+     * Waits out the indexing and hands back what the API said — the size
+     * included, since it is the only thing the resource carries about a
+     * failure. Only a stuck document throws.
+     */
+    async function settleDocument(documentName: string): Promise<FileSearchDocument> {
         const deadline = Date.now() + POLL_TIMEOUT_MS;
         for (;;) {
             const doc = await requestRetrying<FileSearchDocument>(apiKey, API + documentName, { method: 'GET' }, sleep);
-            if (doc.state === 'STATE_ACTIVE') return;
-            if (doc.state === 'STATE_FAILED') throw new Error(`document ${documentName} failed to index`);
+            if (doc.state === 'STATE_ACTIVE' || doc.state === 'STATE_FAILED') return doc;
             if (Date.now() > deadline) throw new Error(`document ${documentName} was not active within ${POLL_TIMEOUT_MS} ms (state ${doc.state ?? 'absent'})`);
             await sleep(POLL_INTERVAL_MS);
         }
+    }
+
+    /** One upload, from the request to the document's name. */
+    async function uploadOnce(storeName: string, documentId: string, text: string, chunking: RunMeta['storeChunking']): Promise<string> {
+        const metadata = JSON.stringify({
+            displayName: documentId,
+            customMetadata: [{ key: 'documentId', stringValue: documentId }],
+            chunkingConfig: {
+                whiteSpaceConfig: { maxTokensPerChunk: chunking.maxTokensPerChunk, maxOverlapTokens: chunking.maxOverlapTokens },
+            },
+        });
+        const boundary = `----fundamentum${Math.random().toString(36).slice(2)}`;
+        const body =
+            `--${boundary}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n${metadata}\r\n` +
+            `--${boundary}\r\nContent-Type: text/plain; charset=UTF-8\r\n\r\n${text}\r\n--${boundary}--`;
+        const operation = await requestOnce<UploadOperation>(apiKey, `${UPLOAD_API}${storeName}:uploadToFileSearchStore`, {
+            method: 'POST',
+            headers: { 'Content-Type': `multipart/related; boundary=${boundary}`, 'X-Goog-Upload-Protocol': 'multipart' },
+            body,
+        });
+        if (operation.error !== undefined) throw new Error(`upload of ${documentId} failed: ${operation.error.message}`);
+        const documentName = operation.response?.documentName;
+        if (documentName === undefined) throw new Error(`upload of ${documentId} returned no documentName`);
+        return documentName;
     }
 
     return {
@@ -131,26 +196,22 @@ export function createGoogleFileSearchClient(apiKey: string, sleep: Sleep = defa
         },
 
         async importDocument(storeName: string, documentId: string, text: string, chunking: RunMeta['storeChunking']) {
-            const metadata = JSON.stringify({
-                displayName: documentId,
-                customMetadata: [{ key: 'documentId', stringValue: documentId }],
-                chunkingConfig: {
-                    whiteSpaceConfig: { maxTokensPerChunk: chunking.maxTokensPerChunk, maxOverlapTokens: chunking.maxOverlapTokens },
-                },
-            });
-            const boundary = `----fundamentum${Math.random().toString(36).slice(2)}`;
-            const body =
-                `--${boundary}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n${metadata}\r\n` +
-                `--${boundary}\r\nContent-Type: text/plain; charset=UTF-8\r\n\r\n${text}\r\n--${boundary}--`;
-            const operation = await requestOnce<UploadOperation>(apiKey, `${UPLOAD_API}${storeName}:uploadToFileSearchStore`, {
-                method: 'POST',
-                headers: { 'Content-Type': `multipart/related; boundary=${boundary}`, 'X-Goog-Upload-Protocol': 'multipart' },
-                body,
-            });
-            if (operation.error !== undefined) throw new Error(`upload of ${documentId} failed: ${operation.error.message}`);
-            const documentName = operation.response?.documentName;
-            if (documentName === undefined) throw new Error(`upload of ${documentId} returned no documentName`);
-            await waitForDocument(documentName);
+            let size = 'unknown';
+            for (let attempt = 1; attempt <= IMPORT_ATTEMPTS; attempt++) {
+                const documentName = await uploadOnce(storeName, documentId, text, chunking);
+                const doc = await settleDocument(documentName);
+                size = doc.sizeBytes ?? 'unknown';
+                if (doc.state === 'STATE_ACTIVE') {
+                    if (attempt > 1) log(`  ${documentId} indexed on upload ${attempt} of ${IMPORT_ATTEMPTS}`);
+                    return;
+                }
+                log(`  ${documentId} (${size} bytes) came back FAILED on upload ${attempt} of ${IMPORT_ATTEMPTS}, with no reason on the resource`);
+                // Delete before asking again: two documents under one display name
+                // would give the emitter two ways to cite the same source.
+                await sendRetrying(apiKey, `${API}${documentName}?force=true`, { method: 'DELETE' }, sleep);
+                if (attempt < IMPORT_ATTEMPTS) await sleep(IMPORT_RETRY_DELAYS_MS[attempt - 1] ?? POLL_INTERVAL_MS);
+            }
+            throw new Error(`document ${documentId} (${size} bytes) came back FAILED on ${IMPORT_ATTEMPTS} uploads, with no reason on the resource`);
         },
 
         async generate(storeName: string, model: string, question: string, systemInstruction: string | null): Promise<RawResponse> {
