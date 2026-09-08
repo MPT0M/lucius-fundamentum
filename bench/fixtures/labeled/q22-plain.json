@@ -1,0 +1,189 @@
+{
+  "id": "q22-plain",
+  "parts": [
+    {
+      "text": "No romance ***Memórias Póstumas de Brás Cubas*** (1881), de Machado de Assis, **Damasceno** é um personagem secundário que aparece na reta final da narrativa (durante os capítulos que antecedem a morte do protagonista). \n\n### Quem é Damasceno?\nDamasceno é um homem que sofreu uma tragédia pessoal devastadora: **ele perdeu a filha querida** durante uma epidemia de febre amarela que assolava o Rio de Janeiro. Ele é retratado como um homem profundamente melancólico, desolado e transformado em \"uma ruína\" pela dor do luto. \n\n### Qual é o seu papel nos últimos anos de Brás Cubas?\nO papel de Damasceno na história vai muito além de sua própria dor; ele serve de instrumento para as reflexões filosóficas, irônicas e pessimistas de Brás Cubas (já falecido e narrando do além) sobre **a hipocrisia e a formalidade da sociedade burguesa**.\n\n1. **O luto e o abandono:** Após a morte da filha, Damasceno queixa-se amargamente a Brás Cubas de que foi abandonado pelos amigos. Ele havia enviado oitenta convites para o funeral, mas apenas doze pessoas compareceram (sendo a maioria ligada ao cot وف de conhecidos, como Cotrim). Enquanto Damasceno lamenta sinceramente a ausência e a falsidade alheia (\"*Mas viessem!*\"), Cotrim argumenta de forma cínica que os ausentes não fariam falta, pois só iriam por pura formalidade.\n2. **O gancho para o capítulo \"Formalidade\":** A lamentação de Damasceno desperta no defunto autor o \"talento de concluir\" e de achar relações ocultas entre as coisas. Brás Cubas usa a angústia de Damasceno para introduzir o famoso Capítulo CXXVII (*Formalidade*), no qual disserta sobre como as convenções sociais, as aparências e a hipocrisia regem as relações humanas, comparando o choro de um pai enlutado às astúcias e véus das damas turcas.\n\nEm suma, Damasceno personifica a dor humana genuína em contraste com o vazio das convenções sociais, servindo de mote para que Brás Cubas escancare, com sua típica ironia machadiana, a artificialidade do mundo dos vivos."
+    }
+  ],
+  "segments": [
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 310,
+        "end": 408
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 311867,
+            "end": 311932
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 310288,
+            "end": 310374
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 410,
+        "end": 523
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 311388,
+            "end": 311454
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 311455,
+            "end": 311524
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 866,
+        "end": 969
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 312118,
+            "end": 312154
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 311455,
+            "end": 311524
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 970,
+        "end": 1057
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 311933,
+            "end": 312001
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 311806,
+            "end": 311866
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1058,
+        "end": 1119
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 311806,
+            "end": 311866
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1121,
+        "end": 1315
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 312450,
+            "end": 312464
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 312257,
+            "end": 312325
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1363,
+        "end": 1483
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 312572,
+            "end": 312643
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1484,
+        "end": 1762
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 312469,
+            "end": 312498
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 312883,
+            "end": 312947
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 313763,
+            "end": 313833
+          }
+        }
+      ]
+    }
+  ],
+  "labeledBy": "MPT0M",
+  "labeledAt": "2026-09-08T21:22:35.944Z"
+}

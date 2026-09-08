@@ -1,0 +1,35 @@
+{
+  "id": "q21-guided",
+  "model": "gemini-3.5-flash-lite",
+  "recordedAt": "2026-09-08T15:37:31.392Z",
+  "reportVersion": "bench-report-1",
+  "storeEmbeddingModel": "gemini-embedding-2",
+  "storeChunking": {
+    "maxTokensPerChunk": 200,
+    "maxOverlapTokens": 20
+  },
+  "parts": [
+    {
+      "text": "Com base nos documentos disponíveis, não há registros ou menções ao capítulo intitulado \"O velho diálogo de Adão e Eva\". Como os arquivos carregados não contêm essa obra ou capítulo específico, não é possível detalhar o seu conteúdo nem a justificativa dada pelo narrador."
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 78,
+    "candidatesTokenCount": 136,
+    "totalTokenCount": 2021,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 78
+      }
+    ],
+    "toolUsePromptTokenCount": 1807,
+    "toolUsePromptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 1807
+      }
+    ],
+    "serviceTier": "standard"
+  }
+}

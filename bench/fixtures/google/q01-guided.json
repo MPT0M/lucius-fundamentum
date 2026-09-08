@@ -1,0 +1,96 @@
+{
+  "id": "q01-guided",
+  "model": "gemini-3.5-flash-lite",
+  "recordedAt": "2026-09-08T11:17:27.530Z",
+  "reportVersion": "bench-report-1",
+  "storeEmbeddingModel": "gemini-embedding-2",
+  "storeChunking": {
+    "maxTokensPerChunk": 200,
+    "maxOverlapTokens": 20
+  },
+  "parts": [
+    {
+      "text": "Segundo o próprio Brás Cubas, em suas *Memórias Póstumas de Brás Cubas*, o livro é dedicado **ao verme que primeiro roeu as frias carnes do seu cadáver**, como uma \"saudosa lembrança\".\n\nA justificativa para essa escolha inusitada — que ironiza a tradição das dedicatórias solenes a mecenas ou figuras importantes — decorre da sua condição de \"defunto autor\". Ao final da vida, Brás Cubas chega à conclusão de que o saldo de sua existência foi marcado pela melancolia e pelo tédio, não tendo deixado filhos ou descendentes que pudessem herdar o seu legado. O verme, portanto, é apresentado de forma irônica como o primeiro a lhe prestar uma homenagem corpórea e íntima na morte, tornando-se o destinatário perfeito para a obra de um homem desiludido com as grandezas do mundo dos vivos."
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 77,
+    "candidatesTokenCount": 268,
+    "totalTokenCount": 8030,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 77
+      }
+    ],
+    "toolUsePromptTokenCount": 7685,
+    "toolUsePromptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 7685
+      }
+    ],
+    "serviceTier": "standard"
+  },
+  "groundingMetadata": {
+    "groundingChunks": [
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "o seu romance usual; e eil-o ahi fica privado da estima dos\ngraves e do amor dos frivolos, que são as duas columnas maximas da\nopinião.\n\nMas eu ainda espero angariar as sympatias da opinião, e o meio efficaz\npara isso é fugir a um prologo explicito e longo. O melhor prologo\né o que contém menos cousas, ou o que as diz de um geito obscuro e\ntruncado. Conseguintemente, evito contar o processo extraordinario que\nempreguei na composição destas _Memórias_, trabalhadas cá no outro\nseculo. Seria curioso, mas nimiamente extenso, e aliás desnecessario ao\nentendimento da obra. A obra em si mesma é tudo: se te agradar, fino\nleitor, pago-me da tarefa; se te não agradar, pago-te com um piparote,\ne adeus.\n\nBRAZ CUBAS.\n\n\n\n AO VERME\n\n QUE\n\n PRIMEIRO ROEU AS FRIAS CARNES\n\n DO MEU CADAVER\n\n DEDICO\n\n COMO SAUDOSA LEMBRANÇA\n\n ESTAS\n\n MEMÓRIAS PÓSTHUMAS\n\n\n\n\nCAPITULO I\n\n\nObito do autor\n\n\nAlgum tempo hesitei se devia abrir estas memorias pelo principio ou\npelo fim, isto é, se poria em primeiro logar o meu nascimento ou a\nminha morte. Supposto o uso vulgar seja começar pelo nascimento, duas\nconsiderações me levaram a adoptar differente methodo: a primeira é que\neu não sou propriamente um autor defunto, mas um defunto autor, para\nquem a campa foi outro berço; a segunda é que o escripto ficaria",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "má que lhe róe á\nnatureza as mais intimas entranhas; tudo isso é um sublime louvor ao\nnosso illustre finado.»\n\nBom e fiel amigo! Não, não me arrependo das vinte apolices que lhe\ndeixei. E foi assim que cheguei á clausula dos meus dias; foi assim que\nme encaminhei para o _undiscovered country_ de Hamlet, sem as ancias\nnem as duvidas do moço principe, mas pausado e tropego, como quem se\nretira tarde do expectaculo. Tarde e aborrecido. Viram-me ir umas nove\nou dez pessoas, entre ellas tres senhoras,--minha irmã Sabina, casada\ncom o Cotrim,--a filha, um lyrio do valle,--e... Tenham paciência!\ndaqui a pouco lhes direi quem era a terceira senhora. Contentem-se de\nsaber que essa anonyma, ainda que não parenta, padeceu mais do que as\nparentas. É verdade, padeceu mais. Não digo que se carpisse, não digo\nque se deixasse rolar pelo chão, epileptica. Nem o meu óbito era cousa\naltamente dramatica... Um solteirão que expira aos sessenta e quatro\nannos, não parece que reuna em si todos os elementos de uma tragedia. E\ndado que sim, o que menos convinha a essa anonyma era apparental-o. De\npé, á cabeceira da cama, com os olhos estúpidos, a boca entreaberta, a\ntriste senhora mal podia crêr na minha extincção.\n\n--Morto! morto! dizia comsigo.\n\nE a imaginação della, como as",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      }
+    ],
+    "groundingSupports": [
+      {
+        "segment": {
+          "endIndex": 191,
+          "text": "Segundo o próprio Brás Cubas, em suas *Memórias Póstumas de Brás Cubas*, o livro é dedicado **ao verme que primeiro roeu as frias carnes do seu cadáver**, como uma \"saudosa lembrança\""
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 194,
+          "endIndex": 374,
+          "text": "A justificativa para essa escolha inusitada — que ironiza a tradição das dedicatórias solenes a mecenas ou figuras importantes — decorre da sua condição de \"defunto autor\""
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 376,
+          "endIndex": 577,
+          "text": "Ao final da vida, Brás Cubas chega à conclusão de que o saldo de sua existência foi marcado pela melancolia e pelo tédio, não tendo deixado filhos ou descendentes que pudessem herdar o seu legado"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      }
+    ]
+  }
+}

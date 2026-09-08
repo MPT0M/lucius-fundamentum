@@ -1,0 +1,224 @@
+{
+  "id": "q18-plain",
+  "parts": [
+    {
+      "text": "No romance ***Memórias Póstumas de Brás Cubas***, de Machado de Assis, a morte de Pancrácio Cubas (o pai de Brás) deixa um **grosso cabedal** (uma herança substancial composta por bens de raiz, escravizados, dinheiro e objetos de valor). \n\nAbaixo estão os detalhes da herança e de como ocorreu a partilha entre Brás Cubas e sua irmã, **Sabina** (que era casada com **Cotrim**):\n\n### 1. O que Brás Cubas recebe (e o monte-mor da herança)\nEmbora o livro não cite uma quantia exata em dinheiro para a totalidade absoluta da herança, o patrimônio do pai incluía elementos de grande valor material e sentimental na sociedade carioca do século XIX:\n* **Imóveis:** Casas de considerable valor na cidade, incluindo a residência onde o pai morava (avaliada entre 30 e 50 contos de réis) e outras propriedades (como uma casa no Campo).\n* **Escravizados:** Vários servos domésticos, cujos destinos geram forte disputa (como o cocheiro, Paulo, Prudêncio — que secretamente já havia sido forro/liberto pelo pai havia dois anos —, entre outros).\n* **A valiosa prataria:** A joia da coroa da herança era uma **velha prataria do tempo de D. José I**, herança de família que, segundo contava o pai, fora dada de presente pelo vice-rei do Brasil, o conde da Cunha, ao bisavô deles (Luiz Cubas). Tratava-se de um conjunto de altíssimo valor histórico, artístico e de prestígio social.\n\n### 2. Como foi a partilha com a irmã Sabina?\nA partilha foi marcada por **tensão, discussões mesquinhas e brigas familiares**, centralizadas principalmente nos interesses materiais defendidos com unhas e dentes pelo cunhado de Brás, **Cotrim** (um homem avarento e calculista). \n\nO processo decorreu com os seguintes contornos:\n* **Disputa pelos bens e imóveis:** Brás e o casal (Sabina e Cotrim) discutiam sobre o valor real das casas e sobre quem ficaria com cada propriedade e com os escravizados. Cotrim tentava minimizar o valor dos bens para avantajar a esposa, enquanto Brás resistia.\n* **A briga pela prataria histórica:** Sabina fazia questão absoluta de ficar com a prataria fina do tempo de D. José I, argumentando que, por ser casada e receber visitas, precisava de uma \"copa digna e apresentável\", ao passo que Brás (sendo solteiro na época) não teria a mesma necessidade social.\n* **O papel apaziguador (e falho) do tio Cônego:** O tio Cônego tentou intervir para pacificar os ânimos, lembrando-os de que o pai deixara um \"pão bem grande\" para ser repartido. Contudo, Cotrim respondeu cinicamente que a questão não era o pão, mas sim a \"manteiga\".\n* **Conclusão da partilha:** Apesar do afeto genuíno que Brás nutria por Sabina — com quem dividira as memórias de infância —, **as partilhas foram feitas sob clima de rompimento e briga declarada** entre os irmãos. O egoísmo material e a interferência direta de Cotrim azedaram a relação fraterna durante o inventário."
+    }
+  ],
+  "segments": [
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 645,
+        "end": 825
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 142160,
+            "end": 142201
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 142245,
+            "end": 142317
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 142526,
+            "end": 142581
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 828,
+        "end": 1031
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 142840,
+            "end": 142911
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 142989,
+            "end": 143027
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 143029,
+            "end": 143054
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 143066,
+            "end": 143082
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1058,
+        "end": 1276
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 143232,
+            "end": 143299
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 143300,
+            "end": 143370
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 143394,
+            "end": 143436
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 143437,
+            "end": 143500
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1732,
+        "end": 1868
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 142160,
+            "end": 142201
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 142840,
+            "end": 142911
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1999,
+        "end": 2260
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 143639,
+            "end": 143710
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 143711,
+            "end": 143741
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 2312,
+        "end": 2440
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 145235,
+            "end": 145302
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 145303,
+            "end": 145339
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 2441,
+        "end": 2529
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 145358,
+            "end": 145422
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 2559,
+        "end": 2744
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 145451,
+            "end": 145516
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 145517,
+            "end": 145588
+          }
+        }
+      ]
+    }
+  ],
+  "labeledBy": "MPT0M",
+  "labeledAt": "2026-09-08T21:22:35.660Z"
+}

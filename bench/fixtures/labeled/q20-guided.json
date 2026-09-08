@@ -1,0 +1,162 @@
+{
+  "id": "q20-guided",
+  "parts": [
+    {
+      "text": "Nas *Memórias Póstumas de Brás Cubas*, de Machado de Assis, o desenrolar desse acontecimento ocorre da seguinte forma:\n\n* **O anúncio de Lobo Neves:** No capítulo 80 (\"Do secretário\"), Brás Cubas vai à casa de Lobo Neves e encontra-o muito jovial, contando os planos que levava para a **presidência de província** (no norte), além de detalhar as dificuldades locais, as esperanças e as resoluções que tinha para o cargo. A certa altura do encontro, Lobo Neves anuncia que ainda não encontrou um secretário e convida Brás Cubas para acompanhá-lo nessa viagem e assumir a função.\n* **A decisão de Brás Cubas:** Inicialmente, o espírito de Brás Cubas \"dá um salto para trás\" com receio e desconfiança, chegando a encarar Lobo Neves fixamente para tentar descobrir se há alguma intenção oculta por trás daquele convite. No entanto, ao perceber que o olhar de Lobo Neves era franco e ao notar o olhar ansioso e suplicante de Virgília (com quem Brás Cubas mantinha um caso amoroso) por cima do livro, ele **decide aceitar** o convite. Ele conclui que aceitar ir como secretário — unindo o presidente, a \"presidenta\" (Virgília) e ele próprio — seria uma forma engenhosa e administrativa de resolver a situação de manter o romance."
+    }
+  ],
+  "segments": [
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 151,
+        "end": 420
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 217461,
+            "end": 217527
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 217528,
+            "end": 217597
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 217799,
+            "end": 217864
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 217865,
+            "end": 217929
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 421,
+        "end": 577
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 218056,
+            "end": 218121
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 218177,
+            "end": 218243
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 218324,
+            "end": 218372
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 609,
+        "end": 815
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 218374,
+            "end": 218443
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 218444,
+            "end": 218512
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 218513,
+            "end": 218582
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 816,
+        "end": 1028
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 218583,
+            "end": 218653
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 217930,
+            "end": 217998
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 217999,
+            "end": 218054
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 218787,
+            "end": 218856
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1029,
+        "end": 1223
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 218857,
+            "end": 218928
+          }
+        }
+      ]
+    }
+  ],
+  "labeledBy": "MPT0M",
+  "labeledAt": "2026-09-08T20:46:07.921Z"
+}

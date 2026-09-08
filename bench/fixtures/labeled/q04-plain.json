@@ -1,0 +1,97 @@
+{
+  "id": "q04-plain",
+  "parts": [
+    {
+      "text": "Na obra *Memórias Póstumas de Brás Cubas*, de Machado de Assis, **Marcela** é uma jovem espanhola formosa, luxuosa, ambiciosa, sem escrúpulos e muito amiga de dinheiro e de rapazes, que se torna a grande paixão da juventude do protagonista. Brás Cubas a conhece nas festividades da independência e gasta trinta dias para conquistar o seu coração. Ela consome grande parte da fortuna e da paciência da família do narrador, antes de abandoná-lo quando os recursos financeiros se esgotam.\n\nQuanto à duração desse amor, Brás Cubas eterniza a relação com uma de suas frases mais célebres e irônicas da literatura brasileira, inserida no Capítulo XVII:\n\n> *“... Marcella amou-me durante **quinze mezes e onze contos de réis**; nada menos.”*\n\nDessa forma, nas palavras dele, o tempo de duração do amor esteve diretamente atrelado — e foi mensurado — tanto à duração temporal em meses quanto à quantia exorbitante de dinheiro que ele gastou com ela."
+    }
+  ],
+  "segments": [
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 0,
+        "end": 240
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 58038,
+            "end": 58109
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 58767,
+            "end": 58819
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 241,
+        "end": 346
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 58919,
+            "end": 58984
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 60632,
+            "end": 60697
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 347,
+        "end": 485
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 67644,
+            "end": 67849
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 68598,
+            "end": 68783
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 650,
+        "end": 734
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 67644,
+            "end": 67720
+          }
+        }
+      ]
+    }
+  ],
+  "labeledBy": "MPT0M",
+  "labeledAt": "2026-09-08"
+}

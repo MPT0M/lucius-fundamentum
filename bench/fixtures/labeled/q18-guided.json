@@ -1,0 +1,302 @@
+{
+  "id": "q18-guided",
+  "parts": [
+    {
+      "text": "Em ***Memórias Póstumas de Brás Cubas***, de Machado de Assis, a herança deixada pelo pai de Brás Cubas (o licenciado Luiz Cubas) consistia em um patrimônio considerável — descrito metaforicamente pelo tio cônego como *\"um pão bem grande para ser repartido por todos\"*. O espólio incluía bens de raiz e móveis, destacando-se:\n* Imóveis (como a casa em que viviam e outras propriedades, a exemplo da casa do Campo);\n* Escravizados (como Paulo e Prudêncio, embora Prudêncio já estivesse livre há dois anos sem que o pai avisasse a família);\n* Bens de luxo e de valor sentimental, com destaque absoluto para a **velha prataria do tempo de D. José I** — uma herança de família que, segundo o pai, teria sido dada de presente pelo vice-rei do Brasil, o conde da Cunha, ao bisavô deles;\n* A sege e o boleeiro.\n\n### Como foi a partilha com a irmã Sabina\n\nA partilha dos bens gerou forte atrito e discussão entre Brás Cubas, sua irmã Sabina e o marido dela, **Quirino Cotrim**. O processo foi marcado por disputas mesquinhas e interesses materiais:\n\n1. **A disputa pela prataria:** O principal ponto de discórdia foi a prataria histórica. Cotrim defendia que a esposa Sabina deveria ficar com ela, argumentando que ela era casada e precisava de uma copa digna e apresentável, enquanto Brás Cubas era solteiro. Brás Cubas resistiu, alegando que também poderia se casar, ao que Sabina respondeu com ironia: *\"Para quê?\"*\n2. **Os escravizados:** Houve desacordo sobre quais escravizados cada um iria herdar. Cotrim queria apenas o boleeiro e Paulo; Brás Cubas recusou abrir mão do boleeiro porque pretendia ficar com a sege. Além disso, descobriu-se na hora que Prudêncio já havia sido libertado pelo pai em vida.\n3. **Tentativas de acordo e rompimento:** Sabina tentou fazer concessões (como ceder o escravo Paulo em troca da prataria), mas Cotrim rejeitou asperamente. O tio cônego tentou apaziguar os ânimos citando a metáfora do \"pão grande\", mas Cotrim rebateu dizendo que *\"a questão, porém, não é de pão, é de manteiga. Pão seco é que eu não engulo\"*.\n\nNo fim, **as partilhas foram feitas, mas os irmãos acabaram rompidos e brigados**, distanciando-se temporariamente devido à ganância e às divergências em torno da divisão dos bens."
+    }
+  ],
+  "segments": [
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 172,
+        "end": 268
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 145235,
+            "end": 145302
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 145303,
+            "end": 145339
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 328,
+        "end": 414
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 142160,
+            "end": 142201
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 142526,
+            "end": 142581
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 417,
+        "end": 538
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 142989,
+            "end": 143027
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 143029,
+            "end": 143054
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 143066,
+            "end": 143082
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 541,
+        "end": 780
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 143232,
+            "end": 143299
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 143300,
+            "end": 143370
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 143394,
+            "end": 143436
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 143437,
+            "end": 143500
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 783,
+        "end": 803
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 142913,
+            "end": 142980
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1131,
+        "end": 1301
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 143639,
+            "end": 143710
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 143711,
+            "end": 143741
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1302,
+        "end": 1410
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 143743,
+            "end": 143761
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 143763,
+            "end": 143794
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1497,
+        "end": 1613
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 142840,
+            "end": 142911
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 142913,
+            "end": 142980
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1614,
+        "end": 1702
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 143029,
+            "end": 143054
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 143066,
+            "end": 143082
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1745,
+        "end": 1859
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 144900,
+            "end": 144968
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 145088,
+            "end": 145131
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1860,
+        "end": 2047
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 145235,
+            "end": 145302
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 145358,
+            "end": 145422
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 2057,
+        "end": 2130
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 145451,
+            "end": 145516
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 145517,
+            "end": 145588
+          }
+        }
+      ]
+    }
+  ],
+  "labeledBy": "MPT0M",
+  "labeledAt": "2026-09-08T21:22:35.663Z"
+}

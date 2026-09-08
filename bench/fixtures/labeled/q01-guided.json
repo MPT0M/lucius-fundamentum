@@ -1,0 +1,44 @@
+{
+  "id": "q01-guided",
+  "parts": [
+    {
+      "text": "Segundo o próprio Brás Cubas, em suas *Memórias Póstumas de Brás Cubas*, o livro é dedicado **ao verme que primeiro roeu as frias carnes do seu cadáver**, como uma \"saudosa lembrança\".\n\nA justificativa para essa escolha inusitada — que ironiza a tradição das dedicatórias solenes a mecenas ou figuras importantes — decorre da sua condição de \"defunto autor\". Ao final da vida, Brás Cubas chega à conclusão de que o saldo de sua existência foi marcado pela melancolia e pelo tédio, não tendo deixado filhos ou descendentes que pudessem herdar o seu legado. O verme, portanto, é apresentado de forma irônica como o primeiro a lhe prestar uma homenagem corpórea e íntima na morte, tornando-se o destinatário perfeito para a obra de um homem desiludido com as grandezas do mundo dos vivos."
+    }
+  ],
+  "segments": [
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 0,
+        "end": 184
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 2012,
+            "end": 2329
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 359,
+        "end": 555
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 362531,
+            "end": 362697
+          }
+        }
+      ]
+    }
+  ],
+  "labeledBy": "MPT0M",
+  "labeledAt": "2026-09-08"
+}

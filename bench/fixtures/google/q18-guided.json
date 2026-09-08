@@ -1,0 +1,213 @@
+{
+  "id": "q18-guided",
+  "model": "gemini-3.5-flash-lite",
+  "recordedAt": "2026-09-08T15:37:31.392Z",
+  "reportVersion": "bench-report-1",
+  "storeEmbeddingModel": "gemini-embedding-2",
+  "storeChunking": {
+    "maxTokensPerChunk": 200,
+    "maxOverlapTokens": 20
+  },
+  "parts": [
+    {
+      "text": "Em ***Memórias Póstumas de Brás Cubas***, de Machado de Assis, a herança deixada pelo pai de Brás Cubas (o licenciado Luiz Cubas) consistia em um patrimônio considerável — descrito metaforicamente pelo tio cônego como *\"um pão bem grande para ser repartido por todos\"*. O espólio incluía bens de raiz e móveis, destacando-se:\n* Imóveis (como a casa em que viviam e outras propriedades, a exemplo da casa do Campo);\n* Escravizados (como Paulo e Prudêncio, embora Prudêncio já estivesse livre há dois anos sem que o pai avisasse a família);\n* Bens de luxo e de valor sentimental, com destaque absoluto para a **velha prataria do tempo de D. José I** — uma herança de família que, segundo o pai, teria sido dada de presente pelo vice-rei do Brasil, o conde da Cunha, ao bisavô deles;\n* A sege e o boleeiro.\n\n### Como foi a partilha com a irmã Sabina\n\nA partilha dos bens gerou forte atrito e discussão entre Brás Cubas, sua irmã Sabina e o marido dela, **Quirino Cotrim**. O processo foi marcado por disputas mesquinhas e interesses materiais:\n\n1. **A disputa pela prataria:** O principal ponto de discórdia foi a prataria histórica. Cotrim defendia que a esposa Sabina deveria ficar com ela, argumentando que ela era casada e precisava de uma copa digna e apresentável, enquanto Brás Cubas era solteiro. Brás Cubas resistiu, alegando que também poderia se casar, ao que Sabina respondeu com ironia: *\"Para quê?\"*\n2. **Os escravizados:** Houve desacordo sobre quais escravizados cada um iria herdar. Cotrim queria apenas o boleeiro e Paulo; Brás Cubas recusou abrir mão do boleeiro porque pretendia ficar com a sege. Além disso, descobriu-se na hora que Prudêncio já havia sido libertado pelo pai em vida.\n3. **Tentativas de acordo e rompimento:** Sabina tentou fazer concessões (como ceder o escravo Paulo em troca da prataria), mas Cotrim rejeitou asperamente. O tio cônego tentou apaziguar os ânimos citando a metáfora do \"pão grande\", mas Cotrim rebateu dizendo que *\"a questão, porém, não é de pão, é de manteiga. Pão seco é que eu não engulo\"*.\n\nNo fim, **as partilhas foram feitas, mas os irmãos acabaram rompidos e brigados**, distanciando-se temporariamente devido à ganância e às divergências em torno da divisão dos bens."
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 79,
+    "candidatesTokenCount": 713,
+    "totalTokenCount": 8448,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 79
+      }
+    ],
+    "toolUsePromptTokenCount": 7656,
+    "toolUsePromptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 7656
+      }
+    ],
+    "serviceTier": "standard"
+  },
+  "groundingMetadata": {
+    "groundingChunks": [
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "assucareiro; e depois desta pergunta, declarou\nque teriamos tempo de liquidar a pretenção, quando menos em juizo.\nEntretanto, Sabina fôra até á janella que dava para a chacara,--e\ndepois de um instante, voltou, e propoz ceder o Paulo e outro preto,\ncom a condição de ficar com a prata; eu ia dizer que não me convinha,\nmas o Cotrim adiantou-se e disse a mesma cousa.\n\n--Isso nunca! não faço esmolas! disse elle.\n\nJantámos tristes. Meu tio conego appareceu á sobremeza, e ainda\npresenciou uma pequena altercação.\n\n--Meus filhos, disse elle, lembrem-se que meu irmão deixou um pão bem\ngrande para ser repartido por todos.\n\nMas o Cotrim:\n\n--Creio, creio. A questão, porem, não é de pão, é de manteiga. Pão\nsecco é que eu não engulo.\n\nFizeram-se finalmente as partilhas, mas nós estavamos brigados. E\ndigo-lhes que, ainda assim, custou-me muito a brigar com Sabina. Eramos\ntão amigos! Jogos pueris, furias de criança, risos e tristezas da\nedade adulta, dividimos muita vez esse pão da alegria e da miseria,\nirmãmente, como bons irmãos que eramos. Mas estavamos brigados. Tal\nqual a belleza de Marcella, que se esvaiu com as bexigas.\n\n\n\n\nCAPITULO XLVII\n\n\nO recluso\n\n\nMarcella, Sabina, Virgilia... ahi estou eu a fundir todos os\ncontrastes, como se esses nomes e pessoas não fossem mais do que modos\nde ser da minha affeição interior. Penna",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "ha annos, baixaram muito. Olhe, se esta vale os cincoenta contos,\nquantos não vale a que você deseja para si, a do Campo?\n\n--Não fale nisso! Uma casa velha.\n\n--Velha! exclamou Sabina, levantando as mãos ao tecto.\n\n--Parece-lhe nova, aposto?\n\n--Ora, mano, deixe-se dessas cousas, disse Sabina, erguendo-se do\nsophá; podemos arranjar tudo em boa amizade, e com lisura. Por exemplo,\no Cotrim não aceita os pretos, quer só o boleeiro de papae e o Paulo...\n\n--O boleeiro não, acudi eu; fico com a sege e não hei de ir comprar\noutro.\n\n--Bem; fico com o Paulo e o Prudencio.\n\n--O Prudencio está livre.\n\n--Livre?\n\n--Ha dois annos.\n\n--Livre? Como seu pae arranjava estas cousas cá por casa, sem dar parte\na ninguem! Está direito. Quanto á prata... creio que não libertou a\nprata?\n\nTinhamos falado na prata, a velha prataria do tempo de D. José I, a\nporção mais grave da herança, já pelo lavor, já pela vetustez, já pela\norigem da propriedade; dizia meu pae que o conde da Cunha, quando\nvice-rei do Brazil, a dera de presente a meu bisavô Luiz Cubas.\n\n--Quanto á prata, continuou o Cotrim, eu não faria questão nenhuma,\nse não fosse o desejo que sua irmã tem de ficar com ella; e acho-lhe\nrazão. Sabina é casada, e precisa de uma copa digna, apresentavel. Você\né",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "um simples inventario,\neram notas que eu havia tomado para um capitulo extremamente\nsucculento, em que provava que a terra deve continuar a girar em volta\ndo sol; porquanto:--_a_) a natureza não inventou a morte, senão\ncom o fim de dar vida a algumas industrias,--armadores, segeiros,\nemprezas funerarias, typographias, e outras que ella sagazmente\npreviu;--_b_) mortas essas industrias, pela ausencia da morte humana,\nnão é improvavel que viessem a morrer os respectivos industriaes; o que\ndava na mesma. Mas tudo isto são apenas notas de um capitulo, que não\nescrevo.\n\n\n\n\nCAPITULO XLVI\n\n\nA herança\n\n\nVeja-nos agora o leitor, oito dias depois da morte de meu pae,--minha\nirmã sentada n'um sophá,--pouco adiante, o Cotrim, de pé, encostado a\num consolo, com os braços cruzados e a morder o bigode,--eu a passeiar\nde um lado para outro, com os olhos no chão. Luto pezado. Profundo\nsilencio.\n\n--Mas afinal, disse o Cotrim; esta casa pouco mais póde valer de trinta\ncontos; demos que valha trinta e cinco...\n\n--Vale cincoenta, ponderei; a Sabina sabe que custou cincoenta e oito...\n\n--Podia custar até sessenta, tornou o Cotrim; mas não se segue que\nos valesse, e menos ainda que os valha hoje. Você sabe que as casas,\naqui ha annos, baixaram muito. Olhe, se esta vale os cincoenta contos,\nquantos não vale a que você deseja para si, a",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "sua irmã tem de ficar com ella; e acho-lhe\nrazão. Sabina é casada, e precisa de uma copa digna, apresentavel. Você\né solteiro, não recebe, não...\n\n--Mas posso casar.\n\n--Para que? interrompeu Sabina.\n\nEra tão sublime esta pergunta, que por alguns instantes me fez esquecer\nos interesses. Sorri; peguei na mão de Sabina, bati-lhe levemente na\npalma, tudo isso com tão boa sombra, que o Cotrim interpretou o gesto\ncomo de acquiescencia, e agradeceu-m'o.\n\n--Que é lá? redargui; não cedi cousa nenhuma, nem cedo.\n\n--Nem cede?\n\nAbanei a cabeça.\n\n--Deixa, Cotrim, disse minha irmã ao marido; vê se elle quer ficar\ntambem com a nossa roupa do corpo; é só o que falta.\n\n--Não falta mais nada. Quer a sege, quer o boleeiro, quer a prata,\nquer tudo. Olhe, é muito mais summario citar-nos a juizo e provar com\ntestemunhas que Sabina não é sua irmã, que eu não sou seu cunhado, e\nque Deus não é Deus. Faça isto, e não perde nada, nem uma colherinha.\nOra, meu amigo, outro officio!\n\nEstava tão agastado, e eu não menos, que entendi offerecer um meio de\nconciliação; dividir a prata. Riu-se e perguntou-me a quem caberia\no bule e a quem o assucareiro; e depois desta pergunta, declarou\nque teriamos tempo de liquidar a pretenção, quando menos em juizo.\nEntretanto, Sabina fôra até á",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      }
+    ],
+    "groundingSupports": [
+      {
+        "segment": {
+          "endIndex": 279,
+          "text": "Em ***Memórias Póstumas de Brás Cubas***, de Machado de Assis, a herança deixada pelo pai de Brás Cubas (o licenciado Luiz Cubas) consistia em um patrimônio considerável — descrito metaforicamente pelo tio cônego como *\"um pão bem grande para ser repartido por todos\"*"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 281,
+          "endIndex": 428,
+          "text": "O espólio incluía bens de raiz e móveis, destacando-se:\n* Imóveis (como a casa em que viviam e outras propriedades, a exemplo da casa do Campo)"
+        },
+        "groundingChunkIndices": [
+          1,
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 281,
+          "endIndex": 557,
+          "text": "O espólio incluía bens de raiz e móveis, destacando-se:\n* Imóveis (como a casa em que viviam e outras propriedades, a exemplo da casa do Campo);\n* Escravizados (como Paulo e Prudêncio, embora Prudêncio já estivesse livre há dois anos sem que o pai avisasse a família)"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 659,
+          "endIndex": 805,
+          "text": "José I** — uma herança de família que, segundo o pai, teria sido dada de presente pelo vice-rei do Brasil, o conde da Cunha, ao bisavô deles"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 659,
+          "endIndex": 828,
+          "text": "José I** — uma herança de família que, segundo o pai, teria sido dada de presente pelo vice-rei do Brasil, o conde da Cunha, ao bisavô deles;\n* A sege e o boleeiro"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 875,
+          "endIndex": 998,
+          "text": "A partilha dos bens gerou forte atrito e discussão entre Brás Cubas, sua irmã Sabina e o marido dela, **Quirino Cotrim**"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1163,
+          "endIndex": 1334,
+          "text": "Cotrim defendia que a esposa Sabina deveria ficar com ela, argumentando que ela era casada e precisava de uma copa digna e apresentável, enquanto Brás Cubas era solteiro"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1336,
+          "endIndex": 1447,
+          "text": "Brás Cubas resistiu, alegando que também poderia se casar, ao que Sabina respondeu com ironia: *\"Para quê?\"*"
+        },
+        "groundingChunkIndices": [
+          3
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1534,
+          "endIndex": 1651,
+          "text": "Cotrim queria apenas o boleeiro e Paulo; Brás Cubas recusou abrir mão do boleeiro porque pretendia ficar com a sege"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1653,
+          "endIndex": 1743,
+          "text": "Além disso, descobriu-se na hora que Prudêncio já havia sido libertado pelo pai em vida"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 2069,
+          "endIndex": 2102,
+          "text": "Pão seco é que eu não engulo\"*"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 2105,
+          "endIndex": 2187,
+          "text": "No fim, **as partilhas foram feitas, mas os irmãos acabaram rompidos e brigados**"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,236 @@
+{
+  "id": "q07-plain",
+  "model": "gemini-3.5-flash-lite",
+  "recordedAt": "2026-09-08T11:17:27.530Z",
+  "reportVersion": "bench-report-1",
+  "storeEmbeddingModel": "gemini-embedding-2",
+  "storeChunking": {
+    "maxTokensPerChunk": 200,
+    "maxOverlapTokens": 20
+  },
+  "parts": [
+    {
+      "text": "Em ***Memórias Póstumas de Brás Cubas*** (1881), de Machado de Assis, a figura do pai, **Dôg. / Sr.º Luiz Cubas** (descendente de uma família que tentava afastar o passado humilde ligado à tanoaria), é retratada com bastante afeto, mas também com certa ironia crítica típica do narrador defunto.\n\nAbaixo estão detalhadas a descrição que Brás Cubas faz do pai e as ambições que este tinha para a sua carreira:\n\n---\n\n### 1. Como Brás Cubas descreve o pai\n\n* **Homem de imaginação e \"pachola\":** Brás descreve o pai como um homem imaginativo — a ponto de inventar trocadilhos (*calembours*) e árvores genealógicas grandiosas para disfarçar que a família descendia de um tanoeiro (fabricante de tonéis). Diz que ele tinha *\"uns fumos de pacholice\"* (uma certa vaidade ridícula ou mania de grandeza), mas pondera: *\"mas quem não é um pouco pachola nesse mundo?\"*\n* **Varão digno e leal:** Reconhece-lhe qualidades morais, descrevendo-o como um *\"varão digno e leal como poucos\"*.\n* **Amor incondicional e excessivo:** O pai o idolatrava de forma cega. Brás afirma que recebia dele *\"esse amor sem mérito, que é um simples e forte impulso da carne; amor que a razão não contrasta nem régè\"*. \n* **Eduquês permissivo:** Devido a esse amor desmedido, o pai era complacente com as travessuras do filho. Quando Brás cometia maldades ou travessuras na infância, o pai limitava-se a dar-lhe palmadinhas na cara, rir e chamar-lhe *\"bregeiro\"*, falhando em dar-lhe uma educação rigorosa (o que gerava críticas até do tio, o cônego).\n\n---\n\n### 2. Que carreira o pai queria para ele?\n\nO pai de Brás Cubas nutria grandes ambições elitistas e sociais para o filho, rejeitando qualquer possibilidade de obscuridade ou insignificância:\n\n* **Carreira Política (Homem Público):** O pai desejava ardentemente que Brás se tornasse uma figura de destaque na política do Império, idealizando para ele um assento na **Câmara dos Deputados**. \n* **Ascensão Social e Casamento Estratégico:** Para consolidar essa trajetória de poder e prestígio, o pai planejava aliar a carreira política de Brás a um **casamento de conveniência com Virgília** (filha do Conselheiro Dutra, uma forte influência política da época). \n* **Ilustrar o Nome da Família:** O lema do pai era fazer o filho brilhar para continuar e enobrecer ainda mais o nome da família Cubas. Ele resumia sua filosofia de cobrança com conselhos diretos ao filho: \n  > *\"Teme a obscuridade, Brás; foge do que é ínfimo. Olha que os homens valem por diferentes modos, e que o mais seguro de todos é valer pela opinião dos outros homens.\"*"
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 20,
+    "candidatesTokenCount": 849,
+    "totalTokenCount": 8534,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 20
+      }
+    ],
+    "toolUsePromptTokenCount": 7665,
+    "toolUsePromptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 7665
+      }
+    ],
+    "serviceTier": "standard"
+  },
+  "groundingMetadata": {
+    "groundingChunks": [
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "MEMÓRIAS PÓSTHUMAS\n\nDE\n\nBRAZ CUBAS\n\nPOR\n\nMACHADO DE ASSIS\n\nRIO DE JANEIRO\n\nTYPOGRAPHIA NACIONAL\n\n1881\n\n\n\n\nOBRAS DO AUTOR\n\n Memórias Pósthumas de Braz Cubas\n Helena, romance\n Yayá Garcia, romance\n Resurreição, romance\n A mão e a luva, romance\n Historias da meia noite\n Contos Fluminenses\n Americanas, poesias\n Phalenas, poesias\n Chrysalidas, poesias\n Tu só, tu, puro amor, comédia\n Os deuses de casaca, comédia\n Desencantos, comédia\n Theatro\n\n\n\n\nAO LEITOR\n\n\nQue, no alto do principal de seus livros, confessasse Stendhal havel-o\nescripto para cem leitores, cousa é que admira e consterna. O que não\nadmira, nem provavelmente consternará é se este outro livro não tiver\nos cem leitores de Stendhal, nem cincoenta, nem vinte, e quando muito,\ndez. Dez? Talvez cinco. Trata-se, na verdade, de uma obra diffusa,\nna qual eu, Braz Cubas, se adoptei a fórma livre de um Sterne, de\num Lamb, ou de um de Maistre, não sei se lhe metti algumas rabugens\nde pessimismo. Póde ser. Obra de finado. Escrevi-a com a penna da\ngalhofa e a tinta da melancholia; e não é difficil antever o que poderá\nsair desse connubio. Accresce que a gente grave achará no livro umas\napparencias de puro romance, ao passo que a gente frivola não achará\nnelle o seu romance usual; e eil-o ahi fica privado da estima dos\ngraves e do amor dos frivolos, que são as",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "a tanoaria. Mas não; fez-se lavrador, plantou,\ncolheu, permutou o seu producto por boas e honradas patacas, até que\nmorreu, deixando grosso cabedal a um filho, o licenciado Luiz Cubas.\nNeste rapaz é que verdadeiramente começa a serie de meus avós--dos\navós que a minha familia sempre confessou--, porque o Damião Cubas era\nafinal de contas um tanoeiro, e talvez mau tanoeiro, ao passo que o\nLuiz Cubas estudou em Coimbra, primou no Estado, e foi um dos amigos\nparticulares do vice-rei conde da Cunha.\n\nComo este appellido de Cubas lhe cheirasse excessivamente a tanoaria,\nallegava meu pae, bisneto do Damião, que o dito appellido fôra dado a\num cavalleiro, heroe nas jornadas da Africa, em premio da façanha que\npraticou, arrebatando tresentas cubas aos mouros. Meu pae era homem de\nimaginação; escapou á tanoaria nas azas de um _calembour._ Era um bom\ncaracter meu pae, varão digno e leal como poucos. Tinha, é verdade, uns\nfumos de pacholice; mas quem não é um pouco pachola nesse mundo? Releva\nnotar que elle não recorreu á inventiva, senão depois de experimentar\na falsificação; primeiramente, entroncou-se na familia daquelle meu\nfamoso homonymo, o capitão-mór Braz Cubas, que fundou a villa de S.\nVicente, onde morreu em 1592, e por esse motivo é que me deu o nome de\nBraz. Oppoz-se-lhe porém",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "doutrinava-me a seu modo, fazia-me decorar alguns\npreceitos e orações; mas eu sentia que, mais do que as orações, me\ngovernavam os nervos e o sangue, e a boa regra perdia o espirito, que\na faz viver, para se tornar uma vã formula. De manhã, antes do mingáu,\ne de noite, antes da cama, pedia a Deus que me perdoasse, assim como\neu perdoava aos meus devedores; mas entre a manhã e a noite fazia uma\ngrande maldade, e meu pae, passado o alvoroço, dava-me pancadinhas na\ncara, e exclamava a rir: Ah! bregeiro! ah! bregeiro!\n\nSim, meu pae adorava-me, tinha-me esse amor sem merito, que é um\nsimples e forte impulso da carne; amor que a razão não contrasta\nnem rége. Minha mãe era uma senhora fraca, de pouco cerebro e muito\ncoração, assaz credula, sinceramente piedosa,--caseira, apezar de\nbonita, e modesta, apezar de abastada; temente ás trovoadas e ao\nmarido. O marido era na terra o seu deus. Da collaboração dessas duas\ncreaturas nasceu a minha educação, que, se tinha alguma cousa boa, era\nno geral viciosa, incompleta, e, em partes, negativa. Meu tio conego\nfazia ás vezes alguns reparos ao irmão; dizia-lhe que elle me dava\nmais liberdade do que ensino, e mais affeição do que emenda; mas meu\npae respondia que applicava na minha",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "começava-a\nsem hesitar um só minuto. Teme a obscuridade, Braz; foge do que é\ninfimo. Olha que os homens valem por differentes modos, e que o mais\nseguro de todos é valer pela opinião dos outros homens. Não estragues\nas vantagens da tua posição, os teus meios...\n\nE foi por deante o magico, a agitar deante de mim um chocalho, como me\nfaziam, em pequeno, para eu andar depressa, e a flor da hypocondria\nrecolheu-se ao botão para deixar a outra flor menos amarella, e nada\nmorbida,--o amor da nomeada, o emplasto Braz Cubas.\n\n\n\n\nCAPITULO XXIX\n\n\nA visita\n\n\nVencera meu pae; dispuz-me a aceitar o diploma e o casamento, Virgilia\ne a camara dos deputados.--As duas Virgilias, disse elle n'um assomo\nde ternura politica. Aceitei-os; meu pae deu-me dous fortes abraços.\nEra o seu proprio sangue que elle, emfim, reconhecia. Rigorosamente,\no filho delle acabava de desembarcar naquelle instante, de rodaque de\nlinho e mãos nos bolsos. Havia então nos olhos de meu pae alguma cousa\ndo velho Cid; era a alma que colligira n'uma só flamma todas as ultimas\nscentelhas.\n\n--Desces commigo?\n\n--Desço amanhã. Vou fazer primeiramente uma visita a D. Eusebia...\n\nMeu pae torceu o nariz, mas não disse nada; despediu-se e desceu. Eu,\nna tarde desse mesmo dia, fui visitar D. Eusebia. Achei-a a reprehender\num preto jardineiro, mas deixou",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "senhor; é o nome da noiva. Um anjo, meu pateta, um anjo sem\nazas. Imagina uma moça assim, desta altura, viva como um azougue, e uns\nolhos... filha do Dutra...\n\n--Que Dutra?\n\n--O Conselheiro Dutra; não conheces; uma influencia politica. Vamos lá;\naceitas?\n\nNão respondi logo; fitei por alguns segundos a ponta do botim; declarei\ndepois que estava disposto a examinar as duas cousas, a candidatura e o\ncasamento, comtanto que...\n\n--Comtanto que?\n\n--Comtanto que não fique obrigado a aceitar as duas; creio que posso\nser separadamente homem casado ou homem publico...\n\n--Todo o homem publico deve ser casado, interrompeu sentenciosamente\nmeu pae. Mas seja como queres; estou por tudo; fico certo de que a\nvista fará fé. Demais, a noiva e o casamento são a mesma cousa... isto\né, não... saberás depois... Vá; aceito a dilação, comtanto que...\n\n--Comtanto que?.. interrompi eu imitando-lhe a voz.\n\n--Ah! brejeiro! Comtanto que não te deixes ficar ahi inutil, obscuro,\ne triste; não gastei dinheiro, cuidados, empenhos, para te não ver\nbrilhar, como deves, e te convem, e a todos nós; é preciso continuar\no nosso nome, continual-o e illustral-o ainda mais. Olha, estou com\nsessenta annos, mas se fosse necessário começar vida nova, começava-a\nsem hesitar um só minuto. Teme a obscuridade, Braz; foge do que é\ninfimo. Olha que os homens valem por differentes",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      }
+    ],
+    "groundingSupports": [
+      {
+        "segment": {
+          "endIndex": 71,
+          "text": "Em ***Memórias Póstumas de Brás Cubas*** (1881), de Machado de Assis"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "endIndex": 205,
+          "text": "Em ***Memórias Póstumas de Brás Cubas*** (1881), de Machado de Assis, a figura do pai, **Dôg. / Sr.º Luiz Cubas** (descendente de uma família que tentava afastar o passado humilde ligado à tanoaria)"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 472,
+          "endIndex": 726,
+          "text": "* **Homem de imaginação e \"pachola\":** Brás descreve o pai como um homem imaginativo — a ponto de inventar trocadilhos (*calembours*) e árvores genealógicas grandiosas para disfarçar que a família descendia de um tanoeiro (fabricante de tonéis)"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 728,
+          "endIndex": 888,
+          "text": "Diz que ele tinha *\"uns fumos de pacholice\"* (uma certa vaidade ridícula ou mania de grandeza), mas pondera: *\"mas quem não é um pouco pachola nesse mundo?\"*"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 728,
+          "endIndex": 1006,
+          "text": "Diz que ele tinha *\"uns fumos de pacholice\"* (uma certa vaidade ridícula ou mania de grandeza), mas pondera: *\"mas quem não é um pouco pachola nesse mundo?\"*\n* **Varão digno e leal:** Reconhece-lhe qualidades morais, descrevendo-o como um *\"varão digno e leal como poucos\"*"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1080,
+          "endIndex": 1224,
+          "text": "Brás afirma que recebia dele *\"esse amor sem mérito, que é um simples e forte impulso da carne; amor que a razão não contrasta nem régè\"*"
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1335,
+          "endIndex": 1472,
+          "text": "Quando Brás cometia maldades ou travessuras na infância, o pai limitava-se a dar-lhe palmadinhas na cara, rir e chamar-lhe *\"bregeiro\"*"
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1335,
+          "endIndex": 1565,
+          "text": "Quando Brás cometia maldades ou travessuras na infância, o pai limitava-se a dar-lhe palmadinhas na cara, rir e chamar-lhe *\"bregeiro\"*, falhando em dar-lhe uma educação rigorosa (o que gerava críticas até do tio, o cônego)"
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1617,
+          "endIndex": 1766,
+          "text": "O pai de Brás Cubas nutria grandes ambições elitistas e sociais para o filho, rejeitando qualquer possibilidade de obscuridade ou insignificância"
+        },
+        "groundingChunkIndices": [
+          3,
+          4
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1769,
+          "endIndex": 1971,
+          "text": "* **Carreira Política (Homem Público):** O pai desejava ardentemente que Brás se tornasse uma figura de destaque na política do Império, idealizando para ele um assento na **Câmara dos Deputados**"
+        },
+        "groundingChunkIndices": [
+          3,
+          4
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1974,
+          "endIndex": 2252,
+          "text": "* **Ascensão Social e Casamento Estratégico:** Para consolidar essa trajetória de poder e prestígio, o pai planejava aliar a carreira política de Brás a um **casamento de conveniência com Virgília** (filha do Conselheiro Dutra, uma forte influência política da época)"
+        },
+        "groundingChunkIndices": [
+          4
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 2255,
+          "endIndex": 2392,
+          "text": "* **Ilustrar o Nome da Família:** O lema do pai era fazer o filho brilhar para continuar e enobrecer ainda mais o nome da família Cubas"
+        },
+        "groundingChunkIndices": [
+          4
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 2523,
+          "endIndex": 2642,
+          "text": "Olha que os homens valem por diferentes modos, e que o mais seguro de todos é valer pela opinião dos outros homens.\"*"
+        },
+        "groundingChunkIndices": [
+          3
+        ]
+      }
+    ]
+  }
+}

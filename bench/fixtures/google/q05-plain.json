@@ -1,0 +1,176 @@
+{
+  "id": "q05-plain",
+  "model": "gemini-3.5-flash-lite",
+  "recordedAt": "2026-09-08T11:17:27.530Z",
+  "reportVersion": "bench-report-1",
+  "storeEmbeddingModel": "gemini-embedding-2",
+  "storeChunking": {
+    "maxTokensPerChunk": 200,
+    "maxOverlapTokens": 20
+  },
+  "parts": [
+    {
+      "text": "**Quincas Borba** é um dos personagens mais marcantes da literatura brasileira, criado por **Machado de Assis**. Ele é o filósofo excêntrico e mendigo que desempenha um papel central no clássico *Memórias Póstumas de Brás Cubas* (1881) e que dá nome ao romance homônimo *Quincas Borba* (1891). \n\nAo longo de sua trajetória nos livros, ele enlouquece e desenvolve um sistema filosófico próprio e bizarro chamado **Humanitismo**, que serve como uma grande sátira de Machado de Assis às teorias científicas, sociais e filosóficas da sua época (como o darwinismo social, o positivismo e o evolucionismo de Herbert Spencer).\n\nAbaixo estão os detalhes sobre quem ele é e os principais pontos do Humanitismo:\n\n---\n\n### Quem é Quincas Borba?\nNo início de *Memórias Póstumas de Brás Cubas*, ele é um homem pobre e cheio de manias que cruza a vida do protagonista. No entanto, após receber uma herança inesperada de Brás Cubas, Quincas Borba fica riquíssimo, passa a ostentar riqueza e ganha notoriedade social. É nesse período de opulência que ele se dedica inteiramente a estruturar e difundir a sua grande obra filosófica: o **Humanitismo**. Mais tarde, a sua saúde mental deteriora de vez, culminando em delírios de que ele próprio seria a encarnação de uma divindade, e ele acaba morrendo na miséria.\n\n---\n\n### O que é o Humanitismo?\n\nO Humanitismo é apresentado como a \"verdadeira\" filosofia do universo, baseada na figura de **Humanitas**, um princípio supremo e abstrato que se manifesta em cada ser humano (que seria, ao mesmo tempo, o veículo, o cocheiro e o passageiro dessa força). \n\nOs principais pilares e absurdos lógicos defendidos pelo Humanitismo incluem:\n\n1. **A negação da dor como ilusão:** \n   Para Quincas Borba, a dor física e o sofrimento humano são puras ilusões que podem ser superadas se o homem compreender que ele próprio é parte de *Humanitas*. Segundo a doutrina, a única verdadeira desgraça no universo é **não nascer** — afinal, qualquer miséria ou sofrimento ainda é preferível à inexistência.\n\n2. **A glorificação da guerra, da fome e da destruição:** \n   Este é o aspecto mais cínico e famoso da filosofia. Quincas Borba defendia que a guerra, a fome e as catástrofes não são calamidades, mas sim operações convenientes e necessárias de *Humanitas*. Para justificar isso, ele argumentava que a destruição de uns é o sustento de outros (ilustrando a tese com o exemplo de um frango que ele comia, cuja existência dependia de uma longa cadeia de exploração, trabalho forçado, navegação e morte). \n\n3. **A equivalência entre todas as coisas:** \n   Na visão humanitista, as grandes guerras de Napoleão Bonaparte e uma simples briga entre cabras têm exatamente o mesmo valor e a mesma \"sublimidade\" para o cosmos, com a única diferença de que os soldados humanos têm a consciência de que estão morrendo.\n\n4. **A inveja e o egoísmo como virtudes:** \n   Como a sobrevivência e a autoafirmação do \"forte\" são essenciais para a dinâmica de *Humanitas*, sentimentos bélicos, a competição implacável e a inveja passam a ser vistos não como defeitos, mas como virtudes que estimulam a energia vital e a evolução.\n\n### O propósito do Humanitismo na obra de Machado de Assis\nAtravés de Quincas Borba e do Humanitismo, Machado de Assis ironiza a tendência intelectual do século XIX de tentar explicar o universo por meio de sistemas absolutos e pretensiosos. O Humanitismo funciona, na prática, como uma justificação filosófica fria e cínica para a lei do mais forte, escancarando o egoísmo, a hipocrisia e a brutalidade das relações humanas na sociedade burguesa."
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 22,
+    "candidatesTokenCount": 990,
+    "totalTokenCount": 3528,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 22
+      }
+    ],
+    "toolUsePromptTokenCount": 2516,
+    "toolUsePromptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 2516
+      }
+    ],
+    "serviceTier": "standard"
+  },
+  "groundingMetadata": {
+    "groundingChunks": [
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "isto é, ser _um forte_, não era o mesmo que\ndescender dos cabellos ou da ponta do nariz. Dahi a necessidade de\ncultivar e temperar o musculo. Hercules ou Herakles não foi senão um\nsymbolo antecipado do Humanitismo. Neste ponto o Quincas Borba ponderou\nque o paganismo poderia ter chegado á verdade, se se não houvesse\namesquinhado com a parte galante dos seus mythos. Nada disso acontecerá\ncom o Humanitismo. Nesta egreja nova não ha aventuras faceis, nem\nquedas, nem tristezas, nem alegrias pueris. O amor, por exemplo, é um\nsacerdocio, a reproducção um ritual. Como a vida é o maior beneficio\ndo universo, e não ha mendigo que não prefira a miseria á morte (o\nque é um delicioso influxo de Humanitas), segue-se que a transmissão\nda vida, longe de ser uma occasião de galanteio, é a hora suprema da\nmissa espiritual. Porquanto, verdadeiramente ha só uma desgraça: é não\nnascer.\n\n--Imagina, por exemplo, que eu não tinha nascido, continuou o Quincas\nBorba; é positivo que não teria agora o prazer de conversar comtigo,\ncomer esta batata, ir ao theatro, e para tudo dizer n'uma só palavra:\nviver. Nota que eu não faço do homem um simples vehiculo de Humanitas;\nnão, elle é ao mesmo tempo vehiculo, cocheiro e passageiro; elle é\no proprio Humanitas reduzido; dahi a",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "todos os\nsentimentos bellicosos são os mais adequados á sua felicidade. Dahi vem\nque a inveja é uma virtude.\n\nPara que negal-o? eu estava estupefacto. A clareza da exposição, a\nlogica dos principios, o rigor das consequencias, tudo isso parecia\nsuperiormente grande, e foi-me preciso suspender a conversa por alguns\nminutos, em quanto digeria a philosophia nova. O Quincas Borba mal\npodia encobrir a satisfação do triumpho. Tinha uma aza de frango no\nprato, e trincava-a com philosophica serenidade. Eu fiz-lhe ainda\nalguma objecções, mas tão frouxas, que elle não gastou muito tempo em\ndestruil-as.\n\n--Para entender bem o meu systema, concluiu elle, importa não esquecer\nnunca o principio universal, repartido e resumido em cada homem. Olha:\na guerra, que parece uma calamidade, é uma operação conveniente,\ncomo se dissessemos o estalar dos dedos de Humanitas; a fome (e elle\nchupava philosophicamente a aza do frango), a fome é uma prova a que\nHumanitas submette a propria viscera. Mas eu não quero outro documento\nda sublimidade do meu systema, senão este mesmo frango. Nutriu-se de\nmilho, que foi plantado por um africano, supponhamos, importado de\nAngola. Nasceu esse africano, cresceu, foi vendido um navio o trouxe,\num navio construido de madeira cortada no matto por dez ou doze\nhomens, levado por velas, que oito ou dez homens teceram, sem contar\na cordoalha",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "madeira cortada no matto por dez ou doze\nhomens, levado por velas, que oito ou dez homens teceram, sem contar\na cordoalha e outras partes do apparelho nautico. Assim, este frango,\nque eu almocei agora mesmo, é o resultado de uma multidão de esforços e\nlutas, executados com o unico fim de dar mate ao meu appetite.\n\nEntre o queijo e o café, demonstrou-me o Quincas Borba que o seu\nsystema era a destruição da dôr. A dôr, segundo o Humanitismo, é uma\npura illusão. Quando a criança é ameaçada por um páu, antes mesmo de\nter sido espancada, fecha os olhos e treme; essa _predisposição_ é que\nconstitue a base da illusão humana, herdada e transmittida. Não basta\ncertamente a adopção do systema para acabar logo com a dôr; mas é\nindispensavel; o resto é a natural evolução das cousas. Uma vez que o\nhomem se compenetre bem de que elle é o proprio Humanitas, não tem mais\ndo que remontar o pensamento á substancia original para obstar qualquer\nsensação dolorosa. A evolução porém é tão profunda, que mal se lhe\npodem assignar alguns milhares de annos.\n\nO Quincas Borba leu-me dahi a dias a sua grande obra. Eram quatro\nvolumes manuscriptos, de cem paginas cada um, com letra miuda e\ncitações latinas. O ultimo volume compunha-se",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "Não\nvale a pena. É o caso dos cães do Quincas Borba. Simples repetição de\num capitulo.\n\n\n\n\nCAPITULO CXLVI\n\n\nO programma\n\n\nUrgia fundar o jornal. Redigi o programma, que era uma applicação\npolitica do Humanitismo; somente, como o Quincas Borba não houvesse\nainda publicado o livro, (que aperfeiçoava de anno em anno) assentamos\nde lhe não fazer nenhuma referencia. O Quincas Borba exigiu apenas uma\ndeclaração, autographa e reservada, de que alguns principios novos\napplicados á politica eram tirados do livro delle, ainda inedito.\n\nEra a fina flôr dos programmas; promettia curar a sociedade, destruir\nos abusos, defender os sãos principios de liberdade e conservação;\nfazia um appello ao commercio e á lavoura; citava Guizot e Ledru-Rollin\ne acabava com esta ameaça, que o Quincas Borba achou mesquinha e\nlocal: «A nova doutrina que professamos ha de inevitavelmente derribar\no actual ministerio.» Confesso que, nas circumstancias politicas da\noccasião, o programma pareceu-me uma obra-prima. A ameaça do fim, que\no Quincas Borba achou mesquinha, demonstrei-lhe que era saturada do\nmais puro Humanitismo, e elle mesmo o confessou depois. Porquanto, o\nHumanitismo não excluia nada; as guerras de Napoleão e uma contenda\nde cabras eram, segundo a nossa doutrina, a mesma sublimidade, com a\ndifferença que os soldados de Napoleão sabiam que morriam, cousa que\napparentemente não acontece ás cabras. Ora, eu não fazia",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      }
+    ],
+    "groundingSupports": [
+      {
+        "segment": {
+          "startIndex": 1371,
+          "endIndex": 1627,
+          "text": "O Humanitismo é apresentado como a \"verdadeira\" filosofia do universo, baseada na figura de **Humanitas**, um princípio supremo e abstrato que se manifesta em cada ser humano (que seria, ao mesmo tempo, o veículo, o cocheiro e o passageiro dessa força)"
+        },
+        "groundingChunkIndices": [
+          0,
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1714,
+          "endIndex": 1918,
+          "text": "**A negação da dor como ilusão:** \n   Para Quincas Borba, a dor física e o sofrimento humano são puras ilusões que podem ser superadas se o homem compreender que ele próprio é parte de *Humanitas*"
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1920,
+          "endIndex": 2000,
+          "text": "Segundo a doutrina, a única verdadeira desgraça no universo é **não nascer**"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1920,
+          "endIndex": 2082,
+          "text": "Segundo a doutrina, a única verdadeira desgraça no universo é **não nascer** — afinal, qualquer miséria ou sofrimento ainda é preferível à inexistência"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 2205,
+          "endIndex": 2352,
+          "text": "Quincas Borba defendia que a guerra, a fome e as catástrofes não são calamidades, mas sim operações convenientes e necessárias de *Humanitas*"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 2354,
+          "endIndex": 2605,
+          "text": "Para justificar isso, ele argumentava que a destruição de uns é o sustento de outros (ilustrando a tese com o exemplo de um frango que ele comia, cuja existência dependia de uma longa cadeia de exploração, trabalho forçado, navegação e morte)"
+        },
+        "groundingChunkIndices": [
+          2,
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 2612,
+          "endIndex": 2919,
+          "text": "**A equivalência entre todas as coisas:** \n   Na visão humanitista, as grandes guerras de Napoleão Bonaparte e uma simples briga entre cabras têm exatamente o mesmo valor e a mesma \"sublimidade\" para o cosmos, com a única diferença de que os soldados humanos têm a consciência de que estão morrendo"
+        },
+        "groundingChunkIndices": [
+          3
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 2925,
+          "endIndex": 3234,
+          "text": "**A inveja e o egoísmo como virtudes:** \n   Como a sobrevivência e a autoafirmação do \"forte\" são essenciais para a dinâmica de *Humanitas*, sentimentos bélicos, a competição implacável e a inveja passam a ser vistos não como defeitos, mas como virtudes que estimulam a energia vital e a evolução"
+        },
+        "groundingChunkIndices": [
+          0,
+          1
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "id": "q01-plain",
+  "parts": [
+    {
+      "text": "Em ***Memórias Póstumas de Brás Cubas*** (1881), de Machado de Assis, Brás Cubas dedica o livro **ao verme que primeiro roeu as frias carnes do seu cadáver**. \n\nSegundo o próprio autor defunto, ele dedica a obra a esse verme como uma **\"saudosa lembrança\"**. \n\nEssa dedicatória irônica e inusitada reflete a perspectiva niilista e o humor ácido do narrador: já morto, ele reconhece que o verme foi o primeiro ser a \"consagrar-lhe\" a carcaça e a iniciar a sua decomposição, tornando-se, de forma satírica, o destinatário mais adequado para um livro escrito por um defunto autor. Como ele mesmo resume ao justificar o livro, trata-se da obra de um homem que já não pertence ao mundo dos vivos, livre das convenções convencionais da literatura de sua época."
+    }
+  ],
+  "segments": [
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 0,
+        "end": 158
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 2012,
+            "end": 2195
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 0,
+            "end": 101
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 161,
+        "end": 258
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 2189,
+            "end": 2243
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 2641,
+            "end": 2738
+          }
+        }
+      ]
+    }
+  ],
+  "labeledBy": "MPT0M",
+  "labeledAt": "2026-09-08"
+}

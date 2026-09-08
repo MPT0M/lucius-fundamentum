@@ -1,0 +1,122 @@
+{
+  "id": "q02-guided",
+  "model": "gemini-3.5-flash-lite",
+  "recordedAt": "2026-09-08T11:17:27.530Z",
+  "reportVersion": "bench-report-1",
+  "storeEmbeddingModel": "gemini-embedding-2",
+  "storeChunking": {
+    "maxTokensPerChunk": 200,
+    "maxOverlapTokens": 20
+  },
+  "parts": [
+    {
+      "text": "A invenção que Brás Cubas concebe antes de morrer — e que acaba por lhe custar a vida — é um medicamento sublime chamado **emplasto Brás Cubas**, um remédio anti-hipocondríaco destinado a aliviar a nossa melancólica humanidade.\n\nEm relação ao que esperava ganhar com ela, a invenção possuía duas faces principais (além de propósitos declarados ao governo de caráter cristão e humanitário):\n\n1. **Lucro e vantagens pecuniárias:** O retorno financeiro decorrente da distribuição e venda do produto.\n2. **Amor da glória (sede de nomeada):** O que realmente o movia de forma mais profunda era o desejo de notoriedade, o gosto pelo alarido, pelos cartazes e por ver o seu próprio nome impresso nos jornais, folhetos, esquinas e nas caixas do remédio (*«emplasto Brás Cubas»*)."
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 84,
+    "candidatesTokenCount": 261,
+    "totalTokenCount": 3015,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 84
+      }
+    ],
+    "toolUsePromptTokenCount": 2670,
+    "toolUsePromptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 2670
+      }
+    ],
+    "serviceTier": "standard"
+  },
+  "groundingMetadata": {
+    "groundingChunks": [
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "a causa da minha morte, é possivel que o\nleitor me não creia, e todavia é verdade. Vou expor-lhe summariamente o\ncaso. Julgue-o por si mesmo.\n\n\n\n\nCAPITULO II\n\n\nO emplasto\n\n\nCom effeito, um dia de manhã, estando a passear na chacara,\npendurou-se-me uma idéa no trapezio que eu tinha no cerebro. Uma vez\npendurada, entrou a bracejar, a pernear, a fazer as mais arrojadas\ncabriolas de volantim, que é possivel crer. Eu deixei-me estar a\ncontemplal-a. Subito, deu um grande salto, estendeu os braços e as\npernas, até tomar a fórma de um X: decifra-me ou devoro-te.\n\nEssa idéa era nada menos que a invenção de um medicamento sublime, um\nemplasto anti-hypocondriaco, destinado a alliviar a nossa melancholica\nhumanidade. Na petição de privilegio que então redigi, chamei a\nattenção do governo para esse resultado, verdadeiramente christão.\nTodavia, não neguei aos amigos as vantagens pecuniarias que deviam\nresultar da distribuição de um producto de tamanhos e tão profundos\neffeitos, Agora, porém, que estou cá do outro lado da vida, posso\nconfessar tudo: o que me influiu principalmente foi o gosto de ver\nimpressas nos jornaes, mostradores, folhetos, esquinas, e emfim nas\ncaixinhas do remedio, estas tres palavras: _emplasto Braz Cubas._ Para\nque negal-o? Eu tinha a paixão do arruido, do cartaz, do foguete de\nlagrimas. Talvez os modestos me arguam esse defeito; fio",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "eu occupado em preparar e apurar a minha\ninvenção, recebi em cheio um golpe de ar; adoeci logo, e não me\ntratei. Tinha o emplasto no cerebro; trazia commigo a idéa fixa dos\ndoudos e dos fortes. Via-me, ao longe, ascender do chão das turbas, e\nremontar ao ceu, como uma aguia immortal; e não é deante de tão excelso\nexpectaculo que um homem pode sentir a dor que o punge. No outro dia\nestava peor; tratei-me emfim, mas incompletamente, sem methodo, nem\ncuidado, nem persistencia; tal foi a origem do mal que me trouxe á\neternidade. Sabem ja que morri n'uma sexta feira, dia aziago, e creio\nhaver provado que foi a minha invenção que me matou. Ha demonstrações\nmenos lúcidas e não menos triumphantes.\n\nNão era impossivel, entretanto, que eu chegasse a galgar o cimo de um\nseculo, e a figurar nas folhas publicas, entre macrobios. Tinha saude\ne robustez. Supponha-se que, em vez de estar lançando os alicerces de\numa invenção pharmaceutica, tratava de colligir os elementos de uma\ninstituição politica, ou de uma reforma religiosa. Vinha a corrente\ndo ar, que vence, em efficacia, o calculo humano, e lá se ia tudo. Um\nsopro de ar foi portanto o meu grão de arêa de Cromwell. Assim corre a\nsorte dos homens.\n\nCom esta reflexão me",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "negal-o? Eu tinha a paixão do arruido, do cartaz, do foguete de\nlagrimas. Talvez os modestos me arguam esse defeito; fio porém que esse\ntalento me hão de reconhecer os habeis; e eu era habil. Assim, a minha\nidéa trazia duas faces, como as medalhas, uma virada para o publico,\noutra para mim. De um lado, philanthropia e lucro; de outro lado, sêde\nde nomeada. Digamos:--amor da gloria.\n\nUm tio meu, conego de prebenda inteira, costumava dizer que o amor da\ngloria temporal era a perdição das almas, que só devem cobiçar a gloria\neterna. Ao que retorquia outro tio, official de um dos antigos terços\nde infantaria, que o amor da gloria era a cousa mais verdadeiramente\nhumana que ha no homem, e, conseguintemente, a sua mais genuina feição.\n\nDecida o leitor entre o militar e o conego; eu volto ao emplasto.\n\n\n\n\nCAPITULO III\n\n\nGenealogia\n\n\nMas, já que fallei nos meus dous tios, deixem-me fazer aqui um curto\nesboço genealogico.\n\nO fundador da minha familia foi um certo Damião Cubas, que floreceu\nna primeira metade do seculo XVIII. Era tanoeiro de officio, natural\ndo Rio de Janeiro, onde teria morrido na penuria e na obscuridade,\nse sómente exercesse a tanoaria. Mas não; fez-se lavrador, plantou,\ncolheu, permutou o seu producto por boas e honradas patacas, até que\nmorreu, deixando grosso",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      }
+    ],
+    "groundingSupports": [
+      {
+        "segment": {
+          "endIndex": 238,
+          "text": "A invenção que Brás Cubas concebe antes de morrer — e que acaba por lhe custar a vida — é um medicamento sublime chamado **emplasto Brás Cubas**, um remédio anti-hipocondríaco destinado a aliviar a nossa melancólica humanidade"
+        },
+        "groundingChunkIndices": [
+          0,
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 241,
+          "endIndex": 410,
+          "text": "Em relação ao que esperava ganhar com ela, a invenção possuía duas faces principais (além de propósitos declarados ao governo de caráter cristão e humanitário)"
+        },
+        "groundingChunkIndices": [
+          0,
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 416,
+          "endIndex": 520,
+          "text": "**Lucro e vantagens pecuniárias:** O retorno financeiro decorrente da distribuição e venda do produto"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 525,
+          "endIndex": 801,
+          "text": "**Amor da glória (sede de nomeada):** O que realmente o movia de forma mais profunda era o desejo de notoriedade, o gosto pelo alarido, pelos cartazes e por ver o seu próprio nome impresso nos jornais, folhetos, esquinas e nas caixas do remédio (*«emplasto Brás Cubas»*)"
+        },
+        "groundingChunkIndices": [
+          0,
+          2
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,226 @@
+{
+  "id": "q22-guided",
+  "parts": [
+    {
+      "text": "Em ***Memórias Póstumas de Brás Cubas***, de Machado de Assis, **Damasceno** é um personagem secundário de relevo que se cruza com a vida do protagonista especialmente na segunda metade do romance, com desdobramentos que marcam os últimos anos e as reflexões finais de Brás Cubas.\n\n### Quem é Damasceno?\nDamasceno é um homem de classe média, conhecido da família de Brás Cubas (ligado também aos Cotrim), pai de **D. Eulália**, mais familiarmente conhecida como **Nhã-lóló**. No enredo, ele é apresentado como um pai dedicado e afetuoso, cuja vida gira em torno da filha. \n\n### O papel de Damasceno nos últimos anos de Brás Cubas\nO papel de Damasceno desdobra-se em momentos cruciais da vida e do ocaso do protagonista:\n\n1. **A tentativa de casamento (O pretendente de Nhã-lóló):** \n   Em uma fase da vida em que Brás Cubas se vê pressionado a casar e assentar a vida, os familiares (em especial sua irmã Sabina e o cunhado Cotrim) empurram-no para o casamento com Nhã-lóló, a filha de Damasceno. Damasceno nutre grandes expectativas em relação a essa união, vendo com muito bons olhos a possibilidade de Brás Cubas se tornar seu genro. No entanto, o próprio Brás Cubas demonstra hesitação e desinteresse genuíno pelo enlace (\"Não gosto de pérolas\", diz ele), e o matrimônio acaba não se concretizando da forma planejada.\n\n2. **A tragédia da epidemia e a morte de Nhã-lóló:**\n   Anos mais tarde, o Rio de Janeiro é assolado por uma grave epidemia de febre amarela. A doença atinge Nhã-lóló, que acaba por falecer. Essa morte atinge profundamente Damasceno, deixando-o completamente inconsolável, transformado em uma \"ruína\" humana devido à perda da filha única. \n\n3. **O luto, a solidão e a \"Formalidade\":**\n   Após a morte de Nhã-lóló, Brás Cubas visita um Damasceno mergulhado em profundo sofrimento. O velho pai chora não apenas a morte da filha, mas também a traição e o abandono dos \"amigos\": ele havia enviado cerca de oitenta convites para o funeral, mas apenas doze pessoas compareceram para acompanhar o féretro (sendo a maioria amigos do Cotrim). \n   \n   Enquanto Damasceno se lamenta amargamente por ter sido \"desamparado\" pelos conhecidos em seu momento de maior dor, o Cotrim e o próprio Brás Cubas analisam a situação sob a perspectiva da conveniência social. É justamente a partir desse desabafo melancólico de Damasceno (*\"Mas viessem!\"* — referindo-se à obrigação social dos convites) que Brás Cubas desenvolve uma de suas digressões filosóficas mais célebres: o **Capítulo CXXVII (\"Formalidade\")**. Nele, o defunto-autor exalta a \"Formalidade\" como o grande bálsamo, a engrenagem social e a máscara polida que regula as relações humanas, enxuga as lágrimas e permite que a sociedade continue funcionando através das aparências.\n\nAssim, Damasceno personifica a dor humana autêntica diante da perda, servindo simultaneamente como catalisador para uma das reflexões irônicas e niilistas mais marcantes de Brás Cubas sobre a hipocrisia e as convenções da sociedade burguesa oitocentista."
+    }
+  ],
+  "segments": [
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 405,
+        "end": 474
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 250795,
+            "end": 250865
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 869,
+        "end": 995
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 250756,
+            "end": 250794
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 299245,
+            "end": 299295
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 305989,
+            "end": 306053
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1149,
+        "end": 1258
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 251471,
+            "end": 251494
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1379,
+        "end": 1464
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 310288,
+            "end": 310374
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1465,
+        "end": 1513
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 310288,
+            "end": 310374
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 311867,
+            "end": 311932
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1514,
+        "end": 1661
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 311388,
+            "end": 311454
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 311455,
+            "end": 311524
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1898,
+        "end": 2055
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 311933,
+            "end": 312001
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 311806,
+            "end": 311866
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 311867,
+            "end": 311932
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 2274,
+        "end": 2516
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 312450,
+            "end": 312464
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 312469,
+            "end": 312498
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 312572,
+            "end": 312643
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 2517,
+        "end": 2745
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 313627,
+            "end": 313690
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 313763,
+            "end": 313833
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 312883,
+            "end": 312947
+          }
+        }
+      ]
+    }
+  ],
+  "labeledBy": "MPT0M",
+  "labeledAt": "2026-09-08T21:22:35.946Z"
+}

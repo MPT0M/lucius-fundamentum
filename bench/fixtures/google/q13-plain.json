@@ -1,0 +1,276 @@
+{
+  "id": "q13-plain",
+  "model": "gemini-3.5-flash-lite",
+  "recordedAt": "2026-09-08T15:37:31.392Z",
+  "reportVersion": "bench-report-1",
+  "storeEmbeddingModel": "gemini-embedding-2",
+  "storeChunking": {
+    "maxTokensPerChunk": 200,
+    "maxOverlapTokens": 20
+  },
+  "parts": [
+    {
+      "text": "No romance **\"Memórias Pósthumas de Brás Cubas\"** (1881), de Machado de Assis, **Nhã-loló** (cujo nome verdadeiro é D. Eulália Damascena de Brito) é uma jovem personagem de destaque na segunda metade da narrativa. \n\nAbaixo estão as respostas detalhadas para as três partes da sua pergunta:\n\n### 1. Quem é Nhã-loló?\nNhã-loló é descrita como uma moça muito graciosa, de \"coração de pérola\", bondosa e de voz \"muito mimosa\". Embora lhe faltasse um pouco mais de elegância mundana ou traquejo social (\"corte\"), ela compensava isso com traços cativantes e, sobretudo, com **olhos soberbos** que demonstravam grande admiração por Brás Cubas desde o momento em que o conheceram. Ela morre jovem, aos dezenove anos de idade.\n\n### 2. Como ela entra na vida de Brás Cubas?\nNhã-loló entra na vida de Brás Cubas por meio de um plano arranjado por sua família, encabeçada principalmente pela irmã de Brás, **Sabina**, e pelo marido dela, Cotrim. Sabina decide que Brás Cubas já está em idade de se casar — especialmente por ter aspirações e ambições políticas, campo em que o celibato seria uma desvantagem — e resolve empurrá-lo para o matrimônio com a moça.\n\nO encontro é orquestrado em um jantar formal na casa da família. No início, Brás Cubas acha o jantar um suplício e tenta se esquivar, mas Nhã-loló fica imediatamente encantada por ele, fixando-lhe os olhos o tempo todo. Apesar da relutância inicial de Brás, a pressão familiar é imensa (\"*quer você queira quer não, há de casar com Nhã-loló*\"), e o protagonista acaba aceitando a ideia do noivado, embalado também pelas conveniências sociais e políticas da época.\n\n### 3. O que acontece com ela?\nO destino de Nhã-loló é trágico e abrupto. Pouco antes de o casamento se realizar, o Rio de Janeiro é atingido por uma das primeiras grandes epidemias de **febre amarela** que assolaram a cidade. \n\nNhã-loló é infectada pela doença e **morre repentinamente aos 19 anos**. Brás Cubas acompanha o féretro até o jazigo e relata ter se despido da situação de forma melancólica, mas fria: confessa que ficou triste, porém \"sem lágrimas\", chegando à conclusão de que talvez não a amasse de verdade. \n\nA morte dela é tratada por Machado de Assis com um toque de ironia e pessimismo filosófico (reforçado posteriormente pelos diálogos com Quincas Borba sobre a utilidade das epidemias para a espécie), mostrando a fragilidade da vida humana diante dos azares biológicos e sociais."
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 26,
+    "candidatesTokenCount": 821,
+    "totalTokenCount": 15817,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 26
+      }
+    ],
+    "toolUsePromptTokenCount": 14970,
+    "toolUsePromptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 14970
+      }
+    ],
+    "serviceTier": "standard"
+  },
+  "groundingMetadata": {
+    "groundingChunks": [
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "MEMÓRIAS PÓSTHUMAS\n\nDE\n\nBRAZ CUBAS\n\nPOR\n\nMACHADO DE ASSIS\n\nRIO DE JANEIRO\n\nTYPOGRAPHIA NACIONAL\n\n1881\n\n\n\n\nOBRAS DO AUTOR\n\n Memórias Pósthumas de Braz Cubas\n Helena, romance\n Yayá Garcia, romance\n Resurreição, romance\n A mão e a luva, romance\n Historias da meia noite\n Contos Fluminenses\n Americanas, poesias\n Phalenas, poesias\n Chrysalidas, poesias\n Tu só, tu, puro amor, comédia\n Os deuses de casaca, comédia\n Desencantos, comédia\n Theatro\n\n\n\n\nAO LEITOR\n\n\nQue, no alto do principal de seus livros, confessasse Stendhal havel-o\nescripto para cem leitores, cousa é que admira e consterna. O que não\nadmira, nem provavelmente consternará é se este outro livro não tiver\nos cem leitores de Stendhal, nem cincoenta, nem vinte, e quando muito,\ndez. Dez? Talvez cinco. Trata-se, na verdade, de uma obra diffusa,\nna qual eu, Braz Cubas, se adoptei a fórma livre de um Sterne, de\num Lamb, ou de um de Maistre, não sei se lhe metti algumas rabugens\nde pessimismo. Póde ser. Obra de finado. Escrevi-a com a penna da\ngalhofa e a tinta da melancholia; e não é difficil antever o que poderá\nsair desse connubio. Accresce que a gente grave achará no livro umas\napparencias de puro romance, ao passo que a gente frivola não achará\nnelle o seu romance usual; e eil-o ahi fica privado da estima dos\ngraves e do amor dos frivolos, que são as",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "governo não deve esquecer que o dinheiro é o nervo da guerra. Ao\nque eu redargui que não, que o nervo da guerra eram os bons soldados.\nUm dos ouvintes coçou o nariz, outro consultou o relogio, o terceiro\ntamborilou sobre o joelho, o quarto deu algumas pernadas pela sala,\no quinto era eu. Mas, continuando a falar, ponderei que essa idéa,\ninteiramente justa, não era minha, e sim de Machiavelli; circumstancia\nque levou o primeiro a não coçar o nariz, o segundo a não consultar o\nrelogio, o terceiro a não tamborilar sobre o joelho, e o quarto a não\ndar pernadas; e todos me rodearam, e me pediram que repetisse o dito,\ne repeti, e elles extasiavam-se, e batiam com a cabeça approvando,\nsaboreando, decorando. O que estimei, porque fui sempre amador de idéas\njustas. Mas vamos ao epitaphio.\n\n\n\n\nCAPITULO CXXV\n\n\nEpitaphio\n\n\n AQUI JAZ\n\n D. EULALIA DAMASCENA DE BRITO\n\n MORTA\n\n AOS DEZENOVE ANNOS DE IDADE\n\n ORAI POR ELLA!\n\n\n\n\nCAPITULO CXXVI\n\n\nDesconsolação\n\n\nO epitaphio diz tudo. Vale mais do que se lhes narrasse a molestia de\nNhã-loló, a morte, o desespero da familia, o enterro. Ficam sabendo\nque morreu; accrescentarei que foi por occasião da primeira entrada\nda febre amarella. Não digo mais nada, a não ser que a acompanhei até\no ultimo jazigo, e me despedi triste, mas",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "Cotrim. Saiu; fechei-lhe a\nporta... Uf!\n\n\n\n\nCAPITULO XCIII\n\n\nO jantar\n\n\nQue supplicio que foi o jantar! Felizmente, Sabina fez-me sentar ao pé\nda filha do Damasceno, uma D. Eulalia, ou mais familiarmente Nhã-lóló,\nmoça bem graciosa, um tanto acanhada a principio, mas só a principio.\nFaltava-lhe elegancia, mas compensava-a com os olhos, que eram\nsoberbos e só tinham o defeito de se não arrancarem de mim, excepto\nquando desciam ao prato; mas Nhã-lóló comia tão pouco, que quasi não\nolhava para o prato. De noite cantou; a voz era como dizia o pae,\n«muito mimosa». Não obstante, esquivei-me. Sabina veiu até á porta, e\nperguntou-me que tal achára a filha do Damasceno.\n\n--Assim, assim.\n\n--Muito sympathica, não é? acudiu ella; falta-lhe um pouco mais de\ncorte. Mas que coração! é uma perola. Bem boa noiva para você.\n\n--Não gosto de perolas.\n\n--Casmurro! Para quando é que você se guarda? para quando estiver a\ncair de maduro, já sei. Pois, meu rico, quer você queira quer não, ha\nde casar com Nhã-lóló.\n\nE dizia isto a bater-me na face com os dedos, meiga como uma pomba, e\nao mesmo tempo intimativa e resoluta. Santo Deus! seria esse o motivo\nda reconciliação? Fiquei um pouco desconsolado com a idéa, mas uma voz\nmysteriosa chamava-me á casa do Lobo Neves, disse adeus a Sabina e ás\nsuas",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "pelo que respeita a Nhã-loló, não\nchegaria jámais a negar que era noiva excellente; mas dahi a aconselhar\no casamento ia um abysmo.\n\n--Lavo inteiramente as mãos, concluiu elle.\n\n--Mas você achava outro dia que eu devia casar quanto antes...\n\n--Isso é outro negocio. Acho que é indispensavel casar, principalmente\ntendo ambições politicas. Saiba que na politica o celibato é uma\nrémora. Agora, quanto á noiva, não posso ter voto, não quero, não devo,\nnão é de minha honra. Parece-me que Sabina foi além, fazendo-lhe certas\nconfidencias, segundo me disse; mas em todo caso ella não é tia carnal\nde Nhã-loló, como eu. Olhe... mas não... não digo...\n\n--Diga.\n\n--Não; não digo nada.\n\nTalvez pareça excessivo o escrupulo do Cotrim, a quem não souber que\nelle possuia um caracter ferozmente honrado. Eu mesmo fui injusto\ncom elle durante os annos que se seguiram ao inventario do meu pae.\nReconheço que era um modelo. Arguiam-n'o de avareza, e cuido que\ntinham razão; mas a avareza é apenas a exageração de uma virtude,\ne as virtudes devem ser como os orçamentos: melhor é o saldo que\no _deficit._ Como era muito secco de maneiras tinha inimigos, que\nchegavam a accusal-o de barbaro. O unico facto allegado neste\nparticular era o de mandar com frequencia escravos ao calabouço, donde\nelles desciam a escorrer sangue; mas,",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "febre amarella. Não digo mais nada, a não ser que a acompanhei até\no ultimo jazigo, e me despedi triste, mas sem lagrimas. Conclui que\ntalvez não a amasse devéras.\n\nVejam agora a que excessos póde levar uma inadvertencia; doeu-me um\npouco a cegueira da epidemia que, matando á direita e á esquerda, levou\ntambem uma jovem dama, que tinha de ser minha mulher; e não cheguei\na entender a necessidade da epidemia, e menos ainda daquella morte.\nCreio até que esta me pareceu ainda mais absurda que todas as outras\nmortes. O Quincas Borba, porém, explicou-me que as epidemias eram uteis\ná especie, embora desastrosas para uma certa porção de indivíduos; e\nfez-me notar que, por mais horrendo que fosse o espectaculo, havia\numa vantagem de muito peso: a sobrevivencia do maior numero. Chegou a\nperguntar-me se, no meio do luto geral, não sentia eu algum secreto\nencanto em ter escapado ás garras da peste; mas esta pergunta era tão\ninsensata, que ficou sem resposta.\n\nSe não contei a morte, não conto igualmente a missa do setimo dia.\nA tristeza do Damasceno era profunda; esse pobre homem parecia uma\nruina. Quinze dias depois estive com elle; continuava inconsolavel, e\ndizia que a dor grande com que Deus o castigára fora ainda augmentada\ncom a que lhe infligiram os",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      }
+    ],
+    "groundingSupports": [
+      {
+        "segment": {
+          "endIndex": 80,
+          "text": "No romance **\"Memórias Pósthumas de Brás Cubas\"** (1881), de Machado de Assis"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 125,
+          "endIndex": 153,
+          "text": "Eulália Damascena de Brito)"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 328,
+          "endIndex": 407,
+          "text": "Nhã-loló é descrita como uma moça muito graciosa, de \"coração de pérola\""
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 328,
+          "endIndex": 440,
+          "text": "Nhã-loló é descrita como uma moça muito graciosa, de \"coração de pérola\", bondosa e de voz \"muito mimosa\""
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 442,
+          "endIndex": 526,
+          "text": "Embora lhe faltasse um pouco mais de elegância mundana ou traquejo social (\"corte\")"
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 442,
+          "endIndex": 607,
+          "text": "Embora lhe faltasse um pouco mais de elegância mundana ou traquejo social (\"corte\"), ela compensava isso com traços cativantes e, sobretudo, com **olhos soberbos**"
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 697,
+          "endIndex": 740,
+          "text": "Ela morre jovem, aos dezenove anos de idade"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 966,
+          "endIndex": 1136,
+          "text": "Sabina decide que Brás Cubas já está em idade de se casar — especialmente por ter aspirações e ambições políticas, campo em que o celibato seria uma desvantagem"
+        },
+        "groundingChunkIndices": [
+          3
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 966,
+          "endIndex": 1193,
+          "text": "Sabina decide que Brás Cubas já está em idade de se casar — especialmente por ter aspirações e ambições políticas, campo em que o celibato seria uma desvantagem — e resolve empurrá-lo para o matrimônio com a moça"
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1196,
+          "endIndex": 1261,
+          "text": "O encontro é orquestrado em um jantar formal na casa da família"
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1263,
+          "endIndex": 1333,
+          "text": "No início, Brás Cubas acha o jantar um suplício e tenta se esquivar"
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1263,
+          "endIndex": 1421,
+          "text": "No início, Brás Cubas acha o jantar um suplício e tenta se esquivar, mas Nhã-loló fica imediatamente encantada por ele, fixando-lhe os olhos o tempo todo"
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1423,
+          "endIndex": 1555,
+          "text": "Apesar da relutância inicial de Brás, a pressão familiar é imensa (\"*quer você queira quer não, há de casar com Nhã-loló*\")"
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1759,
+          "endIndex": 1911,
+          "text": "Pouco antes de o casamento se realizar, o Rio de Janeiro é atingido por uma das primeiras grandes epidemias de **febre amarela** que assolaram a cidade"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1915,
+          "endIndex": 1990,
+          "text": "Nhã-loló é infectada pela doença e **morre repentinamente aos 19 anos**"
+        },
+        "groundingChunkIndices": [
+          4,
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1992,
+          "endIndex": 2222,
+          "text": "Brás Cubas acompanha o féretro até o jazigo e relata ter se despido da situação de forma melancólica, mas fria: confessa que ficou triste, porém \"sem lágrimas\", chegando à conclusão de que talvez não a amasse de verdade"
+        },
+        "groundingChunkIndices": [
+          4
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 2226,
+          "endIndex": 2428,
+          "text": "A morte dela é tratada por Machado de Assis com um toque de ironia e pessimismo filosófico (reforçado posteriormente pelos diálogos com Quincas Borba sobre a utilidade das epidemias para a espécie)"
+        },
+        "groundingChunkIndices": [
+          4
+        ]
+      }
+    ]
+  }
+}

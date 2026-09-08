@@ -1,0 +1,151 @@
+{
+  "id": "q03-guided",
+  "model": "gemini-3.5-flash-lite",
+  "recordedAt": "2026-09-08T11:17:27.530Z",
+  "reportVersion": "bench-report-1",
+  "storeEmbeddingModel": "gemini-embedding-2",
+  "storeChunking": {
+    "maxTokensPerChunk": 200,
+    "maxOverlapTokens": 20
+  },
+  "parts": [
+    {
+      "text": "Nas *Memórias Póstumas de Brás Cubas*, de Machado de Assis, o delírio que o narrador tem pouco antes de morrer é relatado de forma monumental (principalmente nos capítulos que antecedem o desfecho, como o célebre capítulo intitulado precisamente *O delírio*). \n\nBrás Cubas descreve a experiência delirante como uma viagem fantástica e cósmica guiada por um hipopótamo:\n\n* **A viagem à origem dos séculos:** Brás Cubas conta que foi arrebatado por um hipopótamo que lhe prometeu levá-lo à «origem dos séculos». \n* **O espetáculo da Humanidade:** No topo de uma montanha (ou planície fantástica) e com «os olhos do delírio», ele contempla o desfile vertiginoso de todos os séculos, raças, impérios, paixões e gerações humanas. Ele vê a história da humanidade como uma condensação viva de glórias e misérias, onde a cobiça, a cólera, a inveja, a ambição, a fome e o amor agitam e destroem o homem «como um chocalho... até destruí-lo como um farrapo».\n* **A Grande Mãe (Natureza/Pandora):** Durante esse voo sobre os tempos, ele visualiza a Natureza ou Pandora — descrita como uma figura grandiosa, maternal e ao mesmo tempo indiferente —, que alimenta e consome as gerações humanas num ciclo infindável de criação e destruição.\n* **O fim do delírio:** À medida que a marcha dos séculos se acelera vertiginosamente rumo ao futuro e ao fim de tudo, a velocidade torna-se tamanha que os objetos se fundem e um nevoeiro cobre a cena. O gigantesco hipopótamo vai encolhendo gradativamente até se transformar em um gato comum — o seu gato *Sultão*, que brincava à porta da alcova —, marcando o despertar abrupto ou o limiar da morte real."
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 76,
+    "candidatesTokenCount": 830,
+    "totalTokenCount": 213623,
+    "cachedContentTokenCount": 96557,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 76
+      }
+    ],
+    "cacheTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 96557
+      }
+    ],
+    "toolUsePromptTokenCount": 212717,
+    "toolUsePromptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 212717
+      }
+    ],
+    "serviceTier": "standard"
+  },
+  "groundingMetadata": {
+    "groundingChunks": [
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "fechos do livro,\ne cruzando-as eu sobre o ventre, alguem as descruzava (Virgilia de\ncerto), porque a attitude lhe dava a imagem de um defunto.\n\nUltimamente, restituido á fórma humana, vi chegar um hippopotamo, que\nme arrebatou. Deixei-me ir, calado, não sei se por medo ou confiança,\nmas, dentro em pouco, a carreira de tal modo se tornou vertiginosa, que\nme atrevi a interrogal-o, e com alguma arte lhe disse que a viagem me\nparecia sem destino.\n\n--Engana-se, replicou o animal, nós vamos á origem dos seculos.\n\nInsinuei que deveria ser muitissimo longe; mas o hippopotamo não me\nentendeu ou não me ouviu, se é que não fingiu uma dessas cousas; e,\nperguntando-lhe, visto que elle fallava, se era descendente do cavallo\nde Achilles ou da asna de Balaão, retorquiu-me com um gesto peculiar a\nestes dous quadrupedes: abanou as orelhas. Pela minha parte fechei os\nolhos e deixei-me ir á ventura. Já agora não se me dá de confessar que\nsentia umas taes ou quaes cocegas de curiosidade, por saber onde ficava\na origem dos seculos, se era tão mysteriosa como a origem do Nilo, e\nsobretudo se valia alguma cousa mais ou menos do que a consummação dos\nmesmos seculos; tudo isto reflexões de um cerebro enfermo. Como ia de\nolhos fechados, não via o caminho; lembra-me",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "de todos elles, as raças todas,\ntodas as paixões, o tumulto dos imperios, a guerra dos appetites e\ndos odios, a destruição reciproca dos seres e das cousas. Tal era\no expectaculo, acerbo e curioso expectaculo. A historia do homem\ne da terra tinha assim uma intensidade que lhe não podiam dar nem\na imaginação nem a sciencia, porque a sciencia é mais lenta e a\nimaginação mais vaga, emquanto que o que eu alli via era a condensação\nviva de todos os tempos. Para descrevel-a seria preciso fixar o\nrelampago. Os seculos desfilavam n'um turbilhão, e, não obstante,\nporque os olhos do delirio são outros, eu via tudo o que passava diante\nde mim,--flagellos e delicias,--desde essa cousa que se chama gloria\naté essa outra que se chama miseria, e via o amor multiplicando a\nmiseria, e via a miseria aggravando a debilidade. Ahi vinham a cobiça\nque devora, a colera que inflamma, a inveja que baba, e a enxada e a\npenna, humidas de suor, e a ambição, a fome, a vaidade, a melancholia,\na riqueza, o amor, e todos agitavam o homem, como um chocalho, até\ndestruil-o, como um farrapo. Eram as formas varias de um mal, que ora\nmordia a viscera, ora mordia o pensamento, e passeiava eternamente as\nsuas vestes de arlequim, em",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "de todos elles, as raças todas,\ntodas as paixões, o tumulto dos imperios, a guerra dos appetites e\ndos odios, a destruição reciproca dos seres e das cousas. Tal era\no expectaculo, acerbo e curioso expectaculo. A historia do homem\ne da terra tinha assim uma intensidade que lhe não podiam dar nem\na imaginação nem a sciencia, porque a sciencia é mais lenta e a\nimaginação mais vaga, emquanto que o que eu alli via era a condensação\nviva de todos os tempos. Para descrevel-a seria preciso fixar o\nrelampago. Os seculos desfilavam n'um turbilhão, e, não obstante,\nporque os olhos do delirio são outros, eu via tudo o que passava diante\nde mim,--flagellos e delicias,--desde essa cousa que se chama gloria\naté essa outra que se chama miseria, e via o amor multiplicando a\nmiseria, e via a miseria aggravando a debilidade. Ahi vinham a cobiça\nque devora, a colera que inflamma, a inveja que baba, e a enxada e a\npenna, humidas de suor, e a ambição, a fome, a vaidade, a melancholia,\na riqueza, o amor, e todos agitavam o homem, como um chocalho, até\ndestruil-o, como um farrapo. Eram as formas varias de um mal, que ora\nmordia a viscera, ora mordia o pensamento, e passeiava eternamente as\nsuas vestes de arlequim, em",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "o\nhomem, nu e desarmado, armava-se e vestia-se, construia o tugurio e\no palacio, a rude aldêa e Thebas de cem portas, creava a sciencia,\nque perscruta, e a arte que enleva, fazia-se orador, mecanico,\nphilosopho, corria a face do globo, descia ao ventre da terra, subia\ná esphera das nuvens, collaborando assim na obra mysteriosa, com que\nentretinha a necessidade da vida e a melancholia do desamparo. Meu\nolhar, enfarado e distrahido*, viu emfim chegar o seculo presente, e\natraz delle os futuros. Aquelle vinha agil, destro, vibrante, cheio\nde si, um pouco diffuso, audaz, sabedor, mas ao cabo tão miseravel\ncomo os primeiros, e assim passou e assim passaram os outros, com a\nmesma rapidez e egual monotonia. Redobrei de attenção; fitei a vista;\nia emfim ver o ultimo,--o ultimo!; mas então já a rapidez da marcha\nera tal, que escapava a toda a comprehensão; ao pé della o relampago\nseria um seculo. Talvez por isso entraram os objectos a trocarem-se;\nuns cresceram, outros minguaram, outros perderam-se no ambiente; um\nnevoeiro cobriu tudo,--menos o hippopotamo que alli me trouxera, e que\naliás começou a diminuir, a diminuir, a diminuir, até ficar do tamanho\nde um gato. Era effectivamente um gato. Encarei-o bem; era o meu gato\n_Sultão_, que brincava á porta da alcova, com uma bola de",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      }
+    ],
+    "groundingSupports": [
+      {
+        "segment": {
+          "startIndex": 384,
+          "endIndex": 531,
+          "text": "* **A viagem à origem dos séculos:** Brás Cubas conta que foi arrebatado por um hipopótamo que lhe prometeu levá-lo à «origem dos séculos»"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 534,
+          "endIndex": 758,
+          "text": "* **O espetáculo da Humanidade:** No topo de uma montanha (ou planície fantástica) e com «os olhos do delírio», ele contempla o desfile vertiginoso de todos os séculos, raças, impérios, paixões e gerações humanas"
+        },
+        "groundingChunkIndices": [
+          1,
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 961,
+          "endIndex": 995,
+          "text": "até destruí-lo como um farrapo»"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1286,
+          "endIndex": 1489,
+          "text": "* **O fim do delírio:** À medida que a marcha dos séculos se acelera vertiginosamente rumo ao futuro e ao fim de tudo, a velocidade torna-se tamanha que os objetos se fundem e um nevoeiro cobre a cena"
+        },
+        "groundingChunkIndices": [
+          3
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1491,
+          "endIndex": 1700,
+          "text": "O gigantesco hipopótamo vai encolhendo gradativamente até se transformar em um gato comum — o seu gato *Sultão*, que brincava à porta da alcova —, marcando o despertar abrupto ou o limiar da morte real"
+        },
+        "groundingChunkIndices": [
+          3
+        ]
+      }
+    ]
+  }
+}

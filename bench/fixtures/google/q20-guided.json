@@ -1,0 +1,118 @@
+{
+  "id": "q20-guided",
+  "model": "gemini-3.5-flash-lite",
+  "recordedAt": "2026-09-08T15:37:31.392Z",
+  "reportVersion": "bench-report-1",
+  "storeEmbeddingModel": "gemini-embedding-2",
+  "storeChunking": {
+    "maxTokensPerChunk": 200,
+    "maxOverlapTokens": 20
+  },
+  "parts": [
+    {
+      "text": "Nas *Memórias Póstumas de Brás Cubas*, de Machado de Assis, o desenrolar desse acontecimento ocorre da seguinte forma:\n\n* **O anúncio de Lobo Neves:** No capítulo 80 (\"Do secretário\"), Brás Cubas vai à casa de Lobo Neves e encontra-o muito jovial, contando os planos que levava para a **presidência de província** (no norte), além de detalhar as dificuldades locais, as esperanças e as resoluções que tinha para o cargo. A certa altura do encontro, Lobo Neves anuncia que ainda não encontrou um secretário e convida Brás Cubas para acompanhá-lo nessa viagem e assumir a função.\n* **A decisão de Brás Cubas:** Inicialmente, o espírito de Brás Cubas \"dá um salto para trás\" com receio e desconfiança, chegando a encarar Lobo Neves fixamente para tentar descobrir se há alguma intenção oculta por trás daquele convite. No entanto, ao perceber que o olhar de Lobo Neves era franco e ao notar o olhar ansioso e suplicante de Virgília (com quem Brás Cubas mantinha um caso amoroso) por cima do livro, ele **decide aceitar** o convite. Ele conclui que aceitar ir como secretário — unindo o presidente, a \"presidenta\" (Virgília) e ele próprio — seria uma forma engenhosa e administrativa de resolver a situação de manter o romance."
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 86,
+    "candidatesTokenCount": 449,
+    "totalTokenCount": 13361,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 86
+      }
+    ],
+    "toolUsePromptTokenCount": 12826,
+    "toolUsePromptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 12826
+      }
+    ],
+    "serviceTier": "standard"
+  },
+  "groundingMetadata": {
+    "groundingChunks": [
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "padecimento. Occorre-me a este proposito um\nnaturalista,--não me lembra qual,--mas era um naturalista,--em quem li\nesta observação curiosa: «O gato não nos affaga, affaga-se em nós.»\nVejo que eu fazia um compromisso de gato.\n\n\n\n\nCAPITULO LXXX\n\n\nDo secretario\n\n\nNa noite seguinte fui effectivamente á casa do Lobo Neves; estavam\nambos, Virgilia muito triste, elle muito jovial. Juro que ella sentiu\ncerto allivio, quando os nossos olhos se encontraram, cheios de\ncuriosidade e ternura; e não direi o que senti, porque isso já ficou\nexpresso no capitulo anterior, _in fine._ O Lobo Neves contou-me os\nplanos que levava para a presidencia, as difficuldades locaes, as\nesperanças, as resoluções; estava tão contente! tão esperançado!\nVirgilia, ao pé da meza, fingia ler um livro, mas por cima da pagina\nolhava-me de quando em quando, interrogativa e ansiosa.\n\n--O peor, disse-me de repente o Lobo Neves, é que ainda não achei\nsecretario.\n\n--Não?\n\n--Não, e tenho uma idéia.\n\n--Ah!\n\n--Uma idéa... Quer você dar um passeio ao norte? Não sei o que lhe\ndisse.\n\n--Você é rico, continuou elle, não precisa de um magro ordenado; mas se\nquizesse obsequiar-me, ia de secretario commigo.\n\nMeu espirito deu um salto para traz, como se descobrisse uma serpente\ndeante de si. Encarei o Lobo Neves, fixamente, imperiosamente, a ver\nse lhe apanhava algum pensamento occulto... Nem sombra disso; o olhar\nvinha direito e franco,",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "o Lobo Neves, fixamente, imperiosamente, a ver\nse lhe apanhava algum pensamento occulto... Nem sombra disso; o olhar\nvinha direito e franco, a placidez do rosto era natural, não violenta,\numa placidez salpicada de alegria. Respirei, e não tive animo de\nolhar para Virgilia; senti por cima da pagina o olhar della, que me\npedia tambem a mesma cousa, e disse que sim, que iria. Na verdade, um\npresidente, uma presidenta, um secretario, era resolver as cousas de um\nmodo administrativo.\n\n\n\n\nCAPITULO LXXXI\n\n\nA reconciliação\n\n\nE comtudo, ao sair de lá, tive umas sombras de duvida; cogitei se não\nia expor insanamente a reputação de Virgilia, se não haveria outro\nmeio razoavel de combinar o Estado e a Gamboa. Não achei nada. No dia\nseguinte, ao levantar-mo da cama, trazia o espirito feito e resoluto a\naceitar a nomeação. Ao meio dia, veiu o creado dizer-me que estava na\nsala uma senhora, coberta com um véo. Corro; era minha irmã Sabina.\n\n--Isto não pode continuar assim, disse ella; é preciso que, de uma vez\npor todas, façamos as pazes. Nossa familia está acabando; não havemos\nde ficar como dous inimigos.\n\n--Mas se eu não te peço outra cousa, mana! bradei eu estendendo-lhe os\nbraços.\n\nE sentei-a ao pé de mim, e falei-lhe do marido, da filha, dos negocios,\nde tudo. Tudo ia",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      }
+    ],
+    "groundingSupports": [
+      {
+        "segment": {
+          "startIndex": 123,
+          "endIndex": 433,
+          "text": "* **O anúncio de Lobo Neves:** No capítulo 80 (\"Do secretário\"), Brás Cubas vai à casa de Lobo Neves e encontra-o muito jovial, contando os planos que levava para a **presidência de província** (no norte), além de detalhar as dificuldades locais, as esperanças e as resoluções que tinha para o cargo"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 435,
+          "endIndex": 596,
+          "text": "A certa altura do encontro, Lobo Neves anuncia que ainda não encontrou um secretário e convida Brás Cubas para acompanhá-lo nessa viagem e assumir a função"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 598,
+          "endIndex": 845,
+          "text": "* **A decisão de Brás Cubas:** Inicialmente, o espírito de Brás Cubas \"dá um salto para trás\" com receio e desconfiança, chegando a encarar Lobo Neves fixamente para tentar descobrir se há alguma intenção oculta por trás daquele convite"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 847,
+          "endIndex": 1060,
+          "text": "No entanto, ao perceber que o olhar de Lobo Neves era franco e ao notar o olhar ansioso e suplicante de Virgília (com quem Brás Cubas mantinha um caso amoroso) por cima do livro, ele **decide aceitar** o convite"
+        },
+        "groundingChunkIndices": [
+          1,
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1062,
+          "endIndex": 1264,
+          "text": "Ele conclui que aceitar ir como secretário — unindo o presidente, a \"presidenta\" (Virgília) e ele próprio — seria uma forma engenhosa e administrativa de resolver a situação de manter o romance"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      }
+    ]
+  }
+}

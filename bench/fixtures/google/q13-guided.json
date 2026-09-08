@@ -1,0 +1,243 @@
+{
+  "id": "q13-guided",
+  "model": "gemini-3.5-flash-lite",
+  "recordedAt": "2026-09-08T15:37:31.392Z",
+  "reportVersion": "bench-report-1",
+  "storeEmbeddingModel": "gemini-embedding-2",
+  "storeChunking": {
+    "maxTokensPerChunk": 200,
+    "maxOverlapTokens": 20
+  },
+  "parts": [
+    {
+      "text": "Em ***Memórias Póstumas de Brás Cubas***, de Machado de Assis, **Nhã-lóló** (cujo nome verdadeiro é D. Eulália) é uma personagem que surge na segunda metade da narrativa.\n\nAqui estão os detalhes sobre quem ela é, como entra na vida do protagonista e o seu desfecho:\n\n### 1. Quem é Nhã-lóló?\nNhã-lóló é filha de Damasceno. É descrita como uma moça muito graciosa, com um coração de \"pérola\", embora um tanto acanhada no início e sem muita elegância mundana. No entanto, ela compensava isso com olhos soberbos e uma voz \"muito mimosa\" ao cantar. Ela é apresentada como uma candidata ideal a esposa, dotada de excelente índole.\n\n### 2. Como ela entra na vida de Brás Cubas?\nA entrada de Nhã-lóló na vida de Brás Cubas é articulada por sua irmã, **Sabina**, e por seu cunhado, **Cotrim**. \nBuscando casar Brás Cubas — visto que ele já tem certa idade e nutre ambições políticas (para as quais o celibato seria uma desvantagem) —, Sabina promove um jantar em sua casa com o objetivo premeditado de juntá-los. No jantar, Brás Cubas é colocado ao lado de Nhã-lóló. \n\nApesar de a moça demonstrar imediato interesse e encanto por Brás Cubas (ficando com os olhos cravados nele o tempo todo), o protagonista inicialmente esquiva-se e resiste à ideia. Contudo, pressionado por Sabina — que decreta categoricamente que ele há de casar com Nhã-lóló \"quer queira quer não\" —, o compromisso acaba por se ajeitar nos planos futuros do protagonista devido às conveniências sociais e políticas.\n\n### 3. O que acontece com ela?\nO destino de Nhã-lóló é trágico e abrupto. Antes que o casamento com Brás Cubas possa se realizar, irrompe na cidade uma epidemia de **febre amarela**. \n\nA doença acaba vitimando Nhã-lóló, que falece tragicamente. Brás Cubas acompanha o seu enterro até o jazigo, embora confesse que se despediu dela triste, mas sem lágrimas, concluindo que talvez não a amasse de verdade. O narrador reflete, com o seu habitual tom cínico e filosófico (reforçado pelas conversas com Quincas Borba), sobre o absurdo daquela morte no contexto de uma epidemia que dizimava indiscriminadamente."
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 78,
+    "candidatesTokenCount": 735,
+    "totalTokenCount": 15575,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 78
+      }
+    ],
+    "toolUsePromptTokenCount": 14762,
+    "toolUsePromptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 14762
+      }
+    ],
+    "serviceTier": "standard"
+  },
+  "groundingMetadata": {
+    "groundingChunks": [
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "Cotrim. Saiu; fechei-lhe a\nporta... Uf!\n\n\n\n\nCAPITULO XCIII\n\n\nO jantar\n\n\nQue supplicio que foi o jantar! Felizmente, Sabina fez-me sentar ao pé\nda filha do Damasceno, uma D. Eulalia, ou mais familiarmente Nhã-lóló,\nmoça bem graciosa, um tanto acanhada a principio, mas só a principio.\nFaltava-lhe elegancia, mas compensava-a com os olhos, que eram\nsoberbos e só tinham o defeito de se não arrancarem de mim, excepto\nquando desciam ao prato; mas Nhã-lóló comia tão pouco, que quasi não\nolhava para o prato. De noite cantou; a voz era como dizia o pae,\n«muito mimosa». Não obstante, esquivei-me. Sabina veiu até á porta, e\nperguntou-me que tal achára a filha do Damasceno.\n\n--Assim, assim.\n\n--Muito sympathica, não é? acudiu ella; falta-lhe um pouco mais de\ncorte. Mas que coração! é uma perola. Bem boa noiva para você.\n\n--Não gosto de perolas.\n\n--Casmurro! Para quando é que você se guarda? para quando estiver a\ncair de maduro, já sei. Pois, meu rico, quer você queira quer não, ha\nde casar com Nhã-lóló.\n\nE dizia isto a bater-me na face com os dedos, meiga como uma pomba, e\nao mesmo tempo intimativa e resoluta. Santo Deus! seria esse o motivo\nda reconciliação? Fiquei um pouco desconsolado com a idéa, mas uma voz\nmysteriosa chamava-me á casa do Lobo Neves, disse adeus a Sabina e ás\nsuas",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "febre amarella. Não digo mais nada, a não ser que a acompanhei até\no ultimo jazigo, e me despedi triste, mas sem lagrimas. Conclui que\ntalvez não a amasse devéras.\n\nVejam agora a que excessos póde levar uma inadvertencia; doeu-me um\npouco a cegueira da epidemia que, matando á direita e á esquerda, levou\ntambem uma jovem dama, que tinha de ser minha mulher; e não cheguei\na entender a necessidade da epidemia, e menos ainda daquella morte.\nCreio até que esta me pareceu ainda mais absurda que todas as outras\nmortes. O Quincas Borba, porém, explicou-me que as epidemias eram uteis\ná especie, embora desastrosas para uma certa porção de indivíduos; e\nfez-me notar que, por mais horrendo que fosse o espectaculo, havia\numa vantagem de muito peso: a sobrevivencia do maior numero. Chegou a\nperguntar-me se, no meio do luto geral, não sentia eu algum secreto\nencanto em ter escapado ás garras da peste; mas esta pergunta era tão\ninsensata, que ficou sem resposta.\n\nSe não contei a morte, não conto igualmente a missa do setimo dia.\nA tristeza do Damasceno era profunda; esse pobre homem parecia uma\nruina. Quinze dias depois estive com elle; continuava inconsolavel, e\ndizia que a dor grande com que Deus o castigára fora ainda augmentada\ncom a que lhe infligiram os",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "pelo que respeita a Nhã-loló, não\nchegaria jámais a negar que era noiva excellente; mas dahi a aconselhar\no casamento ia um abysmo.\n\n--Lavo inteiramente as mãos, concluiu elle.\n\n--Mas você achava outro dia que eu devia casar quanto antes...\n\n--Isso é outro negocio. Acho que é indispensavel casar, principalmente\ntendo ambições politicas. Saiba que na politica o celibato é uma\nrémora. Agora, quanto á noiva, não posso ter voto, não quero, não devo,\nnão é de minha honra. Parece-me que Sabina foi além, fazendo-lhe certas\nconfidencias, segundo me disse; mas em todo caso ella não é tia carnal\nde Nhã-loló, como eu. Olhe... mas não... não digo...\n\n--Diga.\n\n--Não; não digo nada.\n\nTalvez pareça excessivo o escrupulo do Cotrim, a quem não souber que\nelle possuia um caracter ferozmente honrado. Eu mesmo fui injusto\ncom elle durante os annos que se seguiram ao inventario do meu pae.\nReconheço que era um modelo. Arguiam-n'o de avareza, e cuido que\ntinham razão; mas a avareza é apenas a exageração de uma virtude,\ne as virtudes devem ser como os orçamentos: melhor é o saldo que\no _deficit._ Como era muito secco de maneiras tinha inimigos, que\nchegavam a accusal-o de barbaro. O unico facto allegado neste\nparticular era o de mandar com frequencia escravos ao calabouço, donde\nelles desciam a escorrer sangue; mas,",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      }
+    ],
+    "groundingSupports": [
+      {
+        "segment": {
+          "startIndex": 110,
+          "endIndex": 178,
+          "text": "Eulália) é uma personagem que surge na segunda metade da narrativa"
+        },
+        "groundingChunkIndices": [
+          0,
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 306,
+          "endIndex": 339,
+          "text": "Nhã-lóló é filha de Damasceno"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 341,
+          "endIndex": 481,
+          "text": "É descrita como uma moça muito graciosa, com um coração de \"pérola\", embora um tanto acanhada no início e sem muita elegância mundana"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 483,
+          "endIndex": 568,
+          "text": "No entanto, ela compensava isso com olhos soberbos e uma voz \"muito mimosa\" ao cantar"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 570,
+          "endIndex": 651,
+          "text": "Ela é apresentada como uma candidata ideal a esposa, dotada de excelente índole"
+        },
+        "groundingChunkIndices": [
+          2,
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 700,
+          "endIndex": 818,
+          "text": "A entrada de Nhã-lóló na vida de Brás Cubas é articulada por sua irmã, **Sabina**, e por seu cunhado, **Cotrim**"
+        },
+        "groundingChunkIndices": [
+          2,
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 821,
+          "endIndex": 964,
+          "text": "Buscando casar Brás Cubas — visto que ele já tem certa idade e nutre ambições políticas (para as quais o celibato seria uma desvantagem)"
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 821,
+          "endIndex": 1047,
+          "text": "Buscando casar Brás Cubas — visto que ele já tem certa idade e nutre ambições políticas (para as quais o celibato seria uma desvantagem) —, Sabina promove um jantar em sua casa com o objetivo premeditado de juntá-los"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1049,
+          "endIndex": 1106,
+          "text": "No jantar, Brás Cubas é colocado ao lado de Nhã-lóló"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1110,
+          "endIndex": 1233,
+          "text": "Apesar de a moça demonstrar imediato interesse e encanto por Brás Cubas (ficando com os olhos cravados nele o tempo todo)"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1110,
+          "endIndex": 1292,
+          "text": "Apesar de a moça demonstrar imediato interesse e encanto por Brás Cubas (ficando com os olhos cravados nele o tempo todo), o protagonista inicialmente esquiva-se e resiste à ideia"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1294,
+          "endIndex": 1418,
+          "text": "Contudo, pressionado por Sabina — que decreta categoricamente que ele há de casar com Nhã-lóló \"quer queira quer não\""
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1622,
+          "endIndex": 1730,
+          "text": "Antes que o casamento com Brás Cubas possa se realizar, irrompe na cidade uma epidemia de **febre amarela**"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1734,
+          "endIndex": 1796,
+          "text": "A doença acaba vitimando Nhã-lóló, que falece tragicamente"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1798,
+          "endIndex": 1959,
+          "text": "Brás Cubas acompanha o seu enterro até o jazigo, embora confesse que se despediu dela triste, mas sem lágrimas, concluindo que talvez não a amasse de verdade"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1961,
+          "endIndex": 2164,
+          "text": "O narrador reflete, com o seu habitual tom cínico e filosófico (reforçado pelas conversas com Quincas Borba), sobre o absurdo daquela morte no contexto de uma epidemia que dizimava indiscriminadamente"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,205 @@
+{
+  "id": "q11-plain",
+  "parts": [
+    {
+      "text": "No romance ***Memórias Póstumas de Brás Cubas*** (1881), de Machado de Assis:\n\n* **Quem é Eugênia:** Eugenia é conhecida no livro como **“a flor da moita”**. Ela é filha de Dona Eusébia (com quem o próprio Brás Cubas teve um romance de juventude no passado, episódio conhecido como o \"encontro na moita\"). Eugenia é descrita como uma jovem bonita, de olhos lúcidos e pretos, boca fresca e compostura senhoril, além de ser uma moça singela e afetuosa.\n* **Qual é o defeito físico dela:** Ela é **coxa de nascença** (manca de uma das pernas). Brás Cubas descreve esse contraste de forma marcante, chamando-a de \"a aleijadinha\" e questionando a natureza por unir traços tão belos a um defeito físico (*“Porque bonita, se coxa? porque coxa, se bonita?”*).\n* **Por que Brás Cubas diz que não se casou com ela:** \n  Na verdade, Brás Cubas **nunca chega a propor casamento** a Eugenia, embora desfrute da companhia dela na Tijuca e chegue a beijá-la. Os motivos pelos quais ele se afasta e não se casa com ela envolvem preconceitos sociais e de classe da época, refletidos em dois pontos principais:\n  1. **O defeito físico:** O fato de ela ser coxa pesa enormemente em sua vaidade e nos padrões da aristocracia que ele representava; ele próprio afirma que a mácula física funcionava como um obstáculo intransponível para uma união legítima perante a sociedade.\n  2. **A origem ilegítima:** Eugenia é filha espúria (filha fora do casamento) de Dona Eusébia. Brás Cubas confessa que, enquanto estava com ela, olhava-a com desconfiança e suspeitava que ela *\"não podia mentir ao seu sangue, à sua origem\"*, temendo associar o seu nome nobre e as pretensões políticas de sua família a uma jovem sem legitimidade social. \n\nMovido por convenções sociais, vaidade e pela busca de uma posição de destaque (acabando por se envolver posteriormente com Virgília, que pertencia a uma família de maior influência política), Brás Cubas abandona Eugenia, deixando-a entregue à solidão."
+    }
+  ],
+  "segments": [
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 101,
+        "end": 157
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 109783,
+            "end": 109807
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 158,
+        "end": 185
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 109759,
+            "end": 109781
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 118904,
+            "end": 118924
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 306,
+        "end": 450
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 117687,
+            "end": 117767
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 117398,
+            "end": 117437
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 118882,
+            "end": 118902
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 487,
+        "end": 540
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 116485,
+            "end": 116521
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 541,
+        "end": 751
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 123706,
+            "end": 123759
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 117846,
+            "end": 117893
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 117768,
+            "end": 117845
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 810,
+        "end": 943
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 119452,
+            "end": 119497
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 122239,
+            "end": 122273
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 119033,
+            "end": 119050
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1098,
+        "end": 1354
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 121870,
+            "end": 121932
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1360,
+        "end": 1450
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 118904,
+            "end": 118924
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1451,
+        "end": 1596
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 119889,
+            "end": 119950
+          }
+        }
+      ]
+    }
+  ],
+  "labeledBy": "MPT0M",
+  "labeledAt": "2026-09-08T21:22:35.369Z"
+}

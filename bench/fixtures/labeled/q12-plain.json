@@ -1,0 +1,187 @@
+{
+  "id": "q12-plain",
+  "parts": [
+    {
+      "text": "No famoso episódio de ***Memórias Pósthumas de Brás Cubas*** (de Machado de Assis), a situação do acidente e a recompensa ao almocreve ocorrem da seguinte forma:\n\n### O que acontece no episódio?\nEnquanto Brás Cubas cavalga, o seu jumento se assusta ou sofre um desmantelo que por pouco não resulta em uma tragédia fatal para o protagonista (\"*Pois não é certo que ia morrendo?*\"). O animal dispara ou se descontrola, mas um **almocreve** (conduzidor de bestas de carga) intervém a tempo, ajudando a acalmar a situação e a consertar os arreios do animal com muito zelo enquanto Brás Cubas recupera os sentidos.\n\n### Quanto Brás Cubas decide dar a ele?\nO processo mental de Brás Cubas sobre a gorjeta é marcado pela típica pão-durice e ironia machadianas:\n1. Inicialmente, ele pensa em dar **três moedas de ouro** (das cinco que trazia no colete), julgando ser uma recompensa digna pela dedicação.\n2. Logo em seguida, reflete que talvez três fossem demais e pondera baixar para **duas moedas**, ou até mesmo **uma só**, concluindo que uma única moeda de ouro já faria aquele \"pobre diabo\" ter estremeções de alegria.\n3. No entanto, ao ir buscar o colete velho onde guardava o dinheiro, ele acaba pegando erradamente uma moeda de menor valor e mete na mão do almocreve um **cruzado em prata**. \n4. Só depois de partir é que Brás Cubas percebe o engano ao enfiar os dedos no bolso e encontrar os vinténs de cobre que *deveria* ter dado; ele percebe que o cruzado de prata foi generoso demais e, em seguida, começa a racionalizar para se convencer de que o almocreve não merecia nada, afinal o homem apenas agira por impulso natural e nem sequer esperava recompensa."
+    }
+  ],
+  "segments": [
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 195,
+        "end": 380
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 84740,
+            "end": 84781
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 86167,
+            "end": 86202
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 85520,
+            "end": 85544
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 381,
+        "end": 609
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 85104,
+            "end": 85151
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 85722,
+            "end": 85779
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 757,
+        "end": 895
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 85789,
+            "end": 85845
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 85930,
+            "end": 85986
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 86334,
+            "end": 86387
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 899,
+        "end": 1114
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 86456,
+            "end": 86510
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 86528,
+            "end": 86582
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 86606,
+            "end": 86665
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1241,
+        "end": 1289
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 87186,
+            "end": 87222
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1295,
+        "end": 1431
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 87645,
+            "end": 87712
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1433,
+        "end": 1661
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 87509,
+            "end": 87550
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 87789,
+            "end": 87815
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 88052,
+            "end": 88091
+          }
+        }
+      ]
+    }
+  ],
+  "labeledBy": "MPT0M",
+  "labeledAt": "2026-09-08T16:15:28.036Z"
+}

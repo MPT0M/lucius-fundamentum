@@ -1,0 +1,215 @@
+{
+  "id": "q22-guided",
+  "model": "gemini-3.5-flash-lite",
+  "recordedAt": "2026-09-08T15:37:31.392Z",
+  "reportVersion": "bench-report-1",
+  "storeEmbeddingModel": "gemini-embedding-2",
+  "storeChunking": {
+    "maxTokensPerChunk": 200,
+    "maxOverlapTokens": 20
+  },
+  "parts": [
+    {
+      "text": "Em ***Memórias Póstumas de Brás Cubas***, de Machado de Assis, **Damasceno** é um personagem secundário de relevo que se cruza com a vida do protagonista especialmente na segunda metade do romance, com desdobramentos que marcam os últimos anos e as reflexões finais de Brás Cubas.\n\n### Quem é Damasceno?\nDamasceno é um homem de classe média, conhecido da família de Brás Cubas (ligado também aos Cotrim), pai de **D. Eulália**, mais familiarmente conhecida como **Nhã-lóló**. No enredo, ele é apresentado como um pai dedicado e afetuoso, cuja vida gira em torno da filha. \n\n### O papel de Damasceno nos últimos anos de Brás Cubas\nO papel de Damasceno desdobra-se em momentos cruciais da vida e do ocaso do protagonista:\n\n1. **A tentativa de casamento (O pretendente de Nhã-lóló):** \n   Em uma fase da vida em que Brás Cubas se vê pressionado a casar e assentar a vida, os familiares (em especial sua irmã Sabina e o cunhado Cotrim) empurram-no para o casamento com Nhã-lóló, a filha de Damasceno. Damasceno nutre grandes expectativas em relação a essa união, vendo com muito bons olhos a possibilidade de Brás Cubas se tornar seu genro. No entanto, o próprio Brás Cubas demonstra hesitação e desinteresse genuíno pelo enlace (\"Não gosto de pérolas\", diz ele), e o matrimônio acaba não se concretizando da forma planejada.\n\n2. **A tragédia da epidemia e a morte de Nhã-lóló:**\n   Anos mais tarde, o Rio de Janeiro é assolado por uma grave epidemia de febre amarela. A doença atinge Nhã-lóló, que acaba por falecer. Essa morte atinge profundamente Damasceno, deixando-o completamente inconsolável, transformado em uma \"ruína\" humana devido à perda da filha única. \n\n3. **O luto, a solidão e a \"Formalidade\":**\n   Após a morte de Nhã-lóló, Brás Cubas visita um Damasceno mergulhado em profundo sofrimento. O velho pai chora não apenas a morte da filha, mas também a traição e o abandono dos \"amigos\": ele havia enviado cerca de oitenta convites para o funeral, mas apenas doze pessoas compareceram para acompanhar o féretro (sendo a maioria amigos do Cotrim). \n   \n   Enquanto Damasceno se lamenta amargamente por ter sido \"desamparado\" pelos conhecidos em seu momento de maior dor, o Cotrim e o próprio Brás Cubas analisam a situação sob a perspectiva da conveniência social. É justamente a partir desse desabafo melancólico de Damasceno (*\"Mas viessem!\"* — referindo-se à obrigação social dos convites) que Brás Cubas desenvolve uma de suas digressões filosóficas mais célebres: o **Capítulo CXXVII (\"Formalidade\")**. Nele, o defunto-autor exalta a \"Formalidade\" como o grande bálsamo, a engrenagem social e a máscara polida que regula as relações humanas, enxuga as lágrimas e permite que a sociedade continue funcionando através das aparências.\n\nAssim, Damasceno personifica a dor humana autêntica diante da perda, servindo simultaneamente como catalisador para uma das reflexões irônicas e niilistas mais marcantes de Brás Cubas sobre a hipocrisia e as convenções da sociedade burguesa oitocentista."
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 73,
+    "candidatesTokenCount": 947,
+    "totalTokenCount": 15693,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 73
+      }
+    ],
+    "toolUsePromptTokenCount": 14673,
+    "toolUsePromptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 14673
+      }
+    ],
+    "serviceTier": "standard"
+  },
+  "groundingMetadata": {
+    "groundingChunks": [
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "continuava inconsolavel, e\ndizia que a dor grande com que Deus o castigára fora ainda augmentada\ncom a que lhe infligiram os homens. Não me disse mais nada. Tres\nsemanas depois tornou ao assumpto, e então confessou-me que, no no\nmeio do desastre irreparavel, quizera ter a consolação da presença dos\namigos. Doze pessoas apenas, e tres quartas partes amigos do Cotrim,\nacompanharam á cova o cadaver de sua querida filha. E elle fizera\nexpedir oitenta convites. Ponderei-lhe que as perdas eram tão geraes\nque bem se podia desculpar essa desattenção apparente. O Damasceno\nabanava a cabeça de um modo incrédulo e triste.\n\n--Qual! gemia elle, desampararam-me.\n\nO Cotrim, que estava presente:\n\n--Vieram os que devéras se interessam por você é por nós. Os oitenta\nviriam por formalidade, falariam da inercia do governo, das panacéas\ndos boticarios, do preço das casas, ou uns dos outros...\n\nO Damasceno ouviu calado, abanou outra vez a cabeça, e suspirou:\n\n--Mas viessem!\n\n\n\n\nCAPITULO CXXVII\n\n\nFormalidade\n\n\nGrande cousa é haver recebido do ceu uma particula da sabedoria, o dom\nde achar as relações das cousas, a faculdade de as comparar e o talento\nde concluir! Eu tive essa distincção psychica; eu a agradeço ainda\nagora do fundo do meu sepulchro.\n\nDe facto, o homem vulgar que ouvisse a ultima palavra do Damasceno,\nnão se lembraria della, quando, tempos depois,",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "Cotrim. Saiu; fechei-lhe a\nporta... Uf!\n\n\n\n\nCAPITULO XCIII\n\n\nO jantar\n\n\nQue supplicio que foi o jantar! Felizmente, Sabina fez-me sentar ao pé\nda filha do Damasceno, uma D. Eulalia, ou mais familiarmente Nhã-lóló,\nmoça bem graciosa, um tanto acanhada a principio, mas só a principio.\nFaltava-lhe elegancia, mas compensava-a com os olhos, que eram\nsoberbos e só tinham o defeito de se não arrancarem de mim, excepto\nquando desciam ao prato; mas Nhã-lóló comia tão pouco, que quasi não\nolhava para o prato. De noite cantou; a voz era como dizia o pae,\n«muito mimosa». Não obstante, esquivei-me. Sabina veiu até á porta, e\nperguntou-me que tal achára a filha do Damasceno.\n\n--Assim, assim.\n\n--Muito sympathica, não é? acudiu ella; falta-lhe um pouco mais de\ncorte. Mas que coração! é uma perola. Bem boa noiva para você.\n\n--Não gosto de perolas.\n\n--Casmurro! Para quando é que você se guarda? para quando estiver a\ncair de maduro, já sei. Pois, meu rico, quer você queira quer não, ha\nde casar com Nhã-lóló.\n\nE dizia isto a bater-me na face com os dedos, meiga como uma pomba, e\nao mesmo tempo intimativa e resoluta. Santo Deus! seria esse o motivo\nda reconciliação? Fiquei um pouco desconsolado com a idéa, mas uma voz\nmysteriosa chamava-me á casa do Lobo Neves, disse adeus a Sabina e ás\nsuas",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "febre amarella. Não digo mais nada, a não ser que a acompanhei até\no ultimo jazigo, e me despedi triste, mas sem lagrimas. Conclui que\ntalvez não a amasse devéras.\n\nVejam agora a que excessos póde levar uma inadvertencia; doeu-me um\npouco a cegueira da epidemia que, matando á direita e á esquerda, levou\ntambem uma jovem dama, que tinha de ser minha mulher; e não cheguei\na entender a necessidade da epidemia, e menos ainda daquella morte.\nCreio até que esta me pareceu ainda mais absurda que todas as outras\nmortes. O Quincas Borba, porém, explicou-me que as epidemias eram uteis\ná especie, embora desastrosas para uma certa porção de indivíduos; e\nfez-me notar que, por mais horrendo que fosse o espectaculo, havia\numa vantagem de muito peso: a sobrevivencia do maior numero. Chegou a\nperguntar-me se, no meio do luto geral, não sentia eu algum secreto\nencanto em ter escapado ás garras da peste; mas esta pergunta era tão\ninsensata, que ficou sem resposta.\n\nSe não contei a morte, não conto igualmente a missa do setimo dia.\nA tristeza do Damasceno era profunda; esse pobre homem parecia uma\nruina. Quinze dias depois estive com elle; continuava inconsolavel, e\ndizia que a dor grande com que Deus o castigára fora ainda augmentada\ncom a que lhe infligiram os",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "do meu sepulchro.\n\nDe facto, o homem vulgar que ouvisse a ultima palavra do Damasceno,\nnão se lembraria della, quando, tempos depois, houvesse de olhar para\numa gravura representando seis damas turcas. Pois eu lembrei-me. Eram\nseis damas de Constantinopla,--modernas,--em trajos de rua, com a\ncara tapada, não tapada á outra maneira, com um espesso panno que as\ncobrisse devéras, mas com um veu tenuissimo, que simulava descobrir\nsomente os olhos, e na realidade descobria a cara inteira. E eu achei\ngraça a essa esperteza da faceirice musulmana, que assim esconde o\nrosto,--e cumpre o uso,--mas não o esconde,--e divulga a belleza.\nApparentemente, nada ha entre as damas turcas e o Damasceno; mas se\ntu és um espirito profundo e penetrante (e duvido muito que me negues\nisso), comprehenderás que, tanto n'um como n'outro caso, surge ahi a\norelha de uma rigida e meiga companheira do homem social...\n\nAmavel Formalidade, tu és, sim, o bordão da vida, o balsamo dos\ncorações, a medianeira entre os homens, o vinculo da terra e do ceu; tu\nenxugas as lagrimas de um pae, tu captas a indulgencia de um Propheta;\ne se a dôr adormece, e se a consciencia se accommoda, a quem, senão a\nti, deverão esse immenso beneficio? A estima que passa de chapeu na\ncabeça não diz nada á",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      }
+    ],
+    "groundingSupports": [
+      {
+        "segment": {
+          "startIndex": 313,
+          "endIndex": 417,
+          "text": "Damasceno é um homem de classe média, conhecido da família de Brás Cubas (ligado também aos Cotrim)"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 431,
+          "endIndex": 492,
+          "text": "Eulália**, mais familiarmente conhecida como **Nhã-lóló**"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 745,
+          "endIndex": 1025,
+          "text": "**A tentativa de casamento (O pretendente de Nhã-lóló):** \n   Em uma fase da vida em que Brás Cubas se vê pressionado a casar e assentar a vida, os familiares (em especial sua irmã Sabina e o cunhado Cotrim) empurram-no para o casamento com Nhã-lóló, a filha de Damasceno"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1171,
+          "endIndex": 1299,
+          "text": "No entanto, o próprio Brás Cubas demonstra hesitação e desinteresse genuíno pelo enlace (\"Não gosto de pérolas\", diz ele)"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1369,
+          "endIndex": 1511,
+          "text": "**A tragédia da epidemia e a morte de Nhã-lóló:**\n   Anos mais tarde, o Rio de Janeiro é assolado por uma grave epidemia de febre amarela"
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1513,
+          "endIndex": 1564,
+          "text": "A doença atinge Nhã-lóló, que acaba por falecer"
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1566,
+          "endIndex": 1716,
+          "text": "Essa morte atinge profundamente Damasceno, deixando-o completamente inconsolável, transformado em uma \"ruína\" humana devido à perda da filha única"
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1723,
+          "endIndex": 1863,
+          "text": "**O luto, a solidão e a \"Formalidade\":**\n   Após a morte de Nhã-lóló, Brás Cubas visita um Damasceno mergulhado em profundo sofrimento"
+        },
+        "groundingChunkIndices": [
+          0,
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1865,
+          "endIndex": 2122,
+          "text": "O velho pai chora não apenas a morte da filha, mas também a traição e o abandono dos \"amigos\": ele havia enviado cerca de oitenta convites para o funeral, mas apenas doze pessoas compareceram para acompanhar o féretro (sendo a maioria amigos do Cotrim)"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 2132,
+          "endIndex": 2245,
+          "text": "Enquanto Damasceno se lamenta amargamente por ter sido \"desamparado\" pelos conhecidos em seu momento de maior dor"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 2346,
+          "endIndex": 2599,
+          "text": "É justamente a partir desse desabafo melancólico de Damasceno (*\"Mas viessem!\"* — referindo-se à obrigação social dos convites) que Brás Cubas desenvolve uma de suas digressões filosóficas mais célebres: o **Capítulo CXXVII (\"Formalidade\")**"
+        },
+        "groundingChunkIndices": [
+          0,
+          3
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 2601,
+          "endIndex": 2835,
+          "text": "Nele, o defunto-autor exalta a \"Formalidade\" como o grande bálsamo, a engrenagem social e a máscara polida que regula as relações humanas, enxuga as lágrimas e permite que a sociedade continue funcionando através das aparências"
+        },
+        "groundingChunkIndices": [
+          3
+        ]
+      }
+    ]
+  }
+}

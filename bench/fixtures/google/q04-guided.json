@@ -1,0 +1,164 @@
+{
+  "id": "q04-guided",
+  "model": "gemini-3.5-flash-lite",
+  "recordedAt": "2026-09-08T11:17:27.530Z",
+  "reportVersion": "bench-report-1",
+  "storeEmbeddingModel": "gemini-embedding-2",
+  "storeChunking": {
+    "maxTokensPerChunk": 200,
+    "maxOverlapTokens": 20
+  },
+  "parts": [
+    {
+      "text": "Com base em *Memórias Póstumas de Brás Cubas*, de Machado de Assis:\n\n* **Quem foi Marcela:** \nMarcella era uma espanhola descrita por Brás Cubas como uma jovem bela, lépida, sem escrúpulos, luxuosa, impaciente, e muito «amiga de dinheiro e de rapazes». Ela pertencia ao meio das chamadas mulheres de partido (ou seja, cortesãs da época) e, quando Brás Cubas a conheceu nas comemorações da Independência, vivia rodeada de luxos, mantida por presentes de admiradores (como o jovem abastado e tístico Xavier e um desembargador que lhe doara uma rica baixella da Índia). Tornou-se a grande paixão juvenil de Brás Cubas, que gastou uma fortuna para mantê-la até esgotar os recursos de sua família.\n\n* **Quanto tempo durou o amor por ela:** \nNas palavras irônicas e célebres do próprio Brás Cubas, o amor de Marcela durou exatamente **«quinze mezes e onze contos de réis; nada menos»**. O romance acabou ruindo e chegando ao fim justamente quando o dinheiro e as posses da família de Brás Cubas se esgotaram e ele não pôde mais custear os caprichos e presentes caros da amada."
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 81,
+    "candidatesTokenCount": 587,
+    "totalTokenCount": 105262,
+    "cachedContentTokenCount": 16017,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 81
+      }
+    ],
+    "cacheTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 16017
+      }
+    ],
+    "toolUsePromptTokenCount": 104594,
+    "toolUsePromptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 104594
+      }
+    ],
+    "serviceTier": "standard"
+  },
+  "groundingMetadata": {
+    "groundingChunks": [
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "porém, o pae, lettrado\nou hortelão, a verdade é que Marcella não possuia a innocencia rustica,\ne mal chegava a entender a moral do codigo. Era boa moça, lepida,\nsem escrupulos, um pouco tolhida pela austeridade do tempo, que lhe\nnão permittia arrastar pelas ruas os seus estouvamentos e berlindas;\nluxuosa, impaciente, amiga de dinheiro e de rapazes. Naquelle anno,\nmorria ella de amores por um certo Xavier, sujeito abastado e\ntisico,--uma perola.\n\nVi-a, pela primeira vez, no Rocio Grande, na noite das luminarias, logo\nque constou a declaração da independencia, uma festa de primavera, um\namanhecer da alma publica. Eramos dous rapazes, o povo e eu; vinhamos\nda infancia, com todos os arrebatamentos da juventude. Vi-a sahir\nde uma cadeirinha, airosa e vistosa, um corpo esbelto, ondulante,\num desgarre, alguma cousa que nunca achara nas mulheres puras.\n--Segue-me, disse ella ao pagem. E eu segui-a, tão pagem como o outro,\ncomo se a ordem me fosse dada, deixei-me ir namorado, vibrante, cheio\ndas primeiras auroras. A meio caminho, chamaram-lhe «linda Marcella»,\nlembrou-me que ouvira tal nome a meu tio João, e fiquei, confesso que\nfiquei tonto.\n\nTres dias depois perguntou-me meu tio, em segredo, se queria ir a uma\nceia de moças, nos Cajueiros. Fomos; era em casa de Marcella. O Xavier,\ncom todos os seus tuberculos, presidia ao banquete",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "uma\nceia de moças, nos Cajueiros. Fomos; era em casa de Marcella. O Xavier,\ncom todos os seus tuberculos, presidia ao banquete nocturno, em que\neu pouco ou nada comi, porque só tinha olhos para a dona da casa.\nQue gentil que ella estava a hespanhola! Havia mais uma meia duzia\nde mulheres,--todas de partido--, e bonitas, cheias de graça, mas a\nhespanhola... O enthusiasmo, alguns goles de vinho, o genio imperioso,\nestouvado, tudo isso me levou a fazer uma cousa unica; á sahida, á\nporta da rua, disse a meu tio que esperasse um instante, e tornei a\nsubir as escadas.\n\n--Esqueceu alguma cousa? perguntou Marcella de pé, no patamar.\n\n--O lenço.\n\nElla ia abrir-me caminho para tornar á sala; eu segurei-lhe nas mãos,\npuxei-a para mim, e dei-lhe um beijo. Não sei se ella disse alguma\ncousa, se gritou, se chamou alguem; não sei nada; sei que desci outra\nvez as escadas, veloz como um tufão, e incerto como um ebrio.\n\n\n\n\nCAPITULO XV\n\n\nMarcella\n\n\nGastei trinta dias para ir do Rocio Grande ao coração de Marcella,\nnão já cavalgando o corsel do cégo desejo, mas o asno da paciência,\na um tempo manhoso e teimoso. Que, na verdade, ha dous meios de\ngrangear a vontade das mulheres: o violento, como o touro de Europa,\ne o insinuativo, como o cysne",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "passeio ou outra cousa assim, e ella cedia\na tudo, risonha e palreira.\n\n--Você é das Arabias, dizia-me.\n\nE ia pôr o vestido, a renda, os brincos, com uma obediencia de\nencantar.\n\n\n\n\nCAPITULO XVI\n\n\nUma reflexão immoral\n\n\nOccorre-me uma reflexão immoral, que é ao mesmo tempo uma correcção de\nestylo. Cuido haver dito, no cap. XIII, que Marcella morria de amores\npelo Xavier. Não morria, vivia. Viver não é a mesma cousa que morrer\nassim o affirmam todos os joalheiros desse mundo, gente muito vista\nna grammatica. Bons joalheiros, que seria do amor se não fossem os\nvossos dixes e fiados? Um terço ou um quinto do universal commercio\ndos corações. Esta é a reflexão immoral que eu pretendia fazer, a qual\né ainda mais obscura do que immoral, porque não se entende bem o que\neu quero dizer. O que eu quero dizer é que a mais bella testa do mundo\nnão fica menos bella, se a cingir um diadema de pedras finas; nem menos\nbella, nem menos amada. Marcella, por exemplo, que era bem bonita,\nMarcella amou-me...\n\n\n\n\nCAPITULO XVII\n\n\nDo trapezio e outras cousas\n\n\n... Marcella amou-me durante quinze mezes e onze contos de réis; nada\nmenos. Meu pae, logo que teve aragem dos onze contos, sobresaltou-se\ndevéras; achou que o caso excedia as raias de um capricho juvenil.\n\n--Desta vez, disse",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "procurar\nmelhor luz, a ensaial-a em si, e a rir, e a beijar-me com uma\nreincidencia impetuosa e sincera; mas, protestando, derramava-se-lhe\na felicidade dos olhos, e eu sentia-me feliz com vêl-a assim. Gostava\nmuito das nossas antigas dobras de ouro, e eu levava-lhe quantas podia\nobter; Marcella juntava-as todas dentro de uma caixinha de ferro,\ncuja chave ninguem nunca jámais soube onde ficava; escondia-a por\nmedo dos escravos. A casa em que morava, nos Cajueiros, era propria.\nEram solidos e bons os moveis, de jacarandá lavrado, e todas as\ndemais alfaias, espelhos, jarras, baixella,--uma linda baixella da\nIndia, que lhe doára um desembargador. Baixella do diabo, deste-me\ngrandes repellões aos nervos. Disse-o muita vez á própria dona;\nnão lhe dissimulava o tedio que me faziam esses e outros despojos\ndos seus amores de antanho. Ella ouvia-me e ria, com uma expressão\ncandida,--candida e outra cousa, que eu nesse tempo não entendia bem;\nmas agora, relembrando o caso, penso que era um riso mixto, como devia\nter a creatura que nascesse, por exemplo, de uma bruxa de Shakespeare\ncom um seraphim de Klopstock. Não sei se me explico. E porque tinha\nnoticia dos meus zelos tardios, parece que gostava de os açular mais.\nAssim foi que um dia, como eu lhe não pudesse dar certo collar, que\nella vira n'um",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      }
+    ],
+    "groundingSupports": [
+      {
+        "segment": {
+          "startIndex": 72,
+          "endIndex": 259,
+          "text": "* **Quem foi Marcela:** \nMarcella era uma espanhola descrita por Brás Cubas como uma jovem bela, lépida, sem escrúpulos, luxuosa, impaciente, e muito «amiga de dinheiro e de rapazes»"
+        },
+        "groundingChunkIndices": [
+          0,
+          1,
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 261,
+          "endIndex": 315,
+          "text": "Ela pertencia ao meio das chamadas mulheres de partido"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 261,
+          "endIndex": 416,
+          "text": "Ela pertencia ao meio das chamadas mulheres de partido (ou seja, cortesãs da época) e, quando Brás Cubas a conheceu nas comemorações da Independência"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 261,
+          "endIndex": 581,
+          "text": "Ela pertencia ao meio das chamadas mulheres de partido (ou seja, cortesãs da época) e, quando Brás Cubas a conheceu nas comemorações da Independência, vivia rodeada de luxos, mantida por presentes de admiradores (como o jovem abastado e tístico Xavier e um desembargador que lhe doara uma rica baixella da Índia)"
+        },
+        "groundingChunkIndices": [
+          0,
+          3
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 715,
+          "endIndex": 907,
+          "text": "* **Quanto tempo durou o amor por ela:** \nNas palavras irônicas e célebres do próprio Brás Cubas, o amor de Marcela durou exatamente **«quinze mezes e onze contos de réis; nada menos»**"
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 909,
+          "endIndex": 1101,
+          "text": "O romance acabou ruindo e chegando ao fim justamente quando o dinheiro e as posses da família de Brás Cubas se esgotaram e ele não pôde mais custear os caprichos e presentes caros da amada"
+        },
+        "groundingChunkIndices": [
+          3,
+          2
+        ]
+      }
+    ]
+  }
+}

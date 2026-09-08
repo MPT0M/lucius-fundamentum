@@ -1,0 +1,180 @@
+{
+  "id": "q14-guided",
+  "model": "gemini-3.5-flash-lite",
+  "recordedAt": "2026-09-08T15:37:31.392Z",
+  "reportVersion": "bench-report-1",
+  "storeEmbeddingModel": "gemini-embedding-2",
+  "storeChunking": {
+    "maxTokensPerChunk": 200,
+    "maxOverlapTokens": 20
+  },
+  "parts": [
+    {
+      "text": "Em *Memórias Póstumas de Brás Cubas*, de Machado de Assis, a forma como Brás Cubas aborda a doença e a morte da mãe, bem como os seus atos seguintes, reflete o tom irônico e muitas vezes distanciado do narrador defunto.\n\n### Como Brás Cubas conta a morte da mãe\nAntes de detalhar o desfecho, Brás Cubas relata o sofrimento da mãe (D. Dona Hipólita, embora frequentemente referida apenas no contexto familiar) pontuado por um forte sentimento de nostalgia ao retornar à casa e ver as cenas da infância. Em seguida, ele descreve a consternação da família e a gravidade da doença: não era mais o reumatismo que a debilitava, mas sim um **cancro no estômago**. \n\nO narrador descreve o sofrimento da mãe de maneira crua, observando que a doença feria de modo implacável, já que \"o cancro é indifferente ás virtudes do sujeito; quando róe, róe; roer é o seu officio\". Ele menciona o esgotamento da irmã Sabina (casada com Cotrim), que mal dormia cuidando da enferma, além do abatimento do tio João e de D. Eusébia. No momento final, a dor da enferma cessa brevemente com um sorriso quando ouve \"Meu filho!\", enquanto a morte bate a \"asa eterna\" sobre o seu rosto. Curiosamente, ao narrar o sepultamento e o acompanhamento até o último jazigo, Brás Cubas confessa que se despediu \"triste, mas sem lagrimas\", concluindo friamente: *“Conclui que talvez não a amasse devéras.”*\n\n### O que ele faz em seguida na Tijuca\nLogo após o luto formal, no sétimo dia e logo após terminada a missa fúnebre, Brás Cubas decide se afastar da cidade e do sufoco das condolências familiares:\n\n* **Isolamento na Tijuca:** Ele pega uma espingarda, alguns livros, roupa, charutos e um moleque (Prudêncio) e vai refugiar-se em uma velha casa que pertencia à sua família na **Tijuca**.\n* **Resistência à família:** A sua resolução de isolamento gera forte resistência: o pai tenta dissuadi-lo, a irmã Sabina queria que ele fosse morar com ela, e o cunhado esteve prestes a levá-lo \"à força\", mas Brás Cubas mantém-se irredutível na sua vontade de se retirar.\n* **Estilo de vida simples:** Na Tijuca, ele passa as primeiras semanas vivendo uma vida simples — refletindo o contraste com o tom muitas vezes enfático ou artificial da alta sociedade da época —, dedicando-se a uma rotina pacata e solitária junto à natureza, caçando, fumando e lendo."
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 75,
+    "candidatesTokenCount": 752,
+    "totalTokenCount": 15423,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 75
+      }
+    ],
+    "toolUsePromptTokenCount": 14596,
+    "toolUsePromptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 14596
+      }
+    ],
+    "serviceTier": "standard"
+  },
+  "groundingMetadata": {
+    "groundingChunks": [
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "nova.\nNão era effeito da minha patria politica; era-o do logar da infancia,\na rua, a torre, o chafariz da esquina, a mulher de mantilha, o preto\ndo ganho, as cousas e scenas da meninice, buriladas na memoria. Nada\nmenos que uma renascença. O espirito, como um passaro, não se lhe deu\nda corrente dos annos, arrepiou o vôo na direcção da fonte original, e\nfoi beber da agua fresca e pura, ainda não mesclada do enxurro da vida.\n\nReparando bem, ha ahi um logar-commum. Outro logar-commum, tristemente\ncommum, foi a consternação da familia. Meu pae abraçou-me com\nlagrimas.--Tua mãe não póde viver, disse-me elle. Com effeito, não era\njá o rheumatismo que a matava, era um cancro no estomago. A infeliz\npadecia de um modo crú, porque o cancro é indifferente ás virtudes do\nsujeito; quando róe, róe; roer é o seu officio. Minha irmã Sabina, já\nentão casada com o Cotrim, andava a cair de fadiga. Pobre moça! dormia\ntres horas por noite, nada mais. O proprio tio João estava abatido e\ntriste. D. Eusebia e algumas outras senhoras lá estavam tambem, não\nmenos tristes e não menos dedicadas.\n\n--Meu filho!\n\nA dor suspendeu por um pouco as tenazes; um sorriso allumiou o rosto da\nenferma, sobre o qual a morte batia a aza eterna. Era menos",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "febre amarella. Não digo mais nada, a não ser que a acompanhei até\no ultimo jazigo, e me despedi triste, mas sem lagrimas. Conclui que\ntalvez não a amasse devéras.\n\nVejam agora a que excessos póde levar uma inadvertencia; doeu-me um\npouco a cegueira da epidemia que, matando á direita e á esquerda, levou\ntambem uma jovem dama, que tinha de ser minha mulher; e não cheguei\na entender a necessidade da epidemia, e menos ainda daquella morte.\nCreio até que esta me pareceu ainda mais absurda que todas as outras\nmortes. O Quincas Borba, porém, explicou-me que as epidemias eram uteis\ná especie, embora desastrosas para uma certa porção de indivíduos; e\nfez-me notar que, por mais horrendo que fosse o espectaculo, havia\numa vantagem de muito peso: a sobrevivencia do maior numero. Chegou a\nperguntar-me se, no meio do luto geral, não sentia eu algum secreto\nencanto em ter escapado ás garras da peste; mas esta pergunta era tão\ninsensata, que ficou sem resposta.\n\nSe não contei a morte, não conto igualmente a missa do setimo dia.\nA tristeza do Damasceno era profunda; esse pobre homem parecia uma\nruina. Quinze dias depois estive com elle; continuava inconsolavel, e\ndizia que a dor grande com que Deus o castigára fora ainda augmentada\ncom a que lhe infligiram os",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "hediondo. Mas, na morte, que differença! que desabafo! que\nliberdade! Como a gente póde sacudir fóra a capa, deitar ao fosso as\nlentejoulas, despregar-se, despintar-se, desaffeitar-se, confessar\nlisamente o que foi e o que deixou de ser! Porque, em summa, já não ha\nvisinhos, nem amigos, nem inimigos, nem conhecidos, nem extranhos; não\nha platéa. O olhar da opinião, esse olhar agudo e judicial, perde a\nvirtude, logo que pisamos o territorio da morte; não digo que elle se\nnão estenda para cá, e nos não examine e julgue; mas a nós é que não\nse nos dá do exame nem do julgamento. Senhores vivos, não ha nada tão\nincommensuravel como o desdem dos finados.\n\n\n\n\nCAPITULO XXV\n\n\nNa Tijuca\n\n\nUi! lá me ia a penna a escorregar para o emphatico. Sejamos simples,\ncomo era simples a vida que levei na Tijuca, durante as primeiras\nsemanas depois da morte de minha mãe.\n\nNo setimo dia, acabada a missa funebre, travei de uma espingarda,\nalguns livros, roupa, charutos, um moleque,--o Prudencio da capitulo\nXI,--e fui metter-me n'uma velha, casa de nossa propriedade. Meu\npae forcejou por me torcer a resolução, mas eu é que não podia nem\nqueria obedecer-lhe. Sabina desejava que eu fosse morar com ella algum\ntempo,--duas semanas, ao menos; meu cunhado esteve a ponto de me levar\ná fina força.",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      }
+    ],
+    "groundingSupports": [
+      {
+        "segment": {
+          "startIndex": 345,
+          "endIndex": 514,
+          "text": "Dona Hipólita, embora frequentemente referida apenas no contexto familiar) pontuado por um forte sentimento de nostalgia ao retornar à casa e ver as cenas da infância"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 516,
+          "endIndex": 675,
+          "text": "Em seguida, ele descreve a consternação da família e a gravidade da doença: não era mais o reumatismo que a debilitava, mas sim um **cancro no estômago**"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 679,
+          "endIndex": 889,
+          "text": "O narrador descreve o sofrimento da mãe de maneira crua, observando que a doença feria de modo implacável, já que \"o cancro é indifferente ás virtudes do sujeito; quando róe, róe; roer é o seu officio\""
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1032,
+          "endIndex": 1040,
+          "text": "Eusébia"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1042,
+          "endIndex": 1189,
+          "text": "No momento final, a dor da enferma cessa brevemente com um sorriso quando ouve \"Meu filho!\", enquanto a morte bate a \"asa eterna\" sobre o seu rosto"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1191,
+          "endIndex": 1409,
+          "text": "Curiosamente, ao narrar o sepultamento e o acompanhamento até o último jazigo, Brás Cubas confessa que se despediu \"triste, mas sem lagrimas\", concluindo friamente: *“Conclui que talvez não a amasse devéras.”*"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1411,
+          "endIndex": 1612,
+          "text": "### O que ele faz em seguida na Tijuca\nLogo após o luto formal, no sétimo dia e logo após terminada a missa fúnebre, Brás Cubas decide se afastar da cidade e do sufoco das condolências familiares"
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1615,
+          "endIndex": 1804,
+          "text": "* **Isolamento na Tijuca:** Ele pega uma espingarda, alguns livros, roupa, charutos e um moleque (Prudêncio) e vai refugiar-se em uma velha casa que pertencia à sua família na **Tijuca**"
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1806,
+          "endIndex": 2020,
+          "text": "* **Resistência à família:** A sua resolução de isolamento gera forte resistência: o pai tenta dissuadi-lo, a irmã Sabina queria que ele fosse morar com ela, e o cunhado esteve prestes a levá-lo \"à força\""
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 2092,
+          "endIndex": 2386,
+          "text": "* **Estilo de vida simples:** Na Tijuca, ele passa as primeiras semanas vivendo uma vida simples — refletindo o contraste com o tom muitas vezes enfático ou artificial da alta sociedade da época —, dedicando-se a uma rotina pacata e solitária junto à natureza, caçando, fumando e lendo"
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,154 @@
+{
+  "id": "q07-guided",
+  "parts": [
+    {
+      "text": "Nas *Memórias Póstumas de Brás Cubas*, de Machado de Assis, a descrição do pai e as aspirações que ele tinha para o filho aparecem logo no início da obra e ao longo de momentos decisivos da vida do protagonista.\n\n### A descrição do pai\nBrás Cubas descreve seu pai, **DMC / Luiz Cubas** (neto de Damião Cubas, um tanoeiro), como:\n* **Um bom caráter e um varão digno:** Considerado por ele um homem leal como poucos.\n* **Imaginativo e um tanto \"pachola\":** Tinha a mania de engrandecer a origem da família. Como a família descendia de um tanoeiro (fabricante de cubas/barris), o pai inventava que o sobrenome *Cubas* vinha de um cavaleiro heróico nas jornadas da África que havia arrebatado trezentas cubas aos mouros, escapando da humilhação da tanoaria \"nas asas de um *calembour*\" (jogo de palavras). Quando essa inventividade não bastava, ele também tentava se entroncar na família do capitão-mór Brás Cubas (fundador da Vila de São Vicente), motivo pelo qual batizou o filho com esse nome.\n* **Um pai amoroso, mas permissivo:** Brás Cubas relata que o pai o adorava com um \"amor sem mérito, que é um simples e forte impulso da carne\". O tio cônego frequentemente repreendia o irmão por dar a Brás mais liberdade do que ensino, e mais afeto do que correção.\n\n### A carreira que o pai queria para ele\nO pai idealizava uma trajetória de grande destaque social e político para Brás Cubas. Ele queria que o filho seguisse a **carreira política**, ambicionando vê-lo alcançar altos postos de poder — especificamente, que se tornasse **deputado** e, futuramente, **ministro de Estado**. \n\nEssa ambição paternal vinha acompanhada de planos de casamento vantajosos. Em certo momento da narrativa, o pai lhe traz um \"programa duplo\" contendo um lugar de deputado e um casamento arranjado com uma moça de boa família (que viria a ser Virgília), argumentando com insistência que uma posição política de destaque era essencial para o futuro dele."
+    }
+  ],
+  "segments": [
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 368,
+        "end": 414
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 9348,
+            "end": 9407
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 419,
+        "end": 504
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 9409,
+            "end": 9682
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 505,
+        "end": 801
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 8281,
+            "end": 8408
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 9320,
+            "end": 9347
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 802,
+        "end": 992
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 9660,
+            "end": 9785
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1031,
+        "end": 1137
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 40268,
+            "end": 40373
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1138,
+        "end": 1259
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 40835,
+            "end": 40900
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1388,
+        "end": 1542
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 100972,
+            "end": 101030
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1660,
+        "end": 1835
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 106070,
+            "end": 106150
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 106462,
+            "end": 106539
+          }
+        }
+      ]
+    }
+  ],
+  "labeledBy": "MPT0M",
+  "labeledAt": "2026-09-08"
+}

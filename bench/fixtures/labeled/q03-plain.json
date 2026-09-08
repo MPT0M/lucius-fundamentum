@@ -1,0 +1,248 @@
+{
+  "id": "q03-plain",
+  "parts": [
+    {
+      "text": "Nas *Memórias Póstumas de Brás Cubas* (de Machado de Assis), o delírio que o narrador tem pouco antes de morrer — mais especificamente nos capítulos finais, como o famoso capítulo LXXXIX (*In extremis*) e o capítulo XC (*O velho colóquio de Adão e Caim*) — é descrito como uma fantasmagoria cósmica, filosófica e alucinatória guiada pela personificação da **Natureza** ou do **Tempo**.\n\nA descrição desse delírio pode ser dividida em momentos marcantes:\n\n### 1. O arrebatamento e a visão dos séculos\nSentindo a vida esvair-se e a consciência fragmentar-se devido à pneumonia, Brás Cubas sente-se transportado por uma força superior (ou montado em um hipopótamo imaginário, em uma sátira onírica) até o alto de uma montanha. Lá do alto, a Natureza — tratada pelo narrador ora como uma mãe grandiosa, ora como um \"sublime idiota\" — ordena que ele olhe para baixo. \n\nO que ele contempla é a **condensação viva de todos os tempos da história humana** desfilando diante de seus olhos em um ritmo vertiginoso:\n* **O espetáculo da humanidade:** Ele vê as raças, as paixões, o tumulto dos impérios, a guerra de apetites e ódios, e a destruição recíproca de seres e coisas.\n* **A marcha rápida do tempo:** Os séculos desfilam num turbilhão tão veloz que \"para descrevê-lo seria preciso fixar o relâmpago\". O presente, o passado e os futuros cruzam-se numa sucessão rápida e monótona de glórias e misérias.\n* **As formas do mal:** Brás Cubas observa que a história humana é movida por um mal multiforme que corrói as vísceras e o pensamento — a cobiça que devora, a cólera que inflama, a inveja, a fome, a vaidade, a ambição e a melancolia —, agitando o homem como um chocalho até destruí-lo como um farrapo.\n\n### 2. A viagem à origem dos séculos e a região dos gelos\nEm seu delírio febril, o enfermo imagina estar cavalgando de costas (caminhando para trás no tempo) rumo à \"origem dos séculos\". Conforme avança, a sensação de frio aumenta até que ele percebe estar imerso na **região dos gelos eternos**:\n* Ele descreve uma planície inteiramente branca de neve, com montanhas, vegetação e animais feitos de neve, sob um \"sol de neve\" que gelava.\n* Ao perguntar à sua alucinação onde estavam, ouve como resposta que já haviam passado o Éden. \n\n### 3. O colóquio com a Natureza (ou com Adão e Caim)\nNo auge da alucinação, Brás Cubas dialoga com a própria essência da existência e da vida. Ele questiona por que a vida cria o amor e o desejo de viver se o destino final é a morte e a destruição. A resposta que obtém é niilista e crua: a Natureza/Tempo age movida pelo puro egoísmo da conservação e da substituição (o minuto que vem é que importa, assim como a onça mata o novilho porque precisa viver).\n\n### 4. O desfecho prosaico do delírio\nO delírio grandioso e cósmico contrasta fortemente com a realidade terrena e mesquinha do quarto de morte. O voo vertiginoso pelos séculos e pelos gelos eternos vai diminuindo de escala até que o gigantesco hipopótamo de sua alucinação encolhe progressivamente e se transforma em um gato comum — o seu gato *Sultão*, que brincava à porta da alcova. \n\nLogo em seguida, o delírio se dissipa de vez com os ruídos reais do quarto: o som de pessoas negociando o preço da casa, conversas abafadas, o acesso final de tosse e a constatação pragmática da morte."
+    }
+  ],
+  "segments": [
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 576,
+        "end": 723
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 20246,
+            "end": 20329
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 26802,
+            "end": 26839
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 724,
+        "end": 861
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 23343,
+            "end": 23401
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 26137,
+            "end": 26172
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 864,
+        "end": 1003
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 27423,
+            "end": 27483
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 27484,
+            "end": 27570
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1006,
+        "end": 1164
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 27044,
+            "end": 27184
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1167,
+        "end": 1296
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 27484,
+            "end": 27570
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1297,
+        "end": 1396
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 30840,
+            "end": 31113
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1421,
+        "end": 1698
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 27846,
+            "end": 28101
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1758,
+        "end": 1886
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 20550,
+            "end": 20613
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 21859,
+            "end": 21934
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1887,
+        "end": 1996
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 21368,
+            "end": 21492
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1999,
+        "end": 2137
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 21557,
+            "end": 21718
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 2140,
+        "end": 2232
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 21782,
+            "end": 21820
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 2525,
+        "end": 2692
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 26369,
+            "end": 26773
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 2839,
+        "end": 3080
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 31538,
+            "end": 31703
+          }
+        }
+      ]
+    }
+  ],
+  "labeledBy": "MPT0M",
+  "labeledAt": "2026-09-08"
+}

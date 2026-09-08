@@ -1,0 +1,233 @@
+{
+  "id": "q15-plain",
+  "parts": [
+    {
+      "text": "Em ***Memórias Póstumas de Brás Cubas*** (de Machado de Assis), a aparição da borboleta preta ocorre em dois momentos interligados (nos capítulos XXX e XXXI). \n\n### O que é a borboleta preta?\nLiteralmente, trata-se de um inseto (\"negra como a noite\", \"muito maior do que a outra\") que primeiro aparece na varanda da casa de Dona Eusébia (mãe de Eugênia), causando pavor supersticioso nas mulheres, que a veem como um presságio de mau agouro (\"T'esconjuro!... sáe, diabo!...\"). \n\nNo dia seguinte, uma borboleta preta idêntica entra no quarto do próprio Brás Cubas. Inicialmente ele acha graça e lembra do episódio anterior, mas o inseto começa a pousar em sua testa e, depois, sobre um retrato de seu pai, exibindo um movimento de asas com \"um certo ar escarninho, uma espécie de ironia mephistophelica, que me aborreceu muito\". \n\nEm termos **alegóricos e filosóficos**, a borboleta preta carrega múltiplos significados na obra:\n* **O acaso e a fragilidade da vida:** Representa a futilidade da existência humana diante das forças implacáveis da natureza e do destino. Para Brás Cubas, o inseto simboliza também a ironia da vida e a falta de sentido superior para os sofrimentos humanos.\n* **A ironia e o pessimismo machadiano:** Brás Cubas chega a fantasiar que a borboleta o via como um \"deus\" ou o \"inventor das borboletas\" e que, por isso, pousara em sua testa para venerá-lo. Essa reflexão fantasiosa serve para satirizar a soberba humana — a crença ridícula de que o homem é o centro do universo.\n\n### O que ele faz com ela?\nIncomodado com a presença e com a \"ironia\" do inseto, Brás Cubas tem um \"repellão dos nervos\". Movido por impaciência e irritação:\n1. Ele **pega uma toalha de rosto e bate na borboleta**, fazendo-a cair.\n2. Ao ver que ela não morreu imediatamente e continua a se contorcer, ele sente um instante de piedade, pega-a na palma da mão e a coloca no peitoril da janela para que morra lá fora.\n3. Contudo, logo em seguida, incomodado com o inseto moribundo e filosofando cinicamente sobre o fato de que, se ela fosse azul ou cor de laranja, ele talvez a atravessasse com um alfinete por mero divertimento, ele **lhe dá um piparote (um peteleco unindo o polegar ao dedo grande)**.\n4. O cadáver da borboleta cai finalmente no jardim para servir de alimento às \"providas formigas\"."
+    }
+  ],
+  "segments": [
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 206,
+        "end": 476
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 111029,
+            "end": 111094
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 111167,
+            "end": 111233
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 111473,
+            "end": 111527
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 479,
+        "end": 563
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 111942,
+            "end": 112011
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 564,
+        "end": 827
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 112225,
+            "end": 112293
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 112364,
+            "end": 112430
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 112498,
+            "end": 112565
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1229,
+        "end": 1379
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 113757,
+            "end": 113814
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 113952,
+            "end": 114001
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1530,
+        "end": 1624
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 112573,
+            "end": 112636
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 112498,
+            "end": 112565
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1664,
+        "end": 1733
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 112708,
+            "end": 112748
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 114366,
+            "end": 114412
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1737,
+        "end": 1917
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 112750,
+            "end": 112818
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 112819,
+            "end": 112883
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 112884,
+            "end": 112948
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1983,
+        "end": 2202
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 114572,
+            "end": 114634
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 114709,
+            "end": 114765
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 2207,
+        "end": 2302
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 114709,
+            "end": 114765
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 114781,
+            "end": 114814
+          }
+        }
+      ]
+    }
+  ],
+  "labeledBy": "MPT0M",
+  "labeledAt": "2026-09-08T16:20:23.471Z"
+}

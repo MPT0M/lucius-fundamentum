@@ -1,0 +1,151 @@
+{
+  "id": "q06-plain",
+  "model": "gemini-3.5-flash-lite",
+  "recordedAt": "2026-09-08T11:17:27.530Z",
+  "reportVersion": "bench-report-1",
+  "storeEmbeddingModel": "gemini-embedding-2",
+  "storeChunking": {
+    "maxTokensPerChunk": 200,
+    "maxOverlapTokens": 20
+  },
+  "parts": [
+    {
+      "text": "Segundo o próprio Brás Cubas, em *Memórias Pósthumas de Brás Cubas* (de Machado de Assis), a causa direta e médica de sua morte foi uma **pneumonia**. \n\nNo entanto, o defunto autor logo acrescenta um toque irônico e filosófico característico da obra, afirmando que a doença física foi menos importante do que a causa principal: **uma ideia grandiosa e útil**. \n\nEssa ideia era a invenção do **\"emplasto Brás Cubas\"**, um medicamento sublime e anticipocondríaco destinado a aliviar a humanidade. Ao tentar colocá-la em prática e se embebedar com o desejo de glória e fama (de ver seu nome impresso em jornais e caixinhas de remédio), ele acabou apanhando a moléstia que o levou ao óbito e fez com que o famoso emplasto morresse com ele. Portanto, segundo ele próprio: *“Morri de uma pneumonia; mas se lhe disser que foi menos a pneumonia, do que uma idéa grandiosa e util, a causa da minha morte, é possivel que o leitor me não creia, e todavia é verdade”*."
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 17,
+    "candidatesTokenCount": 360,
+    "totalTokenCount": 7828,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 17
+      }
+    ],
+    "toolUsePromptTokenCount": 7451,
+    "toolUsePromptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 7451
+      }
+    ],
+    "serviceTier": "standard"
+  },
+  "groundingMetadata": {
+    "groundingChunks": [
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "estúpidos, a boca entreaberta, a\ntriste senhora mal podia crêr na minha extincção.\n\n--Morto! morto! dizia comsigo.\n\nE a imaginação della, como as cegonhas que um illustre viajante viu\ndesferirem o vôo desde o Illysso ás ribas africanas, sem embargo das\nruinas e dos tempos,--a imaginação dessa senhora tambem voou por\nsobre os destroços presentes até ás ribas de uma Africa juvenil...\nDeixal-a ir; lá iremos mais tarde; lá iremos quando eu me restituir aos\nprimeiros annos. Agora, quero morrer tranquillamente, methodicamente,\nouvindo os soluços das damas, as fallas baixas dos homens, a chuva que\ntamborila nas folhas de tinhorão da chacara, e o som estridulo de uma\nnavalha que um amolador está afiando lá fóra, á porta de um correeiro.\nJuro-lhes que essa orchestra da morte foi muito menos triste do que\npodia parecer; e de certo ponto em deante chegou a ser deliciosa.\nA vida estrebuchava-me no peito, com uns impetos de vaga marinha,\nesvaia-se-me a consciencia, eu descia á immobilidade physica e moral,\ne o corpo fazia-se-me planta, e pedra, e lodo, e cousa nenhuma.\n\nMorri de uma pneumonia; mas se lhe disser que foi menos a pneumonia, do\nque uma idéa grandiosa e util, a causa da minha morte, é possivel que o\nleitor me não creia, e todavia é verdade. Vou expor-lhe summariamente o\ncaso.",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "a causa da minha morte, é possivel que o\nleitor me não creia, e todavia é verdade. Vou expor-lhe summariamente o\ncaso. Julgue-o por si mesmo.\n\n\n\n\nCAPITULO II\n\n\nO emplasto\n\n\nCom effeito, um dia de manhã, estando a passear na chacara,\npendurou-se-me uma idéa no trapezio que eu tinha no cerebro. Uma vez\npendurada, entrou a bracejar, a pernear, a fazer as mais arrojadas\ncabriolas de volantim, que é possivel crer. Eu deixei-me estar a\ncontemplal-a. Subito, deu um grande salto, estendeu os braços e as\npernas, até tomar a fórma de um X: decifra-me ou devoro-te.\n\nEssa idéa era nada menos que a invenção de um medicamento sublime, um\nemplasto anti-hypocondriaco, destinado a alliviar a nossa melancholica\nhumanidade. Na petição de privilegio que então redigi, chamei a\nattenção do governo para esse resultado, verdadeiramente christão.\nTodavia, não neguei aos amigos as vantagens pecuniarias que deviam\nresultar da distribuição de um producto de tamanhos e tão profundos\neffeitos, Agora, porém, que estou cá do outro lado da vida, posso\nconfessar tudo: o que me influiu principalmente foi o gosto de ver\nimpressas nos jornaes, mostradores, folhetos, esquinas, e emfim nas\ncaixinhas do remedio, estas tres palavras: _emplasto Braz Cubas._ Para\nque negal-o? Eu tinha a paixão do arruido, do cartaz, do foguete de\nlagrimas. Talvez os modestos me arguam esse defeito; fio",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "e esse resto de consciencia, como uma frouxa lamparina\nno meio das trevas, complicava muito o horror da situação. Sabia-o,\ne não se irritava contra o mal; ao contrario, dizia-me que era ainda\numa prova de Humanitas, que assim brincava comsigo mesmo. Recitava-me\nlongos capitulos do livro, e antiphonas, e litanias espirituaes; chegou\naté a reproduzir uma dansa sacra que inventara para as ceremonias do\nHumanitismo. A graça lugubre com que elle levantava e sacudia as pernas\nera singularmente fantastica. Outras vezes amuava-se a um canto, com os\nolhos fitos no ar, uns olhos em que, de longe em longe, fulgurava um\nraio persistente da razão, triste como uma lagrima...\n\nMorreu pouco tempo depois, em minha casa, jurando e repetindo sempre\nque a dor era uma illusão, e que Pangloss, o calumniado Pangloss, não\nera tão tolo como o suppoz Voltaire.\n\n\n\n\nCAPITULO CLX\n\n\nDas negativas\n\n\nEntre a morte do Quincas Borba e a minha, mediaram os successos\nnarrados na primeira parte do livro. O principal delles foi a invenção\ndo _emplasto Braz Cubas_, que morreu commigo, por causa da molestia\nque apanhei. Divino emplasto, tu me darias o primeiro logar entre os\nhomens, acima da sciencia e da riqueza, porque eras a genuina e directa\ninspiração do ceu. O acaso determinou o contrario; e ahi vos ficaes\neternamente hypocondriacos.\n\nEste ultimo capitulo",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      }
+    ],
+    "groundingSupports": [
+      {
+        "segment": {
+          "endIndex": 155,
+          "text": "Segundo o próprio Brás Cubas, em *Memórias Pósthumas de Brás Cubas* (de Machado de Assis), a causa direta e médica de sua morte foi uma **pneumonia**"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 159,
+          "endIndex": 370,
+          "text": "No entanto, o defunto autor logo acrescenta um toque irônico e filosófico característico da obra, afirmando que a doença física foi menos importante do que a causa principal: **uma ideia grandiosa e útil**"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 374,
+          "endIndex": 431,
+          "text": "Essa ideia era a invenção do **\"emplasto Brás Cubas\"**"
+        },
+        "groundingChunkIndices": [
+          1,
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 374,
+          "endIndex": 509,
+          "text": "Essa ideia era a invenção do **\"emplasto Brás Cubas\"**, um medicamento sublime e anticipocondríaco destinado a aliviar a humanidade"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 511,
+          "endIndex": 651,
+          "text": "Ao tentar colocá-la em prática e se embebedar com o desejo de glória e fama (de ver seu nome impresso em jornais e caixinhas de remédio)"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 511,
+          "endIndex": 756,
+          "text": "Ao tentar colocá-la em prática e se embebedar com o desejo de glória e fama (de ver seu nome impresso em jornais e caixinhas de remédio), ele acabou apanhando a moléstia que o levou ao óbito e fez com que o famoso emplasto morresse com ele"
+        },
+        "groundingChunkIndices": [
+          2,
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 758,
+          "endIndex": 986,
+          "text": "Portanto, segundo ele próprio: *“Morri de uma pneumonia; mas se lhe disser que foi menos a pneumonia, do que uma idéa grandiosa e util, a causa da minha morte, é possivel que o leitor me não creia, e todavia é verdade”*"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      }
+    ]
+  }
+}

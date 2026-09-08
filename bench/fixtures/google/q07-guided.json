@@ -1,0 +1,238 @@
+{
+  "id": "q07-guided",
+  "model": "gemini-3.5-flash-lite",
+  "recordedAt": "2026-09-08T11:17:27.530Z",
+  "reportVersion": "bench-report-1",
+  "storeEmbeddingModel": "gemini-embedding-2",
+  "storeChunking": {
+    "maxTokensPerChunk": 200,
+    "maxOverlapTokens": 20
+  },
+  "parts": [
+    {
+      "text": "Nas *Memórias Póstumas de Brás Cubas*, de Machado de Assis, a descrição do pai e as aspirações que ele tinha para o filho aparecem logo no início da obra e ao longo de momentos decisivos da vida do protagonista.\n\n### A descrição do pai\nBrás Cubas descreve seu pai, **DMC / Luiz Cubas** (neto de Damião Cubas, um tanoeiro), como:\n* **Um bom caráter e um varão digno:** Considerado por ele um homem leal como poucos.\n* **Imaginativo e um tanto \"pachola\":** Tinha a mania de engrandecer a origem da família. Como a família descendia de um tanoeiro (fabricante de cubas/barris), o pai inventava que o sobrenome *Cubas* vinha de um cavaleiro heróico nas jornadas da África que havia arrebatado trezentas cubas aos mouros, escapando da humilhação da tanoaria \"nas asas de um *calembour*\" (jogo de palavras). Quando essa inventividade não bastava, ele também tentava se entroncar na família do capitão-mór Brás Cubas (fundador da Vila de São Vicente), motivo pelo qual batizou o filho com esse nome.\n* **Um pai amoroso, mas permissivo:** Brás Cubas relata que o pai o adorava com um \"amor sem mérito, que é um simples e forte impulso da carne\". O tio cônego frequentemente repreendia o irmão por dar a Brás mais liberdade do que ensino, e mais afeto do que correção.\n\n### A carreira que o pai queria para ele\nO pai idealizava uma trajetória de grande destaque social e político para Brás Cubas. Ele queria que o filho seguisse a **carreira política**, ambicionando vê-lo alcançar altos postos de poder — especificamente, que se tornasse **deputado** e, futuramente, **ministro de Estado**. \n\nEssa ambição paternal vinha acompanhada de planos de casamento vantajosos. Em certo momento da narrativa, o pai lhe traz um \"programa duplo\" contendo um lugar de deputado e um casamento arranjado com uma moça de boa família (que viria a ser Virgília), argumentando com insistência que uma posição política de destaque era essencial para o futuro dele."
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 78,
+    "candidatesTokenCount": 628,
+    "totalTokenCount": 8350,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 78
+      }
+    ],
+    "toolUsePromptTokenCount": 7644,
+    "toolUsePromptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 7644
+      }
+    ],
+    "serviceTier": "standard"
+  },
+  "groundingMetadata": {
+    "groundingChunks": [
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "a tanoaria. Mas não; fez-se lavrador, plantou,\ncolheu, permutou o seu producto por boas e honradas patacas, até que\nmorreu, deixando grosso cabedal a um filho, o licenciado Luiz Cubas.\nNeste rapaz é que verdadeiramente começa a serie de meus avós--dos\navós que a minha familia sempre confessou--, porque o Damião Cubas era\nafinal de contas um tanoeiro, e talvez mau tanoeiro, ao passo que o\nLuiz Cubas estudou em Coimbra, primou no Estado, e foi um dos amigos\nparticulares do vice-rei conde da Cunha.\n\nComo este appellido de Cubas lhe cheirasse excessivamente a tanoaria,\nallegava meu pae, bisneto do Damião, que o dito appellido fôra dado a\num cavalleiro, heroe nas jornadas da Africa, em premio da façanha que\npraticou, arrebatando tresentas cubas aos mouros. Meu pae era homem de\nimaginação; escapou á tanoaria nas azas de um _calembour._ Era um bom\ncaracter meu pae, varão digno e leal como poucos. Tinha, é verdade, uns\nfumos de pacholice; mas quem não é um pouco pachola nesse mundo? Releva\nnotar que elle não recorreu á inventiva, senão depois de experimentar\na falsificação; primeiramente, entroncou-se na familia daquelle meu\nfamoso homonymo, o capitão-mór Braz Cubas, que fundou a villa de S.\nVicente, onde morreu em 1592, e por esse motivo é que me deu o nome de\nBraz. Oppoz-se-lhe porém",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "doutrinava-me a seu modo, fazia-me decorar alguns\npreceitos e orações; mas eu sentia que, mais do que as orações, me\ngovernavam os nervos e o sangue, e a boa regra perdia o espirito, que\na faz viver, para se tornar uma vã formula. De manhã, antes do mingáu,\ne de noite, antes da cama, pedia a Deus que me perdoasse, assim como\neu perdoava aos meus devedores; mas entre a manhã e a noite fazia uma\ngrande maldade, e meu pae, passado o alvoroço, dava-me pancadinhas na\ncara, e exclamava a rir: Ah! bregeiro! ah! bregeiro!\n\nSim, meu pae adorava-me, tinha-me esse amor sem merito, que é um\nsimples e forte impulso da carne; amor que a razão não contrasta\nnem rége. Minha mãe era uma senhora fraca, de pouco cerebro e muito\ncoração, assaz credula, sinceramente piedosa,--caseira, apezar de\nbonita, e modesta, apezar de abastada; temente ás trovoadas e ao\nmarido. O marido era na terra o seu deus. Da collaboração dessas duas\ncreaturas nasceu a minha educação, que, se tinha alguma cousa boa, era\nno geral viciosa, incompleta, e, em partes, negativa. Meu tio conego\nfazia ás vezes alguns reparos ao irmão; dizia-lhe que elle me dava\nmais liberdade do que ensino, e mais affeição do que emenda; mas meu\npae respondia que applicava na minha",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "sim, digo-te tudo; trago dous\nprojectos, um logar de deputado e um casamento.\n\nMeu pae disse isto com pausa, e não no mesmo tom, mas dando ás palavras\num geito e disposição, cujo fim era caval-as mais profundamente no\nmeu espirito. A proposta, porém, desdizia tanto das minhas sensações\nultimas, que eu cheguei a não entendel-a bem. Meu pae não fraqueou e\nrepetiu-a; encareceu o logar e a noiva.\n\n--Aceitas?\n\n--Não entendo de politica, disse eu depois de um instante; quanto á\nnoiva... deixe-me viver como um urso, que sou.\n\n--Mas os ursos casam-se, replicou elle.\n\n--Pois traga-me uma ursa. Olhe, a Ursa-Maior.\n\nRiu-se meu pae, e depois de rir, tornou a fallar serio. Era-me\nnecessaria a carreira politica, dizia elle, por vinte e tantas razões,\nque deduziu com singular volubilidade, illustrando-as com exemplos\nde pessoas do nosso conhecimento. Quanto á noiva, bastava que eu a\nvisse; se a visse, iria logo pedil-a ao pae, logo, sem demora de um\ndia. Experimentou assim a fascinação, depois a persuasão, depois a\nintimação; eu não dava resposta, afiava a ponta de um palito ou fazia\nbolas de miolo de pão, a sorrir ou a reflectir; e, para tudo dizer, nem\ndocil nem rebelde á proposta. Sentia-me aturdido. Uma parte de mim\nmesmo dizia que sim, que uma esposa formosa e uma posição politica",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "então no Passeio Publico;\ne tudo me parecia dizer a mesma cousa.--Porque não serás ministro,\nCubas?--Cubas, porque não serás ministro de Estado? Ao ouvil-o, uma\ndeliciosa sensação me refrescava todo o systema. Entrei, fui sentar-me\nn'um banco, a cavar commigo aquella idéa. E Virgilia que havia de\ngostar! Alguns minutos depois vejo encaminhar-se para mim uma cara, que\nme não pareceu desconhecida. Conhecia-a, fosse d'onde fosse.\n\nImaginem um homem de trinta e oito a quarenta annos, alto, magro e\npallido. As roupas, salvo o feitio, pareciam ter escapado ao captiveiro\nde Babylonia; o chapéu era contemporaneo do de Gessler. Imaginem\nagora uma sobrecasaca, mais larga do que pediam as carnes,--ou,\nlitteralmente, os ossos da pessoa; a côr preta ia cedendo o passo a\num amarello sem brilho; o pello desapparecia aos poucos; dos oito\nprimitivos botões restavam tres. As calças, de brim pardo, tinham duas\nfortes joelheiras, em quanto as bainhas eram roidas pelo tacão de um\nbotim sem misericordia nem graxa. Ao pescoço fluctuavam as pontas de\numa gravata de duas cores, ambas desmaiadas, apertando um collarinho de\noito dias. Creio que trazia tambem collete, um collete de seda escura,\nroto a espaços, e desabotoado.\n\n--Aposto que me não conhece, Sr. Dr. Cubas? disse elle.\n\n--Não me lembra...\n\n--Sou o Borba, o Quincas Borba.\n\nRecuei espantado... Quem me dera agora o",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "Virgilio\n Virgilio\n Virgilio\n\nMeu pae, um pouco despeitado com aquella indifferença, ergueu-se, veiu\na mim, lançou os olhos ao papel...\n\n--Virgilio! exclamou. És tu, meu rapaz; a tua noiva chama-se justamente\nVirgilia.\n\n\n\n\nCAPITULO XXVII\n\n\nVirgilia?\n\n\nVirgilia? Mas então era a mesma senhora que alguns annos depois...? A\nmesma; era justamente a senhora, que em 1869 devia assistir aos meus\nultimos dias, e que antes, muito antes, teve larga parte nas minhas\nmais intimas sensações. Naquelle tempo contava apenas uns quinze ou\ndezeseis annos, e era talvez a mais atrevida creatura da nossa raça,\ne, com certeza, a mais voluntariosa. Não digo que já lhe coubesse\na primazia da belleza, entre as mocinhas do tempo, porque isto não\né romance, em que o autor sobredoura a realidade e fecha os olhos\nás sardas e espinhas; mas tambem não digo que lhe maculasse o rosto\nnenhuma sarda ou espinha; não. Era bonita, fresca, sahia das mãos da\nnatureza, cheia daquelle feitiço, precario e eterno, que o individuo\npassa a outro individuo, para os fins secretos da creação. Era isto\nVirgilia, e era clara, muito clara, faceira, ignorante, pueril, cheia\nde uns impetos mysteriosos; muita preguiça e alguma devoção,--devoção,\nou talvez medo; creio que medo.\n\nAhi tem o leitor, em poucas linhas, o retrato physico e moral da pessoa\nque devia influir mais tarde na minha",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      }
+    ],
+    "groundingSupports": [
+      {
+        "segment": {
+          "startIndex": 221,
+          "endIndex": 333,
+          "text": "### A descrição do pai\nBrás Cubas descreve seu pai, **DMC / Luiz Cubas** (neto de Damião Cubas, um tanoeiro)"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 221,
+          "endIndex": 427,
+          "text": "### A descrição do pai\nBrás Cubas descreve seu pai, **DMC / Luiz Cubas** (neto de Damião Cubas, um tanoeiro), como:\n* **Um bom caráter e um varão digno:** Considerado por ele um homem leal como poucos"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 429,
+          "endIndex": 518,
+          "text": "* **Imaginativo e um tanto \"pachola\":** Tinha a mania de engrandecer a origem da família"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 520,
+          "endIndex": 589,
+          "text": "Como a família descendia de um tanoeiro (fabricante de cubas/barris)"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 520,
+          "endIndex": 820,
+          "text": "Como a família descendia de um tanoeiro (fabricante de cubas/barris), o pai inventava que o sobrenome *Cubas* vinha de um cavaleiro heróico nas jornadas da África que havia arrebatado trezentas cubas aos mouros, escapando da humilhação da tanoaria \"nas asas de um *calembour*\" (jogo de palavras)"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 822,
+          "endIndex": 1018,
+          "text": "Quando essa inventividade não bastava, ele também tentava se entroncar na família do capitão-mór Brás Cubas (fundador da Vila de São Vicente), motivo pelo qual batizou o filho com esse nome"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1020,
+          "endIndex": 1166,
+          "text": "* **Um pai amoroso, mas permissivo:** Brás Cubas relata que o pai o adorava com um \"amor sem mérito, que é um simples e forte impulso da carne\""
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1168,
+          "endIndex": 1293,
+          "text": "O tio cônego frequentemente repreendia o irmão por dar a Brás mais liberdade do que ensino, e mais afeto do que correção"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1296,
+          "endIndex": 1424,
+          "text": "### A carreira que o pai queria para ele\nO pai idealizava uma trajetória de grande destaque social e político para Brás Cubas"
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1426,
+          "endIndex": 1482,
+          "text": "Ele queria que o filho seguisse a **carreira política**"
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1426,
+          "endIndex": 1624,
+          "text": "Ele queria que o filho seguisse a **carreira política**, ambicionando vê-lo alcançar altos postos de poder — especificamente, que se tornasse **deputado** e, futuramente, **ministro de Estado**"
+        },
+        "groundingChunkIndices": [
+          2,
+          3
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1628,
+          "endIndex": 1703,
+          "text": "Essa ambição paternal vinha acompanhada de planos de casamento vantajosos"
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1705,
+          "endIndex": 1987,
+          "text": "Em certo momento da narrativa, o pai lhe traz um \"programa duplo\" contendo um lugar de deputado e um casamento arranjado com uma moça de boa família (que viria a ser Virgília), argumentando com insistência que uma posição política de destaque era essencial para o futuro dele"
+        },
+        "groundingChunkIndices": [
+          4,
+          2
+        ]
+      }
+    ]
+  }
+}

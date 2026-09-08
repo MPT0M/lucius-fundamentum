@@ -1,0 +1,106 @@
+{
+  "id": "q21-plain",
+  "parts": [
+    {
+      "text": "No romance ***Memórias Póstumas de Brás Cubas***, de Machado de Assis, o capítulo LV, intitulado **\"O velho diálogo de Adão e Eva\"**, é um dos episódios mais curiosos e originais da obra em termos de forma. \n\nAbaixo estão explicados o seu conteúdo e a justificativa dada pelo narrador para apresentá-lo dessa maneira:\n\n### 1. O que há no capítulo?\nLiteralmente, **não há palavras escritas**, mas sim uma sucessão de **pontos finais, reticências e sinais de interrogação e exclamação**, intercalados pelas falas das personagens (identificadas apenas como *BRAZ CUBAS* e *VIRGILIA*):\n\n> *BRAZ CUBAS*\n> *[...]*\n> *VIRGILIA*\n> *[...]*\n\nTrata-se de um capítulo totalmente mudo/silencioso no plano textual. O \"diálogo\" real não é transcrito por meio de termos ou frases; o autor utiliza a pontuação para sugerir o tom, o ritmo, as pausas, as hesitações e a cumplicidade de uma conversa íntima e amorosa entre os dois pensamentos.\n\n### 2. Como o narrador o justifica?\nPara entender a justificativa, é preciso olhar o final do capítulo anterior (Capítulo LIV, \"Os ninhos\"). Nele, Brás Cubas conta que, enquanto os corpos físicos dele e de Virgília repousavam na cama (ou, no contexto dos pensamentos vagando, estavam distantes e cansados), os **pensamentos** de ambos fugiram pela janela e foram se encontrar no peitoril de uma janela da casa de Virgília para conversar:\n\n> *\"Nós a rolarmos na cama, talvez com frio, necessitados de repouso, e os dous vadios alli postos, a repetirem o velho diálogo de Adão e Eva.\"*\n\nA **justificativa estética e narrativa** para o capítulo vir em branco (preenchido apenas com sinais gráficos) decorre da natureza inefável, primordial e privada desse colóquio amoroso. Sendo o \"veloguiado de Adão e Eva\" a quintessência da conversa amorosa original — anterior às palavras elaboradas, feita de sussurros, silêncios significativos, entendimentos táteis e cumplicidade absoluta —, **nenhum vocabulário humano seria capaz de reproduzir fielmente o que os pensamentos de dois amantes trocam em segredo.** \n\nAo suprimir o texto e deixar apenas a pontuação, Machado de Assis faz um uso magistral da metalinguagem e do humor, sugerindo que certas intimidades e paixões escapam à linguagem escrita, cabendo ao leitor \"preencher\" as lacunas daquele diálogo mudo."
+    }
+  ],
+  "segments": [
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 71,
+        "end": 206
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 163161,
+            "end": 163204
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 348,
+        "end": 580
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 163161,
+            "end": 163204
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 163207,
+            "end": 163247
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 632,
+        "end": 700
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 163207,
+            "end": 163247
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1232,
+        "end": 1361
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 162808,
+            "end": 163017
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1366,
+        "end": 1508
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 163018,
+            "end": 163088
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 163089,
+            "end": 163156
+          }
+        }
+      ]
+    }
+  ],
+  "labeledBy": "MPT0M",
+  "labeledAt": "2026-09-08T21:22:35.852Z"
+}

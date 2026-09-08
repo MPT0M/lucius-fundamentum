@@ -1,0 +1,270 @@
+{
+  "id": "q05-guided",
+  "model": "gemini-3.5-flash-lite",
+  "recordedAt": "2026-09-08T11:17:27.530Z",
+  "reportVersion": "bench-report-1",
+  "storeEmbeddingModel": "gemini-embedding-2",
+  "storeChunking": {
+    "maxTokensPerChunk": 200,
+    "maxOverlapTokens": 20
+  },
+  "parts": [
+    {
+      "text": "**Quincas Borba** é um personagem central da literatura de Machado de Assis, aparecendo de forma marcante no romance *Memórias Póstumas de Brás Cubas* (onde formula sua filosofia) e dando título ao romance homônimo (*Quincas Borba*). \n\nNas *Memórias Póstumas*, ele é apresentado inicialmente como um colega de infância de Brás Cubas que, após uma vida de riquezas e privilégios, acaba caindo na miséria e na ruína financeira, tornando-se um maltrapilho. É nessa fase de decadência que ele desenvolve e passa a pregar um sistema filosófico original e excêntrico chamado **Humanitismo**, antes de vir a falecer (momento em que a loucura já parecia tomar conta de sua mente).\n\n---\n\n### O que é o Humanitismo?\n\nO **Humanitismo** é uma sátira mordaz de Machado de Assis às teorias científicas, filosóficas e sociais do século XIX (como o darwinismo social, o positivismo e o evolucionismo). A palavra vem de **Humanitas**, a substância ou princípio originário, único e eterno que compõe todo o universo segundo a teoria.\n\nOs principais pilares e absurdos do Humanitismo defendidos por Quincas Borba incluem:\n\n1. **A identidade entre o homem e o universo:** Para o sistema, cada ser humano não é apenas um veículo de *Humanitas*, mas é, ao mesmo tempo, veículo, cocheiro e passageiro — ou seja, o próprio *Humanitas* reduzido. A transmissão da vida é tratada como a \"missa espiritual\", pois a maior desgraça existente é simplesmente não nascer.\n2. **A ilusão da dor:** Segundo a doutrina, a dor física e o sofrimento são puras ilusões que podem ser superadas se o homem compreender que ele próprio é a substância original (*Humanitas*). \n3. **A exaltação da guerra, da fome e da luta:** O Humanitismo legitima e glorifica os conflitos, a fome e as catástrofes como operações naturais e convenientes de *Humanitas*. Para o sistema, \"a vida é luta\" e a \"vida sem luta é um mar morto\". Consequentemente, sentimentos bélicos e até a inveja são encarados como virtudes necessárias à felicidade e à evolução.\n4. **A famosa parábola dos cães (A lei do mais forte):** Em uma de suas demonstrações práticas da filosofia, Quincas Borba obriga Brás Cubas a assistir a uma briga sangrenta entre dois cães por um único osso sem carne. Para o filósofo, aquilo ilustrava a essência do Humanitismo: a disputa implacável por recursos escassos, onde o vencedor devora o vencido, justificando a opressão e a competição sob o pretexto de que a destruição do outro alimenta a marcha da humanidade.\n\nEm suma, o Humanitismo é uma paródia niilista e cínica que desmascara o egoísmo, a hipocrisia e a brutalidade das relações humanas sob o disfarce de um progresso filosófico pretensioso."
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 80,
+    "candidatesTokenCount": 823,
+    "totalTokenCount": 8129,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 80
+      }
+    ],
+    "toolUsePromptTokenCount": 7226,
+    "toolUsePromptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 7226
+      }
+    ],
+    "serviceTier": "standard"
+  },
+  "groundingMetadata": {
+    "groundingChunks": [
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "não conhece, Sr. Dr. Cubas? disse elle.\n\n--Não me lembra...\n\n--Sou o Borba, o Quincas Borba.\n\nRecuei espantado... Quem me dera agora o verbo solemne de um Bossuet\nou de Vieira, para contar tamanha desolação! Era o Quincas Borba, o\ngracioso menino de outro tempo, o meu companheiro de collegio, tão\nintelligente e abastado. O Quincas Borba! Não, impossível; não pode\nser. Não podia acabar de crer que essa figura esqualida, essa barba\npintada de branco, esse maltrapilho avelhentado, que toda essa ruina\nfosse o Quincas Borba. E era. Os olhos tinham um resto da expressão de\noutro tempo; e o sorriso não perdera certo ar escarninho, que lhe era\npeculiar. Entretanto, elle supportava com firmeza o meu espanto. No fim\nde algum tempo arredei os olhos; se a figura repellia, a comparação\nacabrunhava.\n\n--Não é preciso contar-lhe nada, disse elle emfim; o senhor adivinha\ntudo. Uma vida de miserias, de attribulações e de lutas. Lembra-se\ndas nossas festas, em que eu figurava de rei? Que trambolhão! Acabo\nmendigo...\n\nE alçando a mão direita e os hombros, com um ar de indifferença,\nparecia resignado aos golpes da fortuna, e não sei até se contente.\nTalvez contente. Com certeza, impassivel. Não havia nelle a resignação\nchristã, nem a conformidade philosophica. Parece que a miseria lhe\ncallejára a alma, a ponto de lhe tirar",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "o grande mergulho\nnas trevas, e ninguem te chorou, salvo um preto velho,--ninguem, nem\neu, que te devo os rudimentos da escripta.\n\nChamava-se Ludgero o mestre; quero escrever-lhe o nome todo nesta\npagina: Ludgero Barata,--um nome funesto, que servia aos meninos de\neterno mote a chufas. Um de nós, o Quincas Borba, esse então era cruel\ncom o pobre homem. Duas, tres vezes por semana, havia de lhe deixar na\nalgibeira das calças,--umas largas calças de enfiar--, ou na gaveta\nda mesa, ou ao pé do tinteiro, uma barata morta. Se elle a encontrava\nainda nas horas da aula, dava um pulo, circulava os olhos chammejantes,\ndizia-nos os ultimos nomes; eramos sevandijas, capadocios, mal criados,\nmoleques.--Uns tremiam, outros rosnavam; o Quincas Borba, porém,\ndeixava-se estar quieto, com os olhos espetados no ar.\n\nUma flôr, o Quincas Borba. Nunca em minha infancia, nunca em toda a\nminha vida, achei um menino mais gracioso, inventivo e travesso. Era\na flôr, e não já da eschola, senão de toda a cidade. A mãe, viuva,\ncom alguma cousa de seu, adorava o filho e trazia-o amimado, aceiado,\nenfeitado, com um vistoso pagem atraz, um pagem que nos deixava gazear\na eschola, ir caçar ninhos de passaros, ou perseguir lagartixas no\nmorro do Livramento e da Conceição, ou simplesmente arruar, á toa,\ncomo dous peraltas",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "madeira cortada no matto por dez ou doze\nhomens, levado por velas, que oito ou dez homens teceram, sem contar\na cordoalha e outras partes do apparelho nautico. Assim, este frango,\nque eu almocei agora mesmo, é o resultado de uma multidão de esforços e\nlutas, executados com o unico fim de dar mate ao meu appetite.\n\nEntre o queijo e o café, demonstrou-me o Quincas Borba que o seu\nsystema era a destruição da dôr. A dôr, segundo o Humanitismo, é uma\npura illusão. Quando a criança é ameaçada por um páu, antes mesmo de\nter sido espancada, fecha os olhos e treme; essa _predisposição_ é que\nconstitue a base da illusão humana, herdada e transmittida. Não basta\ncertamente a adopção do systema para acabar logo com a dôr; mas é\nindispensavel; o resto é a natural evolução das cousas. Uma vez que o\nhomem se compenetre bem de que elle é o proprio Humanitas, não tem mais\ndo que remontar o pensamento á substancia original para obstar qualquer\nsensação dolorosa. A evolução porém é tão profunda, que mal se lhe\npodem assignar alguns milhares de annos.\n\nO Quincas Borba leu-me dahi a dias a sua grande obra. Eram quatro\nvolumes manuscriptos, de cem paginas cada um, com letra miuda e\ncitações latinas. O ultimo volume compunha-se",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "póde haver n'um arcebispo dous arcebispos,--o da bulla e o\noutro. Está dito, vou ser nababo.\n\nEra um simples gracejo; disse-o, todavia, ao Quincas Borba, que\nolhou para mim com certa cautella e pena, levando a sua bondade a\ncommunicar-me que eu estava doudo. Ri-me a principio; mas a nobre\nconvicção do philosopho incutiu-me certo medo. A unica objecção contra\na palavra do Quincas Borba é que não me sentia doudo, mas não tendo\ngeralmente os doudos outro conceito de si mesmos, tal objecção ficava\nsem valor. E vêde se ha algum fundamento na crença popular de que os\nphilosophos são homens alheios ás cousas minimas. No dia seguinte\nmandou-me o Quincas Borba um alienista. Conhecia-o, fiquei aterrado.\nElle porém houve-se com a maior delicadeza e habilidade, despedindo-se\ntão alegremente que me animou a perguntar-lhe se deveras me não achava\ndoudo.\n\n--Não, disse elle sorrindo; raros homens terão tanto juizo como o\nsenhor.\n\n--Então o Quincas Borba enganou-se?\n\n--Redondamente. E depois:--Ao contrario, se é amigo delle... peço-lhe\nque o distraia... que...\n\n--Justos ceus! Parece-lhe?... Um homem de tamanho espirito! um\nphilosopho!\n\nNão importa; a loucura entra em todas as casas. Imaginem a minha\nafflicção. O alienista, vendo o effeito de suas palavras, reconheceu\nque eu era amigo do Quincas Borba, e tratou de diminuir a gravidade da\nadvertencia. Observou que podia não ser nada,",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "isto é, ser _um forte_, não era o mesmo que\ndescender dos cabellos ou da ponta do nariz. Dahi a necessidade de\ncultivar e temperar o musculo. Hercules ou Herakles não foi senão um\nsymbolo antecipado do Humanitismo. Neste ponto o Quincas Borba ponderou\nque o paganismo poderia ter chegado á verdade, se se não houvesse\namesquinhado com a parte galante dos seus mythos. Nada disso acontecerá\ncom o Humanitismo. Nesta egreja nova não ha aventuras faceis, nem\nquedas, nem tristezas, nem alegrias pueris. O amor, por exemplo, é um\nsacerdocio, a reproducção um ritual. Como a vida é o maior beneficio\ndo universo, e não ha mendigo que não prefira a miseria á morte (o\nque é um delicioso influxo de Humanitas), segue-se que a transmissão\nda vida, longe de ser uma occasião de galanteio, é a hora suprema da\nmissa espiritual. Porquanto, verdadeiramente ha só uma desgraça: é não\nnascer.\n\n--Imagina, por exemplo, que eu não tinha nascido, continuou o Quincas\nBorba; é positivo que não teria agora o prazer de conversar comtigo,\ncomer esta batata, ir ao theatro, e para tudo dizer n'uma só palavra:\nviver. Nota que eu não faço do homem um simples vehiculo de Humanitas;\nnão, elle é ao mesmo tempo vehiculo, cocheiro e passageiro; elle é\no proprio Humanitas reduzido; dahi a",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "todos os\nsentimentos bellicosos são os mais adequados á sua felicidade. Dahi vem\nque a inveja é uma virtude.\n\nPara que negal-o? eu estava estupefacto. A clareza da exposição, a\nlogica dos principios, o rigor das consequencias, tudo isso parecia\nsuperiormente grande, e foi-me preciso suspender a conversa por alguns\nminutos, em quanto digeria a philosophia nova. O Quincas Borba mal\npodia encobrir a satisfação do triumpho. Tinha uma aza de frango no\nprato, e trincava-a com philosophica serenidade. Eu fiz-lhe ainda\nalguma objecções, mas tão frouxas, que elle não gastou muito tempo em\ndestruil-as.\n\n--Para entender bem o meu systema, concluiu elle, importa não esquecer\nnunca o principio universal, repartido e resumido em cada homem. Olha:\na guerra, que parece uma calamidade, é uma operação conveniente,\ncomo se dissessemos o estalar dos dedos de Humanitas; a fome (e elle\nchupava philosophicamente a aza do frango), a fome é uma prova a que\nHumanitas submette a propria viscera. Mas eu não quero outro documento\nda sublimidade do meu systema, senão este mesmo frango. Nutriu-se de\nmilho, que foi plantado por um africano, supponhamos, importado de\nAngola. Nasceu esse africano, cresceu, foi vendido um navio o trouxe,\num navio construido de madeira cortada no matto por dez ou doze\nhomens, levado por velas, que oito ou dez homens teceram, sem contar\na cordoalha",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "Não\nvale a pena. É o caso dos cães do Quincas Borba. Simples repetição de\num capitulo.\n\n\n\n\nCAPITULO CXLVI\n\n\nO programma\n\n\nUrgia fundar o jornal. Redigi o programma, que era uma applicação\npolitica do Humanitismo; somente, como o Quincas Borba não houvesse\nainda publicado o livro, (que aperfeiçoava de anno em anno) assentamos\nde lhe não fazer nenhuma referencia. O Quincas Borba exigiu apenas uma\ndeclaração, autographa e reservada, de que alguns principios novos\napplicados á politica eram tirados do livro delle, ainda inedito.\n\nEra a fina flôr dos programmas; promettia curar a sociedade, destruir\nos abusos, defender os sãos principios de liberdade e conservação;\nfazia um appello ao commercio e á lavoura; citava Guizot e Ledru-Rollin\ne acabava com esta ameaça, que o Quincas Borba achou mesquinha e\nlocal: «A nova doutrina que professamos ha de inevitavelmente derribar\no actual ministerio.» Confesso que, nas circumstancias politicas da\noccasião, o programma pareceu-me uma obra-prima. A ameaça do fim, que\no Quincas Borba achou mesquinha, demonstrei-lhe que era saturada do\nmais puro Humanitismo, e elle mesmo o confessou depois. Porquanto, o\nHumanitismo não excluia nada; as guerras de Napoleão e uma contenda\nde cabras eram, segundo a nossa doutrina, a mesma sublimidade, com a\ndifferença que os soldados de Napoleão sabiam que morriam, cousa que\napparentemente não acontece ás cabras. Ora, eu não fazia",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "era o cordial da sabedoria. Disse-me elle que eu\nnão podia fugir ao combate; se me fechavam a tribuna, cumpria-me abrir\num jornal. Chegou a usar uma expressão menos elevada, mostrando assim\nque a lingua philosophica podia, uma ou outra vez, retemperar-se no\ncalão do povo. Funda um jornal, disse-me elle, e «desmancha toda esta\negrejinha.»\n\n--Magnifica idéa! Vou fundar um jornal, vou escachal-os, vou...\n\n--Lutar. Pódes escachal-os ou não; o essencial é que lutes. Vida é\nluta. Vida sem luta é um mar morto no centro do organismo universal.\n\nDahi a pouco demos com uma briga de cães; facto que aos olhos de um\nhomem vulgar não teria valor. O Quincas Borba fez-me parar e observar\nos cães. Eram dous. Notou que ao pé delles estava um osso, motivo da\nguerra, e não deixou de chamar a minha attenção para a circumstancia\nde que o osso não tinha carne. Um simples osso nú. Os cães mordiam-se,\nrosnavam, com o furor nos olhos... O Quincas Borba metteu a bengala\ndebaixo do braço, encostou o queixo no castão, e parecia em extasis.\n\n--Que bello que isto é! dizia elle de quando em quando.\n\nQuiz arrancar-me dalli, mas não pude; elle estava arraigado ao chão,\ne só continuou a andar, quando a briga cessou inteiramente, e um\ndos cães, mordido e",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      }
+    ],
+    "groundingSupports": [
+      {
+        "segment": {
+          "startIndex": 242,
+          "endIndex": 343,
+          "text": "Nas *Memórias Póstumas*, ele é apresentado inicialmente como um colega de infância de Brás Cubas"
+        },
+        "groundingChunkIndices": [
+          0,
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 242,
+          "endIndex": 467,
+          "text": "Nas *Memórias Póstumas*, ele é apresentado inicialmente como um colega de infância de Brás Cubas que, após uma vida de riquezas e privilégios, acaba caindo na miséria e na ruína financeira, tornando-se um maltrapilho"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 469,
+          "endIndex": 603,
+          "text": "É nessa fase de decadência que ele desenvolve e passa a pregar um sistema filosófico original e excêntrico chamado **Humanitismo**"
+        },
+        "groundingChunkIndices": [
+          2,
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 469,
+          "endIndex": 691,
+          "text": "É nessa fase de decadência que ele desenvolve e passa a pregar um sistema filosófico original e excêntrico chamado **Humanitismo**, antes de vir a falecer (momento em que a loucura já parecia tomar conta de sua mente)"
+        },
+        "groundingChunkIndices": [
+          3
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 913,
+          "endIndex": 1046,
+          "text": "A palavra vem de **Humanitas**, a substância ou princípio originário, único e eterno que compõe todo o universo segundo a teoria"
+        },
+        "groundingChunkIndices": [
+          4,
+          2,
+          5
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1139,
+          "endIndex": 1359,
+          "text": "**A identidade entre o homem e o universo:** Para o sistema, cada ser humano não é apenas um veículo de *Humanitas*, mas é, ao mesmo tempo, veículo, cocheiro e passageiro — ou seja, o próprio *Humanitas* reduzido"
+        },
+        "groundingChunkIndices": [
+          4
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1361,
+          "endIndex": 1482,
+          "text": "A transmissão da vida é tratada como a \"missa espiritual\", pois a maior desgraça existente é simplesmente não nascer"
+        },
+        "groundingChunkIndices": [
+          4
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1487,
+          "endIndex": 1681,
+          "text": "**A ilusão da dor:** Segundo a doutrina, a dor física e o sofrimento são puras ilusões que podem ser superadas se o homem compreender que ele próprio é a substância original (*Humanitas*)"
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1687,
+          "endIndex": 1864,
+          "text": "**A exaltação da guerra, da fome e da luta:** O Humanitismo legitima e glorifica os conflitos, a fome e as catástrofes como operações naturais e convenientes de *Humanitas*"
+        },
+        "groundingChunkIndices": [
+          6,
+          5
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1866,
+          "endIndex": 1934,
+          "text": "Para o sistema, \"a vida é luta\" e a \"vida sem luta é um mar morto\""
+        },
+        "groundingChunkIndices": [
+          7
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1936,
+          "endIndex": 2062,
+          "text": "Consequentemente, sentimentos bélicos e até a inveja são encarados como virtudes necessárias à felicidade e à evolução"
+        },
+        "groundingChunkIndices": [
+          5
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 2067,
+          "endIndex": 2289,
+          "text": "**A famosa parábola dos cães (A lei do mais forte):** Em uma de suas demonstrações práticas da filosofia, Quincas Borba obriga Brás Cubas a assistir a uma briga sangrenta entre dois cães por um único osso sem carne"
+        },
+        "groundingChunkIndices": [
+          7
+        ]
+      }
+    ]
+  }
+}

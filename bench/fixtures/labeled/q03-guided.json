@@ -1,0 +1,129 @@
+{
+  "id": "q03-guided",
+  "parts": [
+    {
+      "text": "Nas *Memórias Póstumas de Brás Cubas*, de Machado de Assis, o delírio que o narrador tem pouco antes de morrer é relatado de forma monumental (principalmente nos capítulos que antecedem o desfecho, como o célebre capítulo intitulado precisamente *O delírio*). \n\nBrás Cubas descreve a experiência delirante como uma viagem fantástica e cósmica guiada por um hipopótamo:\n\n* **A viagem à origem dos séculos:** Brás Cubas conta que foi arrebatado por um hipopótamo que lhe prometeu levá-lo à «origem dos séculos». \n* **O espetáculo da Humanidade:** No topo de uma montanha (ou planície fantástica) e com «os olhos do delírio», ele contempla o desfile vertiginoso de todos os séculos, raças, impérios, paixões e gerações humanas. Ele vê a história da humanidade como uma condensação viva de glórias e misérias, onde a cobiça, a cólera, a inveja, a ambição, a fome e o amor agitam e destroem o homem «como um chocalho... até destruí-lo como um farrapo».\n* **A Grande Mãe (Natureza/Pandora):** Durante esse voo sobre os tempos, ele visualiza a Natureza ou Pandora — descrita como uma figura grandiosa, maternal e ao mesmo tempo indiferente —, que alimenta e consome as gerações humanas num ciclo infindável de criação e destruição.\n* **O fim do delírio:** À medida que a marcha dos séculos se acelera vertiginosamente rumo ao futuro e ao fim de tudo, a velocidade torna-se tamanha que os objetos se fundem e um nevoeiro cobre a cena. O gigantesco hipopótamo vai encolhendo gradativamente até se transformar em um gato comum — o seu gato *Sultão*, que brincava à porta da alcova —, marcando o despertar abrupto ou o limiar da morte real."
+    }
+  ],
+  "segments": [
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 407,
+        "end": 509
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 20246,
+            "end": 20329
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 20550,
+            "end": 20613
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 545,
+        "end": 724
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 26802,
+            "end": 26839
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 27044,
+            "end": 27184
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 725,
+        "end": 947
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 27423,
+            "end": 27483
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 27846,
+            "end": 28101
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 987,
+        "end": 1224
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 23343,
+            "end": 23401
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1249,
+        "end": 1426
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 31199,
+            "end": 31445
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1427,
+        "end": 1629
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 31538,
+            "end": 31703
+          }
+        }
+      ]
+    }
+  ],
+  "labeledBy": "MPT0M",
+  "labeledAt": "2026-09-08"
+}

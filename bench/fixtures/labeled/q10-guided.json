@@ -1,0 +1,97 @@
+{
+  "id": "q10-guided",
+  "parts": [
+    {
+      "text": "A última frase do romance *Memórias Póstumas de Brás Cubas*, de Machado de Assis (no Capítulo CLX, \"Das negativas\"), é:\n\n> **«— Não tive filhos, não transmitti a nenhuma creatura o legado da nossa miseria.»**\n\n### O que ela conclui sobre a vida de Brás Cubas?\n\nA frase serve como o fecho filosófico e pessimista das memórias do defunto autor. Ao fazer um balanço de sua existência — ponderando que não alcançou a grande celebridade com o seu emplasto, que não foi ministro nem califa, mas que, por outro lado, também não precisou trabalhar duramente para sobreviver nem sofreu as tragédias extremas de outros personagens (como D. Plácida ou Quincas Borba) —, Brás Cubas conclui que não saiu \"quite\" com a vida. \n\nA vida é encarada por ele fundamentalmente como um fardo repleto de dores, desilusões e frustrações. Portanto, ao afirmar que **não teve filhos**, ele vê como seu maior trunfo final o fato de **não ter repassado essa herança de sofrimento** (o \"legado da nossa miséria\") a mais ninguém, encerrando a sua estirpe e poupando um novo ser humano de experimentar as agruras da existência. É uma visão profundamente niilista e melancólica sobre a condição humana."
+    }
+  ],
+  "segments": [
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 0,
+        "end": 119
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 361534,
+            "end": 361562
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 121,
+        "end": 208
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 362618,
+            "end": 362697
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 343,
+        "end": 710
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 362006,
+            "end": 362146
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 362147,
+            "end": 362331
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 362332,
+            "end": 362482
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 814,
+        "end": 998
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 362483,
+            "end": 362635
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 362618,
+            "end": 362697
+          }
+        }
+      ]
+    }
+  ],
+  "labeledBy": "MPT0M",
+  "labeledAt": "2026-09-08"
+}

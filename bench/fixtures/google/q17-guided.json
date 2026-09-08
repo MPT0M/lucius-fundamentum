@@ -1,0 +1,241 @@
+{
+  "id": "q17-guided",
+  "model": "gemini-3.5-flash-lite",
+  "recordedAt": "2026-09-08T15:37:31.392Z",
+  "reportVersion": "bench-report-1",
+  "storeEmbeddingModel": "gemini-embedding-2",
+  "storeChunking": {
+    "maxTokensPerChunk": 200,
+    "maxOverlapTokens": 20
+  },
+  "parts": [
+    {
+      "text": "Nas *Memórias Póstumas de Brás Cubas*, de Machado de Assis, a atuação do protagonista como deputado é marcada por um longo período de inércia e conveniência, seguido por uma guinada extravagante motivada pelas ideias do filósofo Quincas Borba.\n\n### A atuação de Brás Cubas como deputado\nAntes de sua intervenção mais famosa, Brás Cubas descreve que **não havia intervindo nos grandes debates**. Ele relata que passava o tempo \"cortejando a pasta\" (ou seja, tentando alcançar o cargo de ministro) por meio de bajulações (\"rapapés\"), chás, comissões e votos, mas o cargo desejado nunca vinha. Vendo que a letargia moral e mental precisava acabar, e estimulado pelas conversas com Quincas Borba, ele decide que precisa urgentemente se apropirar da tribuna e fazer-se notar no governo.\n\n### O discurso da barretina da Guarda Nacional\nPara dar início à sua participação ativa, Brás Cubas escolhe um tema aparentemente banal, mas que ele tenta elevar à categoria de questão de Estado. Discutindo-se o orçamento da justiça, ele pediu a palavra para **perguntar modestamente ao ministro se não julgaria útil diminuir a barretina (o chapéu militar rígido e alto) da Guarda Nacional**. \n\nPara fundamentar o seu pedido, Brás Cubas utiliza argumentos que misturam erudição exagerada e preocupações de saúde pública:\n* **Exemplo histórico:** Cita o general grego Filopêmen, que ordenou a substituição dos broqueis e das lanças de suas tropas por artefatos mais adequados, provando que reformas no equipamento militar são dignas de estadistas.\n* **Higiene e saúde:** Argumenta que o tamanho das barretinas era excessivamente grande, deselegante e anti-higiénico. Explicava que, nas paradas militares sob o sol, o calor produzido pelas barretinas podia ser fatal, invocando preceitos de Hipócrates sobre a importância de manter a cabeça fresca. Afirmava que era cruel obrigar um cidadão, por mero capricho de uniforme, a arriscar a saúde, a vida e o futuro de sua família.\n* **Direitos cívicos e estética:** Defendia que a Guarda Nacional era o anteparo da liberdade e que o cidadão — convocado para um serviço penoso e gratuito — tinha direito a um uniforme leve e maneiro. Além disso, argumentava que o peso da barretina abatia a cabeça dos cidadãos, enquanto a pátria precisava de frentes altivas e serenas.\n* **Fechamento poético:** Concluiu o discurso com uma metáfora célebre: *\"O chorão, que inclina os seus galhos para a terra, é árvore de cemitério; a palmeira, erecta e firme, é árvore do deserto, das praças e dos jardins\"*.\n\n**A repercussão:** O discurso teve uma recepção dividida. No plano literário, filosófico e formal, foi muito elogiado pela eloquência — diziam que ninguém jamais conseguira tirar tantas ideias de uma simples barretina. Contudo, no plano político, foi considerado por muitos um verdadeiro desastre parlamentar, gerando desconfiança e surpresa entre os próprios colegas de partido, pois viram na provocação sobre o uniforme um sinal incoerente de oposição ao governo que ele teoricamente apoiava."
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 81,
+    "candidatesTokenCount": 886,
+    "totalTokenCount": 8293,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 81
+      }
+    ],
+    "toolUsePromptTokenCount": 7326,
+    "toolUsePromptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 7326
+      }
+    ],
+    "serviceTier": "standard"
+  },
+  "groundingMetadata": {
+    "groundingChunks": [
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "grande\nphilosopho. As palavras do Quincas Borba tiveram o condão de sacudir\no torpor moral e mental em que andava. Vamos lá; façamo-nos governo.\nCrel-o-eis, posteros? Eu não havia intervindo até então nos grandes\ndebates. Cortejava a pasta por meio de rapapés, chás, commissões e\nvotos; e a pasta não vinha. Urgia apoderar-me da tribuna.\n\nComecei de vagar. Tres dias depois, discutindo-se o orçamento da\njustiça, aproveitei o ensejo para perguntar modestamente ao ministro\nse não julgava util diminuir a barretina da guarda nacional. Não\ntinha vasto alcance o objecto da pergunta; mas ainda assim demonstrei\nque não era indigno das cogitações de um homem de Estado; e citei\nPhilopemen, que ordenou a substituição dos broqueis de suas tropas,\nque eram pequenos, por outros maiores, e bem assim as lanças, que\neram demasiado leves; facto que a historia não achou que desmentisse\na gravidade de suas paginas. O tamanho das nossas barretinas estava\npedindo um córte profundo, não só por serem deselegantes, mas tambem\npor serem anti-hygienicas. Nas paradas, ao sol, o excesso do calor\nproduzido por ellas podia ser fatal. Sendo certo que um dos preceitos\nde Hippocrates era trazer a cabeça fresca, parecia cruel obrigar um\ncidadão, por simples consideração de uniforme, a arriscar a saude e\na vida, e consequentemente o futuro da familia. A camara e",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "por simples consideração de uniforme, a arriscar a saude e\na vida, e consequentemente o futuro da familia. A camara e o governo\ndeviam lembrar-se que a guarda nacional era o anteparo da liberdade\ne da independencia, e que o cidadão, chamado a um serviço gratuito,\nfrequente e penoso, tinha direito a que se lhe diminuisse o onus,\ndecretando um uniforme leve e maneiro. Accrescia que a barretina,\npor seu peso, abatia a cabeça dos cidadãos, e a patria precisava de\ncidadãos cuja fronte pudesse levantar-se altiva e serena diante do\npoder; e conclui com esta idéa: O chorão, que inclina os seus galhos\npara a terra, é arvore de cemiterio; a palmeira, erecta e firme, é\narvore do deserto, das praças e dos jardins.\n\nVária foi a impressão deste discurso. Quanto á forma, ao rapto\neloquente, á parte litteraria e philosophica, a opinião foi só uma;\ndisseram-me todos que era completo, e que de uma barretina ninguem\nainda conseguira tirar tantas idéas. Mas a parte politica foi\nconsiderada por muitos deploravel; alguns achavam o meu discurso um\ndesastre parlamentar; emfim, vieram dizer-me que outros me davam já\nem opposição, entrando nesse numero os opposicionistas da camara,\nque chegaram a insinuar a conveniencia de uma moção de desconfiança.\nRepelli energicamente tal interpretação, que não era só erronea, mas\ncalumniosa, á",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "chegaram a insinuar a conveniencia de uma moção de desconfiança.\nRepelli energicamente tal interpretação, que não era só erronea, mas\ncalumniosa, á vista da notoriedade com que eu sustentava o gabinete;\naccrescentei que a necessidade de diminuir a barretina, não era\ntamanha que não pudesse esperar alguns annos; e que, em todo caso,\neu transigiria na extensão do córte, contentando-me com tres quartos\nde polegada ou menos; emfim, dado mesmo que a minha idéa não fosse\nadoptada, bastava-me tel-a iniciado no parlamento.\n\nO Quincas Borba, porém, não fez restricção alguma. Não sou homem\npolitico, disse-me elle ao jantar; não sei se andaste bem ou mal;\nsei que fizeste um excellente discurso. E então notou as partes\nmais salientes, as bellas imagens, os argumentos fortes, com esse\ncomedimento de louvor que tão bem fica a um grande philosopho; depois,\ntomou o assumpto á sua conta, e impugnou a barretina com tal força,\ncom tamanha lucidez, que acabou convencendo-me effectivamente do seu\nperigo.\n\n\n\n\nCAPITULO CXXXVIII\n\n\nA um Critico\n\n\n Meu caro critico,\n\n Algumas paginas atraz, dizendo eu que tinha cincoenta annos,\n accrescentei: «Já se vae sentindo que o meu estylo não é tão\n lesto como nos primeiros dias.» Talvez aches esta phrase\n incomprehensivel, sabendo-se o meu actual estado; mas eu\n chamo a tua attenção para a subtileza daquelle pensamento. O\n",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      }
+    ],
+    "groundingSupports": [
+      {
+        "segment": {
+          "endIndex": 252,
+          "text": "Nas *Memórias Póstumas de Brás Cubas*, de Machado de Assis, a atuação do protagonista como deputado é marcada por um longo período de inércia e conveniência, seguido por uma guinada extravagante motivada pelas ideias do filósofo Quincas Borba"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 255,
+          "endIndex": 410,
+          "text": "### A atuação de Brás Cubas como deputado\nAntes de sua intervenção mais famosa, Brás Cubas descreve que **não havia intervindo nos grandes debates**"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 412,
+          "endIndex": 612,
+          "text": "Ele relata que passava o tempo \"cortejando a pasta\" (ou seja, tentando alcançar o cargo de ministro) por meio de bajulações (\"rapapés\"), chás, comissões e votos, mas o cargo desejado nunca vinha"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 614,
+          "endIndex": 803,
+          "text": "Vendo que a letargia moral e mental precisava acabar, e estimulado pelas conversas com Quincas Borba, ele decide que precisa urgentemente se apropirar da tribuna e fazer-se notar no governo"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 806,
+          "endIndex": 1007,
+          "text": "### O discurso da barretina da Guarda Nacional\nPara dar início à sua participação ativa, Brás Cubas escolhe um tema aparentemente banal, mas que ele tenta elevar à categoria de questão de Estado"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1009,
+          "endIndex": 1210,
+          "text": "Discutindo-se o orçamento da justiça, ele pediu a palavra para **perguntar modestamente ao ministro se não julgaria útil diminuir a barretina (o chapéu militar rígido e alto) da Guarda Nacional**"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1214,
+          "endIndex": 1577,
+          "text": "Para fundamentar o seu pedido, Brás Cubas utiliza argumentos que misturam erudição exagerada e preocupações de saúde pública:\n* **Exemplo histórico:** Cita o general grego Filopêmen, que ordenou a substituição dos broqueis e das lanças de suas tropas por artefatos mais adequados, provando que reformas no equipamento militar são dignas de estadistas"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1579,
+          "endIndex": 1698,
+          "text": "* **Higiene e saúde:** Argumenta que o tamanho das barretinas era excessivamente grande, deselegante e anti-higiénico"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1700,
+          "endIndex": 1882,
+          "text": "Explicava que, nas paradas militares sob o sol, o calor produzido pelas barretinas podia ser fatal, invocando preceitos de Hipócrates sobre a importância de manter a cabeça fresca"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1884,
+          "endIndex": 2013,
+          "text": "Afirmava que era cruel obrigar um cidadão, por mero capricho de uniforme, a arriscar a saúde, a vida e o futuro de sua família"
+        },
+        "groundingChunkIndices": [
+          0,
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 2015,
+          "endIndex": 2223,
+          "text": "* **Direitos cívicos e estética:** Defendia que a Guarda Nacional era o anteparo da liberdade e que o cidadão — convocado para um serviço penoso e gratuito — tinha direito a um uniforme leve e maneiro"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 2225,
+          "endIndex": 2363,
+          "text": "Além disso, argumentava que o peso da barretina abatia a cabeça dos cidadãos, enquanto a pátria precisava de frentes altivas e serenas"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 2365,
+          "endIndex": 2598,
+          "text": "* **Fechamento poético:** Concluiu o discurso com uma metáfora célebre: *\"O chorão, que inclina os seus galhos para a terra, é árvore de cemitério; a palmeira, erecta e firme, é árvore do deserto, das praças e dos jardins\"*"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 2601,
+          "endIndex": 2660,
+          "text": "**A repercussão:** O discurso teve uma recepção dividida"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 2662,
+          "endIndex": 2827,
+          "text": "No plano literário, filosófico e formal, foi muito elogiado pela eloquência — diziam que ninguém jamais conseguira tirar tantas ideias de uma simples barretina"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 2829,
+          "endIndex": 3110,
+          "text": "Contudo, no plano político, foi considerado por muitos um verdadeiro desastre parlamentar, gerando desconfiança e surpresa entre os próprios colegas de partido, pois viram na provocação sobre o uniforme um sinal incoerente de oposição ao governo que ele teoricamente apoiava"
+        },
+        "groundingChunkIndices": [
+          1,
+          2
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,212 @@
+{
+  "id": "q11-guided",
+  "parts": [
+    {
+      "text": "Com base no romance *Memórias Póstumas de Brás Cubas*, de Machado de Assis, aqui estão as respostas sobre a personagem Eugênia:\n\n* **Quem é Eugênia:** \nEugenia é filha de D. Eusébia (uma antiga paixão de juventude de Brás Cubas, do episódio conhecido como o de \"1814, na moita\"). Conhecida no livro como \"a flor da moita\" e descrita como uma jovem formosa de dezesseis anos, de ideias claras, maneiras simples, porte distinto e olhar franco, ela se envolve amorosamente com Brás Cubas durante um período em que ele passa tempo na Tijuca. No entanto, por ser filha espúria (i.e., filha ilegítima) de D. Eusébia, ela traz consigo uma origem social desfavorável aos olhos da elite da época.\n\n* **Qual é o defeito físico dela:** \nEugenia é **coxa de nascença** (manca de uma das pernas). Brás Cubas descreve esse contraste de forma marcante: ela possuía uma beleza notável, olhos lúcidos, boca fresca e compostura senhoril, mas o fato de ser coxa fazia com que ele visse isso quase como um \"imenso escarneo\" da natureza.\n\n* **Por que Brás Cubas diz que não se casou com ela:**\nNa verdade, Brás Cubas **nunca chega a cogitar formalmente o casamento** com Eugênia a ponto de haver uma recusa oficial ou direta nos moldes tradicionais; o relacionamento deles ocorre à margem da sociedade formal (uma espécie de idílio amoroso na Tijuca). O principal motivo pelo qual ele não se casa com ela — e acaba se afastando — envolve o forte preconceito social da época e a sua própria ambição pessoal: \n1. **A condição física:** O defeito físico (ser coxa) gerava nele um conflito estético e preconceituoso inicial.\n2. **A origem familiar (o sangue):** Brás Cubas carrega a forte influência das convenções sociais e da pressão familiar para subir na vida política e social. Ao lembrar-se da origem de D. Eusébia e do passado (\"a suspeitar que não podias mentir ao teu sangue, à tua origem\"), ele percebe que Eugênia é filha ilegítima de uma família empobrecida e sem prestígio político. \n\nPara as pretensões de Brás Cubas — que buscava uma noiva de alta linhagem e influência política para alavancar sua carreira (como Virgília, filha do Conselheiro Dutra) —, casar-se com Eugênia era algo incompatível com o status e a \"glória\" que sua família exigia dele. Por fim, ele simplesmente se afasta e a abandona (\"perder-se no horizonte do pretérito\"), deixando-a seguir solitária pela estrada da vida."
+    }
+  ],
+  "segments": [
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 152,
+        "end": 181
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 109759,
+            "end": 109781
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 118904,
+            "end": 118924
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 280,
+        "end": 537
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 109783,
+            "end": 109807
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 110316,
+            "end": 110351
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 117687,
+            "end": 117767
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 117553,
+            "end": 117605
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 119033,
+            "end": 119050
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 550,
+        "end": 686
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 118904,
+            "end": 118924
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 726,
+        "end": 783
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 116485,
+            "end": 116521
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 838,
+        "end": 1015
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 117687,
+            "end": 117767
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 117768,
+            "end": 117845
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1490,
+        "end": 1599
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 117846,
+            "end": 117893
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 121870,
+            "end": 121932
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1809,
+        "end": 1874
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 119889,
+            "end": 119950
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 2008,
+        "end": 2140
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 106072,
+            "end": 106130
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 2251,
+        "end": 2330
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 123706,
+            "end": 123759
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 122239,
+            "end": 122273
+          }
+        }
+      ]
+    }
+  ],
+  "labeledBy": "MPT0M",
+  "labeledAt": "2026-09-08T21:22:35.371Z"
+}

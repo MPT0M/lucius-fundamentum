@@ -1,0 +1,189 @@
+{
+  "id": "q19-plain",
+  "model": "gemini-3.5-flash-lite",
+  "recordedAt": "2026-09-08T15:37:31.392Z",
+  "reportVersion": "bench-report-1",
+  "storeEmbeddingModel": "gemini-embedding-2",
+  "storeChunking": {
+    "maxTokensPerChunk": 200,
+    "maxOverlapTokens": 20
+  },
+  "parts": [
+    {
+      "text": "Em ***Memórias Póstumas de Brás Cubas***, obra de Machado de Assis, **Viegas** é um senhor idoso, rico, asmático e parente (ou tio) de Virgília. Ele é retratado como uma pessoa solitária e sovina (mão-fechada), que sofre com crises fortes de tosse e asma, além de ser obcecado por negócios (como a venda de uma de suas casas).\n\n### O que Virgília e Brás esperavam dele?\n\nVirgília e seu marido (Lobo Neves) — com o pleno conhecimento e cumplicidade de Brás Cubas, amante de Virgília — cultivavam uma relação de extrema cortesia, bajulação e falsa afeição para com o velho Viegas com um objetivo muito claro: **uma herança ou um legado testamentário**. \n\nVirgília dedicava-se a cobrir o parente de atenções calculadas: recebia-o à porta com sorrisos, tirava-lhe o chapéu e a bengala, dava-lhe o braço, aturava longas partidas de damas e agia como uma verdadeira enfermeira ou dedicada sobrinha/filha. Ela fazia tudo isso abertamente manifestando a expectativa de que tanta dedicação resultasse em uma generosa quantia em dinheiro ou em um codicilo (um adendo ao testamento). Brás Cubas também acompanhava e observava esse esforço interesseiro, notando que Virgília era menos escrupulosa do que o marido quanto a isso.\n\nNo entanto, a expectativa do casal termina em grande frustração: quando Viegas morre (após um último acesso de tosse enquanto tentava negociar o preço de uma casa), descobre-se que ele não deixou absolutamente nada para eles — nem sequer uma lembrança testamentaria, *\"uma pastilha que fosse\"*. Virgília engole a raiva desse fracasso (\"malogro\") e lamenta o resultado principalmente por causa do futuro do filho (que ela e Brás tinham em comum)."
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 18,
+    "candidatesTokenCount": 598,
+    "totalTokenCount": 19188,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 18
+      }
+    ],
+    "toolUsePromptTokenCount": 18572,
+    "toolUsePromptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 18572
+      }
+    ],
+    "serviceTier": "standard"
+  },
+  "groundingMetadata": {
+    "groundingChunks": [
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "e levava-o até uma\ncadeira, ou até á cadeira, porque havia lá em casa a «cadeira do\nViegas», obra especial, conchegada, feita para gente enferma ou anciã.\nIa fechar a janella proxima, se havia alguma brisa, ou abril-a, se\nestava calor, mas com cuidado, combinando de modo que lhe não désse um\ngolpe de ar.\n\n--Então? hoje está mais fortesinho...\n\n--Qual! Passei mal a noite; o diabo da asthma não me deixa.\n\nE bufava o homem, repousando a pouco e pouco do cançaço da entrada e\nda subida, não do caminho, porque ia sempre de sege. Ao lado, um pouco\nmais para a frente, sentava-se Virgilia, n'uma banquinha, com as mãos\nnos joelhos do enfermo. Entretanto, o nhonhô chegava á sala, sem os\npulos do costume, mas discreto, meigo, serio. O Viegas gostava muito\ndelle.\n\n--Vem cá, nhonhô, dizia-lhe; e a custo introduzia a mão na ampla\nalgibeira, tirava uma caixinha de pastilhas, mettia uma na boca o dava\noutra ao pequeno. Pastilhas anti-asthmaticas. O pequeno dizia que eram\nmuito boas.\n\nRepetia-se isto, com variantes. Como o Viegas gostasse de jogar damas,\nVirgilia cumpria-lhe o desejo, aturando-o por largo tempo, a mover as\npedras com a mão frouxa e tarda. Outras vezes, desciam a passear na\nchacara, dando-lhe ella o braço, que elle nem sempre aceitava, por\ndizer-se rijo e capaz de",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "tão perniciosa doutrina, com os mais\nelementares argumentos; mas elle estava tão vexado do meu reparo,\nque resistiu até o fim, mostrando certo calor ficticio, talvez para\natordoar a consciencia.\n\nO caso de Virgilia tinha alguma gravidade mais. Ella era menos\nescrupulosa que o marido; manifestava claramente as esperanças que\ntrazia no legado, cumulava o parente de todas as cortezias, attenções\ne affagos que poderiam render, pelo menos, um codicillo. Propriamente,\nadulava-o; mas eu observei que a adulação das mulheres não é a mesma\ncousa que a dos homens. Esta orça pela servilidade; a outra confunde-se\ncom a affeição. As formas graciosamente curvas, a palavra doce, a mesma\nfraqueza physica dão á acção lisonjeira da mulher uma côr local, um\naspecto legitimo. Não importa a edade do adulado; a mulher ha de ter\nsempre para elle uns ares de mãe ou de irmã,--ou ainda de enfermeira,\noutro officio feminil, em que o mais habil dos homens carecerá sempre\nde um _quid_, um fluido, alguma cousa.\n\nEra o que eu pensava commigo, quando Virgilia se desfazia toda em\naffagos ao velho parente. Ella ia recebel-o á porta, falando e rindo,\ntirava-lhe o chapeu e a bengala, dava-lhe o braço e levava-o até uma\ncadeira, ou até á cadeira, porque havia lá em casa a «cadeira do\nViegas», obra especial, conchegada, feita",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "extremis\n\n\n--Amanhã vou passar o dia em casa do Viegas, disse-me ella uma vez.\nCoitado! não tem ninguem...\n\nO Viegas caíra na cama, definitivamente; a filha, casada, adoecera\njustamente agora, e não podia fazer-lhe companhia. Virgilia ia lá\nde quando em quando. Eu aproveitei a circumstancia para passar todo\naquelle dia ao pé della. Eram duas horas da tarde quando cheguei. O\nViegas tossia com tal força que me fazia arder o peito; no intervallo\ndos accessos debatia o preço de uma casa, com um sujeito magro. O\nsujeito offerecia trinta contos, o Viegas exigia quarenta. O comprador\ninstava como quem receia perder o trem da estrada de ferro, mas o\nViegas não cedia; recusou primeiramente os trinta contos, depois\nmais dous, depois mais tres, emfim teve um forte accesso, que lhe\ntolheu a fala durante quinze minutos. O comprador acarinhou-o muito,\narranjou-lhe os travesseiros, offereceu-lhe trinta e seis contos.\n\n--Nunca! gemeu o enfermo.\n\nE mandou buscar um maço de papeis á escrivaninha; não tendo forças\npara tirar a fita de borracha que prendia os papeis, pediu-me que os\ndeslaçasse: fil-o. Eram as contas das despezas com a construcção da\ncasa: contas de pedreiro, de carpinteiro, de pintor; contas do papel da\nsala de visitas, da sala de jantar, das alcovas, dos gabinetes; contas\ndas ferragens; custo do terreno. Elle abria-as,",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "cousas. O sujeito magro\ncontou uma anecdota, e tornou a tratar da casa, alteando a proposta.\n\n--Trinta e oito contos, disse elle.\n\n--Am?... gemeu o enfermo.\n\nO sujeito magro aproximou-se da cama, pegou-lhe na mão, e sentiu-a\nfria. Eu acheguei-me ao doente, perguntei-lhe se sentia alguma cousa,\nse queria tomar um calice de vinho.\n\n--Não... não... quar... quaren... quar... quar...\n\nTeve um accesso de tosse, e foi o ultimo; dahi a pouco expirava elle,\ncom grande consternação do sujeito magro, que me confessou depois a\ndisposição em que estava de offerecer os quarenta contos; mas era\ntarde.\n\n\n\n\nCAPITULO XC\n\n\nO velho colloquio de Adão e Caim\n\n\nE nada. Nenhuma lembrança testamentaria, uma pastilha que fosse, com\nque do todo em todo não parecesse ingrato ou esquecido. Nada. Virgilia\ntragou raivosa esse mallogro, e disse-m'o com certa cautela, não pela\ncousa em si, senão porque entendia com o filho, de quem sabia que eu\nnão gostava muito, nem pouco. Insinuei-lhe que não devia pensar mais em\nsemelhante negocio. O melhor de tudo era esquecer o defunto, um lorpa,\num cainho sem nome, e tratar de cousas alegres; o nosso filho, por\nexemplo.\n\nLá me escapou a decifração do mysterio, esse doce mysterio de algumas\nsemanas antes, quando Virgilia me pareceu um pouco differente do que\nera. Um filho! Um ser tirado do meu ser! Esta",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "tão perniciosa doutrina, com os mais\nelementares argumentos; mas elle estava tão vexado do meu reparo,\nque resistiu até o fim, mostrando certo calor ficticio, talvez para\natordoar a consciencia.\n\nO caso de Virgilia tinha alguma gravidade mais. Ella era menos\nescrupulosa que o marido; manifestava claramente as esperanças que\ntrazia no legado, cumulava o parente de todas as cortezias, attenções\ne affagos que poderiam render, pelo menos, um codicillo. Propriamente,\nadulava-o; mas eu observei que a adulação das mulheres não é a mesma\ncousa que a dos homens. Esta orça pela servilidade; a outra confunde-se\ncom a affeição. As formas graciosamente curvas, a palavra doce, a mesma\nfraqueza physica dão á acção lisonjeira da mulher uma côr local, um\naspecto legitimo. Não importa a edade do adulado; a mulher ha de ter\nsempre para elle uns ares de mãe ou de irmã,--ou ainda de enfermeira,\noutro officio feminil, em que o mais habil dos homens carecerá sempre\nde um _quid_, um fluido, alguma cousa.\n\nEra o que eu pensava commigo, quando Virgilia se desfazia toda em\naffagos ao velho parente. Ella ia recebel-o á porta, falando e rindo,\ntirava-lhe o chapeu e a bengala, dava-lhe o braço e levava-o até uma\ncadeira, ou até á cadeira, porque havia lá em casa a «cadeira do\nViegas», obra especial, conchegada, feita",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      }
+    ],
+    "groundingSupports": [
+      {
+        "segment": {
+          "endIndex": 149,
+          "text": "Em ***Memórias Póstumas de Brás Cubas***, obra de Machado de Assis, **Viegas** é um senhor idoso, rico, asmático e parente (ou tio) de Virgília"
+        },
+        "groundingChunkIndices": [
+          0,
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 151,
+          "endIndex": 336,
+          "text": "Ele é retratado como uma pessoa solitária e sovina (mão-fechada), que sofre com crises fortes de tosse e asma, além de ser obcecado por negócios (como a venda de uma de suas casas)"
+        },
+        "groundingChunkIndices": [
+          2,
+          3
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 384,
+          "endIndex": 677,
+          "text": "Virgília e seu marido (Lobo Neves) — com o pleno conhecimento e cumplicidade de Brás Cubas, amante de Virgília — cultivavam uma relação de extrema cortesia, bajulação e falsa afeição para com o velho Viegas com um objetivo muito claro: **uma herança ou um legado testamentário**"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 681,
+          "endIndex": 931,
+          "text": "Virgília dedicava-se a cobrir o parente de atenções calculadas: recebia-o à porta com sorrisos, tirava-lhe o chapéu e a bengala, dava-lhe o braço, aturava longas partidas de damas e agia como uma verdadeira enfermeira ou dedicada sobrinha/filha"
+        },
+        "groundingChunkIndices": [
+          0,
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 933,
+          "endIndex": 1107,
+          "text": "Ela fazia tudo isso abertamente manifestando a expectativa de que tanta dedicação resultasse em uma generosa quantia em dinheiro ou em um codicilo (um adendo ao testamento)"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1109,
+          "endIndex": 1254,
+          "text": "Brás Cubas também acompanhava e observava esse esforço interesseiro, notando que Virgília era menos escrupulosa do que o marido quanto a isso"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1257,
+          "endIndex": 1559,
+          "text": "No entanto, a expectativa do casal termina em grande frustração: quando Viegas morre (após um último acesso de tosse enquanto tentava negociar o preço de uma casa), descobre-se que ele não deixou absolutamente nada para eles — nem sequer uma lembrança testamentaria, *\"uma pastilha que fosse\"*"
+        },
+        "groundingChunkIndices": [
+          3,
+          4
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1561,
+          "endIndex": 1712,
+          "text": "Virgília engole a raiva desse fracasso (\"malogro\") e lamenta o resultado principalmente por causa do futuro do filho (que ela e Brás tinham em comum)"
+        },
+        "groundingChunkIndices": [
+          4
+        ]
+      }
+    ]
+  }
+}
