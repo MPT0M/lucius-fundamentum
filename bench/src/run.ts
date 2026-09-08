@@ -3,10 +3,11 @@
  *
  * Every rule of the ruler lives in a pure module with its own test — utf8,
  * locate, score, parse, aggregate, manifest, label-check. This file only wires
- * them to the two things the suite never touches: the emitter behind a key,
- * and the disk. No predicate and no count that reaches a report is decided
- * here. If a number in a report cannot be traced to one of those modules, it
- * is a bug here.
+ * them to the emitter behind a key and to the disk. No predicate and no count
+ * that reaches a report is decided here. If a number in a report cannot be
+ * traced to one of those modules, it is a bug here. The suite does reach this
+ * file — `run.test.ts` gives it a fake client and temporary directories — but
+ * never the key and never the network.
  *
  * What a round does, in order:
  *   1. reads the manifest and the question set from the public `bench/`, and
@@ -148,16 +149,21 @@ export async function runRound(options: RunOptions): Promise<RoundOutcome> {
     // every recorded answer never touches the network.
     const missing = variants.flatMap((v) => questions.map((q) => fixtureId(q, v))).filter((id) => !existsSync(fixturePath(id)));
     let storeName: string | null = null;
-    if (missing.length > 0) {
-        storeName = (await client.createStore(meta.storeEmbeddingModel)).storeName;
-        log(`store ${storeName}`);
-        for (const source of sources) {
-            await client.importDocument(storeName, source.id, round.get(source.id)!.text, meta.storeChunking);
-            log(`imported ${source.id}`);
-        }
-    }
 
+    // Creation and import live INSIDE the try: an import that fails — measured
+    // on 2026-09-08, a document that came back FAILED to index — would
+    // otherwise leave the store just created alive and billing, with nothing
+    // to delete it.
     try {
+        if (missing.length > 0) {
+            storeName = (await client.createStore(meta.storeEmbeddingModel)).storeName;
+            log(`store ${storeName}`);
+            for (const source of sources) {
+                await client.importDocument(storeName, source.id, round.get(source.id)!.text, meta.storeChunking);
+                log(`imported ${source.id}`);
+            }
+        }
+
         for (const variant of variants) {
             const labeledHere: Labeled[] = [];
             for (const question of questions) {
