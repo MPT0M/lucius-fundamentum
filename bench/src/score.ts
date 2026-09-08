@@ -335,7 +335,10 @@ export function scoreResponse(
             granularityDistribution.push(length(chosenSpan.span) / length(bestGold.span));
         }
         addMass(scoredClassMass, classMassOf(regionsOf(chosenSpan.documentId), chosenSpan.span));
-        if (chosen.origin.inFixture === false) outsideFixture++;
+        // An origin that did not resolve also carries `inFixture: false`, and its
+        // snippet was located in the fixture's own view: only a RESOLVED origin
+        // outside the fixture is a citation of another document.
+        if (chosen.origin.documentId !== null && !chosen.origin.inFixture) outsideFixture++;
 
         if (bestOverlap >= threshold && segmentIndex !== null) {
             citationsCorrect++;
