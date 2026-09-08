@@ -46,6 +46,12 @@ const INLINE_CODE = /`[^`\n]+`/g;
  * `http(s)://` up to the first whitespace or common closing delimiter. The
  * trailing-punctuation problem (`https://x.y.` at a sentence end) is resolved
  * by trimming: a URL does not end in `.`, `,`, `;` or `:`.
+ *
+ * KNOWN LIMITATION: `$` and the backtick are accepted inside a URL, so a URL
+ * glued to a formula or code delimiter (`https://x.y$a$`) swallows the
+ * delimiter, and the region is reported as `url` over what was a formula.
+ * Declared in 5411978; kept visible by an `it.fails` in the tests. Changing it
+ * changes masking behaviour and is a separate decision.
  */
 const URL = /https?:\/\/[^\s<>"'\])]+/g;
 const URL_TRAILING = /[.,;:!?]+$/u;
@@ -57,30 +63,54 @@ export interface MaskOptions {
 }
 
 /**
- * Masks code and URLs first, then formulas, then abbreviation periods, and
- * reports every region. Same contract as `maskFormulas`:
- * `countCodePoints(text) === countCodePoints(result.text)`, spans in order,
- * non-overlapping, delimiters included (for an abbreviation the region is the
- * period alone).
+ * The kind of region a span was painted by. One value per pass of
+ * `maskProtectedRegions`, in the order the passes run.
  */
-export function maskProtectedRegions(text: string, opts: MaskOptions = {}): MaskResult {
-    const regions: Span[] = [];
+export type ProtectedRegionKind = 'code' | 'url' | 'formula' | 'abbreviation';
+
+/**
+ * A protected span that says which pass painted it. Structurally a `Span` — a
+ * reader of `start`/`end` sees no difference — so a `ClassifiedMaskResult` is
+ * assignable wherever a `MaskResult` is expected.
+ */
+export type ProtectedSpan = Span & { readonly kind: ProtectedRegionKind };
+
+/**
+ * `MaskResult` whose spans carry their kind. Narrower than `MaskResult`, never
+ * wider: the only thing added is `kind`. It exists because a consumer that
+ * measures HOW MUCH of an interval falls inside code, inside a URL, inside a
+ * formula or on an abbreviation period cannot do so from an anonymous list of
+ * spans — and the passes already know, so the information is free to report.
+ */
+export interface ClassifiedMaskResult extends MaskResult {
+    readonly spans: readonly ProtectedSpan[];
+}
+
+/**
+ * Masks code and URLs first, then formulas, then abbreviation periods, and
+ * reports every region with the kind of the pass that painted it. Same
+ * contract as `maskFormulas`: `countCodePoints(text) === countCodePoints(result.text)`,
+ * spans in order, non-overlapping, delimiters included (for an abbreviation
+ * the region is the period alone).
+ */
+export function maskProtectedRegions(text: string, opts: MaskOptions = {}): ClassifiedMaskResult {
+    const regions: ProtectedSpan[] = [];
     let masked = text;
 
     for (const re of [FENCED_CODE, INLINE_CODE]) {
         const spans = matchSpans(masked, re).filter((s) => !overlapsAny(s, regions));
-        regions.push(...spans);
+        regions.push(...withKind(spans, 'code'));
         masked = paint(masked, spans);
     }
 
     const urls = matchSpans(masked, URL)
         .map((s) => trimTrailingPunctuation(masked, s))
         .filter((s) => !overlapsAny(s, regions));
-    regions.push(...urls);
+    regions.push(...withKind(urls, 'url'));
     masked = paint(masked, urls);
 
     const formulas = maskFormulas(masked);
-    regions.push(...formulas.spans);
+    regions.push(...withKind(formulas.spans, 'formula'));
     masked = formulas.text;
 
     // Abbreviations go LAST, on text where code, URLs and formulas are already
@@ -88,10 +118,14 @@ export function maskProtectedRegions(text: string, opts: MaskOptions = {}): Mask
     // `example.com` is a URL's, not an abbreviation's. Only the period is
     // masked, one code point, so the word itself stays indexable.
     const abbreviations = maskAbbreviationPeriods(masked, opts.abbreviations);
-    regions.push(...abbreviations.spans);
+    regions.push(...withKind(abbreviations.spans, 'abbreviation'));
 
     regions.sort((a, b) => a.start - b.start);
     return { text: abbreviations.text, spans: regions };
+}
+
+function withKind(spans: readonly Span[], kind: ProtectedRegionKind): ProtectedSpan[] {
+    return spans.map(({ start, end }) => ({ start, end, kind }));
 }
 
 function overlapsAny(s: Span, others: readonly Span[]): boolean {
