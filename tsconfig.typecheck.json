@@ -1,5 +1,6 @@
 {
-    // Type-checks everything that is not shipped: the sources AND the tests.
+    // Type-checks everything, shipped or not: the sources, the tests, the
+    // benchmark harness under bench/ and the test runner's own config.
     // The root tsconfig.json compiles src/ alone, on purpose — the package has no
     // runtime dependency on Node and its `lib` is ES2022. The tests do use Node
     // (fs, process, Buffer), and with the installed toolchain @types/node is
@@ -13,5 +14,5 @@
         "noEmit": true,
         "types": ["node"]
     },
-    "include": ["src", "tests"]
+    "include": ["src", "tests", "bench", "vitest.config.ts"]
 }
