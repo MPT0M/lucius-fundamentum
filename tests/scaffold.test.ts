@@ -8,6 +8,7 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import vitestConfig from '../vitest.config.js';
 
 const pkg = JSON.parse(readFileSync(join(process.cwd(), 'package.json'), 'utf8')) as {
     dependencies?: Record<string, string>;
@@ -49,9 +50,22 @@ describe('package contract', () => {
             include: string[];
             compilerOptions: { types: string[]; noEmit: boolean };
         };
-        expect(typecheck.include).toEqual(expect.arrayContaining(['src', 'tests']));
+        expect(typecheck.include).toEqual(expect.arrayContaining(['src', 'tests', 'bench', 'vitest.config.ts']));
         expect(typecheck.compilerOptions.types).toContain('node');
         expect(typecheck.compilerOptions.noEmit).toBe(true);
         expect(pkg.scripts?.typecheck).toContain('-p tsconfig.typecheck.json');
+    });
+
+    it('runs the harness tests under bench/ as part of the suite', () => {
+        // The only thing that makes bench/src/*.test.ts part of the suite is
+        // one glob in vitest.config.ts. Dropping it leaves the suite green with
+        // one file fewer and nothing to say so — the same silent-drop the
+        // typecheck pin above exists to prevent, for the twin wiring. The cast
+        // narrows `defineConfig`'s union (object | function | promise) to the
+        // object this repo exports; if the shape changed, `include` would be
+        // empty and both assertions would fail loudly.
+        const include = (vitestConfig as { test?: { include?: string[] } }).test?.include ?? [];
+        expect(include).toContain('bench/src/**/*.test.ts');
+        expect(include).toContain('tests/**/*.test.ts');
     });
 });
