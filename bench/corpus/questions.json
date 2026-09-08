@@ -9,6 +9,20 @@
     { "id": "q07", "derivedFrom": ["machado-memorias-posthumas"], "question": "Como Brás Cubas descreve o pai, e que carreira o pai queria para ele?" },
     { "id": "q08", "derivedFrom": ["machado-memorias-posthumas"], "question": "O que Brás Cubas conta sobre Virgília e sobre Lobo Neves?" },
     { "id": "q09", "derivedFrom": ["machado-memorias-posthumas"], "question": "Quem é Dona Plácida, e como o narrador conta a origem dela?" },
-    { "id": "q10", "derivedFrom": ["machado-memorias-posthumas"], "question": "Qual é a última frase do livro, e o que ela conclui sobre a vida de Brás Cubas?" }
+    { "id": "q10", "derivedFrom": ["machado-memorias-posthumas"], "question": "Qual é a última frase do livro, e o que ela conclui sobre a vida de Brás Cubas?" },
+    { "id": "q11", "derivedFrom": ["machado-memorias-posthumas"], "question": "Quem é Eugênia, qual é o defeito físico dela, e o que Brás Cubas diz sobre por que não se casou com ela?" },
+    { "id": "q12", "derivedFrom": ["machado-memorias-posthumas"], "question": "O que acontece no episódio em que um almocreve salva Brás Cubas de um acidente, e quanto Brás decide dar a ele?" },
+    { "id": "q13", "derivedFrom": ["machado-memorias-posthumas"], "question": "Quem é Nhã-loló, como ela entra na vida de Brás Cubas e o que acontece com ela?" },
+    { "id": "q14", "derivedFrom": ["machado-memorias-posthumas"], "question": "Como Brás Cubas conta a morte da mãe, e o que ele faz em seguida na Tijuca?" },
+    { "id": "q15", "derivedFrom": ["machado-memorias-posthumas"], "question": "O que é a borboleta preta que entra no quarto de Brás Cubas, e o que ele faz com ela?" },
+    { "id": "q16", "derivedFrom": ["machado-memorias-posthumas"], "question": "Quem é Cotrim, e como o narrador descreve o caráter e os negócios dele?" },
+    { "id": "q17", "derivedFrom": ["machado-memorias-posthumas"], "question": "Como Brás Cubas descreve a sua atuação como deputado, e sobre o que foi o discurso da barretina da Guarda Nacional?" },
+    { "id": "q18", "derivedFrom": ["machado-memorias-posthumas"], "question": "Que herança Brás Cubas recebe com a morte do pai, e como foi a partilha com a irmã Sabina?" },
+    { "id": "q19", "derivedFrom": ["machado-memorias-posthumas"], "question": "Quem é Viegas, e o que Virgília e Brás esperavam dele?" },
+    { "id": "q20", "derivedFrom": ["machado-memorias-posthumas"], "question": "O que Lobo Neves anuncia no jantar sobre a presidência de província, e o que Brás Cubas decide sobre acompanhá-lo como secretário?" },
+    { "id": "q21", "derivedFrom": ["machado-memorias-posthumas"], "question": "O que há no capítulo intitulado \"O velho diálogo de Adão e Eva\", e como o narrador o justifica?" },
+    { "id": "q22", "derivedFrom": ["machado-memorias-posthumas"], "question": "Quem é Damasceno, e que papel ele tem nos últimos anos de Brás Cubas?" },
+    { "id": "q23", "derivedFrom": ["machado-memorias-posthumas"], "question": "Quem é Prudêncio, e o que Brás Cubas testemunha quando o reencontra adulto no Valongo?" },
+    { "id": "q24", "derivedFrom": ["machado-memorias-posthumas"], "question": "Como se dá o reencontro de Brás Cubas com Quincas Borba no Passeio Público, e o que Quincas faz com o relógio de Brás?" }
   ]
 }
