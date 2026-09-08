@@ -52,6 +52,13 @@ describe('maskProtectedRegions — the same invariants as maskFormulas', () => {
         'Chame `obj.method()` antes. Depois siga.',
         'Leia https://example.com/a.b/c. Depois volte.',
         'Vale $x = 1.5$ em `f.g()` via https://a.b/c 💡 e 𝒳. Fim.',
+        // The region adjacencies the URL rule created, and the composite that
+        // once produced overlapping spans: a `$` before the URL closing on the
+        // `$` the URL released.
+        'https://x.y$a$',
+        'Veja https://x.y/z`f()` agora.',
+        'Abra https://x.y/?q=$5 hoje.',
+        'Custa $5 e veja https://x.y$a$ agora.',
     ];
 
     it('never changes the number of code points', () => {
@@ -148,16 +155,39 @@ describe('maskProtectedRegions — every region says which pass painted it', () 
         expect(asPlain.spans[0]).toMatchObject({ start: 4, end: 5 });
     });
 
-    // Declared debt, kept visible the way the chunker kept "Dr. Silva" visible
-    // until the abbreviation list landed. The URL pattern accepts `$` and a
-    // backtick inside a URL (5411978), so a URL glued to a formula delimiter
-    // swallows the delimiter — and now says so with a label. Fixing the pattern
-    // changes masking behaviour and is a separate decision; this test turns
-    // green the day it is taken.
-    it.fails('a URL glued to a formula delimiter reports the delimiter as url — debt from 5411978', () => {
+    // Debt declared in 5411978 and paid here: the URL pattern used to accept `$`
+    // and the backtick, so a URL glued to a formula delimiter swallowed it.
+    it('a URL glued to a formula delimiter stops at the delimiter, and the formula is its own region', () => {
         const text = 'https://x.y$a$';
         const { spans } = maskProtectedRegions(text);
         expect(spans.map((s) => s.kind)).toEqual(['url', 'formula']);
-        expect(at(text, spans[0]!)).toBe('https://x.y');
+        expect(spans.map((s) => at(text, s))).toEqual(['https://x.y', '$a$']);
+    });
+
+    it('a URL glued to inline code stops at the painted code instead of being dropped for overlapping it', () => {
+        // Code is painted before URLs run; a URL that crossed into the mask
+        // characters would overlap the code region and be discarded whole,
+        // leaving the periods of the URL unprotected.
+        const text = 'Veja https://x.y/z`f()` agora.';
+        const { spans } = maskProtectedRegions(text);
+        expect(spans.map((s) => s.kind)).toEqual(['url', 'code']);
+        expect(spans.map((s) => at(text, s))).toEqual(['https://x.y/z', '`f()`']);
+    });
+
+    it('a lone $ anywhere in a URL ends the URL there — the declared price of the rule above', () => {
+        const text = 'Abra https://x.y/?q=$5 hoje.';
+        const { spans } = maskProtectedRegions(text);
+        expect(spans.map((s) => at(text, s))).toEqual(['https://x.y/?q=']);
+    });
+
+    it('a $ left behind by a URL does not close a formula opened before it', () => {
+        // Without the overlap filter on the formula pass, `$5 e veja https://x.y$`
+        // matched as one formula over prose and the painted URL: overlapping
+        // spans, and a moved sentence boundary in the chunker. The real `$a$`
+        // is lost with the dropped match — declared in the commit.
+        const text = 'Custa $5 e veja https://x.y$a$ agora.';
+        const { spans, text: masked } = maskProtectedRegions(text);
+        expect(spans.map((s) => [s.kind, at(text, s)])).toEqual([['url', 'https://x.y']]);
+        expect(Array.from(masked).slice(0, 6).join('')).toBe('Custa ');
     });
 });
