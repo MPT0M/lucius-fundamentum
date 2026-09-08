@@ -1,0 +1,226 @@
+{
+  "id": "q14-plain",
+  "parts": [
+    {
+      "text": "Em ***Memórias Póstumas de Brás Cubas***, de Machado de Assis, a forma como Brás Cubas lida com a doença, a morte da mãe e o período imediatamente posterior revela muito sobre sua personalidade egocêntrica e irônica. \n\n### 1. Como Brás Cubas conta a morte da mãe\nA narrativa da doença e morte de sua mãe (D. Maria Cubas) ocorre nos capítulos finais da sua infância/juventude e transição para a vida adulta. \n* **A doença cruel:** Brás relata que a mãe não sofria mais de reumatismo, mas sim de um **cancro no estômago**. Ele descreve o sofrimento da genitora com uma franqueza fria e realista, observando que a doença era \"indiferente às virtudes do sujeito; quando róe, róe; roer é o seu ofício\".\n* **O sofrimento ao redor:** Ele menciona o esgotamento da irmã Sabina (que cuidava da mãe dormindo apenas três horas por noite), o abatimento do tio João e a consternação geral da família, incluindo o pai, que o abraça em prantos para avisar-lhe que ela não resistiria.\n* **A morte em si (e a omissão):** Curiosamente, de forma muito característica do seu estilo digressivo e antinarrativo, Brás Cubas **não chega a descrever o momento exato da morte**. No texto, logo após mostrar um breve momento de trégua na dor da mãe (um sorriso iluminando o rosto da enferma), o capítulo se encerra. No início do capítulo seguinte, ele diz textualmente: *\"Se não contei a morte, não conto igualmente a missa do sétimo dia\"* — embora logo adiante mencione que partiu para a Tijuca logo após essa missa fúnebre.\n\n---\n\n### 2. O que ele faz em seguida na Tijuca?\nLogo após a missa de sétimo dia da morte da mãe, Brás Cubas toma uma decisão drástica para fugir do luto sufocante da família:\n\n* **Isolamento na serra:** Ele pega uma espingarda, alguns livros, roupas, charutos, um moleque (Prudêncio) e vai refugiar-se em uma **velha casa de propriedade da família na Tijuca**. \n* **Resistência à família:** Ele faz isso contra a vontade de todos. Seu pai tenta dissuadi-lo da ideia, sua irmã Sabina queria que ele fosse morar com ela, e seu cunhado quase o leva à força, mas Brás é irredutível na sua necessidade de isolamento.\n* **Uma vida simples (mas com tédio):** Na Tijuca, ele busca levar uma vida simples. No entanto, o isolamento campestre não tarda a entediá-lo; ele passa os dias caçando, lendo e fumando, mas a solidão e o vazio existencial logo o alcançam, preparando o terreno para os próximos passos de sua vida ociosa antes de mergulhar de vez nas futilidades da corte e no futuro romance com Virgília."
+    }
+  ],
+  "segments": [
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 430,
+        "end": 520
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 91055,
+            "end": 91112
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 521,
+        "end": 697
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 91123,
+            "end": 91192
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 91193,
+            "end": 91240
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 727,
+        "end": 968
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 91263,
+            "end": 91333
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 91334,
+            "end": 91402
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 90930,
+            "end": 90983
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 90995,
+            "end": 91033
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1153,
+        "end": 1288
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 91564,
+            "end": 91594
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 91595,
+            "end": 91644
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1548,
+        "end": 1674
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 95908,
+            "end": 95973
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1703,
+        "end": 1860
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 95908,
+            "end": 95973
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 95974,
+            "end": 96042
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 96048,
+            "end": 96107
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1931,
+        "end": 2111
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 96108,
+            "end": 96174
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 96196,
+            "end": 96245
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 96278,
+            "end": 96316
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 2152,
+        "end": 2196
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 95803,
+            "end": 95868
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 2256,
+        "end": 2351
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 98175,
+            "end": 98246
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 98104,
+            "end": 98174
+          }
+        }
+      ]
+    }
+  ],
+  "labeledBy": "MPT0M",
+  "labeledAt": "2026-09-08T16:19:22.021Z"
+}

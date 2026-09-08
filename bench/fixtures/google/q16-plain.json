@@ -1,0 +1,213 @@
+{
+  "id": "q16-plain",
+  "model": "gemini-3.5-flash-lite",
+  "recordedAt": "2026-09-08T15:37:31.392Z",
+  "reportVersion": "bench-report-1",
+  "storeEmbeddingModel": "gemini-embedding-2",
+  "storeChunking": {
+    "maxTokensPerChunk": 200,
+    "maxOverlapTokens": 20
+  },
+  "parts": [
+    {
+      "text": "**Cotrim** (cujo nome completo na obra é **Cândido Cotrim**) é uma personagem do romance ***Memórias Póstumas de Brás Cubas***, de Machado de Assis. Ele é cunhado de Brás Cubas, sendo casado com sua irmã, **Sabina**. \n\nAbaixo estão os detalhes de como o narrador (Brás Cubas, já defunto) descreve o seu caráter e os seus negócios:\n\n### 1. O Caráter de Cotrim\nO narrador descreve Cotrim de forma ambígua e irônica, oscilando entre críticas severas e justificativas benevolentes:\n* **\"Ferozmente honrado\":** Brás Cubas chega a afirmar que Cotrim possuía um caráter \"ferozmente honrado\", embora confesse que ele próprio já havia sido injusto com o cunhado no passado (especialmente na época do inventário de seu pai).\n* **Avareza e Secura:** Cotrim era amplamente acusado de ser avarento e possuía maneiras muito secas, o que fazia com que acumulasse inimigos a ponto de o considerarem \"bárbaro\". No entanto, o narrador relativiza esses defeitos, argumentando cinicamente que a avareza seria apenas \"a exageração de uma virtude\".\n* **Falsas virtudes e vaidade:** O narrador aponta que Cotrim tinha o hábito (ou \"sestro\") de enviar para os jornais notas sobre os benefícios e caridades que praticava — algo que ele próprio justificava dizendo que as boas ações se tornavam contagiosas quando públicas. Era tesoureiro de uma confraria, irmão de várias irmandades e fazia questão de exibir sua religiosidade e filantropia (chegando a encomendar um retrato a óleo pago pela irmandade).\n* **Amor familiar:** Brás Cubas destaca como prova genuína de bons sentimentos o amor que Cotrim dedicava aos filhos, sofrendo profundamente com a morte de sua filha Sára.\n\n### 2. Os Negócios de Cotrim\nNo que diz respeito à sua vida profissional e financeira, o passado de Cotrim é marcado por atividades moralmente questionáveis:\n* **Tráfico de escravos:** O narrador revela que Cotrim enriquecera praticando **\"longamente o contrabando de escravos\"**.\n* **Brutalidade e justificativa social:** Cotrim tinha o hábito constante de mandar escravos para o calabouço (onde eram castigados até descerem a escorrer sangue). Contudo, o narrador tenta atenuar a culpa de Cotrim, argumentando que ele só enviava para lá os escravos considerados \"perversos e fujões\". Além disso, Brás Cubas filozofa cinicamente que a dureza de Cotrim vinha do hábito adquirido com o tipo de negócio que exercia, sendo \"puro efeito de relações sociais\" e não parte de sua índole original."
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 20,
+    "candidatesTokenCount": 743,
+    "totalTokenCount": 3649,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 20
+      }
+    ],
+    "toolUsePromptTokenCount": 2886,
+    "toolUsePromptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 2886
+      }
+    ],
+    "serviceTier": "standard"
+  },
+  "groundingMetadata": {
+    "groundingChunks": [
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "com ternura, com sinceridade... Subito, ouço bater\ná porta da sala; vou abrir; era um anjinho de cinco annos.\n\n--Entra, Sára, disse Sabina.\n\nEra minha sobrinha. Apanhei-a do chão, beijei-a muitas vezes; a\npequena, espantada, empurrava-me o hombro com a mãosinha, quebrando\no corpo para descer... Nisto, apparece-me á porta um chapéu, e logo\num homem, o Cotrim, nada menos que o Cotrim. Eu estava tão commovido,\nque deixei a filha e lancei-me aos braços do pae. Talvez essa effusão\no desconcertou um pouco; é certo que me pareceu acanhado. Simples\nprologo. Dahi a pouco falavamos como bons amigos velhos. Nenhuma\nallusão ao passado, muitos planos de futuro, promessa de jantarmos em\ncasa um do outro; e não deixei de dizer que essa troca de jantares\npodia ser que tivesse uma curta interrupção, por que eu andava com\nidéas de uma viagem ao norte. Sabina olhou para o Cotrim, o Cotrim para\nSabina; ambos concordaram que essas idéas não tinham senso commum.\nQue diacho podia eu achar no norte? Pois não era na côrte, em plena\ncôrte, que devia continuar a luzir, a metter n'um chinello os rapazes\ndo tempo? Que, na verdade, nenhum havia que se me comparasse; elle,\nCotrim, acompanhava-me de longe, e, não obstante uma briga ridicula,\nteve sempre interesse, orgulho, vaidade nos meus triumphos. Ouvia",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "Era um erro, um erro fatal. Mostrou que eu ia\ncollocar-me n'uma situação difficil, e de certa maneira trancar as\nportas do parlamento. O ministerio, não só lhe parecia excellente,\no que aliás podia não ser a minha opinião, mas com certeza viveria\nmuito; e que podia eu ganhar com indispol-o contra mim? Sabia que\nalguns dos ministros me eram affeiçoados; não era impossivel uma vaga,\ne... Interrompi-o nesse ponto, para lhe dizer que meditára muito o\npasso que ia dar, e não podia recuar uma linha. Cheguei a propôr-lhe a\nleitura do programma, mas elle recusou energicamente, dizendo que não\nqueria ter a minima parte no meu desatino.\n\n--É um verdadeiro desatino, repetiu elle; pense ainda alguns dias, e\nverá que é* um desatino.\n\nA mesma cousa disse Sabina, á noite, no theatro. Deixou a filha no\ncamarote, como Cotrim, e trouxe-me ao corredor.\n\n--Mano Braz, que é que você vae fazer? perguntou-me afflicta. Que idéa\né essa de provocar o governo, sem necessidade, quando podia....\n\nExpliquei-lhe que não me convinha mendigar uma cadeira no parlamento;\nque a minha idéa era derrubar o ministerio, por não me parecer adequado\ná situação--e a certa fórmula philosophica; afiancei que empregaria\nsempre uma linguagem cortez, embora energica. A violencia não era\nespeciaria do meu paladar. Sabina bateu com o leque na ponta",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "pelo que respeita a Nhã-loló, não\nchegaria jámais a negar que era noiva excellente; mas dahi a aconselhar\no casamento ia um abysmo.\n\n--Lavo inteiramente as mãos, concluiu elle.\n\n--Mas você achava outro dia que eu devia casar quanto antes...\n\n--Isso é outro negocio. Acho que é indispensavel casar, principalmente\ntendo ambições politicas. Saiba que na politica o celibato é uma\nrémora. Agora, quanto á noiva, não posso ter voto, não quero, não devo,\nnão é de minha honra. Parece-me que Sabina foi além, fazendo-lhe certas\nconfidencias, segundo me disse; mas em todo caso ella não é tia carnal\nde Nhã-loló, como eu. Olhe... mas não... não digo...\n\n--Diga.\n\n--Não; não digo nada.\n\nTalvez pareça excessivo o escrupulo do Cotrim, a quem não souber que\nelle possuia um caracter ferozmente honrado. Eu mesmo fui injusto\ncom elle durante os annos que se seguiram ao inventario do meu pae.\nReconheço que era um modelo. Arguiam-n'o de avareza, e cuido que\ntinham razão; mas a avareza é apenas a exageração de uma virtude,\ne as virtudes devem ser como os orçamentos: melhor é o saldo que\no _deficit._ Como era muito secco de maneiras tinha inimigos, que\nchegavam a accusal-o de barbaro. O unico facto allegado neste\nparticular era o de mandar com frequencia escravos ao calabouço, donde\nelles desciam a escorrer sangue; mas,",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "O unico facto allegado neste\nparticular era o de mandar com frequencia escravos ao calabouço, donde\nelles desciam a escorrer sangue; mas, além de que elle só mandava os\nperversos e os fujões, occorre que, tendo longamente contrabandeado em\nescravos, habituara-se de certo modo ao trato um pouco mais duro que\nesse genero de negocio requeria, e não se póde honestamente attribuir á\nindole original de um homem o que é puro effeito de relações sociaes.\nA prova de que o Cotrim tinha sentimentos pios encontrava-se no seu\namor aos filhos, e na dôr que padeceu quando lhe morreu Sára, dalli a\nalguns mezes; prova irrefutavel, acho eu; e não unica. Era thesoureiro\nde uma confraria, e irmão de varias irmandades, e até irmão remido de\numa destas, o que não se coaduna muito com a reputação da avareza;\nverdade é que o beneficio não caíra no chão: a irmandade (de que elle\nfôra juiz,) mandara-lhe tirar o retrato a oleo. Não era perfeito,\nde certo; tinha, por exemplo, o sestro de mandar para os jornaes a\nnoticia de um ou outro beneficio que praticava,--sestro reprehensivel\nou não louvavel, concordo; mas elle desculpava-se dizendo que as bôas\nacções eram contagiosas, quando publicas; razão a que se não pode negar\nalgum peso. Creio mesmo (e nisto faço o seu",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      }
+    ],
+    "groundingSupports": [
+      {
+        "segment": {
+          "endIndex": 132,
+          "text": "**Cotrim** (cujo nome completo na obra é **Cândido Cotrim**) é uma personagem do romance ***Memórias Póstumas de Brás Cubas***"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 155,
+          "endIndex": 224,
+          "text": "Ele é cunhado de Brás Cubas, sendo casado com sua irmã, **Sabina**"
+        },
+        "groundingChunkIndices": [
+          0,
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 353,
+          "endIndex": 738,
+          "text": "O Caráter de Cotrim\nO narrador descreve Cotrim de forma ambígua e irônica, oscilando entre críticas severas e justificativas benevolentes:\n* **\"Ferozmente honrado\":** Brás Cubas chega a afirmar que Cotrim possuía um caráter \"ferozmente honrado\", embora confesse que ele próprio já havia sido injusto com o cunhado no passado (especialmente na época do inventário de seu pai)"
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 740,
+          "endIndex": 919,
+          "text": "* **Avareza e Secura:** Cotrim era amplamente acusado de ser avarento e possuía maneiras muito secas, o que fazia com que acumulasse inimigos a ponto de o considerarem \"bárbaro\""
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 921,
+          "endIndex": 1054,
+          "text": "No entanto, o narrador relativiza esses defeitos, argumentando cinicamente que a avareza seria apenas \"a exageração de uma virtude\""
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1056,
+          "endIndex": 1333,
+          "text": "* **Falsas virtudes e vaidade:** O narrador aponta que Cotrim tinha o hábito (ou \"sestro\") de enviar para os jornais notas sobre os benefícios e caridades que praticava — algo que ele próprio justificava dizendo que as boas ações se tornavam contagiosas quando públicas"
+        },
+        "groundingChunkIndices": [
+          3
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1335,
+          "endIndex": 1518,
+          "text": "Era tesoureiro de uma confraria, irmão de várias irmandades e fazia questão de exibir sua religiosidade e filantropia (chegando a encomendar um retrato a óleo pago pela irmandade)"
+        },
+        "groundingChunkIndices": [
+          3
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1520,
+          "endIndex": 1693,
+          "text": "* **Amor familiar:** Brás Cubas destaca como prova genuína de bons sentimentos o amor que Cotrim dedicava aos filhos, sofrendo profundamente com a morte de sua filha Sára"
+        },
+        "groundingChunkIndices": [
+          3
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1703,
+          "endIndex": 1980,
+          "text": "Os Negócios de Cotrim\nNo que diz respeito à sua vida profissional e financeira, o passado de Cotrim é marcado por atividades moralmente questionáveis:\n* **Tráfico de escravos:** O narrador revela que Cotrim enriquecera praticando **\"longamente o contrabando de escravos\"**"
+        },
+        "groundingChunkIndices": [
+          3
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1982,
+          "endIndex": 2148,
+          "text": "* **Brutalidade e justificativa social:** Cotrim tinha o hábito constante de mandar escravos para o calabouço (onde eram castigados até descerem a escorrer sangue)"
+        },
+        "groundingChunkIndices": [
+          3
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 2150,
+          "endIndex": 2291,
+          "text": "Contudo, o narrador tenta atenuar a culpa de Cotrim, argumentando que ele só enviava para lá os escravos considerados \"perversos e fujões\""
+        },
+        "groundingChunkIndices": [
+          3
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 2293,
+          "endIndex": 2503,
+          "text": "Além disso, Brás Cubas filozofa cinicamente que a dureza de Cotrim vinha do hábito adquirido com o tipo de negócio que exercia, sendo \"puro efeito de relações sociais\" e não parte de sua índole original"
+        },
+        "groundingChunkIndices": [
+          3
+        ]
+      }
+    ]
+  }
+}

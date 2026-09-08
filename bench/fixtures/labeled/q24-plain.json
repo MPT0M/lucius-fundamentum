@@ -1,0 +1,293 @@
+{
+  "id": "q24-plain",
+  "parts": [
+    {
+      "text": "No romance *Memórias Póstumas de Brás Cubas*, de Machado de Assis, o reencontro com Quincas Borba e o episódio do relógio ocorrem da seguinte forma:\n\n### O Reencontro no Passeio Público\nBrás Cubas está sentado em um banco no Passeio Público, sonhando acordado com a possibilidade de virar Ministro de Estado e imaginando o quanto Virgília iria gostar disso. Em meio a esses devaneios, ele percebe a aproximação de um homem de aparência miserável: magro, pálido, com roupas velhas e esfarrapadas (uma sobrecasaca larga e puída, calças com joelheiras marcadas, botins sem graxa e chapéu antiquado).\n\nO homem se aproxima e pergunta se Brás Cubas o reconhece. Diante da negativa de Brás, ele revela sua identidade: **Quincas Borba**, o antigo colega de colégio de Brás, que antes era rico, inteligente e festejado (\"o gracioso menino de outro tempo\"). \n\nBrás Cubas recua espantado, custando a acreditar que aquela ruína humana — maltrapilha, com a barba grisalha e um sorriso escarninho — seja seu antigo amigo de infância. Quincas Borba relata brevemente sua decadência, afirmando que passou por uma vida de misérias e lutas até acabar na mendicância, mostrando-se impassível e resignado (ou indiferente) à própria desgraça. \n\nNesse momento, comovido e ao mesmo tempo constrangido pela situação, Brás Cubas lhe dá uma ajuda financeira (uma nota de cinco mil-réis).\n\n### O que Quincas faz com o relógio de Brás?\nAntes de se despedirem, Quincas Borba pede para agradecer a ajuda \"de mais perto\" e **abraça Brás Cubas com ímpeto**. \n\nApós a despedida, quando Brás Cubas se afasta (sentindo-se enfadado, triste e com a camisa amarrotada pelo abraço), ele coloca a mão no colete para ver as horas e percebe que **o relógio sumiu**. O miséravel Quincas Borba havia furtado o relógio de Brás Cubas durante o abraço de despedida. \n\nMais do que o valor material do objeto, o furto causa a Brás Cubas uma profunda desilusão sentimental, servindo para reforçar a melancolia e o contraste amargo entre o passado brilhante do amigo e a sua realidade miserável presente."
+    }
+  ],
+  "segments": [
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 186,
+        "end": 357
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 170750,
+            "end": 170815
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 170037,
+            "end": 170068
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 385,
+        "end": 595
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 170824,
+            "end": 170887
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 170950,
+            "end": 171016
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 171154,
+            "end": 171217
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 171423,
+            "end": 171491
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 171492,
+            "end": 171560
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 598,
+        "end": 655
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 171736,
+            "end": 171791
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 684,
+        "end": 847
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 171813,
+            "end": 171844
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 171983,
+            "end": 172049
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 172050,
+            "end": 172117
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 850,
+        "end": 1019
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 171846,
+            "end": 171914
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 172118,
+            "end": 172185
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 172326,
+            "end": 172395
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1020,
+        "end": 1221
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 172619,
+            "end": 172685
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 172732,
+            "end": 172753
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 172899,
+            "end": 172969
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1293,
+        "end": 1360
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 173944,
+            "end": 174006
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1408,
+        "end": 1525
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 175726,
+            "end": 175777
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 175779,
+            "end": 175846
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1546,
+        "end": 1722
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 175890,
+            "end": 175916
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 175917,
+            "end": 175988
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 176275,
+            "end": 176346
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1724,
+        "end": 1818
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 176347,
+            "end": 176369
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1821,
+        "end": 1922
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 176403,
+            "end": 176465
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 176466,
+            "end": 176531
+          }
+        }
+      ]
+    }
+  ],
+  "labeledBy": "MPT0M",
+  "labeledAt": "2026-09-08T21:22:36.136Z"
+}

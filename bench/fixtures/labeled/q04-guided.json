@@ -1,0 +1,136 @@
+{
+  "id": "q04-guided",
+  "parts": [
+    {
+      "text": "Com base em *Memórias Póstumas de Brás Cubas*, de Machado de Assis:\n\n* **Quem foi Marcela:** \nMarcella era uma espanhola descrita por Brás Cubas como uma jovem bela, lépida, sem escrúpulos, luxuosa, impaciente, e muito «amiga de dinheiro e de rapazes». Ela pertencia ao meio das chamadas mulheres de partido (ou seja, cortesãs da época) e, quando Brás Cubas a conheceu nas comemorações da Independência, vivia rodeada de luxos, mantida por presentes de admiradores (como o jovem abastado e tístico Xavier e um desembargador que lhe doara uma rica baixella da Índia). Tornou-se a grande paixão juvenil de Brás Cubas, que gastou uma fortuna para mantê-la até esgotar os recursos de sua família.\n\n* **Quanto tempo durou o amor por ela:** \nNas palavras irônicas e célebres do próprio Brás Cubas, o amor de Marcela durou exatamente **«quinze mezes e onze contos de réis; nada menos»**. O romance acabou ruindo e chegando ao fim justamente quando o dinheiro e as posses da família de Brás Cubas se esgotaram e ele não pôde mais custear os caprichos e presentes caros da amada."
+    }
+  ],
+  "segments": [
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 94,
+        "end": 252
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 58038,
+            "end": 58109
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 58767,
+            "end": 58819
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 253,
+        "end": 307
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 59939,
+            "end": 60008
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 340,
+        "end": 566
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 58919,
+            "end": 58984
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 58835,
+            "end": 58917
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 63614,
+            "end": 63673
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 567,
+        "end": 692
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 67644,
+            "end": 67849
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 736,
+        "end": 880
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 67644,
+            "end": 67720
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 881,
+        "end": 1070
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 68598,
+            "end": 68783
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 67644,
+            "end": 67849
+          }
+        }
+      ]
+    }
+  ],
+  "labeledBy": "MPT0M",
+  "labeledAt": "2026-09-08"
+}

@@ -1,0 +1,161 @@
+{
+  "id": "q05-guided",
+  "parts": [
+    {
+      "text": "**Quincas Borba** é um personagem central da literatura de Machado de Assis, aparecendo de forma marcante no romance *Memórias Póstumas de Brás Cubas* (onde formula sua filosofia) e dando título ao romance homônimo (*Quincas Borba*). \n\nNas *Memórias Póstumas*, ele é apresentado inicialmente como um colega de infância de Brás Cubas que, após uma vida de riquezas e privilégios, acaba caindo na miséria e na ruína financeira, tornando-se um maltrapilho. É nessa fase de decadência que ele desenvolve e passa a pregar um sistema filosófico original e excêntrico chamado **Humanitismo**, antes de vir a falecer (momento em que a loucura já parecia tomar conta de sua mente).\n\n---\n\n### O que é o Humanitismo?\n\nO **Humanitismo** é uma sátira mordaz de Machado de Assis às teorias científicas, filosóficas e sociais do século XIX (como o darwinismo social, o positivismo e o evolucionismo). A palavra vem de **Humanitas**, a substância ou princípio originário, único e eterno que compõe todo o universo segundo a teoria.\n\nOs principais pilares e absurdos do Humanitismo defendidos por Quincas Borba incluem:\n\n1. **A identidade entre o homem e o universo:** Para o sistema, cada ser humano não é apenas um veículo de *Humanitas*, mas é, ao mesmo tempo, veículo, cocheiro e passageiro — ou seja, o próprio *Humanitas* reduzido. A transmissão da vida é tratada como a \"missa espiritual\", pois a maior desgraça existente é simplesmente não nascer.\n2. **A ilusão da dor:** Segundo a doutrina, a dor física e o sofrimento são puras ilusões que podem ser superadas se o homem compreender que ele próprio é a substância original (*Humanitas*). \n3. **A exaltação da guerra, da fome e da luta:** O Humanitismo legitima e glorifica os conflitos, a fome e as catástrofes como operações naturais e convenientes de *Humanitas*. Para o sistema, \"a vida é luta\" e a \"vida sem luta é um mar morto\". Consequentemente, sentimentos bélicos e até a inveja são encarados como virtudes necessárias à felicidade e à evolução.\n4. **A famosa parábola dos cães (A lei do mais forte):** Em uma de suas demonstrações práticas da filosofia, Quincas Borba obriga Brás Cubas a assistir a uma briga sangrenta entre dois cães por um único osso sem carne. Para o filósofo, aquilo ilustrava a essência do Humanitismo: a disputa implacável por recursos escassos, onde o vencedor devora o vencido, justificando a opressão e a competição sob o pretexto de que a destruição do outro alimenta a marcha da humanidade.\n\nEm suma, o Humanitismo é uma paródia niilista e cínica que desmascara o egoísmo, a hipocrisia e a brutalidade das relações humanas sob o disfarce de um progresso filosófico pretensioso."
+    }
+  ],
+  "segments": [
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 261,
+        "end": 453
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 171960,
+            "end": 172074
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 172123,
+            "end": 172277
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 886,
+        "end": 1015
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 246497,
+            "end": 246561
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 290349,
+            "end": 290458
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1168,
+        "end": 1320
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 292510,
+            "end": 292606
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1321,
+        "end": 1438
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 292067,
+            "end": 292167
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 292168,
+            "end": 292228
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1463,
+        "end": 1630
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 361354,
+            "end": 361448
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1681,
+        "end": 1808
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 294407,
+            "end": 294653
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1809,
+        "end": 1876
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 332443,
+            "end": 332518
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 2106,
+        "end": 2215
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 332618,
+            "end": 332846
+          }
+        }
+      ]
+    }
+  ],
+  "labeledBy": "MPT0M",
+  "labeledAt": "2026-09-08"
+}

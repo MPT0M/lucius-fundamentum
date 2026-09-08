@@ -1,0 +1,112 @@
+{
+  "id": "q06-guided",
+  "model": "gemini-3.5-flash-lite",
+  "recordedAt": "2026-09-08T11:17:27.530Z",
+  "reportVersion": "bench-report-1",
+  "storeEmbeddingModel": "gemini-embedding-2",
+  "storeChunking": {
+    "maxTokensPerChunk": 200,
+    "maxOverlapTokens": 20
+  },
+  "parts": [
+    {
+      "text": "Segundo o próprio Brás Cubas, embora clinicamente tenha morrido de **pneumonia**, a causa real e profunda de sua morte foi a obsessão por uma ideia grandiosa e útil: **a invenção do \"emplasto Brás Cubas\"** (um medicamento sublime, anti-hipocondríaco, destinado a aliviar a melancólica humanidade).\n\nNas palavras do autor defunto: \n> *«Morri de uma pneumonia; mas se lhe disser que foi menos a pneumonia, do que uma idéa grandiosa e util, a causa da minha morte, é possivel que o leitor me não creia, e todavia é verdade.»*\n\nO delírio e a ânsia em torno da criação desse remédio — motivada sobretudo pelo desejo de vaidade e de ver seu nome impresso em jornais e caixinhas — consumiram-no até o desfecho fatal."
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 75,
+    "candidatesTokenCount": 322,
+    "totalTokenCount": 24787,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 75
+      }
+    ],
+    "toolUsePromptTokenCount": 24390,
+    "toolUsePromptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 24390
+      }
+    ],
+    "serviceTier": "standard"
+  },
+  "groundingMetadata": {
+    "groundingChunks": [
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "estúpidos, a boca entreaberta, a\ntriste senhora mal podia crêr na minha extincção.\n\n--Morto! morto! dizia comsigo.\n\nE a imaginação della, como as cegonhas que um illustre viajante viu\ndesferirem o vôo desde o Illysso ás ribas africanas, sem embargo das\nruinas e dos tempos,--a imaginação dessa senhora tambem voou por\nsobre os destroços presentes até ás ribas de uma Africa juvenil...\nDeixal-a ir; lá iremos mais tarde; lá iremos quando eu me restituir aos\nprimeiros annos. Agora, quero morrer tranquillamente, methodicamente,\nouvindo os soluços das damas, as fallas baixas dos homens, a chuva que\ntamborila nas folhas de tinhorão da chacara, e o som estridulo de uma\nnavalha que um amolador está afiando lá fóra, á porta de um correeiro.\nJuro-lhes que essa orchestra da morte foi muito menos triste do que\npodia parecer; e de certo ponto em deante chegou a ser deliciosa.\nA vida estrebuchava-me no peito, com uns impetos de vaga marinha,\nesvaia-se-me a consciencia, eu descia á immobilidade physica e moral,\ne o corpo fazia-se-me planta, e pedra, e lodo, e cousa nenhuma.\n\nMorri de uma pneumonia; mas se lhe disser que foi menos a pneumonia, do\nque uma idéa grandiosa e util, a causa da minha morte, é possivel que o\nleitor me não creia, e todavia é verdade. Vou expor-lhe summariamente o\ncaso.",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "a causa da minha morte, é possivel que o\nleitor me não creia, e todavia é verdade. Vou expor-lhe summariamente o\ncaso. Julgue-o por si mesmo.\n\n\n\n\nCAPITULO II\n\n\nO emplasto\n\n\nCom effeito, um dia de manhã, estando a passear na chacara,\npendurou-se-me uma idéa no trapezio que eu tinha no cerebro. Uma vez\npendurada, entrou a bracejar, a pernear, a fazer as mais arrojadas\ncabriolas de volantim, que é possivel crer. Eu deixei-me estar a\ncontemplal-a. Subito, deu um grande salto, estendeu os braços e as\npernas, até tomar a fórma de um X: decifra-me ou devoro-te.\n\nEssa idéa era nada menos que a invenção de um medicamento sublime, um\nemplasto anti-hypocondriaco, destinado a alliviar a nossa melancholica\nhumanidade. Na petição de privilegio que então redigi, chamei a\nattenção do governo para esse resultado, verdadeiramente christão.\nTodavia, não neguei aos amigos as vantagens pecuniarias que deviam\nresultar da distribuição de um producto de tamanhos e tão profundos\neffeitos, Agora, porém, que estou cá do outro lado da vida, posso\nconfessar tudo: o que me influiu principalmente foi o gosto de ver\nimpressas nos jornaes, mostradores, folhetos, esquinas, e emfim nas\ncaixinhas do remedio, estas tres palavras: _emplasto Braz Cubas._ Para\nque negal-o? Eu tinha a paixão do arruido, do cartaz, do foguete de\nlagrimas. Talvez os modestos me arguam esse defeito; fio",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "a causa da minha morte, é possivel que o\nleitor me não creia, e todavia é verdade. Vou expor-lhe summariamente o\ncaso. Julgue-o por si mesmo.\n\n\n\n\nCAPITULO II\n\n\nO emplasto\n\n\nCom effeito, um dia de manhã, estando a passear na chacara,\npendurou-se-me uma idéa no trapezio que eu tinha no cerebro. Uma vez\npendurada, entrou a bracejar, a pernear, a fazer as mais arrojadas\ncabriolas de volantim, que é possivel crer. Eu deixei-me estar a\ncontemplal-a. Subito, deu um grande salto, estendeu os braços e as\npernas, até tomar a fórma de um X: decifra-me ou devoro-te.\n\nEssa idéa era nada menos que a invenção de um medicamento sublime, um\nemplasto anti-hypocondriaco, destinado a alliviar a nossa melancholica\nhumanidade. Na petição de privilegio que então redigi, chamei a\nattenção do governo para esse resultado, verdadeiramente christão.\nTodavia, não neguei aos amigos as vantagens pecuniarias que deviam\nresultar da distribuição de um producto de tamanhos e tão profundos\neffeitos, Agora, porém, que estou cá do outro lado da vida, posso\nconfessar tudo: o que me influiu principalmente foi o gosto de ver\nimpressas nos jornaes, mostradores, folhetos, esquinas, e emfim nas\ncaixinhas do remedio, estas tres palavras: _emplasto Braz Cubas._ Para\nque negal-o? Eu tinha a paixão do arruido, do cartaz, do foguete de\nlagrimas. Talvez os modestos me arguam esse defeito; fio",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      }
+    ],
+    "groundingSupports": [
+      {
+        "segment": {
+          "endIndex": 305,
+          "text": "Segundo o próprio Brás Cubas, embora clinicamente tenha morrido de **pneumonia**, a causa real e profunda de sua morte foi a obsessão por uma ideia grandiosa e útil: **a invenção do \"emplasto Brás Cubas\"** (um medicamento sublime, anti-hipocondríaco, destinado a aliviar a melancólica humanidade)"
+        },
+        "groundingChunkIndices": [
+          0,
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 308,
+          "endIndex": 537,
+          "text": "Nas palavras do autor defunto: \n> *«Morri de uma pneumonia; mas se lhe disser que foi menos a pneumonia, do que uma idéa grandiosa e util, a causa da minha morte, é possivel que o leitor me não creia, e todavia é verdade.»*"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 539,
+          "endIndex": 733,
+          "text": "O delírio e a ânsia em torno da criação desse remédio — motivada sobretudo pelo desejo de vaidade e de ver seu nome impresso em jornais e caixinhas — consumiram-no até o desfecho fatal"
+        },
+        "groundingChunkIndices": [
+          2,
+          0,
+          1
+        ]
+      }
+    ]
+  }
+}

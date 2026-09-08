@@ -1,0 +1,162 @@
+{
+  "id": "q20-plain",
+  "model": "gemini-3.5-flash-lite",
+  "recordedAt": "2026-09-08T15:37:31.392Z",
+  "reportVersion": "bench-report-1",
+  "storeEmbeddingModel": "gemini-embedding-2",
+  "storeChunking": {
+    "maxTokensPerChunk": 200,
+    "maxOverlapTokens": 20
+  },
+  "parts": [
+    {
+      "text": "Nas *Memórias Póstumas de Brás Cubas*, obra de Machado de Assis, os acontecimentos relativos à presidência da província e ao convite para secretário desenrolam-se da seguinte forma:\n\n* **O anúncio sobre a presidência da província:** \n  O anúncio de que Lobo Neves foi nomeado **presidente de província** (ao norte) não ocorre propriamente durante um jantar de revelação da notícia, mas sim numa visita que Brás Cubas faz à casa de Lobo Neves e Virgília (no Capítulo LXXX, intitulado *\"Do secretário\"*). Lá, Lobo Neves mostra-se extremamente contente e jovial, contando os planos que tem para a presidência, as dificuldades locais, as esperanças e as resoluções que pretende adotar no cargo. Em seguida, ele revela o seu grande problema do momento: diz que ainda não encontrou ninguém para o cargo de secretário e lança o convite a Brás Cubas, perguntando se ele gostaria de dar um \"passeio ao norte\" e acompanhá-lo.\n\n* **A decisão de Brás Cubas:** \n  Inicialmente, ao ouvir o convite, o espírito de Brás Cubas dá \"um salto para trás\", desconfiado, encarando Lobo Neves fixamente para tentar descobrir se há alguma intenção oculta ou se ele desconfia do caso amoroso entre ele e Virgília. No entanto, ao notar que o olhar de Lobo Neves é perfeitamente franco e natural — e recebendo também um olhar suplicante e ansioso de Virgília por cima de um livro — **Brás Cubas decide aceitar**. Ele pondera que a viagem e a nova situação (\"um presidente, uma presidenta, um secretário\") resolveriam as coisas de um modo administrativo e conveniente para manter o romance e afastar as suspeitas da sociedade. Embora tenha tido algumas sombras de dúvida e hesitação no dia seguinte, o protagonista firma o seu espírito e decide aceitar de vez a nomeação."
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 34,
+    "candidatesTokenCount": 657,
+    "totalTokenCount": 32612,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 34
+      }
+    ],
+    "toolUsePromptTokenCount": 31921,
+    "toolUsePromptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 31921
+      }
+    ],
+    "serviceTier": "standard"
+  },
+  "groundingMetadata": {
+    "groundingChunks": [
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "padecimento. Occorre-me a este proposito um\nnaturalista,--não me lembra qual,--mas era um naturalista,--em quem li\nesta observação curiosa: «O gato não nos affaga, affaga-se em nós.»\nVejo que eu fazia um compromisso de gato.\n\n\n\n\nCAPITULO LXXX\n\n\nDo secretario\n\n\nNa noite seguinte fui effectivamente á casa do Lobo Neves; estavam\nambos, Virgilia muito triste, elle muito jovial. Juro que ella sentiu\ncerto allivio, quando os nossos olhos se encontraram, cheios de\ncuriosidade e ternura; e não direi o que senti, porque isso já ficou\nexpresso no capitulo anterior, _in fine._ O Lobo Neves contou-me os\nplanos que levava para a presidencia, as difficuldades locaes, as\nesperanças, as resoluções; estava tão contente! tão esperançado!\nVirgilia, ao pé da meza, fingia ler um livro, mas por cima da pagina\nolhava-me de quando em quando, interrogativa e ansiosa.\n\n--O peor, disse-me de repente o Lobo Neves, é que ainda não achei\nsecretario.\n\n--Não?\n\n--Não, e tenho uma idéia.\n\n--Ah!\n\n--Uma idéa... Quer você dar um passeio ao norte? Não sei o que lhe\ndisse.\n\n--Você é rico, continuou elle, não precisa de um magro ordenado; mas se\nquizesse obsequiar-me, ia de secretario commigo.\n\nMeu espirito deu um salto para traz, como se descobrisse uma serpente\ndeante de si. Encarei o Lobo Neves, fixamente, imperiosamente, a ver\nse lhe apanhava algum pensamento occulto... Nem sombra disso; o olhar\nvinha direito e franco,",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "o Lobo Neves, fixamente, imperiosamente, a ver\nse lhe apanhava algum pensamento occulto... Nem sombra disso; o olhar\nvinha direito e franco, a placidez do rosto era natural, não violenta,\numa placidez salpicada de alegria. Respirei, e não tive animo de\nolhar para Virgilia; senti por cima da pagina o olhar della, que me\npedia tambem a mesma cousa, e disse que sim, que iria. Na verdade, um\npresidente, uma presidenta, um secretario, era resolver as cousas de um\nmodo administrativo.\n\n\n\n\nCAPITULO LXXXI\n\n\nA reconciliação\n\n\nE comtudo, ao sair de lá, tive umas sombras de duvida; cogitei se não\nia expor insanamente a reputação de Virgilia, se não haveria outro\nmeio razoavel de combinar o Estado e a Gamboa. Não achei nada. No dia\nseguinte, ao levantar-mo da cama, trazia o espirito feito e resoluto a\naceitar a nomeação. Ao meio dia, veiu o creado dizer-me que estava na\nsala uma senhora, coberta com um véo. Corro; era minha irmã Sabina.\n\n--Isto não pode continuar assim, disse ella; é preciso que, de uma vez\npor todas, façamos as pazes. Nossa familia está acabando; não havemos\nde ficar como dous inimigos.\n\n--Mas se eu não te peço outra cousa, mana! bradei eu estendendo-lhe os\nbraços.\n\nE sentei-a ao pé de mim, e falei-lhe do marido, da filha, dos negocios,\nde tudo. Tudo ia",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "das palavras do Garcez.\nTalvez o Cotrim tivesse razão: mas podia eu separar-me de Virgilia?\n\nSabina veiu ter commigo, e perguntou-me em que estava pensando.\nRespondi que em cousa nenhuma, que tinha somno e ia para casa. Sabina\nesteve um instante calada.--O que você precisa, sei eu; é uma noiva.\nDeixe, que eu ainda arranjo uma noiva para você. Saí de lá oppresso,\ndesorientado. Tudo prompto para embarcar,--espirito e coração,--e eis\nahi me surge esse porteiro das conveniencias, que me pede o cartão de\ningresso. Dei ao diabo as conveniências, e com ellas a constituição, o\ncorpo legislativo, o ministerio, tudo.\n\nNo dia seguinte, abro uma folha politica e leio a noticia de que, por\ndecretos de 13, tínhamos sido nomeados presidente e secretario da\nprovincia de *** o Lobo Neves e eu. Escrevi immediatamente a Virgilia,\ne segui duas horas depois para a Gamboa. Coitada de D. Placida! Estava\ncada vez mais afflicta; perguntou-me se esqueceriamos a nossa velha, se\na ausencia era grande e se a provincia ficava longe. Consolei-a; mas\neu proprio precisava de consolações; a objecção do Cotrim affligia-me\nprofundamente. Virgilia chegou dahi a pouco, lepida como uma andorinha;\nmas, ao ver-me triste, ficou muito seria.\n\n--Que aconteceu?\n\n--Vacillo, disse eu; não sei se devo aceitar...\n\nVirgilia deixou-se cair, no canapé, a rir.--Porque? disse ella.\n\n--Não é conveniente,",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      }
+    ],
+    "groundingSupports": [
+      {
+        "segment": {
+          "startIndex": 190,
+          "endIndex": 326,
+          "text": "* **O anúncio sobre a presidência da província:** \n  O anúncio de que Lobo Neves foi nomeado **presidente de província** (ao norte)"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 190,
+          "endIndex": 522,
+          "text": "* **O anúncio sobre a presidência da província:** \n  O anúncio de que Lobo Neves foi nomeado **presidente de província** (ao norte) não ocorre propriamente durante um jantar de revelação da notícia, mas sim numa visita que Brás Cubas faz à casa de Lobo Neves e Virgília (no Capítulo LXXX, intitulado *\"Do secretário\"*)"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 524,
+          "endIndex": 715,
+          "text": "Lá, Lobo Neves mostra-se extremamente contente e jovial, contando os planos que tem para a presidência, as dificuldades locais, as esperanças e as resoluções que pretende adotar no cargo"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 717,
+          "endIndex": 946,
+          "text": "Em seguida, ele revela o seu grande problema do momento: diz que ainda não encontrou ninguém para o cargo de secretário e lança o convite a Brás Cubas, perguntando se ele gostaria de dar um \"passeio ao norte\" e acompanhá-lo"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 949,
+          "endIndex": 1228,
+          "text": "* **A decisão de Brás Cubas:** \n  Inicialmente, ao ouvir o convite, o espírito de Brás Cubas dá \"um salto para trás\", desconfiado, encarando Lobo Neves fixamente para tentar descobrir se há alguma intenção oculta ou se ele desconfia do caso amoroso entre ele e Virgília"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1230,
+          "endIndex": 1433,
+          "text": "No entanto, ao notar que o olhar de Lobo Neves é perfeitamente franco e natural — e recebendo também um olhar suplicante e ansioso de Virgília por cima de um livro — **Brás Cubas decide aceitar**"
+        },
+        "groundingChunkIndices": [
+          1,
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1435,
+          "endIndex": 1649,
+          "text": "Ele pondera que a viagem e a nova situação (\"um presidente, uma presidenta, um secretário\") resolveriam as coisas de um modo administrativo e conveniente para manter o romance e afastar as suspeitas da sociedade"
+        },
+        "groundingChunkIndices": [
+          1,
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1651,
+          "endIndex": 1800,
+          "text": "Embora tenha tido algumas sombras de dúvida e hesitação no dia seguinte, o protagonista firma o seu espírito e decide aceitar de vez a nomeação"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      }
+    ]
+  }
+}

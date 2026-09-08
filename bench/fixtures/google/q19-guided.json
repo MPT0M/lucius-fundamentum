@@ -1,0 +1,128 @@
+{
+  "id": "q19-guided",
+  "model": "gemini-3.5-flash-lite",
+  "recordedAt": "2026-09-08T15:37:31.392Z",
+  "reportVersion": "bench-report-1",
+  "storeEmbeddingModel": "gemini-embedding-2",
+  "storeChunking": {
+    "maxTokensPerChunk": 200,
+    "maxOverlapTokens": 20
+  },
+  "parts": [
+    {
+      "text": "No romance *Memórias Póstumas de Brás Cubas*, de Machado de Assis, **Viegas** é um personagem idoso, enfermo (sofre de forte asma) e parente de Virgília. Ele é descrito como uma pessoa rica ou de cabedales, alvo de grandes atenções por parte da família devido à possibilidade de deixar uma herança.\n\nO que **Virgília e Brás Cubas esperavam dele** era um **legado ou uma herança** (ou, ao menos, um codicilo em seu testamento). \n\nConforme o texto do livro:\n* **Virgília** era menos escrupulosa que o marido (Lobo Neves) e manifestava abertamente as esperanças que depositava na herança do parente. Ela o cumulava de atenções, cortezias, carinhos e bajulações (como recebê-lo à porta, dar-lhe o braço, aturar longas partidas de damas e cuidar dele como uma enfermeira), com o intuito óbvio de agradá-lo para garantir uma parte de seus bens.\n* **Brás Cubas** (amante de Virgília) acompanhava de perto essa situação e também compartilhava do interesse pelas expectativas financeiras depositadas no velho enfermo, observando criticamente as táticas de adulação feminina empregadas por Virgília para conquistar o testamento do parente."
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 70,
+    "candidatesTokenCount": 417,
+    "totalTokenCount": 15245,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 70
+      }
+    ],
+    "toolUsePromptTokenCount": 14758,
+    "toolUsePromptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 14758
+      }
+    ],
+    "serviceTier": "standard"
+  },
+  "groundingMetadata": {
+    "groundingChunks": [
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "e levava-o até uma\ncadeira, ou até á cadeira, porque havia lá em casa a «cadeira do\nViegas», obra especial, conchegada, feita para gente enferma ou anciã.\nIa fechar a janella proxima, se havia alguma brisa, ou abril-a, se\nestava calor, mas com cuidado, combinando de modo que lhe não désse um\ngolpe de ar.\n\n--Então? hoje está mais fortesinho...\n\n--Qual! Passei mal a noite; o diabo da asthma não me deixa.\n\nE bufava o homem, repousando a pouco e pouco do cançaço da entrada e\nda subida, não do caminho, porque ia sempre de sege. Ao lado, um pouco\nmais para a frente, sentava-se Virgilia, n'uma banquinha, com as mãos\nnos joelhos do enfermo. Entretanto, o nhonhô chegava á sala, sem os\npulos do costume, mas discreto, meigo, serio. O Viegas gostava muito\ndelle.\n\n--Vem cá, nhonhô, dizia-lhe; e a custo introduzia a mão na ampla\nalgibeira, tirava uma caixinha de pastilhas, mettia uma na boca o dava\noutra ao pequeno. Pastilhas anti-asthmaticas. O pequeno dizia que eram\nmuito boas.\n\nRepetia-se isto, com variantes. Como o Viegas gostasse de jogar damas,\nVirgilia cumpria-lhe o desejo, aturando-o por largo tempo, a mover as\npedras com a mão frouxa e tarda. Outras vezes, desciam a passear na\nchacara, dando-lhe ella o braço, que elle nem sempre aceitava, por\ndizer-se rijo e capaz de",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "tão perniciosa doutrina, com os mais\nelementares argumentos; mas elle estava tão vexado do meu reparo,\nque resistiu até o fim, mostrando certo calor ficticio, talvez para\natordoar a consciencia.\n\nO caso de Virgilia tinha alguma gravidade mais. Ella era menos\nescrupulosa que o marido; manifestava claramente as esperanças que\ntrazia no legado, cumulava o parente de todas as cortezias, attenções\ne affagos que poderiam render, pelo menos, um codicillo. Propriamente,\nadulava-o; mas eu observei que a adulação das mulheres não é a mesma\ncousa que a dos homens. Esta orça pela servilidade; a outra confunde-se\ncom a affeição. As formas graciosamente curvas, a palavra doce, a mesma\nfraqueza physica dão á acção lisonjeira da mulher uma côr local, um\naspecto legitimo. Não importa a edade do adulado; a mulher ha de ter\nsempre para elle uns ares de mãe ou de irmã,--ou ainda de enfermeira,\noutro officio feminil, em que o mais habil dos homens carecerá sempre\nde um _quid_, um fluido, alguma cousa.\n\nEra o que eu pensava commigo, quando Virgilia se desfazia toda em\naffagos ao velho parente. Ella ia recebel-o á porta, falando e rindo,\ntirava-lhe o chapeu e a bengala, dava-lhe o braço e levava-o até uma\ncadeira, ou até á cadeira, porque havia lá em casa a «cadeira do\nViegas», obra especial, conchegada, feita",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      }
+    ],
+    "groundingSupports": [
+      {
+        "segment": {
+          "endIndex": 157,
+          "text": "No romance *Memórias Póstumas de Brás Cubas*, de Machado de Assis, **Viegas** é um personagem idoso, enfermo (sofre de forte asma) e parente de Virgília"
+        },
+        "groundingChunkIndices": [
+          0,
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 159,
+          "endIndex": 308,
+          "text": "Ele é descrito como uma pessoa rica ou de cabedales, alvo de grandes atenções por parte da família devido à possibilidade de deixar uma herança"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 311,
+          "endIndex": 439,
+          "text": "O que **Virgília e Brás Cubas esperavam dele** era um **legado ou uma herança** (ou, ao menos, um codicilo em seu testamento)"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 443,
+          "endIndex": 612,
+          "text": "Conforme o texto do livro:\n* **Virgília** era menos escrupulosa que o marido (Lobo Neves) e manifestava abertamente as esperanças que depositava na herança do parente"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 614,
+          "endIndex": 863,
+          "text": "Ela o cumulava de atenções, cortezias, carinhos e bajulações (como recebê-lo à porta, dar-lhe o braço, aturar longas partidas de damas e cuidar dele como uma enfermeira), com o intuito óbvio de agradá-lo para garantir uma parte de seus bens"
+        },
+        "groundingChunkIndices": [
+          0,
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 865,
+          "endIndex": 1163,
+          "text": "* **Brás Cubas** (amante de Virgília) acompanhava de perto essa situação e também compartilhava do interesse pelas expectativas financeiras depositadas no velho enfermo, observando criticamente as táticas de adulação feminina empregadas por Virgília para conquistar o testamento do parente"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      }
+    ]
+  }
+}

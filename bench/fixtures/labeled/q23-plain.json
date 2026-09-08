@@ -1,0 +1,210 @@
+{
+  "id": "q23-plain",
+  "parts": [
+    {
+      "text": "**Prudêncio** é uma personagem do romance *Memórias Póstumas de Brás Cubas* (1881), de Machado de Assis. Na infância, ele era um menino escravizado da família de Brás Cubas que sofria constantes abusos e humilhações por parte do protagonista. Brás Cubas costumava montá-lo nas costas como se fosse um cavalo, colocar-lhe um freio na boca e espancá-lo severamente, enquanto o pequeno Prudencio gemia e sofria. Anos mais tarde, Prudêncio foi alforriado (libertado) pelo pai de Brás Cubas.\n\nO que Brás Cubas testemunha quando o reencontra adulto no **Valongo** (um episódio narrado no capítulo intitulado *\"O vergalho\"*) é uma cena forte e reveladora da dinâmica social da escravidão:\n\nAo caminhar pela região do Valongo, Brás Cubas depara-se com um aglomeração de pessoas e vê **Prudêncio espancando violentamente outro homem escravizado** com um vergalho (chicote), chamando-o de \"bêbado\" e \"besta\". \n\nAo se aproximar, Brás Cubas reconhece o antigo companheiro de infância e pergunta se o homem açoitado era seu escravo e o que ele havia feito. Prudêncio responde respeitosamente ao antigo \"nhonhô\", justifica o castigo dizendo que o escravo era vadio e bêbado, e, ao receber um pedido brando de perdão do próprio Brás Cubas (\"Está bom, perdoa-lhe\"), Prudêncio prontamente atende — afinal, \"nhonhô manda, não pede\" — e ordena que o subordinado entre para casa.\n\nO episódio traz uma profunda reflexão psicológica e social: Brás Cubas conclui que a violência sofrida por Prudêncio na infância não foi apagada, mas sim transferida. Uma vez livre, Prudêncio comprou seu próprio escravo para reproduzir com ele o ciclo de opressão e violência que antes sofria, \"pagando com alto juro\" as humilhações que recebeu do próprio Brás Cubas."
+    }
+  ],
+  "segments": [
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 105,
+        "end": 242
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 196518,
+            "end": 196586
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 196587,
+            "end": 196657
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 243,
+        "end": 408
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 196518,
+            "end": 196586
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 196587,
+            "end": 196657
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 409,
+        "end": 486
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 195473,
+            "end": 195552
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 683,
+        "end": 898
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 194886,
+            "end": 194956
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 195027,
+            "end": 195095
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 195277,
+            "end": 195329
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 195361,
+            "end": 195404
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 901,
+        "end": 1043
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 195406,
+            "end": 195472
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 195553,
+            "end": 195605
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 195606,
+            "end": 195655
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1044,
+        "end": 1359
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 195657,
+            "end": 195674
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 195700,
+            "end": 195764
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 195863,
+            "end": 195896
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 195898,
+            "end": 195966
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1421,
+        "end": 1527
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 196451,
+            "end": 196517
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1528,
+        "end": 1728
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 196795,
+            "end": 196866
+          }
+        }
+      ]
+    }
+  ],
+  "labeledBy": "MPT0M",
+  "labeledAt": "2026-09-08T21:22:36.039Z"
+}

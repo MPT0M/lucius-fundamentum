@@ -1,0 +1,227 @@
+{
+  "id": "q15-guided",
+  "model": "gemini-3.5-flash-lite",
+  "recordedAt": "2026-09-08T15:37:31.392Z",
+  "reportVersion": "bench-report-1",
+  "storeEmbeddingModel": "gemini-embedding-2",
+  "storeChunking": {
+    "maxTokensPerChunk": 200,
+    "maxOverlapTokens": 20
+  },
+  "parts": [
+    {
+      "text": "Nas *Memórias Póstumas de Brás Cubas*, de Machado de Assis (especificamente no Capítulo XXXI, intitulado *\"A borboleta preta\"*), o inseto que entra no quarto do protagonista é descrito como **\"negra como a noite\"**, muito maior do que outra que havia aparecido no dia anterior, e dotada de um gesto brando ao mover as asas que transmitia *\"um certo ar escarninho, uma especie de ironia mephistophelica\"*. \n\nBrás Cubas reflete filosoficamente e de forma irônica sobre a criatura, imaginando que ela vinha do mato e que, ao vê-lo pela primeira vez, o teria tomado pelo \"inventor das borboletas\". Para o protagonista, o inseto achou que a melhor forma de agradar ao seu suposto criador seria pousar e beijá-lo na testa.\n\n### O que ele faz com ela?\n1. **A perseguição:** Inicialmente, a borboleta pousa na testa de Brás Cubas, que a sacode. Ela voa para a vidraça e depois para cima de um velho retrato do pai do protagonista. Irritado com a postura irônica do inseto e sentindo um \"repellão dos nervos\", Brás Cubas sai do quarto.\n2. **O golpe:** Ao retornar minutos depois e encontrar a borboleta ainda no mesmo lugar, ele **pega uma toalha e bate nela**.\n3. **A falsa morte e a piedade momentânea:** O golpe faz com que a borboleta caia, mas ela ainda não estava morta (continuava torcendo o corpo e movendo as antenas). Sentindo pena, Brás Cubas pega-a na palma da mão e a depõe no peitoril da janela, onde ela acaba expirando logo depois.\n4. **O desfecho:** Após a morte do inseto, ele reflete com humor ácido e melancólico (*\"Tambem porque diabo não era ella azul?\"*), consolando-se com a ideia de que nem a imensidão azul ou a beleza da natureza salvaram a borboleta, pois, no fim, a fragilidade da vida foi subjugada pela brutalidade humana (simbolizada por dois palmos de linho cru de uma toalha de rosto). Por fim, ele dá um piparote no cadáver, fazendo-o cair no jardim para ser recolhido pelas formigas."
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 80,
+    "candidatesTokenCount": 652,
+    "totalTokenCount": 4793,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 80
+      }
+    ],
+    "toolUsePromptTokenCount": 4061,
+    "toolUsePromptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 4061
+      }
+    ],
+    "serviceTier": "standard"
+  },
+  "groundingMetadata": {
+    "groundingChunks": [
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "tão negra como a outra, e muito maior do\nque ella. Lembrou-me o caso da vespera, e ri-me; entrei logo a pensar\nna filha de D. Eusebia, no susto que tivera, e na dignidade que, apezar\ndelle, soube conservar. A borboleta, depois de esvoaçar muito em torno\nde mim, pousou-me na testa. Sacudi-a, ella foi pousar na vidraça; e,\nporque eu a sacudisse de novo, saíu* dalli e veiu parar em cima de um\nvelho retrato de meu pae. Era negra como a noite; e o gesto brando\ncom que, uma vez posta, começou a mover as azas, tinha um certo ar\nescarninho, uma especie de ironia mephistophelica, que me aborreceu\nmuito. Dei de hombros, saí do quarto; mas tornando lá, minutos depois,\ne achando-a ainda no mesmo logar, senti um repellão dos nervos, lancei\nmão de uma toalha, bati-lhe e ella caíu.\n\nNão caíu morta; ainda torcia o corpo e movia as farpinhas da cabeça.\nApiedei-me; tomei-a na palma da mão e fui depol-a no peitoril da\njanella. Era tarde; a infeliz expirou dentro de alguns segundos. Fiquei\num pouco aborrecido, incommodado.\n\n--Tambem porque diabo não era ella azul? disse eu commigo.\n\nE esta reflexão,--uma das mais profundas que se tem feito, desde a\ninvenção das borboletas,--me consolou do maleficio, e me reconciliou\ncommigo mesmo. Deixei-me estar a",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "a mãe\nfazia-lhe grandes elogios, eu escutava-os de boa sombra; e ella sorria,\ncom os olhos fulgidos, como se lá dentro do cerebro lhe estivesse a\nvoar uma borboletinha de azas de ouro e olhos de diamante...\n\nDigo lá dentro, porque cá fóra o que esvoaçou foi uma borboleta preta,\nque subitamente penetrou na varanda, e começou a bater as azas em\nderredor de D. Eusebia. D. Eusebia deu um grito, levantou-se, praguejou\numas palavras soltas:--T'esconjuro!... sáe, diabo!... Virgem Nossa\nSenhora!...\n\n--Não tenha medo, disse eu; e, tirando o lenço, expelli a borboleta. D.\nEusebia sentou-se outra vez, offegante, um pouco envergonhada; a filha,\npode ser que pallida de medo, dissimulava a impressão com muita força\nde vontade. Apertei-lhes a mão e saí, a rir commigo da superstição\ndas duas mulheres, um rir philosophico, desinteressado, superior.\nDe tarde, vi passar a cavallo afilha de D. Eusebia, seguida de um\npagem; fez-me um comprimento com a ponta do chicote; e confesso que me\nlisongeei com a idéa de que, alguns passos adeante, ella voltaria a\ncabeça para traz; mas não voltou.\n\n\n\n\nCAPITULO XXXI\n\n\nA borboleta preta\n\n\nNo dia seguinte, como eu estivesse a preparar-me para descer, entrou\nno meu quarto uma borboleta, tão negra como a outra, e muito maior do\nque ella. Lembrou-me o caso da vespera, e ri-me; entrei logo a",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "mais profundas que se tem feito, desde a\ninvenção das borboletas,--me consolou do maleficio, e me reconciliou\ncommigo mesmo. Deixei-me estar a contemplar o cadaver, com alguma\nsympathia, confesso. Imaginei que ella saíra do mato, almoçada e feliz.\nA manhã era linda. Veiu por alli fóra, modesta e negra, espairecendo\nas suas borboletices sob a vasta cupula de um céo azul, que é sempre\nazul, para todas as azas. Passa pela minha janella, entra e dá commigo.\nSupponho que nunca teria visto um homem; não-sabia, portanto, o que era\no homem; descreveu infinitas voltas em torno do meu corpo, e viu que\nme movia, que tinha olhos, braços, pernas, um ar divino, uma estatura\ncollossal. Então disse comsigo: «Este é provavelmente o inventor das\nborboletas.» A idéa subjugou-a, aterrou-a; mas o medo, que é tambem\nsuggestivo, insinuou-lhe que o melhor modo de agradar ao seu creador\nera beijal-o na testa; e ella beijou-me na testa. Quando enxotada por\nmim, foi pousar na vidraça, viu dalli o retrato de meu pae, e não é\nimpossivel que descobrisse meia verdade, a saber, que estava alli o pae\ndo inventor das borboletas, e voou a pedir-lhe misericordia.\n\nPois um golpe de toalha rematou a aventura. Não lhe valeu a immensidade\nazul, nem a alegria das flores, nem a pompa das folhas",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "tão negra como a outra, e muito maior do\nque ella. Lembrou-me o caso da vespera, e ri-me; entrei logo a pensar\nna filha de D. Eusebia, no susto que tivera, e na dignidade que, apezar\ndelle, soube conservar. A borboleta, depois de esvoaçar muito em torno\nde mim, pousou-me na testa. Sacudi-a, ella foi pousar na vidraça; e,\nporque eu a sacudisse de novo, saíu* dalli e veiu parar em cima de um\nvelho retrato de meu pae. Era negra como a noite; e o gesto brando\ncom que, uma vez posta, começou a mover as azas, tinha um certo ar\nescarninho, uma especie de ironia mephistophelica, que me aborreceu\nmuito. Dei de hombros, saí do quarto; mas tornando lá, minutos depois,\ne achando-a ainda no mesmo logar, senti um repellão dos nervos, lancei\nmão de uma toalha, bati-lhe e ella caíu.\n\nNão caíu morta; ainda torcia o corpo e movia as farpinhas da cabeça.\nApiedei-me; tomei-a na palma da mão e fui depol-a no peitoril da\njanella. Era tarde; a infeliz expirou dentro de alguns segundos. Fiquei\num pouco aborrecido, incommodado.\n\n--Tambem porque diabo não era ella azul? disse eu commigo.\n\nE esta reflexão,--uma das mais profundas que se tem feito, desde a\ninvenção das borboletas,--me consolou do maleficio, e me reconciliou\ncommigo mesmo. Deixei-me estar a",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "de toalha rematou a aventura. Não lhe valeu a immensidade\nazul, nem a alegria das flores, nem a pompa das folhas verdes, contra\numa toalha de rosto, dous palmos de linho crú. Vejam como é bom ser\nsuperior ás borboletas! Porque, é* justo dizel-o, se ella fosse azul,\nou côr de laranja, não teria mais segura a vida; não era impossivel\nque eu a atravessasse com um alfinete, para recreio dos olhos. Não\nera. Esta ultima idéa restituiu-me a consolação, uni o dedo grande ao\npolegar, despedi um piparote e o cadaver caiu no jardim. Era tempo; ahi\nvinham já as providas formigas... Não, volto á primeira idéa; creio que\npara ella era melhor ter nascido azul.\n\n\n\n\nCAPITULO XXXII\n\n\nCoxa de nascença\n\n\nFui dalli acabar os preparativos da viagem. Já agora não me demoro\nmais. Desço immediatamente; desço ainda que algum leitor circumspecto\nme detenha para perguntar se o capitulo passado é apenas uma sensaboria\nou se chega a empulhação... Ai de mim! Não contava com D. Eusebia.\nEstava prompto, quando me entrou por casa. Vinha convidar-me para\ntransferir a descida, e ir lá jantar nesse dia. Cheguei a recusar; mas\ninstou tanto, tanto, tanto, que não pude deixar de aceitar; demais,\nera-lhe devida aquella compensação; fui.\n\nEugenia desataviou-se nesse dia por minha causa. Creio que foi por\nminha causa,--se é",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      }
+    ],
+    "groundingSupports": [
+      {
+        "segment": {
+          "endIndex": 281,
+          "text": "Nas *Memórias Póstumas de Brás Cubas*, de Machado de Assis (especificamente no Capítulo XXXI, intitulado *\"A borboleta preta\"*), o inseto que entra no quarto do protagonista é descrito como **\"negra como a noite\"**, muito maior do que outra que havia aparecido no dia anterior"
+        },
+        "groundingChunkIndices": [
+          0,
+          1
+        ]
+      },
+      {
+        "segment": {
+          "endIndex": 408,
+          "text": "Nas *Memórias Póstumas de Brás Cubas*, de Machado de Assis (especificamente no Capítulo XXXI, intitulado *\"A borboleta preta\"*), o inseto que entra no quarto do protagonista é descrito como **\"negra como a noite\"**, muito maior do que outra que havia aparecido no dia anterior, e dotada de um gesto brando ao mover as asas que transmitia *\"um certo ar escarninho, uma especie de ironia mephistophelica\"*"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 412,
+          "endIndex": 600,
+          "text": "Brás Cubas reflete filosoficamente e de forma irônica sobre a criatura, imaginando que ela vinha do mato e que, ao vê-lo pela primeira vez, o teria tomado pelo \"inventor das borboletas\""
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 602,
+          "endIndex": 724,
+          "text": "Para o protagonista, o inseto achou que a melhor forma de agradar ao seu suposto criador seria pousar e beijá-lo na testa"
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 757,
+          "endIndex": 847,
+          "text": "**A perseguição:** Inicialmente, a borboleta pousa na testa de Brás Cubas, que a sacode"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 849,
+          "endIndex": 934,
+          "text": "Ela voa para a vidraça e depois para cima de um velho retrato do pai do protagonista"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 936,
+          "endIndex": 1041,
+          "text": "Irritado com a postura irônica do inseto e sentindo um \"repellão dos nervos\", Brás Cubas sai do quarto"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1046,
+          "endIndex": 1167,
+          "text": "**O golpe:** Ao retornar minutos depois e encontrar a borboleta ainda no mesmo lugar, ele **pega uma toalha e bate nela**"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1172,
+          "endIndex": 1335,
+          "text": "**A falsa morte e a piedade momentânea:** O golpe faz com que a borboleta caia, mas ela ainda não estava morta (continuava torcendo o corpo e movendo as antenas)"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1337,
+          "endIndex": 1458,
+          "text": "Sentindo pena, Brás Cubas pega-a na palma da mão e a depõe no peitoril da janela, onde ela acaba expirando logo depois"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1463,
+          "endIndex": 1835,
+          "text": "**O desfecho:** Após a morte do inseto, ele reflete com humor ácido e melancólico (*\"Tambem porque diabo não era ella azul?\"*), consolando-se com a ideia de que nem a imensidão azul ou a beleza da natureza salvaram a borboleta, pois, no fim, a fragilidade da vida foi subjugada pela brutalidade humana (simbolizada por dois palmos de linho cru de uma toalha de rosto)"
+        },
+        "groundingChunkIndices": [
+          3,
+          2,
+          4
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1837,
+          "endIndex": 1937,
+          "text": "Por fim, ele dá um piparote no cadáver, fazendo-o cair no jardim para ser recolhido pelas formigas"
+        },
+        "groundingChunkIndices": [
+          4
+        ]
+      }
+    ]
+  }
+}

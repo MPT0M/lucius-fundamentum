@@ -1,0 +1,115 @@
+{
+  "id": "q02-plain",
+  "parts": [
+    {
+      "text": "Em ***Memórias Póstumas de Brás Cubas***, romance de Machado de Assis, a invenção que Brás Cubas concebe antes de morrer é um medicamento sublime: o **emplasto anti-hipocondríaco**, um remédio destinado a aliviar a melancólica humanidade. O produto ganharia o nome de **\"Emplasto Brás Cubas\"**.\n\nQuanto ao que esperava ganhar com ele, Brás Cubas tinha motivações divididas em duas faces (como as medalhas):\n\n1. **Lucro e Filantropia (oficialmente):** Na petição de privilégio enviada ao governo, ele justificava o remédio como um resultado \"verdadeiramente cristão\" voltado para o alívio dos homens, sem deixar de reconhecer aos amigos que haveria vantagens pecuniárias (lucro) na distribuição do produto.\n2. **Glória e Fama (o verdadeiro motor):** Já \"do outro lado da vida\" (como defunto-autor), ele confessa que sua grande paixão era o barulho, o cartaz e o aplauso. O que ele realmente esperava ganhar era a **fama, a notoriedade e a imortalidade do seu nome**, estampado nos jornais, folhetos, esquinas e nas caixas do remédio — alimentando assim a sua enorme vaidade e o seu \"amor à glória\"."
+    }
+  ],
+  "segments": [
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 0,
+        "end": 238
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 6670,
+            "end": 6822
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 239,
+        "end": 294
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 7300,
+            "end": 7343
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 335,
+        "end": 405
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 7545,
+            "end": 7644
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 451,
+        "end": 705
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 6823,
+            "end": 7086
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 749,
+        "end": 869
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 7087,
+            "end": 7426
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 870,
+        "end": 1097
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 7087,
+            "end": 7426
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 7645,
+            "end": 7737
+          }
+        }
+      ]
+    }
+  ],
+  "labeledBy": "MPT0M",
+  "labeledAt": "2026-09-08"
+}

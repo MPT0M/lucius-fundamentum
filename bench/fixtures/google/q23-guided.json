@@ -1,0 +1,149 @@
+{
+  "id": "q23-guided",
+  "model": "gemini-3.5-flash-lite",
+  "recordedAt": "2026-09-08T15:37:31.392Z",
+  "reportVersion": "bench-report-1",
+  "storeEmbeddingModel": "gemini-embedding-2",
+  "storeChunking": {
+    "maxTokensPerChunk": 200,
+    "maxOverlapTokens": 20
+  },
+  "parts": [
+    {
+      "text": "Em ***Memórias Póstumas de Brás Cubas***, obra de Machado de Assis, **Prudêncio** é um ex-moleque de casa, que fora escravizado na infância de Brás Cubas e torturado por ele (Brás costumava montar em Prudêncio como se fosse um cavalo, pôr-lhe um freio na boca e desancá-lo sem compaixão). Anos mais tarde, Prudêncio foi libertado pelo pai de Brás Cubas.\n\nQuando o reencontra adulto no **Valongo** (conforme narrado no capítulo intitulado *\"O vergalho\"*), Brás Cubas testemunha a seguinte cena:\n* Prudêncio aparece na praça **surrando violentamente com um vergalho (chicotada) outro homem negro**, que gemia e pedia perdão.\n* Ao se aproximar e intervir, Brás Cubas descobre estupefato que o homem do vergalho é o próprio Prudêncio, e que o homem sendo açoitado é um escravo dele. \n\nRefletindo sobre o episódio, Brás Cubas percebe a ironia e a profundidade psicológica da situação: Prudêncio, agora livre e dono de seu próprio destino, repetia com o seu próprio escravo a violência que sofrera na infância, usando-a como uma forma de transferir adiante as agressões e humilhações que havia recebido."
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 77,
+    "candidatesTokenCount": 424,
+    "totalTokenCount": 14252,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 77
+      }
+    ],
+    "toolUsePromptTokenCount": 13751,
+    "toolUsePromptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 13751
+      }
+    ],
+    "serviceTier": "standard"
+  },
+  "groundingMetadata": {
+    "groundingChunks": [
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "MEMÓRIAS PÓSTHUMAS\n\nDE\n\nBRAZ CUBAS\n\nPOR\n\nMACHADO DE ASSIS\n\nRIO DE JANEIRO\n\nTYPOGRAPHIA NACIONAL\n\n1881\n\n\n\n\nOBRAS DO AUTOR\n\n Memórias Pósthumas de Braz Cubas\n Helena, romance\n Yayá Garcia, romance\n Resurreição, romance\n A mão e a luva, romance\n Historias da meia noite\n Contos Fluminenses\n Americanas, poesias\n Phalenas, poesias\n Chrysalidas, poesias\n Tu só, tu, puro amor, comédia\n Os deuses de casaca, comédia\n Desencantos, comédia\n Theatro\n\n\n\n\nAO LEITOR\n\n\nQue, no alto do principal de seus livros, confessasse Stendhal havel-o\nescripto para cem leitores, cousa é que admira e consterna. O que não\nadmira, nem provavelmente consternará é se este outro livro não tiver\nos cem leitores de Stendhal, nem cincoenta, nem vinte, e quando muito,\ndez. Dez? Talvez cinco. Trata-se, na verdade, de uma obra diffusa,\nna qual eu, Braz Cubas, se adoptei a fórma livre de um Sterne, de\num Lamb, ou de um de Maistre, não sei se lhe metti algumas rabugens\nde pessimismo. Póde ser. Obra de finado. Escrevi-a com a penna da\ngalhofa e a tinta da melancholia; e não é difficil antever o que poderá\nsair desse connubio. Accresce que a gente grave achará no livro umas\napparencias de puro romance, ao passo que a gente frivola não achará\nnelle o seu romance usual; e eil-o ahi fica privado da estima dos\ngraves e do amor dos frivolos, que são as",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "disse eu.\n\n--Pois não, nhonhô. Nhonhô manda, não pede. Entra para casa, bebado!\n\nSaí do grupo, que me olhava espantado e cochichava as suas conjecturas.\nSegui caminho, a cavar cá dentro uma infinidade de reflexões, que sinto\nhaver inteiramente perdido; aliás, seria materia para um bom capitulo,\ne talvez alegre. Eu gósto dos capitulos alegres; é o meu fraco.\nExteriormente, era torvo o episodio do Valongo; mas só exteriormente.\nLogo que metti mais dentro a faca do raciocinio achei-lhe um miolo\ngaiato, fino, e até profundo. Era um modo que o Prudencio tinha de\nse desfazer das pancadas recebidas,--transmittindo-as a outro. Eu,\nem criança, montava-o, punha-lhe um freio na boca, e desancava-o sem\ncompaixão; elle gemia e soffria. Agora, porém, que era livre, dispunha\nde si mesmo, dos braços, das pernas, podia, trabalhar, folgar, dormir,\ndesagrilhoado da antiga condição, agora é que elle se desbancava:\ncomprou um escravo, e ia-lhe pagando, com alto juro, as quantias que de\nmim recebera. Vejam as subtilezas do maroto!\n\n\n\n\nCAPITULO LXIX\n\n\nUm grão de sandice\n\n\nEste caso faz-me lembrar um doudo que conheci. Chamava-se Romualdo e\ndizia ser Tamerlão. Era a sua grande e unica mania, e tinha uma curiosa\nmaneira de a explicar.\n\n--Eu sou o illustre Tamerlão, dizia elle. Outr'ora fui Romualdo, mas\nadoeci, e tomei tanto tartaro, tanto tartaro, tanto tartaro, que fiquei\nTartaro,",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "instituições, sem baronezas, sem olheiros,\nsem escutas,--um só mundo, um só casal, uma só vida, uma só vontade,\numa só affeição,--a unidade moral de todas as cousas pela exclusão das\nque me eram contrarias.\n\n\n\n\nCAPITULO LXVIII\n\n\nO vergalho\n\n\nTaes eram as reflexões que eu vinha fazendo, por aquelle Valongo fóra,\nlogo depois de ver e ajustar a casa. Interrompeu-m'as um ajuntamento;\nera um preto que vergalhava outro na praça. O outro não se atrevia a\nfugir; gemia somente estas unicas palavras:\n\n--«Não, perdão, meu senhor; meu senhor, perdão!» Mas o primeiro não\nfazia caso, e, a cada supplica, respondia com uma vergalhada nova.\n\n--Toma, diabo! dizia elle; toma mais perdão, bebado!\n\n--Meu senhor! gemia o outro.\n\n--Cala a boca, besta! replicava o vergalho.\n\nParei, olhei... Justos ceus! Quem havia de ser o do vergalho? Nada\nmenos que o meu moleque Prudencio,--o que meu pae libertára alguns\nannos antes. Cheguei-me; elle deteve-se logo e pediu-me a benção;\nperguntei-lhe se aquelle preto era escravo delle.\n\n--E, sim, nhonhô.\n\n--Fez-te alguma cousa?\n\n--É um vadio e um bebado muito grande. Ainda hoje deixei elle na\nquitanda, em quanto eu ia lá embaixo na cidade, e elle deixou a\nquitanda para ir na venda beber.\n\n--Está bom, perdoa-lhe, disse eu.\n\n--Pois não, nhonhô. Nhonhô manda, não pede. Entra para casa, bebado!\n\nSaí do grupo, que me olhava espantado e cochichava",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      }
+    ],
+    "groundingSupports": [
+      {
+        "segment": {
+          "endIndex": 69,
+          "text": "Em ***Memórias Póstumas de Brás Cubas***, obra de Machado de Assis"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "endIndex": 299,
+          "text": "Em ***Memórias Póstumas de Brás Cubas***, obra de Machado de Assis, **Prudêncio** é um ex-moleque de casa, que fora escravizado na infância de Brás Cubas e torturado por ele (Brás costumava montar em Prudêncio como se fosse um cavalo, pôr-lhe um freio na boca e desancá-lo sem compaixão)"
+        },
+        "groundingChunkIndices": [
+          1,
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 301,
+          "endIndex": 366,
+          "text": "Anos mais tarde, Prudêncio foi libertado pelo pai de Brás Cubas"
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 369,
+          "endIndex": 468,
+          "text": "Quando o reencontra adulto no **Valongo** (conforme narrado no capítulo intitulado *\"O vergalho\"*)"
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 369,
+          "endIndex": 640,
+          "text": "Quando o reencontra adulto no **Valongo** (conforme narrado no capítulo intitulado *\"O vergalho\"*), Brás Cubas testemunha a seguinte cena:\n* Prudêncio aparece na praça **surrando violentamente com um vergalho (chicotada) outro homem negro**, que gemia e pedia perdão"
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 642,
+          "endIndex": 802,
+          "text": "* Ao se aproximar e intervir, Brás Cubas descobre estupefato que o homem do vergalho é o próprio Prudêncio, e que o homem sendo açoitado é um escravo dele"
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 806,
+          "endIndex": 1134,
+          "text": "Refletindo sobre o episódio, Brás Cubas percebe a ironia e a profundidade psicológica da situação: Prudêncio, agora livre e dono de seu próprio destino, repetia com o seu próprio escravo a violência que sofrera na infância, usando-a como uma forma de transferir adiante as agressões e humilhações que havia recebido"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      }
+    ]
+  }
+}

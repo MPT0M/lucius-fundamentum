@@ -1,0 +1,217 @@
+{
+  "id": "q09-guided",
+  "model": "gemini-3.5-flash-lite",
+  "recordedAt": "2026-09-08T11:17:27.530Z",
+  "reportVersion": "bench-report-1",
+  "storeEmbeddingModel": "gemini-embedding-2",
+  "storeChunking": {
+    "maxTokensPerChunk": 200,
+    "maxOverlapTokens": 20
+  },
+  "parts": [
+    {
+      "text": "Nas *Memórias Póstumas de Brás Cubas*, de Machado de Assis, **Dona Plácida** é uma personagem humilde e de grande importância na trama, pois acaba se tornando a \"testa de ferro\" (a dona de fachada) da casinha de Botafogo que Brás Cubas aluga para os seus encontros amorosos com Virgília (sua amante casada). Para a sociedade da época, ela figurava como a dona da residência, encobrindo o adultério.\n\n### A origem de Dona Plácida\n\nA história da origem de Dona Plácida é narrada em tom irônico e realista pelo defunto-autor Brás Cubas, principalmente nos capítulos LXXIV e LXXV:\n\n* **Nascimento:** Ela era filha natural (fora do casamento) de um **sacristão da Sé** com uma **mulher que fazia doces** para fora. O narrador descreve de forma jocosa que o sacristão, enquanto ajudava a missa, avistou a dama (sua colaboradora nessa união), trocaram olhares e galanteios, e *\"dessa conjunção de luxúrias vadias brotou D. Plácida\"*.\n* **Infância e Juventude:** Perdeu o pai aos dez anos de idade, época em que já ajudava a ralar côco e a realizar tarefas de doceira compatíveis com a sua idade. Aos quinze ou dezesseis anos, casou-se com um alfaiate que morreu tístico (com tuberculose) pouco tempo depois, deixando-lhe uma filha.\n* **Luta pela sobrevivência:** Viúva antes dos vinte anos, Dona Plácida viu-se encarregada de sustentar três pessoas: ela própria, a filha pequena e a mãe idosa e cansada de trabalhar. Para garantir o sustento, desdobrava-se fazendo doces, costurando dia e noite para lojas e ensinando crianças do bairro. \n* **Dificuldades e moralidade:** Embora tenha enfrentado propostas e seducções ao longo da vida e sofrido com a pressão da mãe (que criticava seu desejo de ser honesta e se casar de fato), ela manteve seu código moral estrito, resistindo a ser amásia de alguém, pois o seu \"gênio\" era querer ser casada legitimamente.\n\nApesar de toda a sua trajetória de privações e sacrifícios para não \"acabar na rua pedindo esmola\", a vida a empurra para aceitar o papel de acobertar o romance proibido de Brás Cubas e Virgília — um trabalho que lhe causava profunda dor moral (\"tinha nojo de si mesma\" no início), mas que representava a única forma de obter algum conforto na velhice, culminando no pecúlio de cinco contos que Brás Cubas lhe deixou."
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 76,
+    "candidatesTokenCount": 697,
+    "totalTokenCount": 3429,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 76
+      }
+    ],
+    "toolUsePromptTokenCount": 2656,
+    "toolUsePromptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 2656
+      }
+    ],
+    "serviceTier": "standard"
+  },
+  "groundingMetadata": {
+    "groundingChunks": [
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "um ferreiro, depois um poeta, e todos abençoarão esse canto de\nterra, que lhes deu algumas illusões.\n\nVirgilia fez daquillo um brinco; designou as alfaias mais idoneas, e\ndispol-as com a intuição esthetica da mulher elegante; eu levei para\nlá alguns livros; e tudo ficou sob a guarda de D. Placida, supposta, e,\na certos respeitos, verdadeira dona da casa.\n\nCustou-lhe muito a aceitar a casa; farejára a intenção, e doia-lhe o\nofficio; mas afinal cedeu. Creio que chorava, a principio: tinha nojo\nde si mesma. Ao menos, é certo que não levantou os olhos para mim\ndurante os primeiros dous mezes; falava-me com elles baixos, séria,\ncarrancuda, ás vezes triste. Eu queria angarial-a, e não me dava por\noffendido, tratava-a com carinho e respeito; forcejava por obter-lhe a\nbenevolencia, depois a confiança. Quando obtive a confiança, imaginei\numa historia pathetica dos meus amores com Virgilia, um caso anterior\nao casamento, a resistencia do pae, a dureza do marido, e não sei que\noutros toques de novella. D. Placida não rejeitou uma só pagina da\nnovella; aceitou-as todas. Era uma necessidade da consciencia. Ao cabo\nde seis mezes quem nos visse a todos tres juntos diria que D. Placida\nera minha sogra.\n\nNão fui ingrato; fiz-lhe um peculio de cinco contos,--os cinco\ncontos achados em Botafogo,--como um pão para a",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "E mostrou-me as\nmãos grossas e gretadas, as pontas dos dedos picadas da agulha.--Não\nse cria isto á toa, meu senhor; Deus sabe como é que isto se cria...\nFelizmente, Yayá me protegeu, e o senhor doutor tambem... Eu tinha um\nmedo de acabar na rua, pedindo esmola...\n\nAo soltar a ultima phrase, D. Placida teve um calafrio. Depois, como se\ntornasse a si, pareceu attentar na inconveniência daquella confissão\nao amante de uma mulher casada, e começou a rir, a desdizer-se, a\nchamar-se tola, «cheia de fiducias», como lhe dizia a mãe; enfim,\ncançada do meu silencio, retirou-se da sala. Eu fiquei a olhar para a\nponta do botim.\n\n\n\n\nCAPITULO LXXV\n\n\nCommigo\n\n\nPodendo acontecer que algum dos meus leitores tenha pulado o capitulo\nanterior, observo que é preciso lel-o para entender o que eu disse\ncommigo, logo depois que D. Placida saiu da sala. O que eu disse foi\nisto:\n\n--Assim, pois, o sacristão da Sé, um dia, ajudando a missa, viu entrar\na dama, que devia ser sua collaboradora na vida de D. Placida. Viu-a\noutros dias, durante semanas inteiras, gostou, disse-lhe alguma graça,\npisou-lhe o pé, ao acender os altares, nos dias de festa. Ella gostou\ndelle, acercaram-se, amaram-se. Dessa conjuncção de luxurias vadias\nbrotou D. Placida. É de crer que D. Placida não falasse ainda quando\nnasceu, mas se",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "Yayá! Mas então de quem é que eu gostaria neste\nmundo?\n\nE, pegando-lhe nas mãos, olhou-a fixamente, fixamente, fixamente, até\nmolharem-se-lhe os olhos, de tão fixo que era. Virgilia acariciou-a\nmuito; eu deixei-lhe uma pratinha na algibeira do vestido.\n\n\n\n\nCAPITULO LXXIV\n\n\nHistoria de D. Placida\n\n\nNão te arrependas de ser generoso; a pratinha rendeu-me uma confidencia\nde D. Placida, e conseguintemente este capitulo. Dias depois, como eu\na achasse só em casa, travámos palestra, e ella contou-me em breves\ntermos a sua historia. Era filha natural de um sacristão da Sé e de\numa mulher que fazia doces para fóra. Perdeu o pae aos dez annos. Já\nentão ralava côco e fazia não sei que outros misteres de doceira,\ncompativeis com a edade. Aos quinze ou dezeseis casou com um alfaiate,\nque morreu tisico algum tempo depois, deixando-lhe uma filha. Viuva,\ncom pouco mais de vinte annos, ficaram a seu cargo a filha, com dous, e\na mãe, cançada de trabalhar. Tinha de sustentar a tres pessoas. Fazia\ndoces, que era o seu officio, mas cosia tambem, de dia e de noite, com\naffinco, para tres ou quatro lojas, e ensinava algumas crianças do\nbairro, a dez tostões por mez. Com isto iam-se passando os annos, não\na belleza, porque não a tivera nunca. Appareceram-lhe alguns namoros,\npropostas, seducções, a que",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "mez. Com isto iam-se passando os annos, não\na belleza, porque não a tivera nunca. Appareceram-lhe alguns namoros,\npropostas, seducções, a que resistia.\n\n--Se eu pudesse encontrar outro marido, disse-me ella, creia que me\nteria casado; mas ninguem queria casar commigo.\n\nUm dos pretendentes conseguiu fazer-se aceito; não sendo, porém, mais\ndelicado que os outros, D. Placida despediu-o do mesmo modo, e depois\nde o despedir chorou muito. Continuou a coser para fóra e a escumar\nos tachos. A mãe tinha a rabugem do temperamento, dos annos e da\nnecessidade; mortificava a filha para que tomasse um dos maridos de\nemprestimo e de occasião, que lh'a pediam. E bradava:\n\n--Queres ser melhor do eu? Não sei donde te vem essas fiducias de\npessoa rica. Minha camarada, a vida não se arranja á toa; não se\ncome vento. Ora esta! Moços tão bons como o Polycarpo da venda,\ncoitado...Esperas algum fidalgo, não é?\n\nD. Placida jurou-me que não esperava fidalgo nenhum. Era genio. Queria\nser casada. Sabia muito bem que a mãe o não fôra, e conhecia algumas\nque tinham só o seu moço dellas; mas era genio e queria ser casada.\nNão queria tambem que a filha fosse outra cousa. E trabalhava muito,\nqueimando os dedos ao fogão, e os olhos ao candieiro, para comer e não\ncair. Emmagreceu, adoeceu,",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "D. Placida\nera minha sogra.\n\nNão fui ingrato; fiz-lhe um peculio de cinco contos,--os cinco\ncontos achados em Botafogo,--como um pão para a velhice. D. Placida\nagradeceu-me com lagrimas nos olhos; e nunca mais deixou de rezar por\nmim, todas as noites, deante de uma imagem da Virgem, que tinha no\nquarto. Foi assim que lhe acabou o nojo.\n\n\n\n\nCAPITULO LXXI\n\n\nO senão do livro\n\n\nComeço a arrepender-me deste livro. Não que elle me cance; eu não tenho\nque fazer; e, realmente, expedir alguns magros capitulos para esse\nmundo sempre é tarefa que distráe um pouco da eternidade. Mas o livro\né enfadonho, cheira a sepulchro, traz certa contracção cadaverica;\nvicio grave, e aliás infimo, porque o maior defeito deste livro és tu,\nleitor. Tu tens pressa de envelhecer, e o livro anda devagar; tu amas a\nnarração direita e nutrida, o estylo regular e fluente, e este livro e\no meu estylo são como os ebrios, guinam á direita e á esquerda, andam e\nparam, resmungam, urram, gargalham, ameaçam o ceu, escorregam e cáem...\n\nE cáem!--Folhas miserrimas do meu cypreste, heis de cair, como\nquaesquer outras bellas e vistosas; e, se eu tivesse olhos, dar-vos-hia\numa lagrima de saudade. Esta é a grande vantagem da morte, que se\nnão deixa boca para rir, tambem não deixa olhos para chorar... Heis\nde",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      }
+    ],
+    "groundingSupports": [
+      {
+        "segment": {
+          "endIndex": 314,
+          "text": "Nas *Memórias Póstumas de Brás Cubas*, de Machado de Assis, **Dona Plácida** é uma personagem humilde e de grande importância na trama, pois acaba se tornando a \"testa de ferro\" (a dona de fachada) da casinha de Botafogo que Brás Cubas aluga para os seus encontros amorosos com Virgília (sua amante casada)"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 316,
+          "endIndex": 408,
+          "text": "Para a sociedade da época, ela figurava como a dona da residência, encobrindo o adultério"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 442,
+          "endIndex": 593,
+          "text": "A história da origem de Dona Plácida é narrada em tom irônico e realista pelo defunto-autor Brás Cubas, principalmente nos capítulos LXXIV e LXXV"
+        },
+        "groundingChunkIndices": [
+          1,
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 596,
+          "endIndex": 728,
+          "text": "* **Nascimento:** Ela era filha natural (fora do casamento) de um **sacristão da Sé** com uma **mulher que fazia doces** para fora"
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 941,
+          "endIndex": 951,
+          "text": "Plácida\"*"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 953,
+          "endIndex": 1118,
+          "text": "* **Infância e Juventude:** Perdeu o pai aos dez anos de idade, época em que já ajudava a ralar côco e a realizar tarefas de doceira compatíveis com a sua idade"
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1120,
+          "endIndex": 1255,
+          "text": "Aos quinze ou dezesseis anos, casou-se com um alfaiate que morreu tístico (com tuberculose) pouco tempo depois, deixando-lhe uma filha"
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1257,
+          "endIndex": 1446,
+          "text": "* **Luta pela sobrevivência:** Viúva antes dos vinte anos, Dona Plácida viu-se encarregada de sustentar três pessoas: ela própria, a filha pequena e a mãe idosa e cansada de trabalhar"
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1448,
+          "endIndex": 1568,
+          "text": "Para garantir o sustento, desdobrava-se fazendo doces, costurando dia e noite para lojas e ensinando crianças do bairro"
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1571,
+          "endIndex": 1895,
+          "text": "* **Dificuldades e moralidade:** Embora tenha enfrentado propostas e seducções ao longo da vida e sofrido com a pressão da mãe (que criticava seu desejo de ser honesta e se casar de fato), ela manteve seu código moral estrito, resistindo a ser amásia de alguém, pois o seu \"gênio\" era querer ser casada legitimamente"
+        },
+        "groundingChunkIndices": [
+          3
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1898,
+          "endIndex": 2327,
+          "text": "Apesar de toda a sua trajetória de privações e sacrifícios para não \"acabar na rua pedindo esmola\", a vida a empurra para aceitar o papel de acobertar o romance proibido de Brás Cubas e Virgília — um trabalho que lhe causava profunda dor moral (\"tinha nojo de si mesma\" no início), mas que representava a única forma de obter algum conforto na velhice, culminando no pecúlio de cinco contos que Brás Cubas lhe deixou"
+        },
+        "groundingChunkIndices": [
+          4,
+          0
+        ]
+      }
+    ]
+  }
+}

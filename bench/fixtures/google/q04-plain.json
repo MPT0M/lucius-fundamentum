@@ -1,0 +1,122 @@
+{
+  "id": "q04-plain",
+  "model": "gemini-3.5-flash-lite",
+  "recordedAt": "2026-09-08T11:17:27.530Z",
+  "reportVersion": "bench-report-1",
+  "storeEmbeddingModel": "gemini-embedding-2",
+  "storeChunking": {
+    "maxTokensPerChunk": 200,
+    "maxOverlapTokens": 20
+  },
+  "parts": [
+    {
+      "text": "Na obra *Memórias Póstumas de Brás Cubas*, de Machado de Assis, **Marcela** é uma jovem espanhola formosa, luxuosa, ambiciosa, sem escrúpulos e muito amiga de dinheiro e de rapazes, que se torna a grande paixão da juventude do protagonista. Brás Cubas a conhece nas festividades da independência e gasta trinta dias para conquistar o seu coração. Ela consome grande parte da fortuna e da paciência da família do narrador, antes de abandoná-lo quando os recursos financeiros se esgotam.\n\nQuanto à duração desse amor, Brás Cubas eterniza a relação com uma de suas frases mais célebres e irônicas da literatura brasileira, inserida no Capítulo XVII:\n\n> *“... Marcella amou-me durante **quinze mezes e onze contos de réis**; nada menos.”*\n\nDessa forma, nas palavras dele, o tempo de duração do amor esteve diretamente atrelado — e foi mensurado — tanto à duração temporal em meses quanto à quantia exorbitante de dinheiro que ele gastou com ela."
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 23,
+    "candidatesTokenCount": 348,
+    "totalTokenCount": 14903,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 23
+      }
+    ],
+    "toolUsePromptTokenCount": 14532,
+    "toolUsePromptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 14532
+      }
+    ],
+    "serviceTier": "standard"
+  },
+  "groundingMetadata": {
+    "groundingChunks": [
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "porém, o pae, lettrado\nou hortelão, a verdade é que Marcella não possuia a innocencia rustica,\ne mal chegava a entender a moral do codigo. Era boa moça, lepida,\nsem escrupulos, um pouco tolhida pela austeridade do tempo, que lhe\nnão permittia arrastar pelas ruas os seus estouvamentos e berlindas;\nluxuosa, impaciente, amiga de dinheiro e de rapazes. Naquelle anno,\nmorria ella de amores por um certo Xavier, sujeito abastado e\ntisico,--uma perola.\n\nVi-a, pela primeira vez, no Rocio Grande, na noite das luminarias, logo\nque constou a declaração da independencia, uma festa de primavera, um\namanhecer da alma publica. Eramos dous rapazes, o povo e eu; vinhamos\nda infancia, com todos os arrebatamentos da juventude. Vi-a sahir\nde uma cadeirinha, airosa e vistosa, um corpo esbelto, ondulante,\num desgarre, alguma cousa que nunca achara nas mulheres puras.\n--Segue-me, disse ella ao pagem. E eu segui-a, tão pagem como o outro,\ncomo se a ordem me fosse dada, deixei-me ir namorado, vibrante, cheio\ndas primeiras auroras. A meio caminho, chamaram-lhe «linda Marcella»,\nlembrou-me que ouvira tal nome a meu tio João, e fiquei, confesso que\nfiquei tonto.\n\nTres dias depois perguntou-me meu tio, em segredo, se queria ir a uma\nceia de moças, nos Cajueiros. Fomos; era em casa de Marcella. O Xavier,\ncom todos os seus tuberculos, presidia ao banquete",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "uma\nceia de moças, nos Cajueiros. Fomos; era em casa de Marcella. O Xavier,\ncom todos os seus tuberculos, presidia ao banquete nocturno, em que\neu pouco ou nada comi, porque só tinha olhos para a dona da casa.\nQue gentil que ella estava a hespanhola! Havia mais uma meia duzia\nde mulheres,--todas de partido--, e bonitas, cheias de graça, mas a\nhespanhola... O enthusiasmo, alguns goles de vinho, o genio imperioso,\nestouvado, tudo isso me levou a fazer uma cousa unica; á sahida, á\nporta da rua, disse a meu tio que esperasse um instante, e tornei a\nsubir as escadas.\n\n--Esqueceu alguma cousa? perguntou Marcella de pé, no patamar.\n\n--O lenço.\n\nElla ia abrir-me caminho para tornar á sala; eu segurei-lhe nas mãos,\npuxei-a para mim, e dei-lhe um beijo. Não sei se ella disse alguma\ncousa, se gritou, se chamou alguem; não sei nada; sei que desci outra\nvez as escadas, veloz como um tufão, e incerto como um ebrio.\n\n\n\n\nCAPITULO XV\n\n\nMarcella\n\n\nGastei trinta dias para ir do Rocio Grande ao coração de Marcella,\nnão já cavalgando o corsel do cégo desejo, mas o asno da paciência,\na um tempo manhoso e teimoso. Que, na verdade, ha dous meios de\ngrangear a vontade das mulheres: o violento, como o touro de Europa,\ne o insinuativo, como o cysne",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "passeio ou outra cousa assim, e ella cedia\na tudo, risonha e palreira.\n\n--Você é das Arabias, dizia-me.\n\nE ia pôr o vestido, a renda, os brincos, com uma obediencia de\nencantar.\n\n\n\n\nCAPITULO XVI\n\n\nUma reflexão immoral\n\n\nOccorre-me uma reflexão immoral, que é ao mesmo tempo uma correcção de\nestylo. Cuido haver dito, no cap. XIII, que Marcella morria de amores\npelo Xavier. Não morria, vivia. Viver não é a mesma cousa que morrer\nassim o affirmam todos os joalheiros desse mundo, gente muito vista\nna grammatica. Bons joalheiros, que seria do amor se não fossem os\nvossos dixes e fiados? Um terço ou um quinto do universal commercio\ndos corações. Esta é a reflexão immoral que eu pretendia fazer, a qual\né ainda mais obscura do que immoral, porque não se entende bem o que\neu quero dizer. O que eu quero dizer é que a mais bella testa do mundo\nnão fica menos bella, se a cingir um diadema de pedras finas; nem menos\nbella, nem menos amada. Marcella, por exemplo, que era bem bonita,\nMarcella amou-me...\n\n\n\n\nCAPITULO XVII\n\n\nDo trapezio e outras cousas\n\n\n... Marcella amou-me durante quinze mezes e onze contos de réis; nada\nmenos. Meu pae, logo que teve aragem dos onze contos, sobresaltou-se\ndevéras; achou que o caso excedia as raias de um capricho juvenil.\n\n--Desta vez, disse",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      }
+    ],
+    "groundingSupports": [
+      {
+        "segment": {
+          "endIndex": 245,
+          "text": "Na obra *Memórias Póstumas de Brás Cubas*, de Machado de Assis, **Marcela** é uma jovem espanhola formosa, luxuosa, ambiciosa, sem escrúpulos e muito amiga de dinheiro e de rapazes, que se torna a grande paixão da juventude do protagonista"
+        },
+        "groundingChunkIndices": [
+          0,
+          1,
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 247,
+          "endIndex": 355,
+          "text": "Brás Cubas a conhece nas festividades da independência e gasta trinta dias para conquistar o seu coração"
+        },
+        "groundingChunkIndices": [
+          0,
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 670,
+          "endIndex": 761,
+          "text": "> *“... Marcella amou-me durante **quinze mezes e onze contos de réis**; nada menos.”*"
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 763,
+          "endIndex": 977,
+          "text": "Dessa forma, nas palavras dele, o tempo de duração do amor esteve diretamente atrelado — e foi mensurado — tanto à duração temporal em meses quanto à quantia exorbitante de dinheiro que ele gastou com ela"
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      }
+    ]
+  }
+}

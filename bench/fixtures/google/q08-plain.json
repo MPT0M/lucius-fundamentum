@@ -1,0 +1,186 @@
+{
+  "id": "q08-plain",
+  "model": "gemini-3.5-flash-lite",
+  "recordedAt": "2026-09-08T11:17:27.530Z",
+  "reportVersion": "bench-report-1",
+  "storeEmbeddingModel": "gemini-embedding-2",
+  "storeChunking": {
+    "maxTokensPerChunk": 200,
+    "maxOverlapTokens": 20
+  },
+  "parts": [
+    {
+      "text": "Nas ***Memórias Pósthumas de Brás Cubas***, obra-maior de Machado de Assis, Brás Cubas relata com bastante franqueza, ironia e tom confessional a sua relação de longas datas com **Virgília** e com o marido dela, **Joaquim Lobo Neves**. \n\nAbaixo estão os principais pontos do que o defunto autor conta sobre cada um deles e sobre a dinâmica do triângulo amoroso:\n\n---\n\n### 1. Sobre Virgília\n* **O retrato físico e moral (Juventude):** Brás conhece Virgília quando ela era bem jovem (cerca de 15 ou 16 anos). Ele a descreve como uma criatura atrevida, voluntariosa, muito clara, faceira, pueril e dona de um feitiço natural irresistível. Tinha também muita preguiça e traços de devoção (ou antes, medo).\n* **O quase casamento:** Eles chegam a ter um romance de juventude e planos de casamento que foram desfeitos sem grandes dramas ou paixões avassaladoras no início, muito por interferência das convenções sociais e da ambição do pai de Brás (que preferia para o filho um casamento com mais status político).\n* **O reencontro e o adultério:** Anos mais tarde, eles se reencontram em uma valsa e se apaixonam perdidamente, transformando-se em amantes. Virgília torna-se a grande paixão (e o grande pecado) da vida de Brás Cubas. \n* **A relação secreta:** Brás relata os detalhes, os medos, os arroubos e as precauções do romance escondido. Eles mantêm uma casa na Gamboa para os encontros amorosos. O narrador expõe a vaidade, a coqueteria e também a força de Virgília, que compartilha com ele o gosto pela dissimulação perante a sociedade.\n* **A maturidade e o fim:** Com o passar dos anos, a relação vai se transformando. Curiosamente, no final da vida de Brás Cubas (já na velhice do narrador, em 1869), Virgília é uma das poucas pessoas que o visitam e assistem aos seus últimos dias, mostrando que a ligação entre eles persistiu de alguma forma até o fim.\n\n---\n\n### 2. Sobre Lobo Neves\n* **Quem é:** Joaquim Lobo Neves é o homem com quem Virgília se casa, preterindo Brás Cubas na fase adulta, principalmente porque Lobo Neves oferecia uma posição social e perspectivas políticas muito mais brilhantes (ele era ambicioso e aspirava a cargos ministeriais).\n* **A \"Geologia Moral\":** Brás descreve Lobo Neves analisando a sua personalidade — o que ele chama de \"geologia moral\" do personagem. Ele o pinta como um homem correto nas aparências, extremamente vaidoso, dedicado à burocracia e obcecado pela carreira política e pelos favores do poder.\n* **O corno inconsciente (e tolerante):** Lobo Neves é o clássico exemplo do marido traído que não percebe (ou prefere não perceber) a infidelidade da esposa bem debaixo do seu nariz, muito devido à sua cegueira vaidosa e à confiança nas aparências sociais. Brás transita pela casa deles livremente como amigo da família.\n* **A rivalidade e a morte:** Embora houvesse uma inimizade velada e uma forte inveja por parte de Brás (especialmente pelo destaque político de Lobo Neves), o desfecho da vida do marido de Virgília é melancólico. Lobo Neves morre repentinamente quando estava prestes a alcançar o cargo de ministro (\"com o pé na escada ministerial\"). Brás relata ter ido ao enterro e descreve o desespero genuíno e doloroso de Virgília ao velar o marido, cena que desperta em Brás sentimentos mistos de alívio e reflexão sobre a fragilidade humana."
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 17,
+    "candidatesTokenCount": 959,
+    "totalTokenCount": 8499,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 17
+      }
+    ],
+    "toolUsePromptTokenCount": 7523,
+    "toolUsePromptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 7523
+      }
+    ],
+    "serviceTier": "standard"
+  },
+  "groundingMetadata": {
+    "groundingChunks": [
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "Virgilio\n Virgilio\n Virgilio\n\nMeu pae, um pouco despeitado com aquella indifferença, ergueu-se, veiu\na mim, lançou os olhos ao papel...\n\n--Virgilio! exclamou. És tu, meu rapaz; a tua noiva chama-se justamente\nVirgilia.\n\n\n\n\nCAPITULO XXVII\n\n\nVirgilia?\n\n\nVirgilia? Mas então era a mesma senhora que alguns annos depois...? A\nmesma; era justamente a senhora, que em 1869 devia assistir aos meus\nultimos dias, e que antes, muito antes, teve larga parte nas minhas\nmais intimas sensações. Naquelle tempo contava apenas uns quinze ou\ndezeseis annos, e era talvez a mais atrevida creatura da nossa raça,\ne, com certeza, a mais voluntariosa. Não digo que já lhe coubesse\na primazia da belleza, entre as mocinhas do tempo, porque isto não\né romance, em que o autor sobredoura a realidade e fecha os olhos\nás sardas e espinhas; mas tambem não digo que lhe maculasse o rosto\nnenhuma sarda ou espinha; não. Era bonita, fresca, sahia das mãos da\nnatureza, cheia daquelle feitiço, precario e eterno, que o individuo\npassa a outro individuo, para os fins secretos da creação. Era isto\nVirgilia, e era clara, muito clara, faceira, ignorante, pueril, cheia\nde uns impetos mysteriosos; muita preguiça e alguma devoção,--devoção,\nou talvez medo; creio que medo.\n\nAhi tem o leitor, em poucas linhas, o retrato physico e moral da pessoa\nque devia influir mais tarde na minha",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": ". . . . . .\n. . . . . ? . . . . .\n. . . . . . . . . . . .\n\nBRAZ CUBAS\n\n. . . . . .\n\n\nVIRGILIA\n\n. . . .\n\nBRAZ CUBAS\n\n. . . . . . . . . . . . .\n\n. . . . . . . . . . . . .\n\n. . . . . . . . . ! . .\n\n. . ! . . . . . . . .\n\n. . . . . . . . . . . !\n\nVIRGILIA\n\n. . . . . . . . . . . . .?\n\nBRAZ CUBAS\n\n. . . . .!\n\nVIRGILIA\n\n. . . . .!\n\n\n\n\nCAPITULO LVI\n\n\nO momento opportuno\n\n\nMas, com a breca! quem me explicará a razão desta differença? Um dia\nvimo-nos, tratámos o casamento, desfizemol-o e separamo-nos, a frio,\nsem dor, porque não houvera paixão nenhuma; mordeu-me apenas algum\ndespeito e nada mais. Correm annos, torno a vel-a, damos tres ou quatro\ngiros de valsa, e eis-nos a amar um ao outro com delirio. A belleza\nde Virgilia chegára, é certo, a um alto gráu de apuro, mas nós eramos\nsubstancialmente os mesmos, e eu, á minha parte, não me tornára mais\nbonito nem mais elegante. Quem me",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "Lobo Neves, refazia as maneiras delle, e\nconcluia que era muito melhor a nova situaçao. Bastava-nos a Gamboa. A\nfrequencia da outra casa aguçaria as invejas. E rigorosamente podiamos\ndispensar-nos de falar todos os dias; era até melhor, mettia a saudade\nde permeio nos amores. Ao demais, eu galgara os quarenta annos, e não\nera nada, nem simples eleitor de parochia. Urgia fazer alguma cousa,\nainda por amor de Virgilia, que havia de ufanar-se quando visse luzir o\nmeu nome... Creio que nessa occasião houve grandes applausos, mas não\njuro; eu pensava em outra cousa.\n\nMultidão, cujo amor cobicei até á morte, era assim que eu me vingava ás\nvezes de ti; deixava borborinhar em volta do meu corpo a gente humana,\nsem a ouvir, como o Prometheu de Eschylo fazia aos seus verdugos.\nAh! tu cuidavas encadear-me ao rochedo da tua frivolidade, da tua\nindifferença, ou da tua agitação? Frageis cadeias, amiga minha; eu\nrompia-as de um gesto de Gulliver. Vulgar cousa é ir considerar no\nermo. O voluptuoso, o exquisito, é insular-se o homem no meio de um\nmar de gestos e palavras, de nervos e paixões, decretar-se alheiado,\ninaccessivel, ausente. O mais que podem dizer, quando elle torna a\nsi,--isto é, quando torna aos outros,--é que baixa do mundo da lua; mas\no mundo da lua,",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "a vida, que é\num enxurro perpetuo. Se o leitor ainda se lembra do cap. XXXIII,\nobservará que é agora a segunda vez que eu comparo a vida a um\nenxurro; mas tambem ha de reparar que desta vez accrescento-lhe\num adjectivo--perpetuo. E Deus sabe a força de um adjectivo,\nprincipalmente em paizes novos e cálidos.\n\nO que é novo neste livro é a geologia moral do Lobo Neves, e\nprovavelmente a do cavalheiro, que me está lendo. Sim, essas camadas\nde caracter, que a vida altera, conserva ou dissolve, conforme a\nresistencia dellas, essas camadas mereceriam um capitulo, que eu não\nescrevo, por não alongar a narração. Digo apenas que o homem mais\nprobo que conheci em minha vida foi um certo Jacob Medeiros ou Jacob\nValladares, não me recorda bem o nome. Talvez fosse Jacob Rodrigues;\nem summa, Jacob. Era a probidade mesma; podia ser rico, violentando um\npequenino escapulo, e não quiz; deixou ir pelas mãos fóra nada menos de\nuns quatrocentos contos; tinha a probidade tão exemplar, que chegava\na ser miuda e cançativa. Um dia, como nos achassemos, a sós, em casa\ndelle, em boa palestra, vieram dizer que o procurava o Dr. B., um\nsujeito enfadonho. O Jacob mandou dizer que não estava em casa.\n\n--Não péga, bradou uma voz do corredor; cá",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "a vida humana nutre de si mesma outras vidas, mais\nou menos ephemeras, como o corpo alimenta os seus parasitas, creio\nnão dizer uma cousa inteiramente absurda. Mas, para não arriscar essa\nfigura menos nitida e adequada, prefiro uma imagem astronomica: o homem\nexecuta á roda do grande mysterio um movimento duplo de rotação e\ntranslação; tem os seus dias, deseguaes como os de Jupiter, e delles\ncompõe o seu anno mais ou menos longo.\n\nNo momento em que eu terminava o meu movimento de rotação, concluia o\nLobo Neves o seu movimento de translação. Morria com o pé na escada\nministerial. Correu ao menos, durante algumas semanas, que elle ia ser\nministro; e pois que o boato me encheu de muita irritação e inveja, não\né impossivel que a noticia da morte me deixasse alguma tranquillidade,\nallivio, e um ou dous minutos de prazer. Prazer é muito, mas é verdade;\njuro aos seculos que é a pura verdade.\n\nFui ao enterro. Na sala mortuaria achei Virgilia, ao pé do feretro, a\nsoluçar. Quando levantou a cabeça, vi que chorava deveras. Ao sair o\nenterro, abraçou-se ao caixão, afflicta; vieram tiral-a e leval-a para\ndentro. Digo-vos que as lagrimas eram verdadeiras. Eu fui ao cemiterio;\ne, para dizer tudo, não tinha muita vontade de falar; levava uma pedra\nna",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      }
+    ],
+    "groundingSupports": [
+      {
+        "segment": {
+          "startIndex": 652,
+          "endIndex": 721,
+          "text": "Tinha também muita preguiça e traços de devoção (ou antes, medo)"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 723,
+          "endIndex": 1036,
+          "text": "* **O quase casamento:** Eles chegam a ter um romance de juventude e planos de casamento que foram desfeitos sem grandes dramas ou paixões avassaladoras no início, muito por interferência das convenções sociais e da ambição do pai de Brás (que preferia para o filho um casamento com mais status político)"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1038,
+          "endIndex": 1179,
+          "text": "* **O reencontro e o adultério:** Anos mais tarde, eles se reencontram em uma valsa e se apaixonam perdidamente, transformando-se em amantes"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1377,
+          "endIndex": 1435,
+          "text": "Eles mantêm uma casa na Gamboa para os encontros amorosos"
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1670,
+          "endIndex": 1913,
+          "text": "Curiosamente, no final da vida de Brás Cubas (já na velhice do narrador, em 1869), Virgília é uma das poucas pessoas que o visitam e assistem aos seus últimos dias, mostrando que a ligação entre eles persistiu de alguma forma até o fim"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 2222,
+          "endIndex": 2358,
+          "text": "* **A \"Geologia Moral\":** Brás descreve Lobo Neves analisando a sua personalidade — o que ele chama de \"geologia moral\" do personagem"
+        },
+        "groundingChunkIndices": [
+          3
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 3069,
+          "endIndex": 3190,
+          "text": "Lobo Neves morre repentinamente quando estava prestes a alcançar o cargo de ministro (\"com o pé na escada ministerial\")"
+        },
+        "groundingChunkIndices": [
+          4
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 3192,
+          "endIndex": 3394,
+          "text": "Brás relata ter ido ao enterro e descreve o desespero genuíno e doloroso de Virgília ao velar o marido, cena que desperta em Brás sentimentos mistos de alívio e reflexão sobre a fragilidade humana"
+        },
+        "groundingChunkIndices": [
+          4
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,229 @@
+{
+  "id": "q19-plain",
+  "parts": [
+    {
+      "text": "Em ***Memórias Póstumas de Brás Cubas***, obra de Machado de Assis, **Viegas** é um senhor idoso, rico, asmático e parente (ou tio) de Virgília. Ele é retratado como uma pessoa solitária e sovina (mão-fechada), que sofre com crises fortes de tosse e asma, além de ser obcecado por negócios (como a venda de uma de suas casas).\n\n### O que Virgília e Brás esperavam dele?\n\nVirgília e seu marido (Lobo Neves) — com o pleno conhecimento e cumplicidade de Brás Cubas, amante de Virgília — cultivavam uma relação de extrema cortesia, bajulação e falsa afeição para com o velho Viegas com um objetivo muito claro: **uma herança ou um legado testamentário**. \n\nVirgília dedicava-se a cobrir o parente de atenções calculadas: recebia-o à porta com sorrisos, tirava-lhe o chapéu e a bengala, dava-lhe o braço, aturava longas partidas de damas e agia como uma verdadeira enfermeira ou dedicada sobrinha/filha. Ela fazia tudo isso abertamente manifestando a expectativa de que tanta dedicação resultasse em uma generosa quantia em dinheiro ou em um codicilo (um adendo ao testamento). Brás Cubas também acompanhava e observava esse esforço interesseiro, notando que Virgília era menos escrupulosa do que o marido quanto a isso.\n\nNo entanto, a expectativa do casal termina em grande frustração: quando Viegas morre (após um último acesso de tosse enquanto tentava negociar o preço de uma casa), descobre-se que ele não deixou absolutamente nada para eles — nem sequer uma lembrança testamentaria, *\"uma pastilha que fosse\"*. Virgília engole a raiva desse fracasso (\"malogro\") e lamenta o resultado principalmente por causa do futuro do filho (que ela e Brás tinham em comum)."
+    }
+  ],
+  "segments": [
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 68,
+        "end": 144
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 189931,
+            "end": 190000
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 233566,
+            "end": 233632
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 233633,
+            "end": 233701
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 233769,
+            "end": 233835
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 145,
+        "end": 326
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 239983,
+            "end": 240010
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 233769,
+            "end": 233835
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 240281,
+            "end": 240350
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 240351,
+            "end": 240416
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 484,
+        "end": 649
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 233769,
+            "end": 233835
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 233836,
+            "end": 233903
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 653,
+        "end": 898
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 237440,
+            "end": 237505
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 237506,
+            "end": 237575
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 237576,
+            "end": 237644
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 238608,
+            "end": 238678
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 238679,
+            "end": 238748
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1142,
+        "end": 1214
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 233904,
+            "end": 233970
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 233836,
+            "end": 233903
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1282,
+        "end": 1510
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 242698,
+            "end": 242767
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 240351,
+            "end": 240416
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 242962,
+            "end": 243030
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1512,
+        "end": 1628
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 243102,
+            "end": 243171
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 243172,
+            "end": 243240
+          }
+        }
+      ]
+    }
+  ],
+  "labeledBy": "MPT0M",
+  "labeledAt": "2026-09-08T21:22:35.760Z"
+}

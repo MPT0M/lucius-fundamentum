@@ -67,8 +67,34 @@ the text is supported by which passage, with positions you can trust.
 
 **Measurement.** `bench/` holds the ruler these two will be measured with: a
 public-domain corpus with its own provenance record, and a harness that scores
-citation positions against spans labeled by hand. Reports are published under
-`bench/reports/` once a round has enough labeled citations to mean something.
+citation positions against labeled spans.
+
+## The measured round
+
+`bench/reports/` carries the scores. `bench/fixtures/` carries what they were
+computed from, so that anyone can compute them again and disagree.
+
+- `fixtures/google/` — 48 answers, 24 questions in two variants, recorded on
+  2026-09-08 against `gemini-3.5-flash-lite` with Google's File Search over one
+  document. Each file keeps the grounding metadata as the API returned it, and
+  the round's own parameters, so a number is never readable apart from the
+  conditions that made it.
+- `fixtures/labeled/` — the gold: for each verifiable claim, the passage of the
+  book that supports it, as code-point spans. The gold is read off the book and
+  never derived from what the emitter cited, which is what lets a citation be
+  scored against where the claim is rather than where the emitter said it was.
+
+### What this round does not cover
+
+One book, one language, one day, one model. The ruler recognises four kinds of
+protected region — code, URLs, formulas, abbreviations — and this corpus
+exercises one: 99.9% of the gold is ordinary prose, because Machado de Assis
+wrote no source listings and no equations. Twelve claims carry no gold on
+purpose, the book not supporting them; each is a judgement, and the labels are
+published so it can be contested.
+
+Rounds against other providers are planned. A ruler that has only ever been
+held against one product has measured that product and not much else.
 
 ## License
 

@@ -1,0 +1,334 @@
+{
+  "id": "q17-plain",
+  "parts": [
+    {
+      "text": "Em ***Memórias Póstumas de Brás Cubas*** (de Machado de Assis), a atuação política de Brás Cubas como deputado é descrita por ele próprio com certa ironia e franqueza sobre a sua falta de relevância inicial. Ele confessa que, antes de ser sacudido pelas ideias filosóficas de Quincas Borba, **nunca havia intervindo nos grandes debates** da Câmara. Sua estratégia para alcançar o poder e conseguir um cargo de ministro (uma pasta) resumia-se a bajulação e conveniências sociais: \n\n> *\"Crel-o-eis, posteros? Eu não havia intervindo até então nos grandes debates. Cortejava a pasta por meio de rapapés, chás, commissões e votos; e a pasta não vinha. Urgia apoderar-me da tribuna.\"*\n\n---\n\n### Sobre o discurso da barretina da Guarda Nacional\n\nSentindo a necessidade de estrear na tribuna para chamar a atenção do governo e da opinião pública, Brás Cubas decide começar \"devagar\". O tema escolhido foi o **orçamento da justiça**, aproveitando a ocasião para questionar o ministro sobre a conveniência de **diminuir a barretina da Guarda Nacional** (o chapéu alto e rígido usado como parte do uniforme militar).\n\nOs principais argumentos e contornos do famoso **discurso da barretina** foram:\n\n1. **Fundamentação histórica e filosófica:** Para dar gravidade de homem de Estado a um assunto aparentemente banal, Brás Cubas citou o líder grego Filopemen, que ordenou a substituição dos escudos e lanças de suas tropas para melhorar o desempenho militar, demonstrando que detalhes de vestimenta e equipamento não são indignos da alta política.\n2. **Argumento higiénico e de saúde:** Ele argumentou que o tamanho excessivo das barretinas era deselegante e **anti-higiênico**. Sob o sol forte das paradas militares, o calor gerado pelo chapéu poderia ser fatal. Convocando Hipócrates (que defendia a importância de manter a cabeça fresca), Brás afirmou que era cruel obrigar um cidadão a arriscar a saúde, a vida e o futuro da família por uma simples questão de uniforme.\n3. **A defesa da liberdade e da altivez cívica:** O deputado sustentou que a Guarda Nacional era o \"anteparo da liberdade e da independência\" e que os cidadãos, submetidos a um serviço gratuito e penoso, mereciam um uniforme leve. Além disso, ele usou uma metáfora pomposa sobre a postura física e moral: argumentou que o peso da barretina abatia a cabeça dos cidadãos, quando a pátria precisava de fronte erguida. O discurso encerrou com uma imagem poética célebre: \n   > *«O chorão, que inclina os seus galhos para a terra, é arvore de cemiterio; a palmeira, erecta e firme, é arvore do deserto, das praças e dos jardins.»*\n\n**A repercussão:** O discurso teve uma recepção mista. No que diz respeito à forma literária, à eloquência e à filosofia, foi elogiado por conseguir extrair tantas ideias de um chapéu. No entanto, politicamente foi considerado por muitos um verdadeiro desastre parlamentar. A oposição chegou a interpretar a fala como um sinal de ruptura e a especular sobre uma moção de desconfiança contra o governo, obrigando Brás Cubas a repelir energicamente tal mal-entendido."
+    }
+  ],
+  "segments": [
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 208,
+        "end": 348
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 324700,
+            "end": 324756
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 324757,
+            "end": 324825
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 324826,
+            "end": 324893
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 349,
+        "end": 478
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 324894,
+            "end": 324960
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 324961,
+            "end": 325018
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 481,
+        "end": 679
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 324826,
+            "end": 325018
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 877,
+        "end": 1106
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 325020,
+            "end": 325084
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 325085,
+            "end": 325153
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 325154,
+            "end": 325218
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1306,
+        "end": 1535
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 325289,
+            "end": 325354
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 325355,
+            "end": 325422
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 325423,
+            "end": 325488
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1575,
+        "end": 1666
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 325626,
+            "end": 325694
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1667,
+        "end": 1751
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 325762,
+            "end": 325831
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1752,
+        "end": 1961
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 325832,
+            "end": 325899
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 325968,
+            "end": 326036
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 2012,
+        "end": 2192
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 326037,
+            "end": 326104
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 326105,
+            "end": 326172
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 326239,
+            "end": 326304
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 2267,
+        "end": 2375
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 326305,
+            "end": 326372
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 326373,
+            "end": 326439
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 2435,
+        "end": 2587
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 326509,
+            "end": 326575
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 2644,
+        "end": 2773
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 326622,
+            "end": 326684
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 326820,
+            "end": 326881
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 2774,
+        "end": 2862
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 326882,
+            "end": 326949
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 2863,
+        "end": 3054
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 327018,
+            "end": 327083
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 327084,
+            "end": 327152
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 327153,
+            "end": 327221
+          }
+        }
+      ]
+    }
+  ],
+  "labeledBy": "MPT0M",
+  "labeledAt": "2026-09-08T21:22:35.568Z"
+}

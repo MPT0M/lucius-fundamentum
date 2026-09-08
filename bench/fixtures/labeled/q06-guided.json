@@ -1,0 +1,58 @@
+{
+  "id": "q06-guided",
+  "parts": [
+    {
+      "text": "Segundo o próprio Brás Cubas, embora clinicamente tenha morrido de **pneumonia**, a causa real e profunda de sua morte foi a obsessão por uma ideia grandiosa e útil: **a invenção do \"emplasto Brás Cubas\"** (um medicamento sublime, anti-hipocondríaco, destinado a aliviar a melancólica humanidade).\n\nNas palavras do autor defunto: \n> *«Morri de uma pneumonia; mas se lhe disser que foi menos a pneumonia, do que uma idéa grandiosa e util, a causa da minha morte, é possivel que o leitor me não creia, e todavia é verdade.»*\n\nO delírio e a ânsia em torno da criação desse remédio — motivada sobretudo pelo desejo de vaidade e de ver seu nome impresso em jornais e caixinhas — consumiram-no até o desfecho fatal."
+    }
+  ],
+  "segments": [
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 0,
+        "end": 297
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 6005,
+            "end": 6190
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 6670,
+            "end": 6822
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 7300,
+            "end": 7343
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 334,
+        "end": 521
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 6005,
+            "end": 6190
+          }
+        }
+      ]
+    }
+  ],
+  "labeledBy": "MPT0M",
+  "labeledAt": "2026-09-08"
+}

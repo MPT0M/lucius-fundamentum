@@ -1,0 +1,248 @@
+{
+  "id": "q08-plain",
+  "parts": [
+    {
+      "text": "Nas ***Memórias Pósthumas de Brás Cubas***, obra-maior de Machado de Assis, Brás Cubas relata com bastante franqueza, ironia e tom confessional a sua relação de longas datas com **Virgília** e com o marido dela, **Joaquim Lobo Neves**. \n\nAbaixo estão os principais pontos do que o defunto autor conta sobre cada um deles e sobre a dinâmica do triângulo amoroso:\n\n---\n\n### 1. Sobre Virgília\n* **O retrato físico e moral (Juventude):** Brás conhece Virgília quando ela era bem jovem (cerca de 15 ou 16 anos). Ele a descreve como uma criatura atrevida, voluntariosa, muito clara, faceira, pueril e dona de um feitiço natural irresistível. Tinha também muita preguiça e traços de devoção (ou antes, medo).\n* **O quase casamento:** Eles chegam a ter um romance de juventude e planos de casamento que foram desfeitos sem grandes dramas ou paixões avassaladoras no início, muito por interferência das convenções sociais e da ambição do pai de Brás (que preferia para o filho um casamento com mais status político).\n* **O reencontro e o adultério:** Anos mais tarde, eles se reencontram em uma valsa e se apaixonam perdidamente, transformando-se em amantes. Virgília torna-se a grande paixão (e o grande pecado) da vida de Brás Cubas. \n* **A relação secreta:** Brás relata os detalhes, os medos, os arroubos e as precauções do romance escondido. Eles mantêm uma casa na Gamboa para os encontros amorosos. O narrador expõe a vaidade, a coqueteria e também a força de Virgília, que compartilha com ele o gosto pela dissimulação perante a sociedade.\n* **A maturidade e o fim:** Com o passar dos anos, a relação vai se transformando. Curiosamente, no final da vida de Brás Cubas (já na velhice do narrador, em 1869), Virgília é uma das poucas pessoas que o visitam e assistem aos seus últimos dias, mostrando que a ligação entre eles persistiu de alguma forma até o fim.\n\n---\n\n### 2. Sobre Lobo Neves\n* **Quem é:** Joaquim Lobo Neves é o homem com quem Virgília se casa, preterindo Brás Cubas na fase adulta, principalmente porque Lobo Neves oferecia uma posição social e perspectivas políticas muito mais brilhantes (ele era ambicioso e aspirava a cargos ministeriais).\n* **A \"Geologia Moral\":** Brás descreve Lobo Neves analisando a sua personalidade — o que ele chama de \"geologia moral\" do personagem. Ele o pinta como um homem correto nas aparências, extremamente vaidoso, dedicado à burocracia e obcecado pela carreira política e pelos favores do poder.\n* **O corno inconsciente (e tolerante):** Lobo Neves é o clássico exemplo do marido traído que não percebe (ou prefere não perceber) a infidelidade da esposa bem debaixo do seu nariz, muito devido à sua cegueira vaidosa e à confiança nas aparências sociais. Brás transita pela casa deles livremente como amigo da família.\n* **A rivalidade e a morte:** Embora houvesse uma inimizade velada e uma forte inveja por parte de Brás (especialmente pelo destaque político de Lobo Neves), o desfecho da vida do marido de Virgília é melancólico. Lobo Neves morre repentinamente quando estava prestes a alcançar o cargo de ministro (\"com o pé na escada ministerial\"). Brás relata ter ido ao enterro e descreve o desespero genuíno e doloroso de Virgília ao velar o marido, cena que desperta em Brás sentimentos mistos de alívio e reflexão sobre a fragilidade humana."
+    }
+  ],
+  "segments": [
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 434,
+        "end": 506
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 104007,
+            "end": 104065
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 507,
+        "end": 635
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 104069,
+            "end": 104156
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 104466,
+            "end": 104583
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 104584,
+            "end": 104765
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 636,
+        "end": 701
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 104691,
+            "end": 104765
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 727,
+        "end": 864
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 164166,
+            "end": 164285
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1042,
+        "end": 1149
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 164331,
+            "end": 164438
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1338,
+        "end": 1396
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 260528,
+            "end": 260549
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1636,
+        "end": 1785
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 103853,
+            "end": 103927
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1903,
+        "end": 2158
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 137186,
+            "end": 137374
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 349324,
+            "end": 349430
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 2185,
+        "end": 2293
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 234472,
+            "end": 234529
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 2706,
+        "end": 2769
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 158170,
+            "end": 158281
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 260528,
+            "end": 260597
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 2849,
+        "end": 2926
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 349433,
+            "end": 349487
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 2984,
+        "end": 3104
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 349324,
+            "end": 349430
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 3105,
+        "end": 3207
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 349676,
+            "end": 349804
+          }
+        }
+      ]
+    }
+  ],
+  "labeledBy": "MPT0M",
+  "labeledAt": "2026-09-08"
+}

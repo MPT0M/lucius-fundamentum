@@ -1,0 +1,292 @@
+{
+  "id": "q03-plain",
+  "model": "gemini-3.5-flash-lite",
+  "recordedAt": "2026-09-08T11:17:27.530Z",
+  "reportVersion": "bench-report-1",
+  "storeEmbeddingModel": "gemini-embedding-2",
+  "storeChunking": {
+    "maxTokensPerChunk": 200,
+    "maxOverlapTokens": 20
+  },
+  "parts": [
+    {
+      "text": "Nas *Memórias Póstumas de Brás Cubas* (de Machado de Assis), o delírio que o narrador tem pouco antes de morrer — mais especificamente nos capítulos finais, como o famoso capítulo LXXXIX (*In extremis*) e o capítulo XC (*O velho colóquio de Adão e Caim*) — é descrito como uma fantasmagoria cósmica, filosófica e alucinatória guiada pela personificação da **Natureza** ou do **Tempo**.\n\nA descrição desse delírio pode ser dividida em momentos marcantes:\n\n### 1. O arrebatamento e a visão dos séculos\nSentindo a vida esvair-se e a consciência fragmentar-se devido à pneumonia, Brás Cubas sente-se transportado por uma força superior (ou montado em um hipopótamo imaginário, em uma sátira onírica) até o alto de uma montanha. Lá do alto, a Natureza — tratada pelo narrador ora como uma mãe grandiosa, ora como um \"sublime idiota\" — ordena que ele olhe para baixo. \n\nO que ele contempla é a **condensação viva de todos os tempos da história humana** desfilando diante de seus olhos em um ritmo vertiginoso:\n* **O espetáculo da humanidade:** Ele vê as raças, as paixões, o tumulto dos impérios, a guerra de apetites e ódios, e a destruição recíproca de seres e coisas.\n* **A marcha rápida do tempo:** Os séculos desfilam num turbilhão tão veloz que \"para descrevê-lo seria preciso fixar o relâmpago\". O presente, o passado e os futuros cruzam-se numa sucessão rápida e monótona de glórias e misérias.\n* **As formas do mal:** Brás Cubas observa que a história humana é movida por um mal multiforme que corrói as vísceras e o pensamento — a cobiça que devora, a cólera que inflama, a inveja, a fome, a vaidade, a ambição e a melancolia —, agitando o homem como um chocalho até destruí-lo como um farrapo.\n\n### 2. A viagem à origem dos séculos e a região dos gelos\nEm seu delírio febril, o enfermo imagina estar cavalgando de costas (caminhando para trás no tempo) rumo à \"origem dos séculos\". Conforme avança, a sensação de frio aumenta até que ele percebe estar imerso na **região dos gelos eternos**:\n* Ele descreve uma planície inteiramente branca de neve, com montanhas, vegetação e animais feitos de neve, sob um \"sol de neve\" que gelava.\n* Ao perguntar à sua alucinação onde estavam, ouve como resposta que já haviam passado o Éden. \n\n### 3. O colóquio com a Natureza (ou com Adão e Caim)\nNo auge da alucinação, Brás Cubas dialoga com a própria essência da existência e da vida. Ele questiona por que a vida cria o amor e o desejo de viver se o destino final é a morte e a destruição. A resposta que obtém é niilista e crua: a Natureza/Tempo age movida pelo puro egoísmo da conservação e da substituição (o minuto que vem é que importa, assim como a onça mata o novilho porque precisa viver).\n\n### 4. O desfecho prosaico do delírio\nO delírio grandioso e cósmico contrasta fortemente com a realidade terrena e mesquinha do quarto de morte. O voo vertiginoso pelos séculos e pelos gelos eternos vai diminuindo de escala até que o gigantesco hipopótamo de sua alucinação encolhe progressivamente e se transforma em um gato comum — o seu gato *Sultão*, que brincava à porta da alcova. \n\nLogo em seguida, o delírio se dissipa de vez com os ruídos reais do quarto: o som de pessoas negociando o preço da casa, conversas abafadas, o acesso final de tosse e a constatação pragmática da morte."
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 18,
+    "candidatesTokenCount": 1108,
+    "totalTokenCount": 15247,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 18
+      }
+    ],
+    "toolUsePromptTokenCount": 14121,
+    "toolUsePromptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 14121
+      }
+    ],
+    "serviceTier": "standard"
+  },
+  "groundingMetadata": {
+    "groundingChunks": [
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "fechos do livro,\ne cruzando-as eu sobre o ventre, alguem as descruzava (Virgilia de\ncerto), porque a attitude lhe dava a imagem de um defunto.\n\nUltimamente, restituido á fórma humana, vi chegar um hippopotamo, que\nme arrebatou. Deixei-me ir, calado, não sei se por medo ou confiança,\nmas, dentro em pouco, a carreira de tal modo se tornou vertiginosa, que\nme atrevi a interrogal-o, e com alguma arte lhe disse que a viagem me\nparecia sem destino.\n\n--Engana-se, replicou o animal, nós vamos á origem dos seculos.\n\nInsinuei que deveria ser muitissimo longe; mas o hippopotamo não me\nentendeu ou não me ouviu, se é que não fingiu uma dessas cousas; e,\nperguntando-lhe, visto que elle fallava, se era descendente do cavallo\nde Achilles ou da asna de Balaão, retorquiu-me com um gesto peculiar a\nestes dous quadrupedes: abanou as orelhas. Pela minha parte fechei os\nolhos e deixei-me ir á ventura. Já agora não se me dá de confessar que\nsentia umas taes ou quaes cocegas de curiosidade, por saber onde ficava\na origem dos seculos, se era tão mysteriosa como a origem do Nilo, e\nsobretudo se valia alguma cousa mais ou menos do que a consummação dos\nmesmos seculos; tudo isto reflexões de um cerebro enfermo. Como ia de\nolhos fechados, não via o caminho; lembra-me",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "deparei\nmenos torpe ou menos afflictivo: o alvor do dia, a melancholia da\ntarde, a quietação da noite, os aspectos da terra, o somno, emfim, o\nmaior beneficio das minhas mãos. Que mais queres tu, sublime idiota?\n\n--Viver somente, não te peço mais nada. Quem me poz no coração este\namor da vida, se não tu? e, se eu amo a vida, porque te has de golpear\na ti mesma, matando-me?\n\n--Porque já não preciso de ti. Não importa ao tempo o minuto que passa,\nmas o minuto que vem. O minuto que vem é forte, jocundo, suppõe trazer\nem si a eternidade, e traz a morte, e perece como o outro, mas o\ntempo subsiste. Egoismo, dizes tu? Sim, egoismo, não tenho outra lei.\nEgoismo, conservação. A onça mata o novilho porque o raciocinio da\nonça é que ella deve viver, e se o novilho é tenro tanto melhor: eis o\nestatuto universal. Sobe e olha.\n\nIsto dizendo, arrebatou-me ao alto de uma montanha. Inclinei os olhos\na uma das vertentes, e contemplei, durante um tempo largo, ao longe,\natravez de um nevoeiro, uma cousa unica. Imagina tu, leitor, uma\nreducção dos seculos, e um desfilar de todos elles, as raças todas,\ntodas as paixões, o tumulto dos imperios, a guerra dos appetites e\ndos odios, a destruição",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "de todos elles, as raças todas,\ntodas as paixões, o tumulto dos imperios, a guerra dos appetites e\ndos odios, a destruição reciproca dos seres e das cousas. Tal era\no expectaculo, acerbo e curioso expectaculo. A historia do homem\ne da terra tinha assim uma intensidade que lhe não podiam dar nem\na imaginação nem a sciencia, porque a sciencia é mais lenta e a\nimaginação mais vaga, emquanto que o que eu alli via era a condensação\nviva de todos os tempos. Para descrevel-a seria preciso fixar o\nrelampago. Os seculos desfilavam n'um turbilhão, e, não obstante,\nporque os olhos do delirio são outros, eu via tudo o que passava diante\nde mim,--flagellos e delicias,--desde essa cousa que se chama gloria\naté essa outra que se chama miseria, e via o amor multiplicando a\nmiseria, e via a miseria aggravando a debilidade. Ahi vinham a cobiça\nque devora, a colera que inflamma, a inveja que baba, e a enxada e a\npenna, humidas de suor, e a ambição, a fome, a vaidade, a melancholia,\na riqueza, o amor, e todos agitavam o homem, como um chocalho, até\ndestruil-o, como um farrapo. Eram as formas varias de um mal, que ora\nmordia a viscera, ora mordia o pensamento, e passeiava eternamente as\nsuas vestes de arlequim, em",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "o\nhomem, nu e desarmado, armava-se e vestia-se, construia o tugurio e\no palacio, a rude aldêa e Thebas de cem portas, creava a sciencia,\nque perscruta, e a arte que enleva, fazia-se orador, mecanico,\nphilosopho, corria a face do globo, descia ao ventre da terra, subia\ná esphera das nuvens, collaborando assim na obra mysteriosa, com que\nentretinha a necessidade da vida e a melancholia do desamparo. Meu\nolhar, enfarado e distrahido*, viu emfim chegar o seculo presente, e\natraz delle os futuros. Aquelle vinha agil, destro, vibrante, cheio\nde si, um pouco diffuso, audaz, sabedor, mas ao cabo tão miseravel\ncomo os primeiros, e assim passou e assim passaram os outros, com a\nmesma rapidez e egual monotonia. Redobrei de attenção; fitei a vista;\nia emfim ver o ultimo,--o ultimo!; mas então já a rapidez da marcha\nera tal, que escapava a toda a comprehensão; ao pé della o relampago\nseria um seculo. Talvez por isso entraram os objectos a trocarem-se;\nuns cresceram, outros minguaram, outros perderam-se no ambiente; um\nnevoeiro cobriu tudo,--menos o hippopotamo que alli me trouxera, e que\naliás começou a diminuir, a diminuir, a diminuir, até ficar do tamanho\nde um gato. Era effectivamente um gato. Encarei-o bem; era o meu gato\n_Sultão_, que brincava á porta da alcova, com uma bola de",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "a consummação dos\nmesmos seculos; tudo isto reflexões de um cerebro enfermo. Como ia de\nolhos fechados, não via o caminho; lembra-me só que a sensação de frio\naugmentava com a jornada, e que chegou uma occasião em que me pareceu\nentrar na região dos gelos eternos. Com effeito, abri os olhos e vi que\no meu animal galopava n'uma planicie branca de neve, com uma ou outra\nmontanha de neve, vegetação de neve, e varios animaes grandes e de\nneve. Tudo neve; chegava a gelar-nos um sol de neve. Tentei fallar, mas\napenas pude grunhir esta pergunta anciosa:\n\n--Onde estamos?\n\n--Já passámos o Eden.\n\n--Bem; paremos na tenda de Abrahão.\n\n--Mas se nós caminhamos para traz! redarguiu motejando a minha\ncavalgadura.\n\nFiquei vexado e aturdido. A jornada entrou a parecer-me enfadonha e\nextravagante, o frio incommodo, a conducção violenta, e o resultado\nimpalpavel. E depois--cogitações de enfermo--dado que chegassemos ao\nfim indicado, não era impossivel que os seculos, irritados com lhes\ndevassarem a origem, me esmagassem entre as unhas, que deviam ser tão\nseculares como elles. Em quanto assim pensava, iamos devorando caminho,\ne a planicie voava debaixo dos nossos pés, até que o animal estacou, e\npude olhar mais tranquillamente em torno de mim. Olhar sómente; nada\nvi, além da immensa brancura da neve, que desta vez invadira o proprio\nceu*,",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "cousas. O sujeito magro\ncontou uma anecdota, e tornou a tratar da casa, alteando a proposta.\n\n--Trinta e oito contos, disse elle.\n\n--Am?... gemeu o enfermo.\n\nO sujeito magro aproximou-se da cama, pegou-lhe na mão, e sentiu-a\nfria. Eu acheguei-me ao doente, perguntei-lhe se sentia alguma cousa,\nse queria tomar um calice de vinho.\n\n--Não... não... quar... quaren... quar... quar...\n\nTeve um accesso de tosse, e foi o ultimo; dahi a pouco expirava elle,\ncom grande consternação do sujeito magro, que me confessou depois a\ndisposição em que estava de offerecer os quarenta contos; mas era\ntarde.\n\n\n\n\nCAPITULO XC\n\n\nO velho colloquio de Adão e Caim\n\n\nE nada. Nenhuma lembrança testamentaria, uma pastilha que fosse, com\nque do todo em todo não parecesse ingrato ou esquecido. Nada. Virgilia\ntragou raivosa esse mallogro, e disse-m'o com certa cautela, não pela\ncousa em si, senão porque entendia com o filho, de quem sabia que eu\nnão gostava muito, nem pouco. Insinuei-lhe que não devia pensar mais em\nsemelhante negocio. O melhor de tudo era esquecer o defunto, um lorpa,\num cainho sem nome, e tratar de cousas alegres; o nosso filho, por\nexemplo.\n\nLá me escapou a decifração do mysterio, esse doce mysterio de algumas\nsemanas antes, quando Virgilia me pareceu um pouco differente do que\nera. Um filho! Um ser tirado do meu ser! Esta",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      }
+    ],
+    "groundingSupports": [
+      {
+        "segment": {
+          "startIndex": 484,
+          "endIndex": 755,
+          "text": "O arrebatamento e a visão dos séculos\nSentindo a vida esvair-se e a consciência fragmentar-se devido à pneumonia, Brás Cubas sente-se transportado por uma força superior (ou montado em um hipopótamo imaginário, em uma sátira onírica) até o alto de uma montanha"
+        },
+        "groundingChunkIndices": [
+          0,
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 757,
+          "endIndex": 864,
+          "text": "Lá do alto, a Natureza — tratada pelo narrador ora como uma mãe grandiosa, ora como um \"sublime idiota\""
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 757,
+          "endIndex": 899,
+          "text": "Lá do alto, a Natureza — tratada pelo narrador ora como uma mãe grandiosa, ora como um \"sublime idiota\" — ordena que ele olhe para baixo"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 903,
+          "endIndex": 1045,
+          "text": "O que ele contempla é a **condensação viva de todos os tempos da história humana** desfilando diante de seus olhos em um ritmo vertiginoso"
+        },
+        "groundingChunkIndices": [
+          2,
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 903,
+          "endIndex": 1215,
+          "text": "O que ele contempla é a **condensação viva de todos os tempos da história humana** desfilando diante de seus olhos em um ritmo vertiginoso:\n* **O espetáculo da humanidade:** Ele vê as raças, as paixões, o tumulto dos impérios, a guerra de apetites e ódios, e a destruição recíproca de seres e coisas"
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1217,
+          "endIndex": 1353,
+          "text": "* **A marcha rápida do tempo:** Os séculos desfilam num turbilhão tão veloz que \"para descrevê-lo seria preciso fixar o relâmpago\""
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1355,
+          "endIndex": 1458,
+          "text": "O presente, o passado e os futuros cruzam-se numa sucessão rápida e monótona de glórias e misérias"
+        },
+        "groundingChunkIndices": [
+          3
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1460,
+          "endIndex": 1775,
+          "text": "* **As formas do mal:** Brás Cubas observa que a história humana é movida por um mal multiforme que corrói as vísceras e o pensamento — a cobiça que devora, a cólera que inflama, a inveja, a fome, a vaidade, a ambição e a melancolia —, agitando o homem como um chocalho até destruí-lo como um farrapo"
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1785,
+          "endIndex": 1970,
+          "text": "A viagem à origem dos séculos e a região dos gelos\nEm seu delírio febril, o enfermo imagina estar cavalgando de costas (caminhando para trás no tempo) rumo à \"origem dos séculos\""
+        },
+        "groundingChunkIndices": [
+          0,
+          4
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1972,
+          "endIndex": 2085,
+          "text": "Conforme avança, a sensação de frio aumenta até que ele percebe estar imerso na **região dos gelos eternos**"
+        },
+        "groundingChunkIndices": [
+          4
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1972,
+          "endIndex": 2229,
+          "text": "Conforme avança, a sensação de frio aumenta até que ele percebe estar imerso na **região dos gelos eternos**:\n* Ele descreve uma planície inteiramente branca de neve, com montanhas, vegetação e animais feitos de neve, sob um \"sol de neve\" que gelava"
+        },
+        "groundingChunkIndices": [
+          4
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 2231,
+          "endIndex": 2329,
+          "text": "* Ao perguntar à sua alucinação onde estavam, ouve como resposta que já haviam passado o Éden"
+        },
+        "groundingChunkIndices": [
+          4
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 2340,
+          "endIndex": 2483,
+          "text": "O colóquio com a Natureza (ou com Adão e Caim)\nNo auge da alucinação, Brás Cubas dialoga com a própria essência da existência e da vida"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 2485,
+          "endIndex": 2592,
+          "text": "Ele questiona por que a vida cria o amor e o desejo de viver se o destino final é a morte e a destruição"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 2594,
+          "endIndex": 2809,
+          "text": "A resposta que obtém é niilista e crua: a Natureza/Tempo age movida pelo puro egoísmo da conservação e da substituição (o minuto que vem é que importa, assim como a onça mata o novilho porque precisa viver)"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 2960,
+          "endIndex": 3209,
+          "text": "O voo vertiginoso pelos séculos e pelos gelos eternos vai diminuindo de escala até que o gigantesco hipopótamo de sua alucinação encolhe progressivamente e se transforma em um gato comum — o seu gato *Sultão*, que brincava à porta da alcova"
+        },
+        "groundingChunkIndices": [
+          3
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 3213,
+          "endIndex": 3419,
+          "text": "Logo em seguida, o delírio se dissipa de vez com os ruídos reais do quarto: o som de pessoas negociando o preço da casa, conversas abafadas, o acesso final de tosse e a constatação pragmática da morte"
+        },
+        "groundingChunkIndices": [
+          5
+        ]
+      }
+    ]
+  }
+}

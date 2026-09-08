@@ -1,0 +1,239 @@
+{
+  "id": "q08-guided",
+  "parts": [
+    {
+      "text": "Nas *Memórias Póstumas de Brás Cubas*, de Machado de Assis, Brás Cubas relata detalhadamente a sua relação com **Virgília** e com o marido dela, **Joaquim Lobo Neves**, revelando tanto aspectos psicológicos quanto os papéis que ambos desempenham em sua vida (e em seu romance adúltero).\n\n### Sobre Virgília\n* **Primeiro contato e juventude:** Brás conheceu Virgília quando ela era muito jovem (cerca de 15 ou 16 anos). Ele a descreve como uma criatura atrevida, voluntariosa, faceira, pueril e dona de um encanto singular. Chegaram a cogitar um casamento no passado, mas o noivado foi desfeito sem grandes paixões ou dores profundas.\n* **O reencontro e a paixão delirante:** Anos mais tarde, após Virgília se tornar uma mulher de beleza refinada, eles se reencontram em um baile e se apaixonam com delírio, iniciando um longo e tórrido caso de amor extraconjugal.\n* **O papel de amante:** Virgília torna-se a grande paixão da vida de Brás Cubas. O narrador expõe os altos e baixos dessa relação clandestina — marcada por encontros secretos (como na casinha da Gamboa), crises de ciúmes, manobras sociais e a vaidade de ambos.\n* **Transformações e maturidade:** Brás a observa ao longo dos anos, inclusive durante episódios difíceis, como quando ela contrai bexigas (varíola), doença que ameaça desfigurar-lhe o rosto momentaneamente, e mais tarde, quando ela envelhece e fica viúva, assistindo aos últimos dias do próprio Brás Cubas.\n\n### Sobre Lobo Neves\n* **Quem é:** Joaquim Lobo Neves é o marido de Virgília. Trata-se de um homem ambicioso, dedicado à carreira política e aos postos de relevo no governo, sempre obcecado em alcançar a posição de ministro.\n* **A relação com Brás Cubas:** Lobo Neves é amigo e benfeitor superficial de Brás Cubas, sem desconfiar (ou fingindo não perceber) que Brás é o amante de sua esposa. Brás, por sua vez, transita pela casa deles com intimidade, usando essa proximidade para alimentar o romance com Virgília, embora sinta inveja e irritação diante das ambições políticas de Lobo Neves.\n* **O desfecho de Lobo Neves:** Lobo Neves morre no momento em que estava prestes a alcançar o seu grande objetivo político (a ascensão ao cargo de ministro). Brás Cubas confessa, com o seu habitual cinismo e sinceridade póstuma, que a notícia da morte do rival lhe causou uma mistura de tranquilidade, alívio e \"um ou dois minutos de prazer\", por conta da inveja que nutria dele. No funeral, Brás observa Virgília chorar sinceramente sobre o caixão do marido, ao passo que ele próprio acompanha o féretro carregando o peso de sua própria apatia e pensamentos."
+    }
+  ],
+  "segments": [
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 343,
+        "end": 418
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 104007,
+            "end": 104065
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 419,
+        "end": 522
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 104069,
+            "end": 104156
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 104584,
+            "end": 104765
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 523,
+        "end": 633
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 164166,
+            "end": 164285
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 675,
+        "end": 805
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 164331,
+            "end": 164438
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 164439,
+            "end": 164502
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1021,
+        "end": 1067
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 260528,
+            "end": 260549
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1233,
+        "end": 1332
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 134521,
+            "end": 134705
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1383,
+        "end": 1433
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 103853,
+            "end": 103927
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1470,
+        "end": 1659
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 137186,
+            "end": 137374
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 349324,
+            "end": 349430
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1827,
+        "end": 2025
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 158170,
+            "end": 158281
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 349433,
+            "end": 349487
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 260528,
+            "end": 260597
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 2059,
+        "end": 2185
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 349324,
+            "end": 349430
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 2186,
+        "end": 2369
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 349489,
+            "end": 349604
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 2408,
+        "end": 2486
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 349676,
+            "end": 349804
+          }
+        }
+      ]
+    }
+  ],
+  "labeledBy": "MPT0M",
+  "labeledAt": "2026-09-08"
+}

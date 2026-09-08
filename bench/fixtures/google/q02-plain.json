@@ -1,0 +1,117 @@
+{
+  "id": "q02-plain",
+  "model": "gemini-3.5-flash-lite",
+  "recordedAt": "2026-09-08T11:17:27.530Z",
+  "reportVersion": "bench-report-1",
+  "storeEmbeddingModel": "gemini-embedding-2",
+  "storeChunking": {
+    "maxTokensPerChunk": 200,
+    "maxOverlapTokens": 20
+  },
+  "parts": [
+    {
+      "text": "Em ***Memórias Póstumas de Brás Cubas***, romance de Machado de Assis, a invenção que Brás Cubas concebe antes de morrer é um medicamento sublime: o **emplasto anti-hipocondríaco**, um remédio destinado a aliviar a melancólica humanidade. O produto ganharia o nome de **\"Emplasto Brás Cubas\"**.\n\nQuanto ao que esperava ganhar com ele, Brás Cubas tinha motivações divididas em duas faces (como as medalhas):\n\n1. **Lucro e Filantropia (oficialmente):** Na petição de privilégio enviada ao governo, ele justificava o remédio como um resultado \"verdadeiramente cristão\" voltado para o alívio dos homens, sem deixar de reconhecer aos amigos que haveria vantagens pecuniárias (lucro) na distribuição do produto.\n2. **Glória e Fama (o verdadeiro motor):** Já \"do outro lado da vida\" (como defunto-autor), ele confessa que sua grande paixão era o barulho, o cartaz e o aplauso. O que ele realmente esperava ganhar era a **fama, a notoriedade e a imortalidade do seu nome**, estampado nos jornais, folhetos, esquinas e nas caixas do remédio — alimentando assim a sua enorme vaidade e o seu \"amor à glória\"."
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 26,
+    "candidatesTokenCount": 351,
+    "totalTokenCount": 2922,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 26
+      }
+    ],
+    "toolUsePromptTokenCount": 2545,
+    "toolUsePromptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 2545
+      }
+    ],
+    "serviceTier": "standard"
+  },
+  "groundingMetadata": {
+    "groundingChunks": [
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "a causa da minha morte, é possivel que o\nleitor me não creia, e todavia é verdade. Vou expor-lhe summariamente o\ncaso. Julgue-o por si mesmo.\n\n\n\n\nCAPITULO II\n\n\nO emplasto\n\n\nCom effeito, um dia de manhã, estando a passear na chacara,\npendurou-se-me uma idéa no trapezio que eu tinha no cerebro. Uma vez\npendurada, entrou a bracejar, a pernear, a fazer as mais arrojadas\ncabriolas de volantim, que é possivel crer. Eu deixei-me estar a\ncontemplal-a. Subito, deu um grande salto, estendeu os braços e as\npernas, até tomar a fórma de um X: decifra-me ou devoro-te.\n\nEssa idéa era nada menos que a invenção de um medicamento sublime, um\nemplasto anti-hypocondriaco, destinado a alliviar a nossa melancholica\nhumanidade. Na petição de privilegio que então redigi, chamei a\nattenção do governo para esse resultado, verdadeiramente christão.\nTodavia, não neguei aos amigos as vantagens pecuniarias que deviam\nresultar da distribuição de um producto de tamanhos e tão profundos\neffeitos, Agora, porém, que estou cá do outro lado da vida, posso\nconfessar tudo: o que me influiu principalmente foi o gosto de ver\nimpressas nos jornaes, mostradores, folhetos, esquinas, e emfim nas\ncaixinhas do remedio, estas tres palavras: _emplasto Braz Cubas._ Para\nque negal-o? Eu tinha a paixão do arruido, do cartaz, do foguete de\nlagrimas. Talvez os modestos me arguam esse defeito; fio",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "negal-o? Eu tinha a paixão do arruido, do cartaz, do foguete de\nlagrimas. Talvez os modestos me arguam esse defeito; fio porém que esse\ntalento me hão de reconhecer os habeis; e eu era habil. Assim, a minha\nidéa trazia duas faces, como as medalhas, uma virada para o publico,\noutra para mim. De um lado, philanthropia e lucro; de outro lado, sêde\nde nomeada. Digamos:--amor da gloria.\n\nUm tio meu, conego de prebenda inteira, costumava dizer que o amor da\ngloria temporal era a perdição das almas, que só devem cobiçar a gloria\neterna. Ao que retorquia outro tio, official de um dos antigos terços\nde infantaria, que o amor da gloria era a cousa mais verdadeiramente\nhumana que ha no homem, e, conseguintemente, a sua mais genuina feição.\n\nDecida o leitor entre o militar e o conego; eu volto ao emplasto.\n\n\n\n\nCAPITULO III\n\n\nGenealogia\n\n\nMas, já que fallei nos meus dous tios, deixem-me fazer aqui um curto\nesboço genealogico.\n\nO fundador da minha familia foi um certo Damião Cubas, que floreceu\nna primeira metade do seculo XVIII. Era tanoeiro de officio, natural\ndo Rio de Janeiro, onde teria morrido na penuria e na obscuridade,\nse sómente exercesse a tanoaria. Mas não; fez-se lavrador, plantou,\ncolheu, permutou o seu producto por boas e honradas patacas, até que\nmorreu, deixando grosso",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      }
+    ],
+    "groundingSupports": [
+      {
+        "segment": {
+          "endIndex": 247,
+          "text": "Em ***Memórias Póstumas de Brás Cubas***, romance de Machado de Assis, a invenção que Brás Cubas concebe antes de morrer é um medicamento sublime: o **emplasto anti-hipocondríaco**, um remédio destinado a aliviar a melancólica humanidade"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 249,
+          "endIndex": 304,
+          "text": "O produto ganharia o nome de **\"Emplasto Brás Cubas\"**"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 425,
+          "endIndex": 727,
+          "text": "**Lucro e Filantropia (oficialmente):** Na petição de privilégio enviada ao governo, ele justificava o remédio como um resultado \"verdadeiramente cristão\" voltado para o alívio dos homens, sem deixar de reconhecer aos amigos que haveria vantagens pecuniárias (lucro) na distribuição do produto"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 732,
+          "endIndex": 894,
+          "text": "**Glória e Fama (o verdadeiro motor):** Já \"do outro lado da vida\" (como defunto-autor), ele confessa que sua grande paixão era o barulho, o cartaz e o aplauso"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 896,
+          "endIndex": 1127,
+          "text": "O que ele realmente esperava ganhar era a **fama, a notoriedade e a imortalidade do seu nome**, estampado nos jornais, folhetos, esquinas e nas caixas do remédio — alimentando assim a sua enorme vaidade e o seu \"amor à glória\""
+        },
+        "groundingChunkIndices": [
+          0,
+          1
+        ]
+      }
+    ]
+  }
+}

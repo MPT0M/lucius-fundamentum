@@ -1,0 +1,113 @@
+{
+  "id": "q21-plain",
+  "model": "gemini-3.5-flash-lite",
+  "recordedAt": "2026-09-08T15:37:31.392Z",
+  "reportVersion": "bench-report-1",
+  "storeEmbeddingModel": "gemini-embedding-2",
+  "storeChunking": {
+    "maxTokensPerChunk": 200,
+    "maxOverlapTokens": 20
+  },
+  "parts": [
+    {
+      "text": "No romance ***Memórias Póstumas de Brás Cubas***, de Machado de Assis, o capítulo LV, intitulado **\"O velho diálogo de Adão e Eva\"**, é um dos episódios mais curiosos e originais da obra em termos de forma. \n\nAbaixo estão explicados o seu conteúdo e a justificativa dada pelo narrador para apresentá-lo dessa maneira:\n\n### 1. O que há no capítulo?\nLiteralmente, **não há palavras escritas**, mas sim uma sucessão de **pontos finais, reticências e sinais de interrogação e exclamação**, intercalados pelas falas das personagens (identificadas apenas como *BRAZ CUBAS* e *VIRGILIA*):\n\n> *BRAZ CUBAS*\n> *[...]*\n> *VIRGILIA*\n> *[...]*\n\nTrata-se de um capítulo totalmente mudo/silencioso no plano textual. O \"diálogo\" real não é transcrito por meio de termos ou frases; o autor utiliza a pontuação para sugerir o tom, o ritmo, as pausas, as hesitações e a cumplicidade de uma conversa íntima e amorosa entre os dois pensamentos.\n\n### 2. Como o narrador o justifica?\nPara entender a justificativa, é preciso olhar o final do capítulo anterior (Capítulo LIV, \"Os ninhos\"). Nele, Brás Cubas conta que, enquanto os corpos físicos dele e de Virgília repousavam na cama (ou, no contexto dos pensamentos vagando, estavam distantes e cansados), os **pensamentos** de ambos fugiram pela janela e foram se encontrar no peitoril de uma janela da casa de Virgília para conversar:\n\n> *\"Nós a rolarmos na cama, talvez com frio, necessitados de repouso, e os dous vadios alli postos, a repetirem o velho diálogo de Adão e Eva.\"*\n\nA **justificativa estética e narrativa** para o capítulo vir em branco (preenchido apenas com sinais gráficos) decorre da natureza inefável, primordial e privada desse colóquio amoroso. Sendo o \"veloguiado de Adão e Eva\" a quintessência da conversa amorosa original — anterior às palavras elaboradas, feita de sussurros, silêncios significativos, entendimentos táteis e cumplicidade absoluta —, **nenhum vocabulário humano seria capaz de reproduzir fielmente o que os pensamentos de dois amantes trocam em segredo.** \n\nAo suprimir o texto e deixar apenas a pontuação, Machado de Assis faz um uso magistral da metalinguagem e do humor, sugerindo que certas intimidades e paixões escapam à linguagem escrita, cabendo ao leitor \"preencher\" as lacunas daquele diálogo mudo."
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 26,
+    "candidatesTokenCount": 740,
+    "totalTokenCount": 15629,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 26
+      }
+    ],
+    "toolUsePromptTokenCount": 14863,
+    "toolUsePromptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 14863
+      }
+    ],
+    "serviceTier": "standard"
+  },
+  "groundingMetadata": {
+    "groundingChunks": [
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "ha, que se transformam ou acabam;\nas mesmas instituições morrem; o relogio é definitivo e perpetuo. O\nderradeiro homem, ao despedir-se do sol frio e gasto, hade ter um\nrelogio na algibeira, para saber a hora exacta em que morre.\n\nNaquella noite não padeci essa triste sensação de enfado, mas outra, e\ndeleitosa. As phantasias tumultuavam-me cá dentro, vinham umas sobre\noutras, á semelhança de devotas que se abalroam para ver o anjo-cantor\ndas procissões. Não ouvia os instantes perdidos, mas os minutos\nganhados; e de certo tempo em diante não ouvi cousa nenhuma, porque o\nmeu pensamento, ardiloso e traquinas, saltou pela janella fóra e bateu\nas azas na direcção da casa de Virgilia. Ahi achou ao peitoril de uma\njanella o pensamento de Virgilia, saudaram-se e ficaram de palestra.\nNós a rolarmos na cama, talvez com frio, necessitados de repouso, e os\ndous vadios alli postos, a repetirem o velho dialogo de Adão e Eva.\n\n\n\n\nCAPITULO LV\n\n\nO velho dialogo de Adão e Eva\n\n\nBRAZ CUBAS\n\n . . . . ?\n\nVIRGILIA\n\n. .\n\nBRAZ CUBAS\n\n . . . . . . . . .\n\n . . .\n\n\nVIRGILIA\n\n . . . !\n\nBRAZ CUBAS\n\n . .\n\nVIRGILIA\n\n. . . . . . . . .\n. . . . . ? . . . . .\n. . . . .",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      }
+    ],
+    "groundingSupports": [
+      {
+        "segment": {
+          "endIndex": 138,
+          "text": "No romance ***Memórias Póstumas de Brás Cubas***, de Machado de Assis, o capítulo LV, intitulado **\"O velho diálogo de Adão e Eva\"**"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 361,
+          "endIndex": 601,
+          "text": "Literalmente, **não há palavras escritas**, mas sim uma sucessão de **pontos finais, reticências e sinais de interrogação e exclamação**, intercalados pelas falas das personagens (identificadas apenas como *BRAZ CUBAS* e *VIRGILIA*)"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 723,
+          "endIndex": 952,
+          "text": "O \"diálogo\" real não é transcrito por meio de termos ou frases; o autor utiliza a pontuação para sugerir o tom, o ritmo, as pausas, as hesitações e a cumplicidade de uma conversa íntima e amorosa entre os dois pensamentos"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 991,
+          "endIndex": 1097,
+          "text": "Para entender a justificativa, é preciso olhar o final do capítulo anterior (Capítulo LIV, \"Os ninhos\")"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1099,
+          "endIndex": 1398,
+          "text": "Nele, Brás Cubas conta que, enquanto os corpos físicos dele e de Virgília repousavam na cama (ou, no contexto dos pensamentos vagando, estavam distantes e cansados), os **pensamentos** de ambos fugiram pela janela e foram se encontrar no peitoril de uma janela da casa de Virgília para conversar"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1401,
+          "endIndex": 1548,
+          "text": "> *\"Nós a rolarmos na cama, talvez com frio, necessitados de repouso, e os dous vadios alli postos, a repetirem o velho diálogo de Adão e Eva.\"*"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,246 @@
+{
+  "id": "q18-plain",
+  "model": "gemini-3.5-flash-lite",
+  "recordedAt": "2026-09-08T15:37:31.392Z",
+  "reportVersion": "bench-report-1",
+  "storeEmbeddingModel": "gemini-embedding-2",
+  "storeChunking": {
+    "maxTokensPerChunk": 200,
+    "maxOverlapTokens": 20
+  },
+  "parts": [
+    {
+      "text": "No romance ***Memórias Póstumas de Brás Cubas***, de Machado de Assis, a morte de Pancrácio Cubas (o pai de Brás) deixa um **grosso cabedal** (uma herança substancial composta por bens de raiz, escravizados, dinheiro e objetos de valor). \n\nAbaixo estão os detalhes da herança e de como ocorreu a partilha entre Brás Cubas e sua irmã, **Sabina** (que era casada com **Cotrim**):\n\n### 1. O que Brás Cubas recebe (e o monte-mor da herança)\nEmbora o livro não cite uma quantia exata em dinheiro para a totalidade absoluta da herança, o patrimônio do pai incluía elementos de grande valor material e sentimental na sociedade carioca do século XIX:\n* **Imóveis:** Casas de considerable valor na cidade, incluindo a residência onde o pai morava (avaliada entre 30 e 50 contos de réis) e outras propriedades (como uma casa no Campo).\n* **Escravizados:** Vários servos domésticos, cujos destinos geram forte disputa (como o cocheiro, Paulo, Prudêncio — que secretamente já havia sido forro/liberto pelo pai havia dois anos —, entre outros).\n* **A valiosa prataria:** A joia da coroa da herança era uma **velha prataria do tempo de D. José I**, herança de família que, segundo contava o pai, fora dada de presente pelo vice-rei do Brasil, o conde da Cunha, ao bisavô deles (Luiz Cubas). Tratava-se de um conjunto de altíssimo valor histórico, artístico e de prestígio social.\n\n### 2. Como foi a partilha com a irmã Sabina?\nA partilha foi marcada por **tensão, discussões mesquinhas e brigas familiares**, centralizadas principalmente nos interesses materiais defendidos com unhas e dentes pelo cunhado de Brás, **Cotrim** (um homem avarento e calculista). \n\nO processo decorreu com os seguintes contornos:\n* **Disputa pelos bens e imóveis:** Brás e o casal (Sabina e Cotrim) discutiam sobre o valor real das casas e sobre quem ficaria com cada propriedade e com os escravizados. Cotrim tentava minimizar o valor dos bens para avantajar a esposa, enquanto Brás resistia.\n* **A briga pela prataria histórica:** Sabina fazia questão absoluta de ficar com a prataria fina do tempo de D. José I, argumentando que, por ser casada e receber visitas, precisava de uma \"copa digna e apresentável\", ao passo que Brás (sendo solteiro na época) não teria a mesma necessidade social.\n* **O papel apaziguador (e falho) do tio Cônego:** O tio Cônego tentou intervir para pacificar os ânimos, lembrando-os de que o pai deixara um \"pão bem grande\" para ser repartido. Contudo, Cotrim respondeu cinicamente que a questão não era o pão, mas sim a \"manteiga\".\n* **Conclusão da partilha:** Apesar do afeto genuíno que Brás nutria por Sabina — com quem dividira as memórias de infância —, **as partilhas foram feitas sob clima de rompimento e briga declarada** entre os irmãos. O egoísmo material e a interferência direta de Cotrim azedaram a relação fraterna durante o inventário."
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 27,
+    "candidatesTokenCount": 937,
+    "totalTokenCount": 8544,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 27
+      }
+    ],
+    "toolUsePromptTokenCount": 7580,
+    "toolUsePromptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 7580
+      }
+    ],
+    "serviceTier": "standard"
+  },
+  "groundingMetadata": {
+    "groundingChunks": [
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "ha annos, baixaram muito. Olhe, se esta vale os cincoenta contos,\nquantos não vale a que você deseja para si, a do Campo?\n\n--Não fale nisso! Uma casa velha.\n\n--Velha! exclamou Sabina, levantando as mãos ao tecto.\n\n--Parece-lhe nova, aposto?\n\n--Ora, mano, deixe-se dessas cousas, disse Sabina, erguendo-se do\nsophá; podemos arranjar tudo em boa amizade, e com lisura. Por exemplo,\no Cotrim não aceita os pretos, quer só o boleeiro de papae e o Paulo...\n\n--O boleeiro não, acudi eu; fico com a sege e não hei de ir comprar\noutro.\n\n--Bem; fico com o Paulo e o Prudencio.\n\n--O Prudencio está livre.\n\n--Livre?\n\n--Ha dois annos.\n\n--Livre? Como seu pae arranjava estas cousas cá por casa, sem dar parte\na ninguem! Está direito. Quanto á prata... creio que não libertou a\nprata?\n\nTinhamos falado na prata, a velha prataria do tempo de D. José I, a\nporção mais grave da herança, já pelo lavor, já pela vetustez, já pela\norigem da propriedade; dizia meu pae que o conde da Cunha, quando\nvice-rei do Brazil, a dera de presente a meu bisavô Luiz Cubas.\n\n--Quanto á prata, continuou o Cotrim, eu não faria questão nenhuma,\nse não fosse o desejo que sua irmã tem de ficar com ella; e acho-lhe\nrazão. Sabina é casada, e precisa de uma copa digna, apresentavel. Você\né",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "um simples inventario,\neram notas que eu havia tomado para um capitulo extremamente\nsucculento, em que provava que a terra deve continuar a girar em volta\ndo sol; porquanto:--_a_) a natureza não inventou a morte, senão\ncom o fim de dar vida a algumas industrias,--armadores, segeiros,\nemprezas funerarias, typographias, e outras que ella sagazmente\npreviu;--_b_) mortas essas industrias, pela ausencia da morte humana,\nnão é improvavel que viessem a morrer os respectivos industriaes; o que\ndava na mesma. Mas tudo isto são apenas notas de um capitulo, que não\nescrevo.\n\n\n\n\nCAPITULO XLVI\n\n\nA herança\n\n\nVeja-nos agora o leitor, oito dias depois da morte de meu pae,--minha\nirmã sentada n'um sophá,--pouco adiante, o Cotrim, de pé, encostado a\num consolo, com os braços cruzados e a morder o bigode,--eu a passeiar\nde um lado para outro, com os olhos no chão. Luto pezado. Profundo\nsilencio.\n\n--Mas afinal, disse o Cotrim; esta casa pouco mais póde valer de trinta\ncontos; demos que valha trinta e cinco...\n\n--Vale cincoenta, ponderei; a Sabina sabe que custou cincoenta e oito...\n\n--Podia custar até sessenta, tornou o Cotrim; mas não se segue que\nos valesse, e menos ainda que os valha hoje. Você sabe que as casas,\naqui ha annos, baixaram muito. Olhe, se esta vale os cincoenta contos,\nquantos não vale a que você deseja para si, a",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "um simples inventario,\neram notas que eu havia tomado para um capitulo extremamente\nsucculento, em que provava que a terra deve continuar a girar em volta\ndo sol; porquanto:--_a_) a natureza não inventou a morte, senão\ncom o fim de dar vida a algumas industrias,--armadores, segeiros,\nemprezas funerarias, typographias, e outras que ella sagazmente\npreviu;--_b_) mortas essas industrias, pela ausencia da morte humana,\nnão é improvavel que viessem a morrer os respectivos industriaes; o que\ndava na mesma. Mas tudo isto são apenas notas de um capitulo, que não\nescrevo.\n\n\n\n\nCAPITULO XLVI\n\n\nA herança\n\n\nVeja-nos agora o leitor, oito dias depois da morte de meu pae,--minha\nirmã sentada n'um sophá,--pouco adiante, o Cotrim, de pé, encostado a\num consolo, com os braços cruzados e a morder o bigode,--eu a passeiar\nde um lado para outro, com os olhos no chão. Luto pezado. Profundo\nsilencio.\n\n--Mas afinal, disse o Cotrim; esta casa pouco mais póde valer de trinta\ncontos; demos que valha trinta e cinco...\n\n--Vale cincoenta, ponderei; a Sabina sabe que custou cincoenta e oito...\n\n--Podia custar até sessenta, tornou o Cotrim; mas não se segue que\nos valesse, e menos ainda que os valha hoje. Você sabe que as casas,\naqui ha annos, baixaram muito. Olhe, se esta vale os cincoenta contos,\nquantos não vale a que você deseja para si, a",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "sua irmã tem de ficar com ella; e acho-lhe\nrazão. Sabina é casada, e precisa de uma copa digna, apresentavel. Você\né solteiro, não recebe, não...\n\n--Mas posso casar.\n\n--Para que? interrompeu Sabina.\n\nEra tão sublime esta pergunta, que por alguns instantes me fez esquecer\nos interesses. Sorri; peguei na mão de Sabina, bati-lhe levemente na\npalma, tudo isso com tão boa sombra, que o Cotrim interpretou o gesto\ncomo de acquiescencia, e agradeceu-m'o.\n\n--Que é lá? redargui; não cedi cousa nenhuma, nem cedo.\n\n--Nem cede?\n\nAbanei a cabeça.\n\n--Deixa, Cotrim, disse minha irmã ao marido; vê se elle quer ficar\ntambem com a nossa roupa do corpo; é só o que falta.\n\n--Não falta mais nada. Quer a sege, quer o boleeiro, quer a prata,\nquer tudo. Olhe, é muito mais summario citar-nos a juizo e provar com\ntestemunhas que Sabina não é sua irmã, que eu não sou seu cunhado, e\nque Deus não é Deus. Faça isto, e não perde nada, nem uma colherinha.\nOra, meu amigo, outro officio!\n\nEstava tão agastado, e eu não menos, que entendi offerecer um meio de\nconciliação; dividir a prata. Riu-se e perguntou-me a quem caberia\no bule e a quem o assucareiro; e depois desta pergunta, declarou\nque teriamos tempo de liquidar a pretenção, quando menos em juizo.\nEntretanto, Sabina fôra até á",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "assucareiro; e depois desta pergunta, declarou\nque teriamos tempo de liquidar a pretenção, quando menos em juizo.\nEntretanto, Sabina fôra até á janella que dava para a chacara,--e\ndepois de um instante, voltou, e propoz ceder o Paulo e outro preto,\ncom a condição de ficar com a prata; eu ia dizer que não me convinha,\nmas o Cotrim adiantou-se e disse a mesma cousa.\n\n--Isso nunca! não faço esmolas! disse elle.\n\nJantámos tristes. Meu tio conego appareceu á sobremeza, e ainda\npresenciou uma pequena altercação.\n\n--Meus filhos, disse elle, lembrem-se que meu irmão deixou um pão bem\ngrande para ser repartido por todos.\n\nMas o Cotrim:\n\n--Creio, creio. A questão, porem, não é de pão, é de manteiga. Pão\nsecco é que eu não engulo.\n\nFizeram-se finalmente as partilhas, mas nós estavamos brigados. E\ndigo-lhes que, ainda assim, custou-me muito a brigar com Sabina. Eramos\ntão amigos! Jogos pueris, furias de criança, risos e tristezas da\nedade adulta, dividimos muita vez esse pão da alegria e da miseria,\nirmãmente, como bons irmãos que eramos. Mas estavamos brigados. Tal\nqual a belleza de Marcella, que se esvaiu com as bexigas.\n\n\n\n\nCAPITULO XLVII\n\n\nO recluso\n\n\nMarcella, Sabina, Virgilia... ahi estou eu a fundir todos os\ncontrastes, como se esses nomes e pessoas não fossem mais do que modos\nde ser da minha affeição interior. Penna",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      }
+    ],
+    "groundingSupports": [
+      {
+        "segment": {
+          "endIndex": 242,
+          "text": "No romance ***Memórias Póstumas de Brás Cubas***, de Machado de Assis, a morte de Pancrácio Cubas (o pai de Brás) deixa um **grosso cabedal** (uma herança substancial composta por bens de raiz, escravizados, dinheiro e objetos de valor)"
+        },
+        "groundingChunkIndices": [
+          0,
+          1,
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 246,
+          "endIndex": 386,
+          "text": "Abaixo estão os detalhes da herança e de como ocorreu a partilha entre Brás Cubas e sua irmã, **Sabina** (que era casada com **Cotrim**)"
+        },
+        "groundingChunkIndices": [
+          3,
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 396,
+          "endIndex": 844,
+          "text": "O que Brás Cubas recebe (e o monte-mor da herança)\nEmbora o livro não cite uma quantia exata em dinheiro para a totalidade absoluta da herança, o patrimônio do pai incluía elementos de grande valor material e sentimental na sociedade carioca do século XIX:\n* **Imóveis:** Casas de considerable valor na cidade, incluindo a residência onde o pai morava (avaliada entre 30 e 50 contos de réis) e outras propriedades (como uma casa no Campo)"
+        },
+        "groundingChunkIndices": [
+          0,
+          1,
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 846,
+          "endIndex": 1058,
+          "text": "* **Escravizados:** Vários servos domésticos, cujos destinos geram forte disputa (como o cocheiro, Paulo, Prudêncio — que secretamente já havia sido forro/liberto pelo pai havia dois anos —, entre outros)"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1154,
+          "endIndex": 1308,
+          "text": "José I**, herança de família que, segundo contava o pai, fora dada de presente pelo vice-rei do Brasil, o conde da Cunha, ao bisavô deles (Luiz Cubas)"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1310,
+          "endIndex": 1401,
+          "text": "Tratava-se de um conjunto de altíssimo valor histórico, artístico e de prestígio social"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1451,
+          "endIndex": 1685,
+          "text": "A partilha foi marcada por **tensão, discussões mesquinhas e brigas familiares**, centralizadas principalmente nos interesses materiais defendidos com unhas e dentes pelo cunhado de Brás, **Cotrim** (um homem avarento e calculista)"
+        },
+        "groundingChunkIndices": [
+          3,
+          4,
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1689,
+          "endIndex": 1910,
+          "text": "O processo decorreu com os seguintes contornos:\n* **Disputa pelos bens e imóveis:** Brás e o casal (Sabina e Cotrim) discutiam sobre o valor real das casas e sobre quem ficaria com cada propriedade e com os escravizados"
+        },
+        "groundingChunkIndices": [
+          3,
+          0,
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 2119,
+          "endIndex": 2310,
+          "text": "José I, argumentando que, por ser casada e receber visitas, precisava de uma \"copa digna e apresentável\", ao passo que Brás (sendo solteiro na época) não teria a mesma necessidade social"
+        },
+        "groundingChunkIndices": [
+          3,
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 2312,
+          "endIndex": 2494,
+          "text": "* **O papel apaziguador (e falho) do tio Cônego:** O tio Cônego tentou intervir para pacificar os ânimos, lembrando-os de que o pai deixara um \"pão bem grande\" para ser repartido"
+        },
+        "groundingChunkIndices": [
+          4
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 2496,
+          "endIndex": 2586,
+          "text": "Contudo, Cotrim respondeu cinicamente que a questão não era o pão, mas sim a \"manteiga\""
+        },
+        "groundingChunkIndices": [
+          4
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 2588,
+          "endIndex": 2812,
+          "text": "* **Conclusão da partilha:** Apesar do afeto genuíno que Brás nutria por Sabina — com quem dividira as memórias de infância —, **as partilhas foram feitas sob clima de rompimento e briga declarada** entre os irmãos"
+        },
+        "groundingChunkIndices": [
+          4
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 2814,
+          "endIndex": 2921,
+          "text": "O egoísmo material e a interferência direta de Cotrim azedaram a relação fraterna durante o inventário"
+        },
+        "groundingChunkIndices": [
+          3,
+          4
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,263 @@
+{
+  "id": "q24-guided",
+  "parts": [
+    {
+      "text": "Em ***Memórias Póstumas de Brás Cubas***, o reencontro entre Brás Cubas e Quincas Borba no Passeio Público (narrado nos capítulos LIX e LX) ocorre da seguinte forma:\n\n### O Reencontro no Passeio Público\nBrás Cubas estava sentado em um banco do Passeio Público, entretido com devaneios ambiciosos sobre a possibilidade de vir a ser Ministro de Estado. Enquanto matutava sobre isso, percebeu que um homem de aparência miserável, esfarrapada e envelhecida se aproximava. \n\nA princípio, Brás Cubas não o reconheceu, mas o homem logo se identificou: era **Quincas Borba**, seu antigo e abastado colega de colégio. Cubas recuou espantado ao ver a decadência extrema do amigo — que antes era rico e brilhante e agora se encontrava maltrapilho, magro, pálido, com roupas rotas e vivendo na miséria. Durante a conversa, Quincas Borba relata brevemente sua ruína financeira e sua vida de agruras. No final do encontro, após pedir e receber uma nota de cinco mil réis de Brás Cubas, Quincas despede-se efusivamente.\n\n### O que Quincas faz com o relógio de Brás?\nAproveitando-se da efusividade da despedida, **Quincas Borba furta o relógio de Brás Cubas durante o abraço**. \n\nO narrador só percebe o furto mais tarde, quando vai verificar as horas antes de jantar e nota a falta do objeto no colete. Mais do que a perda material em si, o furto causa a Brás Cubas uma profunda desilusão e tristeza por ter de associar a imagem do antigo e saudoso amigo de infância à de um ladrão."
+    }
+  ],
+  "segments": [
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 108,
+        "end": 138
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 169694,
+            "end": 169720
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 174920,
+            "end": 174942
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 203,
+        "end": 350
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 170750,
+            "end": 170815
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 170037,
+            "end": 170068
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 381,
+        "end": 466
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 170824,
+            "end": 170887
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 170950,
+            "end": 171016
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 171154,
+            "end": 171217
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 470,
+        "end": 608
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 171736,
+            "end": 171791
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 171813,
+            "end": 171844
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 172050,
+            "end": 172117
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 609,
+        "end": 790
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 171846,
+            "end": 171914
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 171983,
+            "end": 172049
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 172118,
+            "end": 172185
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 791,
+        "end": 886
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 172619,
+            "end": 172685
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 172732,
+            "end": 172753
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 909,
+        "end": 1003
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 173944,
+            "end": 174006
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 175726,
+            "end": 175777
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1051,
+        "end": 1161
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 175779,
+            "end": 175846
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 176347,
+            "end": 176369
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1164,
+        "end": 1287
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 176232,
+            "end": 176273
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 176275,
+            "end": 176346
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1288,
+        "end": 1467
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 176403,
+            "end": 176465
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 176466,
+            "end": 176531
+          }
+        }
+      ]
+    }
+  ],
+  "labeledBy": "MPT0M",
+  "labeledAt": "2026-09-08T21:22:36.139Z"
+}

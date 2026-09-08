@@ -1,0 +1,191 @@
+{
+  "id": "q22-plain",
+  "model": "gemini-3.5-flash-lite",
+  "recordedAt": "2026-09-08T15:37:31.392Z",
+  "reportVersion": "bench-report-1",
+  "storeEmbeddingModel": "gemini-embedding-2",
+  "storeChunking": {
+    "maxTokensPerChunk": 200,
+    "maxOverlapTokens": 20
+  },
+  "parts": [
+    {
+      "text": "No romance ***Memórias Póstumas de Brás Cubas*** (1881), de Machado de Assis, **Damasceno** é um personagem secundário que aparece na reta final da narrativa (durante os capítulos que antecedem a morte do protagonista). \n\n### Quem é Damasceno?\nDamasceno é um homem que sofreu uma tragédia pessoal devastadora: **ele perdeu a filha querida** durante uma epidemia de febre amarela que assolava o Rio de Janeiro. Ele é retratado como um homem profundamente melancólico, desolado e transformado em \"uma ruína\" pela dor do luto. \n\n### Qual é o seu papel nos últimos anos de Brás Cubas?\nO papel de Damasceno na história vai muito além de sua própria dor; ele serve de instrumento para as reflexões filosóficas, irônicas e pessimistas de Brás Cubas (já falecido e narrando do além) sobre **a hipocrisia e a formalidade da sociedade burguesa**.\n\n1. **O luto e o abandono:** Após a morte da filha, Damasceno queixa-se amargamente a Brás Cubas de que foi abandonado pelos amigos. Ele havia enviado oitenta convites para o funeral, mas apenas doze pessoas compareceram (sendo a maioria ligada ao cot وف de conhecidos, como Cotrim). Enquanto Damasceno lamenta sinceramente a ausência e a falsidade alheia (\"*Mas viessem!*\"), Cotrim argumenta de forma cínica que os ausentes não fariam falta, pois só iriam por pura formalidade.\n2. **O gancho para o capítulo \"Formalidade\":** A lamentação de Damasceno desperta no defunto autor o \"talento de concluir\" e de achar relações ocultas entre as coisas. Brás Cubas usa a angústia de Damasceno para introduzir o famoso Capítulo CXXVII (*Formalidade*), no qual disserta sobre como as convenções sociais, as aparências e a hipocrisia regem as relações humanas, comparando o choro de um pai enlutado às astúcias e véus das damas turcas.\n\nEm suma, Damasceno personifica a dor humana genuína em contraste com o vazio das convenções sociais, servindo de mote para que Brás Cubas escancare, com sua típica ironia machadiana, a artificialidade do mundo dos vivos."
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 21,
+    "candidatesTokenCount": 684,
+    "totalTokenCount": 20774,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 21
+      }
+    ],
+    "toolUsePromptTokenCount": 20069,
+    "toolUsePromptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 20069
+      }
+    ],
+    "serviceTier": "standard"
+  },
+  "groundingMetadata": {
+    "groundingChunks": [
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "MEMÓRIAS PÓSTHUMAS\n\nDE\n\nBRAZ CUBAS\n\nPOR\n\nMACHADO DE ASSIS\n\nRIO DE JANEIRO\n\nTYPOGRAPHIA NACIONAL\n\n1881\n\n\n\n\nOBRAS DO AUTOR\n\n Memórias Pósthumas de Braz Cubas\n Helena, romance\n Yayá Garcia, romance\n Resurreição, romance\n A mão e a luva, romance\n Historias da meia noite\n Contos Fluminenses\n Americanas, poesias\n Phalenas, poesias\n Chrysalidas, poesias\n Tu só, tu, puro amor, comédia\n Os deuses de casaca, comédia\n Desencantos, comédia\n Theatro\n\n\n\n\nAO LEITOR\n\n\nQue, no alto do principal de seus livros, confessasse Stendhal havel-o\nescripto para cem leitores, cousa é que admira e consterna. O que não\nadmira, nem provavelmente consternará é se este outro livro não tiver\nos cem leitores de Stendhal, nem cincoenta, nem vinte, e quando muito,\ndez. Dez? Talvez cinco. Trata-se, na verdade, de uma obra diffusa,\nna qual eu, Braz Cubas, se adoptei a fórma livre de um Sterne, de\num Lamb, ou de um de Maistre, não sei se lhe metti algumas rabugens\nde pessimismo. Póde ser. Obra de finado. Escrevi-a com a penna da\ngalhofa e a tinta da melancholia; e não é difficil antever o que poderá\nsair desse connubio. Accresce que a gente grave achará no livro umas\napparencias de puro romance, ao passo que a gente frivola não achará\nnelle o seu romance usual; e eil-o ahi fica privado da estima dos\ngraves e do amor dos frivolos, que são as",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "febre amarella. Não digo mais nada, a não ser que a acompanhei até\no ultimo jazigo, e me despedi triste, mas sem lagrimas. Conclui que\ntalvez não a amasse devéras.\n\nVejam agora a que excessos póde levar uma inadvertencia; doeu-me um\npouco a cegueira da epidemia que, matando á direita e á esquerda, levou\ntambem uma jovem dama, que tinha de ser minha mulher; e não cheguei\na entender a necessidade da epidemia, e menos ainda daquella morte.\nCreio até que esta me pareceu ainda mais absurda que todas as outras\nmortes. O Quincas Borba, porém, explicou-me que as epidemias eram uteis\ná especie, embora desastrosas para uma certa porção de indivíduos; e\nfez-me notar que, por mais horrendo que fosse o espectaculo, havia\numa vantagem de muito peso: a sobrevivencia do maior numero. Chegou a\nperguntar-me se, no meio do luto geral, não sentia eu algum secreto\nencanto em ter escapado ás garras da peste; mas esta pergunta era tão\ninsensata, que ficou sem resposta.\n\nSe não contei a morte, não conto igualmente a missa do setimo dia.\nA tristeza do Damasceno era profunda; esse pobre homem parecia uma\nruina. Quinze dias depois estive com elle; continuava inconsolavel, e\ndizia que a dor grande com que Deus o castigára fora ainda augmentada\ncom a que lhe infligiram os",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "continuava inconsolavel, e\ndizia que a dor grande com que Deus o castigára fora ainda augmentada\ncom a que lhe infligiram os homens. Não me disse mais nada. Tres\nsemanas depois tornou ao assumpto, e então confessou-me que, no no\nmeio do desastre irreparavel, quizera ter a consolação da presença dos\namigos. Doze pessoas apenas, e tres quartas partes amigos do Cotrim,\nacompanharam á cova o cadaver de sua querida filha. E elle fizera\nexpedir oitenta convites. Ponderei-lhe que as perdas eram tão geraes\nque bem se podia desculpar essa desattenção apparente. O Damasceno\nabanava a cabeça de um modo incrédulo e triste.\n\n--Qual! gemia elle, desampararam-me.\n\nO Cotrim, que estava presente:\n\n--Vieram os que devéras se interessam por você é por nós. Os oitenta\nviriam por formalidade, falariam da inercia do governo, das panacéas\ndos boticarios, do preço das casas, ou uns dos outros...\n\nO Damasceno ouviu calado, abanou outra vez a cabeça, e suspirou:\n\n--Mas viessem!\n\n\n\n\nCAPITULO CXXVII\n\n\nFormalidade\n\n\nGrande cousa é haver recebido do ceu uma particula da sabedoria, o dom\nde achar as relações das cousas, a faculdade de as comparar e o talento\nde concluir! Eu tive essa distincção psychica; eu a agradeço ainda\nagora do fundo do meu sepulchro.\n\nDe facto, o homem vulgar que ouvisse a ultima palavra do Damasceno,\nnão se lembraria della, quando, tempos depois,",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "do meu sepulchro.\n\nDe facto, o homem vulgar que ouvisse a ultima palavra do Damasceno,\nnão se lembraria della, quando, tempos depois, houvesse de olhar para\numa gravura representando seis damas turcas. Pois eu lembrei-me. Eram\nseis damas de Constantinopla,--modernas,--em trajos de rua, com a\ncara tapada, não tapada á outra maneira, com um espesso panno que as\ncobrisse devéras, mas com um veu tenuissimo, que simulava descobrir\nsomente os olhos, e na realidade descobria a cara inteira. E eu achei\ngraça a essa esperteza da faceirice musulmana, que assim esconde o\nrosto,--e cumpre o uso,--mas não o esconde,--e divulga a belleza.\nApparentemente, nada ha entre as damas turcas e o Damasceno; mas se\ntu és um espirito profundo e penetrante (e duvido muito que me negues\nisso), comprehenderás que, tanto n'um como n'outro caso, surge ahi a\norelha de uma rigida e meiga companheira do homem social...\n\nAmavel Formalidade, tu és, sim, o bordão da vida, o balsamo dos\ncorações, a medianeira entre os homens, o vinculo da terra e do ceu; tu\nenxugas as lagrimas de um pae, tu captas a indulgencia de um Propheta;\ne se a dôr adormece, e se a consciencia se accommoda, a quem, senão a\nti, deverão esse immenso beneficio? A estima que passa de chapeu na\ncabeça não diz nada á",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      }
+    ],
+    "groundingSupports": [
+      {
+        "segment": {
+          "endIndex": 79,
+          "text": "No romance ***Memórias Póstumas de Brás Cubas*** (1881), de Machado de Assis"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "endIndex": 224,
+          "text": "No romance ***Memórias Póstumas de Brás Cubas*** (1881), de Machado de Assis, **Damasceno** é um personagem secundário que aparece na reta final da narrativa (durante os capítulos que antecedem a morte do protagonista)"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 251,
+          "endIndex": 417,
+          "text": "Damasceno é um homem que sofreu uma tragédia pessoal devastadora: **ele perdeu a filha querida** durante uma epidemia de febre amarela que assolava o Rio de Janeiro"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 419,
+          "endIndex": 534,
+          "text": "Ele é retratado como um homem profundamente melancólico, desolado e transformado em \"uma ruína\" pela dor do luto"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 865,
+          "endIndex": 994,
+          "text": "**O luto e o abandono:** Após a morte da filha, Damasceno queixa-se amargamente a Brás Cubas de que foi abandonado pelos amigos"
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 996,
+          "endIndex": 1147,
+          "text": "Ele havia enviado oitenta convites para o funeral, mas apenas doze pessoas compareceram (sendo a maioria ligada ao cot وف de conhecidos, como Cotrim)"
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1237,
+          "endIndex": 1346,
+          "text": "*\"), Cotrim argumenta de forma cínica que os ausentes não fariam falta, pois só iriam por pura formalidade"
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1351,
+          "endIndex": 1519,
+          "text": "**O gancho para o capítulo \"Formalidade\":** A lamentação de Damasceno desperta no defunto autor o \"talento de concluir\" e de achar relações ocultas entre as coisas"
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1521,
+          "endIndex": 1619,
+          "text": "Brás Cubas usa a angústia de Damasceno para introduzir o famoso Capítulo CXXVII (*Formalidade*)"
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1521,
+          "endIndex": 1809,
+          "text": "Brás Cubas usa a angústia de Damasceno para introduzir o famoso Capítulo CXXVII (*Formalidade*), no qual disserta sobre como as convenções sociais, as aparências e a hipocrisia regem as relações humanas, comparando o choro de um pai enlutado às astúcias e véus das damas turcas"
+        },
+        "groundingChunkIndices": [
+          3
+        ]
+      }
+    ]
+  }
+}

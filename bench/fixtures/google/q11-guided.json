@@ -1,0 +1,230 @@
+{
+  "id": "q11-guided",
+  "model": "gemini-3.5-flash-lite",
+  "recordedAt": "2026-09-08T15:37:31.392Z",
+  "reportVersion": "bench-report-1",
+  "storeEmbeddingModel": "gemini-embedding-2",
+  "storeChunking": {
+    "maxTokensPerChunk": 200,
+    "maxOverlapTokens": 20
+  },
+  "parts": [
+    {
+      "text": "Com base no romance *Memórias Póstumas de Brás Cubas*, de Machado de Assis, aqui estão as respostas sobre a personagem Eugênia:\n\n* **Quem é Eugênia:** \nEugenia é filha de D. Eusébia (uma antiga paixão de juventude de Brás Cubas, do episódio conhecido como o de \"1814, na moita\"). Conhecida no livro como \"a flor da moita\" e descrita como uma jovem formosa de dezesseis anos, de ideias claras, maneiras simples, porte distinto e olhar franco, ela se envolve amorosamente com Brás Cubas durante um período em que ele passa tempo na Tijuca. No entanto, por ser filha espúria (i.e., filha ilegítima) de D. Eusébia, ela traz consigo uma origem social desfavorável aos olhos da elite da época.\n\n* **Qual é o defeito físico dela:** \nEugenia é **coxa de nascença** (manca de uma das pernas). Brás Cubas descreve esse contraste de forma marcante: ela possuía uma beleza notável, olhos lúcidos, boca fresca e compostura senhoril, mas o fato de ser coxa fazia com que ele visse isso quase como um \"imenso escarneo\" da natureza.\n\n* **Por que Brás Cubas diz que não se casou com ela:**\nNa verdade, Brás Cubas **nunca chega a cogitar formalmente o casamento** com Eugênia a ponto de haver uma recusa oficial ou direta nos moldes tradicionais; o relacionamento deles ocorre à margem da sociedade formal (uma espécie de idílio amoroso na Tijuca). O principal motivo pelo qual ele não se casa com ela — e acaba se afastando — envolve o forte preconceito social da época e a sua própria ambição pessoal: \n1. **A condição física:** O defeito físico (ser coxa) gerava nele um conflito estético e preconceituoso inicial.\n2. **A origem familiar (o sangue):** Brás Cubas carrega a forte influência das convenções sociais e da pressão familiar para subir na vida política e social. Ao lembrar-se da origem de D. Eusébia e do passado (\"a suspeitar que não podias mentir ao teu sangue, à tua origem\"), ele percebe que Eugênia é filha ilegítima de uma família empobrecida e sem prestígio político. \n\nPara as pretensões de Brás Cubas — que buscava uma noiva de alta linhagem e influência política para alavancar sua carreira (como Virgília, filha do Conselheiro Dutra) —, casar-se com Eugênia era algo incompatível com o status e a \"glória\" que sua família exigia dele. Por fim, ele simplesmente se afasta e a abandona (\"perder-se no horizonte do pretérito\"), deixando-a seguir solitária pela estrada da vida."
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 85,
+    "candidatesTokenCount": 1002,
+    "totalTokenCount": 99561,
+    "cachedContentTokenCount": 15995,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 85
+      }
+    ],
+    "cacheTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 15995
+      }
+    ],
+    "toolUsePromptTokenCount": 98474,
+    "toolUsePromptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 98474
+      }
+    ],
+    "serviceTier": "standard"
+  },
+  "groundingMetadata": {
+    "groundingChunks": [
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "deixar de aceitar; demais,\nera-lhe devida aquella compensação; fui.\n\nEugenia desataviou-se nesse dia por minha causa. Creio que foi por\nminha causa,--se é que não andava muita vez assim. Nem as bichas de\nouro, que trazia na vespera, lhe pendiam agora das orelhas, duas\norelhas finamente recortadas n'uma cabeça de nympha. Um simples vestido\nbranco, de cassa, sem enfeites, tendo ao collo, em vez de broche, um\nbotão de madreperola, e outro botão nos punhos, fechando as mangas, e\nnem sombra de pulseira.\n\nEra isso no corpo; não era outra cousa no espirito. Idéas claras,\nmaneiras chãs, certa graça natural, um ar de senhora, e não sei se\nalguma outra cousa; sim, a boca, exactamente a boca da mãe, a qual me\nlembrava o episodio de 1814, e então dava-me impetos de glosar o mesmo\nmote á filha...\n\n--Agora vou mostrar-lhe a chacara, disse a mãe, logo que exgotámos o\nultimo gole de café.\n\nSaímos á varanda, dalli á chacara; e foi então que notei uma\ncircumstancia. Eugenia coxeava um pouco, tão pouco, que eu cheguei a\nperguntar-lhe se machucara o pé. A mãe calou-se; a filha respondeu sem\ntitubear:\n\n--Não, senhor, sou coxa de nascença.\n\nMandei-me a todos os diabos; chamei-me desastrado, grosseirão. Com\neffeito, a simples possibilidade de ser coxa era bastante para lhe\nnão perguntar nada. Então lembrou-me que da",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "certa satisfação physica e moral. Queria-lhe,\né verdade; ao pé dessa creatura tão singela, filha espuria e coxa,\nfeita de amor e desprezo, ao pé della sentia-me bem, e ella creio que\nainda se sentia melhor ao pé de mim. E isto na Tijuca. Uma simples\negloga. D. Eusebia vigiava-nos, mas pouco; temperava a necessidade\ncom a conveniencia; e a filha, nessa primeira explosão da natureza,\nentregava-me a alma em flôr.\n\n--O senhor desce amanhã? disse-me ella no sabbado.\n\n--Pretendo.\n\n--Não desça.\n\nNão desci; e accrescentei um versiculo ao Evangelho:--Bemaventurados\nos que não descem, porque delles é o primeiro beijo das damas. Com\neffeito, foi no domingo esse primeiro beijo de Eugenia,--o primeiro que\nnenhum outro varão jamais lhe tomára, e não furtado ou arrebatado, mas\ncandidamente entregue, como um devedor honesto paga uma divida. Pobre\nEugenia! Se tu soubesses que idéas me vagavam pela mente fóra n'aquella\noccasião! Tu, tremula de commoção, com os braços nos meus hombros, a\ncontemplar em mim o teu bemvindo esposo, e eu com os olhos em 1814, na\nmoita, no Villaça, e a suspeitar que não podias mentir ao teu sangue, á\ntua origem...\n\nD. Eusebia entrou inesperadamente, mas não tão subita, que nos\napanhasse ao pé um do outro. Eu fui até á janella: Eugenia sentou-se a\nconcertar uma das tranças. Que dissimulação graciosa!",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "que se deteve á\nporta, alguns instantes, ao ver gente extranha. Silencio curto e\nconstrangido. D. Eusebia quebrou-o, enfim, com resolução e franqueza:\n\n--Vem cá, Eugenia, disse ella, comprimenta o Dr. Braz Cubas, filho do\nSr. Cubas; veiu da Europa.\n\nE voltando-se para mim:\n\n--Minha filha Eugenia.\n\nEugenia, a flor da moita, mal respondeu ao gesto de cortezia que lhe\nfiz; olhou-me admirada e acanhada, e lentamente se aproximou da cadeira\nda mãe. A mãe arranjou-lhe uma das tranças do cabello, cuja ponta se\ndesmanchara.--Ah! travessa! dizia. Não imagina, doutor, o que isto\né... E beijou-a com tão expansiva ternura que me commoveu um pouco;\nlembrou-me minha mãe, e,--direi tudo,--tive umas cocegas de ser pae.\n\n--Travêssa? disse eu. Pois já não está em edade propria, ao que parece.\n\n--Quantos lhe dá?\n\n--Dezesete.\n\n--Menos um.\n\n--Dezeseis. Pois então! é uma moça.\n\nNão pôde Eugenia encobrir a satisfação que sentia com esta minha\npalavra, mas emendou-se logo, e ficou como d'antes, erecta, fria e\nmuda. Na verdade, ella parecia ainda mais mulher do que era; seria\ncriança nos seus folgares de moça; mas assim quieta, impassivel,\ntinha a compostura da mulher casada. Talvez essa circumstancia lhe\ndiminuia um pouco da graça virginal. Depressa nos familiarisámos; a mãe\nfazia-lhe grandes elogios, eu escutava-os de boa sombra; e ella sorria,\ncom os olhos fulgidos, como se lá dentro do",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "chamei-me desastrado, grosseirão. Com\neffeito, a simples possibilidade de ser coxa era bastante para lhe\nnão perguntar nada. Então lembrou-me que da primeira vez que a vi na\nvespera--a moça chegára-se lentamente á cadeira da mãe, e que naquelle\ndia já a achei á mesa de jantar. Talvez fosse para encobrir o defeito;\nmas por que razão o confessava agora? Olhei para ella e reparei que ia\ntriste.\n\nTratei de apagar os vestigios de meu desaso;--não me foi difficil, por\nque a mãe era, segundo confessara, uma velha patusca, e promptamente\ntravou de conversa commigo. Vimos toda a chacara, arvores, flores,\ntanque de patos, tanque de lavar, uma infinidade de cousas, que ella me\nia mostrando, e commentando, ao passo que eu, de soslaio, perscrutava\nos olhos de Eugenia...\n\nPalavra que o olhar de Eugenia não era coxo, mas direito, perfeitamente\nsão; vinha de uns olhos pretos e tranquillos. Creio que duas ou tres\nvezes baixaram elles a terra, um pouco turvados; mas duas ou tres\nvezes sómente; em geral, fitavam-me com franqueza, sem temeridade, nem\nbiocos.\n\n\n\n\nCAPITULO XXXIII\n\n\nBemaventurados os que não descem\n\n\nO peor é que era coxa. Uns olhos tão lúcidos, uma boca tão fresca, uma\ncompostura tão senhoril; e coxa! Esse contraste faria suspeitar que a\nnatureza é ás vezes um immenso escarneo. Porque bonita, se coxa? porque\ncoxa,",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "senhor; é o nome da noiva. Um anjo, meu pateta, um anjo sem\nazas. Imagina uma moça assim, desta altura, viva como um azougue, e uns\nolhos... filha do Dutra...\n\n--Que Dutra?\n\n--O Conselheiro Dutra; não conheces; uma influencia politica. Vamos lá;\naceitas?\n\nNão respondi logo; fitei por alguns segundos a ponta do botim; declarei\ndepois que estava disposto a examinar as duas cousas, a candidatura e o\ncasamento, comtanto que...\n\n--Comtanto que?\n\n--Comtanto que não fique obrigado a aceitar as duas; creio que posso\nser separadamente homem casado ou homem publico...\n\n--Todo o homem publico deve ser casado, interrompeu sentenciosamente\nmeu pae. Mas seja como queres; estou por tudo; fico certo de que a\nvista fará fé. Demais, a noiva e o casamento são a mesma cousa... isto\né, não... saberás depois... Vá; aceito a dilação, comtanto que...\n\n--Comtanto que?.. interrompi eu imitando-lhe a voz.\n\n--Ah! brejeiro! Comtanto que não te deixes ficar ahi inutil, obscuro,\ne triste; não gastei dinheiro, cuidados, empenhos, para te não ver\nbrilhar, como deves, e te convem, e a todos nós; é preciso continuar\no nosso nome, continual-o e illustral-o ainda mais. Olha, estou com\nsessenta annos, mas se fosse necessário começar vida nova, começava-a\nsem hesitar um só minuto. Teme a obscuridade, Braz; foge do que é\ninfimo. Olha que os homens valem por differentes",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "desgraçado,\ndesmortifica-os depois, e ahi tens a felicidade barata, ao sabor dos\nsapateiros e de Epicuro. Emquanto esta idéa me trabalhava no famoso\ntrapezio, lançava eu os olhos para a Tijuca, e via a aleijadinha\nperder-se no horizonte do preterito, e sentia que o meu coração não\ntardaria tambem a descalçar as suas botas. E descalçou-as o lascivo.\nQuatro ou cinco dias depois, saboreava esse rapido, ineffavel e\nincoercivel momento de gozo, que succede a uma dôr pungente, a uma\npreoccupação, a um incommodo... Daqui inferi eu que a vida é o mais\nengenhoso dos phenomenos, porque só aguça a fome, com o fim de deparar\na occasião de comer, e não inventou os callos, senão porque elles\naperfeiçoam a felicidade terrestre. Em verdade vos digo que toda a\nsabedoria humana não vale um par de botas curtas.\n\nTu, minha Eugenia, é que não as descalçaste nunca; foste ahi pela\nestrada da vida, manquejando da perna e do amor, triste como os\nenterros pobres, solitaria, calada, laboriosa, até que vieste tambem\npara esta outra margem... O que eu não sei é se a tua existência era\nmuito necessaria ao século. Quem sabe? Talvez um comparsa de menos\nfizesse patear a tragedia humana.\n\n\n\n\nCAPITULO XXXVII\n\n\nEmfim\n\n\nEmfim! eis aqui Virgilia. Antes de ir á casa do Conselheiro Dutra,\nperguntei a meu pae se",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      }
+    ],
+    "groundingSupports": [
+      {
+        "segment": {
+          "startIndex": 182,
+          "endIndex": 290,
+          "text": "Eusébia (uma antiga paixão de juventude de Brás Cubas, do episódio conhecido como o de \"1814, na moita\")"
+        },
+        "groundingChunkIndices": [
+          0,
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 292,
+          "endIndex": 550,
+          "text": "Conhecida no livro como \"a flor da moita\" e descrita como uma jovem formosa de dezesseis anos, de ideias claras, maneiras simples, porte distinto e olhar franco, ela se envolve amorosamente com Brás Cubas durante um período em que ele passa tempo na Tijuca"
+        },
+        "groundingChunkIndices": [
+          0,
+          2,
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 618,
+          "endIndex": 705,
+          "text": "Eusébia, ela traz consigo uma origem social desfavorável aos olhos da elite da época"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 708,
+          "endIndex": 805,
+          "text": "* **Qual é o defeito físico dela:** \nEugenia é **coxa de nascença** (manca de uma das pernas)"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 807,
+          "endIndex": 1042,
+          "text": "Brás Cubas descreve esse contraste de forma marcante: ela possuía uma beleza notável, olhos lúcidos, boca fresca e compostura senhoril, mas o fato de ser coxa fazia com que ele visse isso quase como um \"imenso escarneo\" da natureza"
+        },
+        "groundingChunkIndices": [
+          3
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1045,
+          "endIndex": 1363,
+          "text": "* **Por que Brás Cubas diz que não se casou com ela:**\nNa verdade, Brás Cubas **nunca chega a cogitar formalmente o casamento** com Eugênia a ponto de haver uma recusa oficial ou direta nos moldes tradicionais; o relacionamento deles ocorre à margem da sociedade formal (uma espécie de idílio amoroso na Tijuca)"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1533,
+          "endIndex": 1646,
+          "text": "**A condição física:** O defeito físico (ser coxa) gerava nele um conflito estético e preconceituoso inicial"
+        },
+        "groundingChunkIndices": [
+          3
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1842,
+          "endIndex": 2032,
+          "text": "Eusébia e do passado (\"a suspeitar que não podias mentir ao teu sangue, à tua origem\"), ele percebe que Eugênia é filha ilegítima de uma família empobrecida e sem prestígio político"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 2036,
+          "endIndex": 2316,
+          "text": "Para as pretensões de Brás Cubas — que buscava uma noiva de alta linhagem e influência política para alavancar sua carreira (como Virgília, filha do Conselheiro Dutra) —, casar-se com Eugênia era algo incompatível com o status e a \"glória\" que sua família exigia dele"
+        },
+        "groundingChunkIndices": [
+          4,
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 2318,
+          "endIndex": 2458,
+          "text": "Por fim, ele simplesmente se afasta e a abandona (\"perder-se no horizonte do pretérito\"), deixando-a seguir solitária pela estrada da vida"
+        },
+        "groundingChunkIndices": [
+          5
+        ]
+      }
+    ]
+  }
+}

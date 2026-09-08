@@ -1,0 +1,265 @@
+{
+  "id": "q16-guided",
+  "parts": [
+    {
+      "text": "Nas ***Memórias Póstumas de Brás Cubas***, de Machado de Assis, **Cotrim** (cujo nome completo é Gonçalo Ângelo Cotrim) é cunhado do protagonista Brás Cubas, sendo casado com sua irmã, Sabina. \n\nO narrador descreve o caráter e os negócios de Cotrim com um misto de ironia, ambiguidade e análise psicológica peculiar. Eis os principais pontos dessa descrição:\n\n### 1. O Caráter\n* **“Ferozmente honrado” e modelo:** O narrador o descreve ironicamente como possuidor de um caráter “ferozmente honrado” e o chama de “modelo”, embora admita que chegou a ser injusto com ele no passado.\n* **Avareza:** Era amplamente acusado de avareza. O narrador concorda com essa fama, mas ameniza o defeito filosóficamente, dizendo que a avareza seria apenas “a exageração de uma virtude”.\n* **Secura e crueldade aparente:** Por ser muito seco de maneiras, era considerado bárbaro por seus inimigos. O principal argumento usado contra ele era o hábito de enviar com frequência seus escravos ao calabouço, de onde eles retornavam “a escorrer sangue”. No entanto, o narrador o defende ponderando que ele só castigava os escravos considerados “perversos e fujões”.\n* **Sentimentos pios e vaidade:** O narrador tenta provar a bondade de Cotrim apontando seu amor pelos filhos e a dor que sentiu com a morte de sua filha Sára. Por outro lado, Cotrim era vaidoso com sua caridade: fazia questão de mandar para os jornais notícias dos benefícios que praticava (justificando que as boas ações se tornavam contagiosas quando públicas) e gostava de acumular cargos em irmandades religiosas, chegando a garantir um retrato a óleo de si mesmo encomendado por uma delas.\n\n### 2. Os Negócios\n* **Tráfico negreiro:** O narrador revela que Cotrim enriquecera praticando **longamente o contrabando de escravos** (o tráfico negreiro). Brás Cubas usa esse fato para justificar a dureza física e o trato bruto de Cotrim com os cativos, argumentando que tal comportamento era fruto inevitável das relações sociais e do tipo de negócio ríspido a que se dedicara, e não necessariamente de uma índole originalmente monstruosa.\n* **Fornecimentos públicos:** Mais tarde, já integrado a negócios respeitáveis e beneficiando-se de sua relação com o cunhado (que na época era deputado), Cotrim obteve contratos lucrativos de fornecimentos para o arsenal de marinha, nos quais prosperou consideravelmente com grande pontualidade."
+    }
+  ],
+  "segments": [
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 120,
+        "end": 191
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 91263,
+            "end": 91288
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 414,
+        "end": 580
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 306424,
+            "end": 306489
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 306558,
+            "end": 306622
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 306490,
+            "end": 306557
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 596,
+        "end": 770
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 306558,
+            "end": 306622
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 306623,
+            "end": 306688
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 806,
+        "end": 880
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 306767,
+            "end": 306819
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 306820,
+            "end": 306852
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 881,
+        "end": 1030
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 306893,
+            "end": 306952
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 306953,
+            "end": 307021
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1043,
+        "end": 1141
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 307022,
+            "end": 307092
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1177,
+        "end": 1302
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 307304,
+            "end": 307371
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 307372,
+            "end": 307441
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1356,
+        "end": 1637
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 307816,
+            "end": 307852
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 307993,
+            "end": 308064
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 307513,
+            "end": 307582
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 307720,
+            "end": 307767
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1683,
+        "end": 1797
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 307022,
+            "end": 307092
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 307093,
+            "end": 307161
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1897,
+        "end": 2082
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 307234,
+            "end": 307303
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 2239,
+        "end": 2379
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 344479,
+            "end": 344537
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 344606,
+            "end": 344673
+          }
+        }
+      ]
+    }
+  ],
+  "labeledBy": "MPT0M",
+  "labeledAt": "2026-09-08T16:21:47.404Z"
+}

@@ -1,0 +1,211 @@
+{
+  "id": "q09-guided",
+  "parts": [
+    {
+      "text": "Nas *Memórias Póstumas de Brás Cubas*, de Machado de Assis, **Dona Plácida** é uma personagem humilde e de grande importância na trama, pois acaba se tornando a \"testa de ferro\" (a dona de fachada) da casinha de Botafogo que Brás Cubas aluga para os seus encontros amorosos com Virgília (sua amante casada). Para a sociedade da época, ela figurava como a dona da residência, encobrindo o adultério.\n\n### A origem de Dona Plácida\n\nA história da origem de Dona Plácida é narrada em tom irônico e realista pelo defunto-autor Brás Cubas, principalmente nos capítulos LXXIV e LXXV:\n\n* **Nascimento:** Ela era filha natural (fora do casamento) de um **sacristão da Sé** com uma **mulher que fazia doces** para fora. O narrador descreve de forma jocosa que o sacristão, enquanto ajudava a missa, avistou a dama (sua colaboradora nessa união), trocaram olhares e galanteios, e *\"dessa conjunção de luxúrias vadias brotou D. Plácida\"*.\n* **Infância e Juventude:** Perdeu o pai aos dez anos de idade, época em que já ajudava a ralar côco e a realizar tarefas de doceira compatíveis com a sua idade. Aos quinze ou dezesseis anos, casou-se com um alfaiate que morreu tístico (com tuberculose) pouco tempo depois, deixando-lhe uma filha.\n* **Luta pela sobrevivência:** Viúva antes dos vinte anos, Dona Plácida viu-se encarregada de sustentar três pessoas: ela própria, a filha pequena e a mãe idosa e cansada de trabalhar. Para garantir o sustento, desdobrava-se fazendo doces, costurando dia e noite para lojas e ensinando crianças do bairro. \n* **Dificuldades e moralidade:** Embora tenha enfrentado propostas e seducções ao longo da vida e sofrido com a pressão da mãe (que criticava seu desejo de ser honesta e se casar de fato), ela manteve seu código moral estrito, resistindo a ser amásia de alguém, pois o seu \"gênio\" era querer ser casada legitimamente.\n\nApesar de toda a sua trajetória de privações e sacrifícios para não \"acabar na rua pedindo esmola\", a vida a empurra para aceitar o papel de acobertar o romance proibido de Brás Cubas e Virgília — um trabalho que lhe causava profunda dor moral (\"tinha nojo de si mesma\" no início), mas que representava a única forma de obter algum conforto na velhice, culminando no pecúlio de cinco contos que Brás Cubas lhe deixou."
+    }
+  ],
+  "segments": [
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 141,
+        "end": 398
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 198573,
+            "end": 198766
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 596,
+        "end": 709
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 204708,
+            "end": 204790
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 710,
+        "end": 865
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 208507,
+            "end": 208775
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 870,
+        "end": 924
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 208820,
+            "end": 208874
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 955,
+        "end": 1088
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 204791,
+            "end": 204912
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1089,
+        "end": 1224
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 204913,
+            "end": 205020
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1256,
+        "end": 1409
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 205021,
+            "end": 205163
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1410,
+        "end": 1530
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 205164,
+            "end": 205338
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1630,
+        "end": 1719
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 205823,
+            "end": 205987
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1721,
+        "end": 1849
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 206236,
+            "end": 206318
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1851,
+        "end": 2131
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 207851,
+            "end": 207903
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 198767,
+            "end": 198822
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 2204,
+        "end": 2268
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 199537,
+            "end": 199639
+          }
+        }
+      ]
+    }
+  ],
+  "labeledBy": "MPT0M",
+  "labeledAt": "2026-09-08"
+}

@@ -1,0 +1,200 @@
+{
+  "id": "q24-plain",
+  "model": "gemini-3.5-flash-lite",
+  "recordedAt": "2026-09-08T15:37:31.392Z",
+  "reportVersion": "bench-report-1",
+  "storeEmbeddingModel": "gemini-embedding-2",
+  "storeChunking": {
+    "maxTokensPerChunk": 200,
+    "maxOverlapTokens": 20
+  },
+  "parts": [
+    {
+      "text": "No romance *Memórias Póstumas de Brás Cubas*, de Machado de Assis, o reencontro com Quincas Borba e o episódio do relógio ocorrem da seguinte forma:\n\n### O Reencontro no Passeio Público\nBrás Cubas está sentado em um banco no Passeio Público, sonhando acordado com a possibilidade de virar Ministro de Estado e imaginando o quanto Virgília iria gostar disso. Em meio a esses devaneios, ele percebe a aproximação de um homem de aparência miserável: magro, pálido, com roupas velhas e esfarrapadas (uma sobrecasaca larga e puída, calças com joelheiras marcadas, botins sem graxa e chapéu antiquado).\n\nO homem se aproxima e pergunta se Brás Cubas o reconhece. Diante da negativa de Brás, ele revela sua identidade: **Quincas Borba**, o antigo colega de colégio de Brás, que antes era rico, inteligente e festejado (\"o gracioso menino de outro tempo\"). \n\nBrás Cubas recua espantado, custando a acreditar que aquela ruína humana — maltrapilha, com a barba grisalha e um sorriso escarninho — seja seu antigo amigo de infância. Quincas Borba relata brevemente sua decadência, afirmando que passou por uma vida de misérias e lutas até acabar na mendicância, mostrando-se impassível e resignado (ou indiferente) à própria desgraça. \n\nNesse momento, comovido e ao mesmo tempo constrangido pela situação, Brás Cubas lhe dá uma ajuda financeira (uma nota de cinco mil-réis).\n\n### O que Quincas faz com o relógio de Brás?\nAntes de se despedirem, Quincas Borba pede para agradecer a ajuda \"de mais perto\" e **abraça Brás Cubas com ímpeto**. \n\nApós a despedida, quando Brás Cubas se afasta (sentindo-se enfadado, triste e com a camisa amarrotada pelo abraço), ele coloca a mão no colete para ver as horas e percebe que **o relógio sumiu**. O miséravel Quincas Borba havia furtado o relógio de Brás Cubas durante o abraço de despedida. \n\nMais do que o valor material do objeto, o furto causa a Brás Cubas uma profunda desilusão sentimental, servindo para reforçar a melancolia e o contraste amargo entre o passado brilhante do amigo e a sua realidade miserável presente."
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 38,
+    "candidatesTokenCount": 638,
+    "totalTokenCount": 2443,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 38
+      }
+    ],
+    "toolUsePromptTokenCount": 1767,
+    "toolUsePromptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 1767
+      }
+    ],
+    "serviceTier": "standard"
+  },
+  "groundingMetadata": {
+    "groundingChunks": [
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "então no Passeio Publico;\ne tudo me parecia dizer a mesma cousa.--Porque não serás ministro,\nCubas?--Cubas, porque não serás ministro de Estado? Ao ouvil-o, uma\ndeliciosa sensação me refrescava todo o systema. Entrei, fui sentar-me\nn'um banco, a cavar commigo aquella idéa. E Virgilia que havia de\ngostar! Alguns minutos depois vejo encaminhar-se para mim uma cara, que\nme não pareceu desconhecida. Conhecia-a, fosse d'onde fosse.\n\nImaginem um homem de trinta e oito a quarenta annos, alto, magro e\npallido. As roupas, salvo o feitio, pareciam ter escapado ao captiveiro\nde Babylonia; o chapéu era contemporaneo do de Gessler. Imaginem\nagora uma sobrecasaca, mais larga do que pediam as carnes,--ou,\nlitteralmente, os ossos da pessoa; a côr preta ia cedendo o passo a\num amarello sem brilho; o pello desapparecia aos poucos; dos oito\nprimitivos botões restavam tres. As calças, de brim pardo, tinham duas\nfortes joelheiras, em quanto as bainhas eram roidas pelo tacão de um\nbotim sem misericordia nem graxa. Ao pescoço fluctuavam as pontas de\numa gravata de duas cores, ambas desmaiadas, apertando um collarinho de\noito dias. Creio que trazia tambem collete, um collete de seda escura,\nroto a espaços, e desabotoado.\n\n--Aposto que me não conhece, Sr. Dr. Cubas? disse elle.\n\n--Não me lembra...\n\n--Sou o Borba, o Quincas Borba.\n\nRecuei espantado... Quem me dera agora o",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "não conhece, Sr. Dr. Cubas? disse elle.\n\n--Não me lembra...\n\n--Sou o Borba, o Quincas Borba.\n\nRecuei espantado... Quem me dera agora o verbo solemne de um Bossuet\nou de Vieira, para contar tamanha desolação! Era o Quincas Borba, o\ngracioso menino de outro tempo, o meu companheiro de collegio, tão\nintelligente e abastado. O Quincas Borba! Não, impossível; não pode\nser. Não podia acabar de crer que essa figura esqualida, essa barba\npintada de branco, esse maltrapilho avelhentado, que toda essa ruina\nfosse o Quincas Borba. E era. Os olhos tinham um resto da expressão de\noutro tempo; e o sorriso não perdera certo ar escarninho, que lhe era\npeculiar. Entretanto, elle supportava com firmeza o meu espanto. No fim\nde algum tempo arredei os olhos; se a figura repellia, a comparação\nacabrunhava.\n\n--Não é preciso contar-lhe nada, disse elle emfim; o senhor adivinha\ntudo. Uma vida de miserias, de attribulações e de lutas. Lembra-se\ndas nossas festas, em que eu figurava de rei? Que trambolhão! Acabo\nmendigo...\n\nE alçando a mão direita e os hombros, com um ar de indifferença,\nparecia resignado aos golpes da fortuna, e não sei até se contente.\nTalvez contente. Com certeza, impassivel. Não havia nelle a resignação\nchristã, nem a conformidade philosophica. Parece que a miseria lhe\ncallejára a alma, a ponto de lhe tirar",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "se trata. E moças? Como vão ellas? Está casado?\n\n--Não...\n\n--Nem eu.\n\n--Móro na rua...\n\n--Não quero saber onde mora, atalhou o Quincas Borba. Se alguma vez nos\nvirmos, dê-me outra nota de cinco mil réis; mas permitta-me que não a\nvá buscar a sua casa. É uma especie de orgulho.... Agora, adeus; vejo\nque está impaciente.\n\n--Adeus!\n\n--E obrigado. Deixa-me agradecer-lhe de mais perto?\n\nE dizendo isto abraçou-me com tal impeto, que eu não pude evital-o.\nSeparamo-nos finalmente, eu a passo largo, com a camisa amarrotada do\nabraço, enfadado e triste. Já não dominava em mim a parte sympathica da\nsensação, mas a outra. Quizera ver-lhe a miseria digna. Comtudo, não\npude deixar de comparar outra vez o homem de agora com o de outr'ora,\nentristecer-me, e encarar o abysmo que separa as esperanças de um tempo\nda realidade de outro tempo...\n\n--Ora adeus! Vamos jantar, disse commigo.\n\nMetto a mão no collete e não acho o relogio. Ultima desillusão! o Borba\nfurtára-m'o no abraço.\n\n\n\n\nCAPITULO LXI\n\n\nUm projecto\n\n\nJantei triste. Não era a falta do relogio que me pungia, era a\nimagem do autor do furto, e as reminiscencias de criança, e outra\nvez a comparação, e a conclusão... Desde a sopa, começou a abrir em\nmim a flor amarella e morbida do cap. XXV, e então jantei depressa,\npara correr á casa de",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      }
+    ],
+    "groundingSupports": [
+      {
+        "segment": {
+          "startIndex": 155,
+          "endIndex": 249,
+          "text": "### O Reencontro no Passeio Público\nBrás Cubas está sentado em um banco no Passeio Público"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 155,
+          "endIndex": 366,
+          "text": "### O Reencontro no Passeio Público\nBrás Cubas está sentado em um banco no Passeio Público, sonhando acordado com a possibilidade de virar Ministro de Estado e imaginando o quanto Virgília iria gostar disso"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 368,
+          "endIndex": 613,
+          "text": "Em meio a esses devaneios, ele percebe a aproximação de um homem de aparência miserável: magro, pálido, com roupas velhas e esfarrapadas (uma sobrecasaca larga e puída, calças com joelheiras marcadas, botins sem graxa e chapéu antiquado)"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 616,
+          "endIndex": 673,
+          "text": "O homem se aproxima e pergunta se Brás Cubas o reconhece"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 675,
+          "endIndex": 868,
+          "text": "Diante da negativa de Brás, ele revela sua identidade: **Quincas Borba**, o antigo colega de colégio de Brás, que antes era rico, inteligente e festejado (\"o gracioso menino de outro tempo\")"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 872,
+          "endIndex": 1047,
+          "text": "Brás Cubas recua espantado, custando a acreditar que aquela ruína humana — maltrapilha, com a barba grisalha e um sorriso escarninho — seja seu antigo amigo de infância"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1049,
+          "endIndex": 1257,
+          "text": "Quincas Borba relata brevemente sua decadência, afirmando que passou por uma vida de misérias e lutas até acabar na mendicância, mostrando-se impassível e resignado (ou indiferente) à própria desgraça"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1261,
+          "endIndex": 1402,
+          "text": "Nesse momento, comovido e ao mesmo tempo constrangido pela situação, Brás Cubas lhe dá uma ajuda financeira (uma nota de cinco mil-réis)"
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1452,
+          "endIndex": 1571,
+          "text": "Antes de se despedirem, Quincas Borba pede para agradecer a ajuda \"de mais perto\" e **abraça Brás Cubas com ímpeto**"
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1575,
+          "endIndex": 1774,
+          "text": "Após a despedida, quando Brás Cubas se afasta (sentindo-se enfadado, triste e com a camisa amarrotada pelo abraço), ele coloca a mão no colete para ver as horas e percebe que **o relógio sumiu**"
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1776,
+          "endIndex": 1873,
+          "text": "O miséravel Quincas Borba havia furtado o relógio de Brás Cubas durante o abraço de despedida"
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1877,
+          "endIndex": 2112,
+          "text": "Mais do que o valor material do objeto, o furto causa a Brás Cubas uma profunda desilusão sentimental, servindo para reforçar a melancolia e o contraste amargo entre o passado brilhante do amigo e a sua realidade miserável presente"
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      }
+    ]
+  }
+}

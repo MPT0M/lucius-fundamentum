@@ -1,0 +1,73 @@
+{
+  "id": "q01-plain",
+  "model": "gemini-3.5-flash-lite",
+  "recordedAt": "2026-09-08T11:17:27.530Z",
+  "reportVersion": "bench-report-1",
+  "storeEmbeddingModel": "gemini-embedding-2",
+  "storeChunking": {
+    "maxTokensPerChunk": 200,
+    "maxOverlapTokens": 20
+  },
+  "parts": [
+    {
+      "text": "Em ***Memórias Póstumas de Brás Cubas*** (1881), de Machado de Assis, Brás Cubas dedica o livro **ao verme que primeiro roeu as frias carnes do seu cadáver**. \n\nSegundo o próprio autor defunto, ele dedica a obra a esse verme como uma **\"saudosa lembrança\"**. \n\nEssa dedicatória irônica e inusitada reflete a perspectiva niilista e o humor ácido do narrador: já morto, ele reconhece que o verme foi o primeiro ser a \"consagrar-lhe\" a carcaça e a iniciar a sua decomposição, tornando-se, de forma satírica, o destinatário mais adequado para um livro escrito por um defunto autor. Como ele mesmo resume ao justificar o livro, trata-se da obra de um homem que já não pertence ao mundo dos vivos, livre das convenções convencionais da literatura de sua época."
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 19,
+    "candidatesTokenCount": 237,
+    "totalTokenCount": 2885,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 19
+      }
+    ],
+    "toolUsePromptTokenCount": 2629,
+    "toolUsePromptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 2629
+      }
+    ],
+    "serviceTier": "standard"
+  },
+  "groundingMetadata": {
+    "groundingChunks": [
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "o seu romance usual; e eil-o ahi fica privado da estima dos\ngraves e do amor dos frivolos, que são as duas columnas maximas da\nopinião.\n\nMas eu ainda espero angariar as sympatias da opinião, e o meio efficaz\npara isso é fugir a um prologo explicito e longo. O melhor prologo\né o que contém menos cousas, ou o que as diz de um geito obscuro e\ntruncado. Conseguintemente, evito contar o processo extraordinario que\nempreguei na composição destas _Memórias_, trabalhadas cá no outro\nseculo. Seria curioso, mas nimiamente extenso, e aliás desnecessario ao\nentendimento da obra. A obra em si mesma é tudo: se te agradar, fino\nleitor, pago-me da tarefa; se te não agradar, pago-te com um piparote,\ne adeus.\n\nBRAZ CUBAS.\n\n\n\n AO VERME\n\n QUE\n\n PRIMEIRO ROEU AS FRIAS CARNES\n\n DO MEU CADAVER\n\n DEDICO\n\n COMO SAUDOSA LEMBRANÇA\n\n ESTAS\n\n MEMÓRIAS PÓSTHUMAS\n\n\n\n\nCAPITULO I\n\n\nObito do autor\n\n\nAlgum tempo hesitei se devia abrir estas memorias pelo principio ou\npelo fim, isto é, se poria em primeiro logar o meu nascimento ou a\nminha morte. Supposto o uso vulgar seja começar pelo nascimento, duas\nconsiderações me levaram a adoptar differente methodo: a primeira é que\neu não sou propriamente um autor defunto, mas um defunto autor, para\nquem a campa foi outro berço; a segunda é que o escripto ficaria",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      }
+    ],
+    "groundingSupports": [
+      {
+        "segment": {
+          "endIndex": 162,
+          "text": "Em ***Memórias Póstumas de Brás Cubas*** (1881), de Machado de Assis, Brás Cubas dedica o livro **ao verme que primeiro roeu as frias carnes do seu cadáver**"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 166,
+          "endIndex": 264,
+          "text": "Segundo o próprio autor defunto, ele dedica a obra a esse verme como uma **\"saudosa lembrança\"**"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      }
+    ]
+  }
+}

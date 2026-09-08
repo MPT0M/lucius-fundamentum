@@ -1,0 +1,128 @@
+{
+  "id": "q12-plain",
+  "model": "gemini-3.5-flash-lite",
+  "recordedAt": "2026-09-08T15:37:31.392Z",
+  "reportVersion": "bench-report-1",
+  "storeEmbeddingModel": "gemini-embedding-2",
+  "storeChunking": {
+    "maxTokensPerChunk": 200,
+    "maxOverlapTokens": 20
+  },
+  "parts": [
+    {
+      "text": "No famoso episódio de ***Memórias Pósthumas de Brás Cubas*** (de Machado de Assis), a situação do acidente e a recompensa ao almocreve ocorrem da seguinte forma:\n\n### O que acontece no episódio?\nEnquanto Brás Cubas cavalga, o seu jumento se assusta ou sofre um desmantelo que por pouco não resulta em uma tragédia fatal para o protagonista (\"*Pois não é certo que ia morrendo?*\"). O animal dispara ou se descontrola, mas um **almocreve** (conduzidor de bestas de carga) intervém a tempo, ajudando a acalmar a situação e a consertar os arreios do animal com muito zelo enquanto Brás Cubas recupera os sentidos.\n\n### Quanto Brás Cubas decide dar a ele?\nO processo mental de Brás Cubas sobre a gorjeta é marcado pela típica pão-durice e ironia machadianas:\n1. Inicialmente, ele pensa em dar **três moedas de ouro** (das cinco que trazia no colete), julgando ser uma recompensa digna pela dedicação.\n2. Logo em seguida, reflete que talvez três fossem demais e pondera baixar para **duas moedas**, ou até mesmo **uma só**, concluindo que uma única moeda de ouro já faria aquele \"pobre diabo\" ter estremeções de alegria.\n3. No entanto, ao ir buscar o colete velho onde guardava o dinheiro, ele acaba pegando erradamente uma moeda de menor valor e mete na mão do almocreve um **cruzado em prata**. \n4. Só depois de partir é que Brás Cubas percebe o engano ao enfiar os dedos no bolso e encontrar os vinténs de cobre que *deveria* ter dado; ele percebe que o cruzado de prata foi generoso demais e, em seguida, começa a racionalizar para se convencer de que o almocreve não merecia nada, afinal o homem apenas agira por impulso natural e nem sequer esperava recompensa."
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 30,
+    "candidatesTokenCount": 525,
+    "totalTokenCount": 3593,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 30
+      }
+    ],
+    "toolUsePromptTokenCount": 3038,
+    "toolUsePromptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 3038
+      }
+    ],
+    "serviceTier": "standard"
+  },
+  "groundingMetadata": {
+    "groundingChunks": [
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "mas suspeitou-o\ntalvez, entrou a fallar ao jumento de um modo significativo; dava-lhe\nconselhos, dizia-lhe que tomasse juizo, que o «senhor doutor» podia\ncastigal-o; um monologo paternal. Valha-me Deus! até ouvi estalar um\nbeijo: era o almocreve que lhe beijava a testa.\n\n--Olé! exclamei.\n\n--Queira vosmecê perdoar, mas o diabo do bicho está a olhar para a\ngente com tanta graça...\n\nRi-me, hesitei, metti-lhe na mão um cruzado em prata, cavalguei o\njumento, e segui a trote largo, um pouco vexado, melhor direi um pouco\nincerto do effeito da pratinha. Mas a algumas braças de distancia,\nolhei para traz, o almocreve fazia-me grandes cortezias, com evidentes\nmostras de contentamento. Adverti que devia ser assim mesmo; eu\npagara-lhe bem, pagara-lhe talvez de mais. Metti os dedos no bolso\ndo collete que trazia no corpo e senti umas moedas de cobre; eram os\nvintens que eu devera ter dado ao almocreve, em logar do cruzado em\nprata. Porque, emfim, elle não levou em mira nenhuma recompensa ou\nvirtude, cedeu a um impulso natural, ao temperamento, aos habitos do\nofficio; accresce que a circumstancia de estar, não mais adeante nem\nmais atraz, mas justamente no ponto do desastre, parecia constituil-o\nsimples instrumento de Providencia; e de um ou de outro modo, o\nmerito do acto era positivamente nenhum. Fiquei desconsolado com esta\nreflexão, chamei-me prodigo,",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "o coração. Bom\nalmocreve! emquanto eu tornava á consciencia de mim mesmo, elle cuidava\nde concertar os arreios do jumento, com muito zelo e arte. Resolvi\ndar-lho tres moedas de ouro das cinco que trazia commigo; não porque\ntal fosse o preço da minha vida,--essa era inestimavel; mas por que era\numa recompensa digna da dedicação com que elle me salvou. Está dito,\ndou-lhe as tres moedas.\n\n--Prompto, disse elle apresentando-me a redea da cavalgadura.\n\n--Daqui a nada, respondi; deixa-me, que ainda não estou em mim...\n\n--Ora qual!\n\n--Pois não é certo que ia morrendo?\n\n--Se o jumento corre por ahi fóra, é possivel; mas, com a ajuda do\nSenhor, viu vosmecê que não aconteceu nada.\n\nFui aos alforges, tirei um collete velho, em cujo bolso trazia as cinco\nmoedas de ouro, e durante esse tempo cogitei se não era excessiva a\ngratificação, se não bastavam duas moedas. Talvez uma. Com effeito, uma\nmoeda era bastante para lhe dar estremeções de alegria. Examinei-lhe\na roupa; era um pobre diabo, que nunca jamais vira uma moeda de ouro.\nPortanto, uma moeda. Tirei-a, vi-a reluzir á luz do sol; não a viu o\nalmocreve, por que eu tinha-lhe voltado as costas; mas suspeitou-o\ntalvez, entrou a fallar ao jumento de um modo significativo; dava-lhe\nconselhos, dizia-lhe que tomasse juizo, que o «senhor doutor»",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      }
+    ],
+    "groundingSupports": [
+      {
+        "segment": {
+          "startIndex": 388,
+          "endIndex": 391,
+          "text": "*\")"
+        },
+        "groundingChunkIndices": [
+          0,
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 393,
+          "endIndex": 624,
+          "text": "O animal dispara ou se descontrola, mas um **almocreve** (conduzidor de bestas de carga) intervém a tempo, ajudando a acalmar a situação e a consertar os arreios do animal com muito zelo enquanto Brás Cubas recupera os sentidos"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 778,
+          "endIndex": 918,
+          "text": "Inicialmente, ele pensa em dar **três moedas de ouro** (das cinco que trazia no colete), julgando ser uma recompensa digna pela dedicação"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 923,
+          "endIndex": 1144,
+          "text": "Logo em seguida, reflete que talvez três fossem demais e pondera baixar para **duas moedas**, ou até mesmo **uma só**, concluindo que uma única moeda de ouro já faria aquele \"pobre diabo\" ter estremeções de alegria"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1149,
+          "endIndex": 1321,
+          "text": "No entanto, ao ir buscar o colete velho onde guardava o dinheiro, ele acaba pegando erradamente uma moeda de menor valor e mete na mão do almocreve um **cruzado em prata**"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1327,
+          "endIndex": 1698,
+          "text": "Só depois de partir é que Brás Cubas percebe o engano ao enfiar os dedos no bolso e encontrar os vinténs de cobre que *deveria* ter dado; ele percebe que o cruzado de prata foi generoso demais e, em seguida, começa a racionalizar para se convencer de que o almocreve não merecia nada, afinal o homem apenas agira por impulso natural e nem sequer esperava recompensa"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,283 @@
+{
+  "id": "q13-guided",
+  "parts": [
+    {
+      "text": "Em ***Memórias Póstumas de Brás Cubas***, de Machado de Assis, **Nhã-lóló** (cujo nome verdadeiro é D. Eulália) é uma personagem que surge na segunda metade da narrativa.\n\nAqui estão os detalhes sobre quem ela é, como entra na vida do protagonista e o seu desfecho:\n\n### 1. Quem é Nhã-lóló?\nNhã-lóló é filha de Damasceno. É descrita como uma moça muito graciosa, com um coração de \"pérola\", embora um tanto acanhada no início e sem muita elegância mundana. No entanto, ela compensava isso com olhos soberbos e uma voz \"muito mimosa\" ao cantar. Ela é apresentada como uma candidata ideal a esposa, dotada de excelente índole.\n\n### 2. Como ela entra na vida de Brás Cubas?\nA entrada de Nhã-lóló na vida de Brás Cubas é articulada por sua irmã, **Sabina**, e por seu cunhado, **Cotrim**. \nBuscando casar Brás Cubas — visto que ele já tem certa idade e nutre ambições políticas (para as quais o celibato seria uma desvantagem) —, Sabina promove um jantar em sua casa com o objetivo premeditado de juntá-los. No jantar, Brás Cubas é colocado ao lado de Nhã-lóló. \n\nApesar de a moça demonstrar imediato interesse e encanto por Brás Cubas (ficando com os olhos cravados nele o tempo todo), o protagonista inicialmente esquiva-se e resiste à ideia. Contudo, pressionado por Sabina — que decreta categoricamente que ele há de casar com Nhã-lóló \"quer queira quer não\" —, o compromisso acaba por se ajeitar nos planos futuros do protagonista devido às conveniências sociais e políticas.\n\n### 3. O que acontece com ela?\nO destino de Nhã-lóló é trágico e abrupto. Antes que o casamento com Brás Cubas possa se realizar, irrompe na cidade uma epidemia de **febre amarela**. \n\nA doença acaba vitimando Nhã-lóló, que falece tragicamente. Brás Cubas acompanha o seu enterro até o jazigo, embora confesse que se despediu dela triste, mas sem lágrimas, concluindo que talvez não a amasse de verdade. O narrador reflete, com o seu habitual tom cínico e filosófico (reforçado pelas conversas com Quincas Borba), sobre o absurdo daquela morte no contexto de uma epidemia que dizimava indiscriminadamente."
+    }
+  ],
+  "segments": [
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 63,
+        "end": 170
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 250795,
+            "end": 250865
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 309976,
+            "end": 310005
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 291,
+        "end": 321
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 250795,
+            "end": 250865
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 322,
+        "end": 456
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 250866,
+            "end": 250935
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 251414,
+            "end": 251469
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 250959,
+            "end": 250998
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 457,
+        "end": 543
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 250999,
+            "end": 251057
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 251202,
+            "end": 251244
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 544,
+        "end": 624
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 305710,
+            "end": 305758
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 251414,
+            "end": 251469
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 671,
+        "end": 784
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 250756,
+            "end": 250794
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 305710,
+            "end": 305758
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 786,
+        "end": 1003
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 299245,
+            "end": 299295
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 305989,
+            "end": 306053
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1004,
+        "end": 1057
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 250756,
+            "end": 250794
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1060,
+        "end": 1240
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 250999,
+            "end": 251057
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 251202,
+            "end": 251244
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1275,
+        "end": 1358
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 251604,
+            "end": 251633
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1608,
+        "end": 1659
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 310288,
+            "end": 310374
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1723,
+        "end": 1881
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 310426,
+            "end": 310493
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 310494,
+            "end": 310522
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1946,
+        "end": 1989
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 310877,
+            "end": 310940
+          }
+        }
+      ]
+    }
+  ],
+  "labeledBy": "MPT0M",
+  "labeledAt": "2026-09-08T21:22:35.474Z"
+}

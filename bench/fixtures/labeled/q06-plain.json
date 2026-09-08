@@ -1,0 +1,83 @@
+{
+  "id": "q06-plain",
+  "parts": [
+    {
+      "text": "Segundo o próprio Brás Cubas, em *Memórias Pósthumas de Brás Cubas* (de Machado de Assis), a causa direta e médica de sua morte foi uma **pneumonia**. \n\nNo entanto, o defunto autor logo acrescenta um toque irônico e filosófico característico da obra, afirmando que a doença física foi menos importante do que a causa principal: **uma ideia grandiosa e útil**. \n\nEssa ideia era a invenção do **\"emplasto Brás Cubas\"**, um medicamento sublime e anticipocondríaco destinado a aliviar a humanidade. Ao tentar colocá-la em prática e se embebedar com o desejo de glória e fama (de ver seu nome impresso em jornais e caixinhas de remédio), ele acabou apanhando a moléstia que o levou ao óbito e fez com que o famoso emplasto morresse com ele. Portanto, segundo ele próprio: *“Morri de uma pneumonia; mas se lhe disser que foi menos a pneumonia, do que uma idéa grandiosa e util, a causa da minha morte, é possivel que o leitor me não creia, e todavia é verdade”*."
+    }
+  ],
+  "segments": [
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 0,
+        "end": 150
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 6005,
+            "end": 6028
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 153,
+        "end": 359
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 6029,
+            "end": 6190
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 362,
+        "end": 494
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 6670,
+            "end": 6822
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 7300,
+            "end": 7343
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 768,
+        "end": 954
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 6005,
+            "end": 6190
+          }
+        }
+      ]
+    }
+  ],
+  "labeledBy": "MPT0M",
+  "labeledAt": "2026-09-08"
+}

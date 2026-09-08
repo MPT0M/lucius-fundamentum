@@ -1,0 +1,161 @@
+{
+  "id": "q12-guided",
+  "model": "gemini-3.5-flash-lite",
+  "recordedAt": "2026-09-08T15:37:31.392Z",
+  "reportVersion": "bench-report-1",
+  "storeEmbeddingModel": "gemini-embedding-2",
+  "storeChunking": {
+    "maxTokensPerChunk": 200,
+    "maxOverlapTokens": 20
+  },
+  "parts": [
+    {
+      "text": "No capítulo XXI (*\"O almocreve\"*) de *Memórias Pósthuma de Brás Cubas*, o incidente e a recompensa ocorrem da seguinte forma:\n\n* **O acidente:** O jumento em que Brás Cubas vinha montado empaca, dá vários corcovos (saltos) e acaba por jogá-lo fora da sela. Para piorar, o pé esquerdo de Brás fica preso no estribo e o animal se assusta, pronto para disparar pela estrada afora. Um almocreve (condutor de bestas de carga) que passava ou estava pelo local acode a tempo, agarrando a rédea do animal e conseguindo detê-lo com esforço e risco, salvando Brás de ferimentos graves ou até mesmo da morte (já que a queda poderia ter provocado uma tragédia e interrompido a sua \"bacharelice em flor\").\n* **A decisão da recompensa:** O processo de escolha do valor que Brás Cubas decide dar ao almocreve é marcado por uma longa hesitação psicológica e pão-durice por parte do protagonista:\n  1. Inicialmente, Brás pensa em dar **três moedas de ouro** das cinco que trazia consigo, julgando ser uma recompensa digna pela dedicação com que foi salvo.\n  2. Logo em seguida, enquanto o almocreve ajeita os arreios, Brás reconsidera e pensa que **duas moedas**, ou quem sabe **uma única moeda de ouro**, já bastaria para causar \"estremeções de alegria\" naquele homem pobre.\n  3. No entanto, dominado por um espírito de avareza e reflexões mesquinhas — chegando a concluir que o almocreve não teve mérito algum, pois agiu apenas por impulso natural e por mero acaso —, Brás acaba por enfiar a mão no bolso e lhe dá apenas **um cruzado em prata** (equivalente a uma pratinha de valor muito inferior ao que pretendia inicialmente). \n  4. Logo após dar a moeda de prata, Brás percebe que em outro bolso ainda tinha umas moedas de cobre (os vinténs) que deveriam ter sido o pagamento real, sentindo-se culpado e chamando-se a si mesmo de pródigo por ter dado a prata."
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 82,
+    "candidatesTokenCount": 584,
+    "totalTokenCount": 3841,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 82
+      }
+    ],
+    "toolUsePromptTokenCount": 3175,
+    "toolUsePromptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 3175
+      }
+    ],
+    "serviceTier": "standard"
+  },
+  "groundingMetadata": {
+    "groundingChunks": [
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "mas suspeitou-o\ntalvez, entrou a fallar ao jumento de um modo significativo; dava-lhe\nconselhos, dizia-lhe que tomasse juizo, que o «senhor doutor» podia\ncastigal-o; um monologo paternal. Valha-me Deus! até ouvi estalar um\nbeijo: era o almocreve que lhe beijava a testa.\n\n--Olé! exclamei.\n\n--Queira vosmecê perdoar, mas o diabo do bicho está a olhar para a\ngente com tanta graça...\n\nRi-me, hesitei, metti-lhe na mão um cruzado em prata, cavalguei o\njumento, e segui a trote largo, um pouco vexado, melhor direi um pouco\nincerto do effeito da pratinha. Mas a algumas braças de distancia,\nolhei para traz, o almocreve fazia-me grandes cortezias, com evidentes\nmostras de contentamento. Adverti que devia ser assim mesmo; eu\npagara-lhe bem, pagara-lhe talvez de mais. Metti os dedos no bolso\ndo collete que trazia no corpo e senti umas moedas de cobre; eram os\nvintens que eu devera ter dado ao almocreve, em logar do cruzado em\nprata. Porque, emfim, elle não levou em mira nenhuma recompensa ou\nvirtude, cedeu a um impulso natural, ao temperamento, aos habitos do\nofficio; accresce que a circumstancia de estar, não mais adeante nem\nmais atraz, mas justamente no ponto do desastre, parecia constituil-o\nsimples instrumento de Providencia; e de um ou de outro modo, o\nmerito do acto era positivamente nenhum. Fiquei desconsolado com esta\nreflexão, chamei-me prodigo,",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "o coração. Bom\nalmocreve! emquanto eu tornava á consciencia de mim mesmo, elle cuidava\nde concertar os arreios do jumento, com muito zelo e arte. Resolvi\ndar-lho tres moedas de ouro das cinco que trazia commigo; não porque\ntal fosse o preço da minha vida,--essa era inestimavel; mas por que era\numa recompensa digna da dedicação com que elle me salvou. Está dito,\ndou-lhe as tres moedas.\n\n--Prompto, disse elle apresentando-me a redea da cavalgadura.\n\n--Daqui a nada, respondi; deixa-me, que ainda não estou em mim...\n\n--Ora qual!\n\n--Pois não é certo que ia morrendo?\n\n--Se o jumento corre por ahi fóra, é possivel; mas, com a ajuda do\nSenhor, viu vosmecê que não aconteceu nada.\n\nFui aos alforges, tirei um collete velho, em cujo bolso trazia as cinco\nmoedas de ouro, e durante esse tempo cogitei se não era excessiva a\ngratificação, se não bastavam duas moedas. Talvez uma. Com effeito, uma\nmoeda era bastante para lhe dar estremeções de alegria. Examinei-lhe\na roupa; era um pobre diabo, que nunca jamais vira uma moeda de ouro.\nPortanto, uma moeda. Tirei-a, vi-a reluzir á luz do sol; não a viu o\nalmocreve, por que eu tinha-lhe voltado as costas; mas suspeitou-o\ntalvez, entrou a fallar ao jumento de um modo significativo; dava-lhe\nconselhos, dizia-lhe que tomasse juizo, que o «senhor doutor»",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "responsabilidade. Guardei-o, deixei as margens\ndo Mondego, e vim por alli fóra assaz desconsolado, mas sentindo já\nuns impetos, uma curiosidade, um desejo de acotovellar os outros, de\ninfluir, de gozar, de viver,--de prolongar a Universidade pela vida\nadeante...\n\n\n\n\nCAPITULO XXI\n\n\nO almocreve\n\n\nVae então, empacou o jumento em que eu vinha montado; fustiguei-o, elle\ndeu dous corcovos, depois mais tres, emfim mais um, que me sacudiu\nfóra da sella, e com tal desastre, que o pé esquerdo me ficou preso no\nestribo; tento agarrar-me ao ventre do animal, mas já então, espantado,\ndisparou pela estrada fóra. Digo mal: tentou disparar, e effectivamente\ndeu dous saltos, mas um almocreve, que alli estava, acudiu atempo de\nlhe pegar na redea e detel-o, não sem esforço nem perigo. Dominado o\nbruto, desvencilhei-me do estribo e puz-me de pé.\n\n--Olhe do que vosmecê escapou, disse o almocreve.\n\nE era verdade; se o jumento corre por alli fóra, contundia-me\ndevéras, e não sei se a morte não estaria no fim do desastre; cabeça\npartida, uma congestão, qualquer transtorno cá dentro; e lá se me\nia a bacharelice em flor. O almocreve salvara-me talvez a vida;\nera positivo; eu sentia-o no sangue que me agitava o coração. Bom\nalmocreve! emquanto eu tornava á consciencia de mim mesmo, elle cuidava\nde concertar os arreios do jumento, com muito",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888818515-1cmaph7y56fc",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      }
+    ],
+    "groundingSupports": [
+      {
+        "segment": {
+          "endIndex": 128,
+          "text": "No capítulo XXI (*\"O almocreve\"*) de *Memórias Pósthuma de Brás Cubas*, o incidente e a recompensa ocorrem da seguinte forma"
+        },
+        "groundingChunkIndices": [
+          0,
+          1,
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 131,
+          "endIndex": 263,
+          "text": "* **O acidente:** O jumento em que Brás Cubas vinha montado empaca, dá vários corcovos (saltos) e acaba por jogá-lo fora da sela"
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 265,
+          "endIndex": 386,
+          "text": "Para piorar, o pé esquerdo de Brás fica preso no estribo e o animal se assusta, pronto para disparar pela estrada afora"
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 388,
+          "endIndex": 708,
+          "text": "Um almocreve (condutor de bestas de carga) que passava ou estava pelo local acode a tempo, agarrando a rédea do animal e conseguindo detê-lo com esforço e risco, salvando Brás de ferimentos graves ou até mesmo da morte (já que a queda poderia ter provocado uma tragédia e interrompido a sua \"bacharelice em flor\")"
+        },
+        "groundingChunkIndices": [
+          2
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 909,
+          "endIndex": 1065,
+          "text": "Inicialmente, Brás pensa em dar **três moedas de ouro** das cinco que trazia consigo, julgando ser uma recompensa digna pela dedicação com que foi salvo"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1072,
+          "endIndex": 1290,
+          "text": "Logo em seguida, enquanto o almocreve ajeita os arreios, Brás reconsidera e pensa que **duas moedas**, ou quem sabe **uma única moeda de ouro**, já bastaria para causar \"estremeções de alegria\" naquele homem pobre"
+        },
+        "groundingChunkIndices": [
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1297,
+          "endIndex": 1656,
+          "text": "No entanto, dominado por um espírito de avareza e reflexões mesquinhas — chegando a concluir que o almocreve não teve mérito algum, pois agiu apenas por impulso natural e por mero acaso —, Brás acaba por enfiar a mão no bolso e lhe dá apenas **um cruzado em prata** (equivalente a uma pratinha de valor muito inferior ao que pretendia inicialmente)"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 1664,
+          "endIndex": 1894,
+          "text": "Logo após dar a moeda de prata, Brás percebe que em outro bolso ainda tinha umas moedas de cobre (os vinténs) que deveriam ter sido o pagamento real, sentindo-se culpado e chamando-se a si mesmo de pródigo por ter dado a prata"
+        },
+        "groundingChunkIndices": [
+          0
+        ]
+      }
+    ]
+  }
+}

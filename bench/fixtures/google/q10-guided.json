@@ -1,0 +1,121 @@
+{
+  "id": "q10-guided",
+  "model": "gemini-3.5-flash-lite",
+  "recordedAt": "2026-09-08T11:17:27.530Z",
+  "reportVersion": "bench-report-1",
+  "storeEmbeddingModel": "gemini-embedding-2",
+  "storeChunking": {
+    "maxTokensPerChunk": 200,
+    "maxOverlapTokens": 20
+  },
+  "parts": [
+    {
+      "text": "A última frase do romance *Memórias Póstumas de Brás Cubas*, de Machado de Assis (no Capítulo CLX, \"Das negativas\"), é:\n\n> **«— Não tive filhos, não transmitti a nenhuma creatura o legado da nossa miseria.»**\n\n### O que ela conclui sobre a vida de Brás Cubas?\n\nA frase serve como o fecho filosófico e pessimista das memórias do defunto autor. Ao fazer um balanço de sua existência — ponderando que não alcançou a grande celebridade com o seu emplasto, que não foi ministro nem califa, mas que, por outro lado, também não precisou trabalhar duramente para sobreviver nem sofreu as tragédias extremas de outros personagens (como D. Plácida ou Quincas Borba) —, Brás Cubas conclui que não saiu \"quite\" com a vida. \n\nA vida é encarada por ele fundamentalmente como um fardo repleto de dores, desilusões e frustrações. Portanto, ao afirmar que **não teve filhos**, ele vê como seu maior trunfo final o fato de **não ter repassado essa herança de sofrimento** (o \"legado da nossa miséria\") a mais ninguém, encerrando a sua estirpe e poupando um novo ser humano de experimentar as agruras da existência. É uma visão profundamente niilista e melancólica sobre a condição humana."
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 82,
+    "candidatesTokenCount": 422,
+    "totalTokenCount": 8217,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 82
+      }
+    ],
+    "toolUsePromptTokenCount": 7713,
+    "toolUsePromptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 7713
+      }
+    ],
+    "serviceTier": "standard"
+  },
+  "groundingMetadata": {
+    "groundingChunks": [
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "porque eras a genuina e directa\ninspiração do ceu. O acaso determinou o contrario; e ahi vos ficaes\neternamente hypocondriacos.\n\nEste ultimo capitulo é todo de negativas. Não alcancei a celebridade do\nemplasto, não fui ministro, não fui califa, não conheci o casamento.\nVerdade é que, ao lado dessas faltas, coube-me a boa fortuna de não\ncomprar o pão com o suor do meu rosto. Mais: não padeci a morte de D.\nPlacida, nem a semi-demencia do Quincas Borba. Sommadas umas cousas e\noutras, qualquer pessoa imaginará que não houve mingua nem sobra, e\nconseguintemente que sai quite com a vida. E imaginará mal; porque ao\nchegar a este outro lado do mysterio, achei-me com um pequeno saldo,\nque é a derradeira negativa deste capitulo de negativas:--Não tive\nfilhos, não transmitti a nenhuma creatura o legado da nossa miseria.\n\nFIM\n\n\n\nÍNDICE\n\n\nAo leitor v\n\nDedicatória vii\n\nCapitulo\n\n\n I Obito do auto\n II O emplasto\n III Genealogia\n IV A idéa fixa\n V Em que apparece a orelha de uma senhora\n VI Chimène, qui l'eut dit? Rodrigue, qui l'eut cru?\n VII O delirio\n VIII Razão contra Sandice\n IX Transição\n X Naquelle dia\n XI O menino é pae do homem\n XII Um episodio de 1814\n XIII Um salto\n XIV O primeiro beijo\n XV Marcella\n XVI Uma reflexão immoral\n XVII Do",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      },
+      {
+        "retrievedContext": {
+          "title": "machado-memorias-posthumas",
+          "text": "porque eras a genuina e directa\ninspiração do ceu. O acaso determinou o contrario; e ahi vos ficaes\neternamente hypocondriacos.\n\nEste ultimo capitulo é todo de negativas. Não alcancei a celebridade do\nemplasto, não fui ministro, não fui califa, não conheci o casamento.\nVerdade é que, ao lado dessas faltas, coube-me a boa fortuna de não\ncomprar o pão com o suor do meu rosto. Mais: não padeci a morte de D.\nPlacida, nem a semi-demencia do Quincas Borba. Sommadas umas cousas e\noutras, qualquer pessoa imaginará que não houve mingua nem sobra, e\nconseguintemente que sai quite com a vida. E imaginará mal; porque ao\nchegar a este outro lado do mysterio, achei-me com um pequeno saldo,\nque é a derradeira negativa deste capitulo de negativas:--Não tive\nfilhos, não transmitti a nenhuma creatura o legado da nossa miseria.\n\nFIM\n\n\n\nÍNDICE\n\n\nAo leitor v\n\nDedicatória vii\n\nCapitulo\n\n\n I Obito do auto\n II O emplasto\n III Genealogia\n IV A idéa fixa\n V Em que apparece a orelha de uma senhora\n VI Chimène, qui l'eut dit? Rodrigue, qui l'eut cru?\n VII O delirio\n VIII Razão contra Sandice\n IX Transição\n X Naquelle dia\n XI O menino é pae do homem\n XII Um episodio de 1814\n XIII Um salto\n XIV O primeiro beijo\n XV Marcella\n XVI Uma reflexão immoral\n XVII Do",
+          "fileSearchStore": "fileSearchStores/fundamentumbench17888662476-xdbxf0fxjbou",
+          "customMetadata": [
+            {
+              "key": "documentId",
+              "stringValue": "machado-memorias-posthumas"
+            }
+          ]
+        }
+      }
+    ],
+    "groundingSupports": [
+      {
+        "segment": {
+          "endIndex": 124,
+          "text": "A última frase do romance *Memórias Póstumas de Brás Cubas*, de Machado de Assis (no Capítulo CLX, \"Das negativas\"), é"
+        },
+        "groundingChunkIndices": [
+          0,
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 127,
+          "endIndex": 220,
+          "text": "> **«— Não tive filhos, não transmitti a nenhuma creatura o legado da nossa miseria.»**"
+        },
+        "groundingChunkIndices": [
+          0,
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 655,
+          "endIndex": 739,
+          "text": "Plácida ou Quincas Borba) —, Brás Cubas conclui que não saiu \"quite\" com a vida"
+        },
+        "groundingChunkIndices": [
+          0,
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 848,
+          "endIndex": 893,
+          "text": "Portanto, ao afirmar que **não teve filhos**"
+        },
+        "groundingChunkIndices": [
+          0,
+          1
+        ]
+      },
+      {
+        "segment": {
+          "startIndex": 848,
+          "endIndex": 1038,
+          "text": "Portanto, ao afirmar que **não teve filhos**, ele vê como seu maior trunfo final o fato de **não ter repassado essa herança de sofrimento** (o \"legado da nossa miséria\") a mais ninguém"
+        },
+        "groundingChunkIndices": [
+          0,
+          1
+        ]
+      }
+    ]
+  }
+}

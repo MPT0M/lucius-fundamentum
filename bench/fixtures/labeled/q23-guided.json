@@ -1,0 +1,150 @@
+{
+  "id": "q23-guided",
+  "parts": [
+    {
+      "text": "Em ***Memórias Póstumas de Brás Cubas***, obra de Machado de Assis, **Prudêncio** é um ex-moleque de casa, que fora escravizado na infância de Brás Cubas e torturado por ele (Brás costumava montar em Prudêncio como se fosse um cavalo, pôr-lhe um freio na boca e desancá-lo sem compaixão). Anos mais tarde, Prudêncio foi libertado pelo pai de Brás Cubas.\n\nQuando o reencontra adulto no **Valongo** (conforme narrado no capítulo intitulado *\"O vergalho\"*), Brás Cubas testemunha a seguinte cena:\n* Prudêncio aparece na praça **surrando violentamente com um vergalho (chicotada) outro homem negro**, que gemia e pedia perdão.\n* Ao se aproximar e intervir, Brás Cubas descobre estupefato que o homem do vergalho é o próprio Prudêncio, e que o homem sendo açoitado é um escravo dele. \n\nRefletindo sobre o episódio, Brás Cubas percebe a ironia e a profundidade psicológica da situação: Prudêncio, agora livre e dono de seu próprio destino, repetia com o seu próprio escravo a violência que sofrera na infância, usando-a como uma forma de transferir adiante as agressões e humilhações que havia recebido."
+    }
+  ],
+  "segments": [
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 68,
+        "end": 288
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 196518,
+            "end": 196586
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 196587,
+            "end": 196657
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 289,
+        "end": 353
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 195473,
+            "end": 195552
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 355,
+        "end": 453
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 194886,
+            "end": 194956
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 496,
+        "end": 622
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 195027,
+            "end": 195095
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 195141,
+            "end": 195208
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 625,
+        "end": 778
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 195406,
+            "end": 195472
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 195473,
+            "end": 195552
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 195606,
+            "end": 195655
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 195657,
+            "end": 195674
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 880,
+        "end": 1097
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 196451,
+            "end": 196517
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 196795,
+            "end": 196866
+          }
+        }
+      ]
+    }
+  ],
+  "labeledBy": "MPT0M",
+  "labeledAt": "2026-09-08T21:22:36.041Z"
+}

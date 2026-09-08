@@ -1,0 +1,264 @@
+{
+  "id": "q09-plain",
+  "parts": [
+    {
+      "text": "No romance ***Memórias Póstumas de Brás Cubas*** (1881), de Machado de Assis, **Dona Plácida** é uma personagem secundária de extrema importância para o enredo, marcada por uma vida de intensa privação, trabalho duro e marginalidade social. \n\nAbaixo estão os detalhes sobre quem ela é e como o narrador conta a sua origem:\n\n### 1. Quem é Dona Plácida?\nDona Plácida é uma mulher humilde que acaba se tornando peça-chave no romance ao servir de **testa de ferro (ou medianeira) para os encontros amorosos clandestinos** entre Brás Cubas e Virgília (que é casada com Lobo Neves). Para acobertar o adultério, Brás Cubas aluga uma casa onde Dona Plácida passa a residir e finge ser a dona/moradora, recebendo Virgília sob o pretexto de visitas sociais ou laços de amizade. \n\nApesar de sofrer moralmente com o papel de alcoviteira — visto que toda a sua vida foi pautada por um rígido esforço de ser honesta e trabalhadora —, ela aceita a situação por necessidade financeira, medo da miséria extrema e gratidão aos dois. No fim da vida, Brás Cubas lhe garante uma tença (um pecúlio de cinco contos de réis), tirando-a da penúria.\n\n---\n\n### 2. Como o narrador conta a origem dela?\nA história e a origem de Dona Plácida são narradas de forma explícita e cínica nos capítulos **LXXIV** (*História de D. Plácida*) e **LXXV** (*Comigo*) do livro. \n\nO relato divide-se em duas partes: a biografia prática contada pela própria personagem e a reflexão filosófica/irônica que o narrador (Brás Cubas) faz sobre o seu nascimento.\n\n* **A versão contada por ela mesma:**\n  Dona Plácida revela a Brás Cubas que era **filha natural de um sacristão da Sé e de uma mulher que fazia doces** para fora. Ela perdeu o pai aos dez anos de idade, altura em que já ajudava a ralando coco e fazendo biscates de doceira. Aos quinze ou dezesseis anos, casou-se com um alfaiate que morreu de tísica pouco tempo depois, deixando-lhe uma filha. Viuva e muito jovem, viu-se obrigada a sustentar três pessoas: a si mesma, a filha pequena e a mãe idosa e cansada. Para sobreviver, acumulava funções: fazia doces, costurava dia e noite para várias lojas e dava aulas particulares para crianças do bairro por uma micharia. Teve uma vida inteiramente sacrificada ao trabalho exaustivo, marcada por mãos calosas e dedos furados pela agulha, alimentando o pavor constante de acabar na rua a pedir esmola.\n\n* **A leitura cínica e filosófica de Brás Cubas:**\n  No capítulo seguinte (*Comigo*), Brás Cubas ironiza o nascimento de Plácida. Ele imagina a cena em tom de farsa: o sacristão da Sé, ajudando a missa, avista a mulher (a doceira), cruza olhares com ela, diz-lhe uma graça ou pisando-lhe o pé perto dos altares. Desse encontro passageiro e de \"luxúrias vadias\", nasce Dona Plácida. \n  \n  O narrador conclui com o seu típico pessimismo e humor ácido que, se a recém-nascida pudesse falar, perguntaria aos pais por que a trouxeram ao mundo. E os pais responderam mentalmente que a chamaram para *“queimar os dedos nos tachos, os olhos na costura, comer mal, ou não comer, andar de um lado para outro... até acabar um dia na lama ou no hospital”*."
+    }
+  ],
+  "segments": [
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 352,
+        "end": 545
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 198573,
+            "end": 198766
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 209703,
+            "end": 209815
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 577,
+        "end": 767
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 198573,
+            "end": 198766
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 770,
+        "end": 918
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 198767,
+            "end": 198822
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 206236,
+            "end": 206318
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 920,
+        "end": 1014
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 207851,
+            "end": 207903
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 207793,
+            "end": 207850
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1015,
+        "end": 1123
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 199537,
+            "end": 199639
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1554,
+        "end": 1677
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 204708,
+            "end": 204790
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1678,
+        "end": 1788
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 204791,
+            "end": 204912
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1789,
+        "end": 1908
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 204913,
+            "end": 205020
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1909,
+        "end": 2024
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 205021,
+            "end": 205163
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 2025,
+        "end": 2181
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 205164,
+            "end": 205338
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 2244,
+        "end": 2360
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 207639,
+            "end": 207792
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 207851,
+            "end": 207903
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 2528,
+        "end": 2673
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 208507,
+            "end": 208775
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 2674,
+        "end": 2743
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 208820,
+            "end": 208874
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 2956,
+        "end": 3104
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 209080,
+            "end": 209429
+          }
+        }
+      ]
+    }
+  ],
+  "labeledBy": "MPT0M",
+  "labeledAt": "2026-09-08"
+}

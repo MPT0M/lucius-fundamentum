@@ -1,0 +1,170 @@
+{
+  "id": "q07-plain",
+  "parts": [
+    {
+      "text": "Em ***Memórias Póstumas de Brás Cubas*** (1881), de Machado de Assis, a figura do pai, **Dôg. / Sr.º Luiz Cubas** (descendente de uma família que tentava afastar o passado humilde ligado à tanoaria), é retratada com bastante afeto, mas também com certa ironia crítica típica do narrador defunto.\n\nAbaixo estão detalhadas a descrição que Brás Cubas faz do pai e as ambições que este tinha para a sua carreira:\n\n---\n\n### 1. Como Brás Cubas descreve o pai\n\n* **Homem de imaginação e \"pachola\":** Brás descreve o pai como um homem imaginativo — a ponto de inventar trocadilhos (*calembours*) e árvores genealógicas grandiosas para disfarçar que a família descendia de um tanoeiro (fabricante de tonéis). Diz que ele tinha *\"uns fumos de pacholice\"* (uma certa vaidade ridícula ou mania de grandeza), mas pondera: *\"mas quem não é um pouco pachola nesse mundo?\"*\n* **Varão digno e leal:** Reconhece-lhe qualidades morais, descrevendo-o como um *\"varão digno e leal como poucos\"*.\n* **Amor incondicional e excessivo:** O pai o idolatrava de forma cega. Brás afirma que recebia dele *\"esse amor sem mérito, que é um simples e forte impulso da carne; amor que a razão não contrasta nem régè\"*. \n* **Eduquês permissivo:** Devido a esse amor desmedido, o pai era complacente com as travessuras do filho. Quando Brás cometia maldades ou travessuras na infância, o pai limitava-se a dar-lhe palmadinhas na cara, rir e chamar-lhe *\"bregeiro\"*, falhando em dar-lhe uma educação rigorosa (o que gerava críticas até do tio, o cônego).\n\n---\n\n### 2. Que carreira o pai queria para ele?\n\nO pai de Brás Cubas nutria grandes ambições elitistas e sociais para o filho, rejeitando qualquer possibilidade de obscuridade ou insignificância:\n\n* **Carreira Política (Homem Público):** O pai desejava ardentemente que Brás se tornasse uma figura de destaque na política do Império, idealizando para ele um assento na **Câmara dos Deputados**. \n* **Ascensão Social e Casamento Estratégico:** Para consolidar essa trajetória de poder e prestígio, o pai planejava aliar a carreira política de Brás a um **casamento de conveniência com Virgília** (filha do Conselheiro Dutra, uma forte influência política da época). \n* **Ilustrar o Nome da Família:** O lema do pai era fazer o filho brilhar para continuar e enobrecer ainda mais o nome da família Cubas. Ele resumia sua filosofia de cobrança com conselhos diretos ao filho: \n  > *\"Teme a obscuridade, Brás; foge do que é ínfimo. Olha que os homens valem por diferentes modos, e que o mais seguro de todos é valer pela opinião dos outros homens.\"*"
+    }
+  ],
+  "segments": [
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 493,
+        "end": 699
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 8281,
+            "end": 8408
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 9320,
+            "end": 9347
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 700,
+        "end": 857
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 9409,
+            "end": 9495
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 884,
+        "end": 974
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 9348,
+            "end": 9407
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1047,
+        "end": 1185
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 40268,
+            "end": 40373
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1294,
+        "end": 1429
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 40157,
+            "end": 40232
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1473,
+        "end": 1517
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 40758,
+            "end": 40900
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1854,
+        "end": 1913
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 107738,
+            "end": 107836
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1963,
+        "end": 2184
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 106070,
+            "end": 106150
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 106462,
+            "end": 106539
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 2396,
+        "end": 2565
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 107159,
+            "end": 107323
+          }
+        }
+      ]
+    }
+  ],
+  "labeledBy": "MPT0M",
+  "labeledAt": "2026-09-08"
+}

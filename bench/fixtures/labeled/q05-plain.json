@@ -1,0 +1,145 @@
+{
+  "id": "q05-plain",
+  "parts": [
+    {
+      "text": "**Quincas Borba** é um dos personagens mais marcantes da literatura brasileira, criado por **Machado de Assis**. Ele é o filósofo excêntrico e mendigo que desempenha um papel central no clássico *Memórias Póstumas de Brás Cubas* (1881) e que dá nome ao romance homônimo *Quincas Borba* (1891). \n\nAo longo de sua trajetória nos livros, ele enlouquece e desenvolve um sistema filosófico próprio e bizarro chamado **Humanitismo**, que serve como uma grande sátira de Machado de Assis às teorias científicas, sociais e filosóficas da sua época (como o darwinismo social, o positivismo e o evolucionismo de Herbert Spencer).\n\nAbaixo estão os detalhes sobre quem ele é e os principais pontos do Humanitismo:\n\n---\n\n### Quem é Quincas Borba?\nNo início de *Memórias Póstumas de Brás Cubas*, ele é um homem pobre e cheio de manias que cruza a vida do protagonista. No entanto, após receber uma herança inesperada de Brás Cubas, Quincas Borba fica riquíssimo, passa a ostentar riqueza e ganha notoriedade social. É nesse período de opulência que ele se dedica inteiramente a estruturar e difundir a sua grande obra filosófica: o **Humanitismo**. Mais tarde, a sua saúde mental deteriora de vez, culminando em delírios de que ele próprio seria a encarnação de uma divindade, e ele acaba morrendo na miséria.\n\n---\n\n### O que é o Humanitismo?\n\nO Humanitismo é apresentado como a \"verdadeira\" filosofia do universo, baseada na figura de **Humanitas**, um princípio supremo e abstrato que se manifesta em cada ser humano (que seria, ao mesmo tempo, o veículo, o cocheiro e o passageiro dessa força). \n\nOs principais pilares e absurdos lógicos defendidos pelo Humanitismo incluem:\n\n1. **A negação da dor como ilusão:** \n   Para Quincas Borba, a dor física e o sofrimento humano são puras ilusões que podem ser superadas se o homem compreender que ele próprio é parte de *Humanitas*. Segundo a doutrina, a única verdadeira desgraça no universo é **não nascer** — afinal, qualquer miséria ou sofrimento ainda é preferível à inexistência.\n\n2. **A glorificação da guerra, da fome e da destruição:** \n   Este é o aspecto mais cínico e famoso da filosofia. Quincas Borba defendia que a guerra, a fome e as catástrofes não são calamidades, mas sim operações convenientes e necessárias de *Humanitas*. Para justificar isso, ele argumentava que a destruição de uns é o sustento de outros (ilustrando a tese com o exemplo de um frango que ele comia, cuja existência dependia de uma longa cadeia de exploração, trabalho forçado, navegação e morte). \n\n3. **A equivalência entre todas as coisas:** \n   Na visão humanitista, as grandes guerras de Napoleão Bonaparte e uma simples briga entre cabras têm exatamente o mesmo valor e a mesma \"sublimidade\" para o cosmos, com a única diferença de que os soldados humanos têm a consciência de que estão morrendo.\n\n4. **A inveja e o egoísmo como virtudes:** \n   Como a sobrevivência e a autoafirmação do \"forte\" são essenciais para a dinâmica de *Humanitas*, sentimentos bélicos, a competição implacável e a inveja passam a ser vistos não como defeitos, mas como virtudes que estimulam a energia vital e a evolução.\n\n### O propósito do Humanitismo na obra de Machado de Assis\nAtravés de Quincas Borba e do Humanitismo, Machado de Assis ironiza a tendência intelectual do século XIX de tentar explicar o universo por meio de sistemas absolutos e pretensiosos. O Humanitismo funciona, na prática, como uma justificação filosófica fria e cínica para a lei do mais forte, escancarando o egoísmo, a hipocrisia e a brutalidade das relações humanas na sociedade burguesa."
+    }
+  ],
+  "segments": [
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 734,
+        "end": 854
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 171960,
+            "end": 172074
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 172123,
+            "end": 172277
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1330,
+        "end": 1504
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 246497,
+            "end": 246561
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 290349,
+            "end": 290458
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1517,
+        "end": 1581
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 292510,
+            "end": 292606
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1706,
+        "end": 1865
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 361354,
+            "end": 361448
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 1866,
+        "end": 2018
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 292168,
+            "end": 292228
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 2134,
+        "end": 2520
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 294407,
+            "end": 294653
+          }
+        },
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 294654,
+            "end": 295230
+          }
+        }
+      ]
+    },
+    {
+      "partIndex": 0,
+      "textSpan": {
+        "start": 2572,
+        "end": 2825
+      },
+      "sourceSpans": [
+        {
+          "documentId": "machado-memorias-posthumas",
+          "span": {
+            "start": 340193,
+            "end": 340407
+          }
+        }
+      ]
+    }
+  ],
+  "labeledBy": "MPT0M",
+  "labeledAt": "2026-09-08"
+}

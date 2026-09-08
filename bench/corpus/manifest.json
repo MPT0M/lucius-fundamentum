@@ -7,6 +7,1542 @@
       "license": "public-domain-term",
       "sourceUrl": "https://www.gutenberg.org/ebooks/54829",
       "collectedAt": "2026-09-08"
+    },
+    {
+      "id": "q01-guided",
+      "path": "fixtures/google/q01-guided.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T11:17:27.530Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "labeled-q01-guided",
+      "path": "fixtures/labeled/q01-guided.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T11:17:27.530Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "q01-plain",
+      "path": "fixtures/google/q01-plain.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T11:17:27.530Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "labeled-q01-plain",
+      "path": "fixtures/labeled/q01-plain.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T11:17:27.530Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "q02-guided",
+      "path": "fixtures/google/q02-guided.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T11:17:27.530Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "labeled-q02-guided",
+      "path": "fixtures/labeled/q02-guided.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T11:17:27.530Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "q02-plain",
+      "path": "fixtures/google/q02-plain.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T11:17:27.530Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "labeled-q02-plain",
+      "path": "fixtures/labeled/q02-plain.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T11:17:27.530Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "q03-guided",
+      "path": "fixtures/google/q03-guided.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T11:17:27.530Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "labeled-q03-guided",
+      "path": "fixtures/labeled/q03-guided.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T11:17:27.530Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "q03-plain",
+      "path": "fixtures/google/q03-plain.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T11:17:27.530Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "labeled-q03-plain",
+      "path": "fixtures/labeled/q03-plain.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T11:17:27.530Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "q04-guided",
+      "path": "fixtures/google/q04-guided.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T11:17:27.530Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "labeled-q04-guided",
+      "path": "fixtures/labeled/q04-guided.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T11:17:27.530Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "q04-plain",
+      "path": "fixtures/google/q04-plain.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T11:17:27.530Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "labeled-q04-plain",
+      "path": "fixtures/labeled/q04-plain.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T11:17:27.530Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "q05-guided",
+      "path": "fixtures/google/q05-guided.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T11:17:27.530Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "labeled-q05-guided",
+      "path": "fixtures/labeled/q05-guided.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T11:17:27.530Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "q05-plain",
+      "path": "fixtures/google/q05-plain.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T11:17:27.530Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "labeled-q05-plain",
+      "path": "fixtures/labeled/q05-plain.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T11:17:27.530Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "q06-guided",
+      "path": "fixtures/google/q06-guided.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T11:17:27.530Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "labeled-q06-guided",
+      "path": "fixtures/labeled/q06-guided.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T11:17:27.530Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "q06-plain",
+      "path": "fixtures/google/q06-plain.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T11:17:27.530Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "labeled-q06-plain",
+      "path": "fixtures/labeled/q06-plain.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T11:17:27.530Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "q07-guided",
+      "path": "fixtures/google/q07-guided.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T11:17:27.530Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "labeled-q07-guided",
+      "path": "fixtures/labeled/q07-guided.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T11:17:27.530Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "q07-plain",
+      "path": "fixtures/google/q07-plain.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T11:17:27.530Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "labeled-q07-plain",
+      "path": "fixtures/labeled/q07-plain.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T11:17:27.530Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "q08-guided",
+      "path": "fixtures/google/q08-guided.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T11:17:27.530Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "labeled-q08-guided",
+      "path": "fixtures/labeled/q08-guided.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T11:17:27.530Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "q08-plain",
+      "path": "fixtures/google/q08-plain.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T11:17:27.530Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "labeled-q08-plain",
+      "path": "fixtures/labeled/q08-plain.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T11:17:27.530Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "q09-guided",
+      "path": "fixtures/google/q09-guided.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T11:17:27.530Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "labeled-q09-guided",
+      "path": "fixtures/labeled/q09-guided.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T11:17:27.530Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "q09-plain",
+      "path": "fixtures/google/q09-plain.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T11:17:27.530Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "labeled-q09-plain",
+      "path": "fixtures/labeled/q09-plain.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T11:17:27.530Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "q10-guided",
+      "path": "fixtures/google/q10-guided.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T11:17:27.530Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "labeled-q10-guided",
+      "path": "fixtures/labeled/q10-guided.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T11:17:27.530Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "q10-plain",
+      "path": "fixtures/google/q10-plain.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T11:17:27.530Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "labeled-q10-plain",
+      "path": "fixtures/labeled/q10-plain.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T11:17:27.530Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "q11-guided",
+      "path": "fixtures/google/q11-guided.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "labeled-q11-guided",
+      "path": "fixtures/labeled/q11-guided.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "q11-plain",
+      "path": "fixtures/google/q11-plain.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "labeled-q11-plain",
+      "path": "fixtures/labeled/q11-plain.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "q12-guided",
+      "path": "fixtures/google/q12-guided.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "labeled-q12-guided",
+      "path": "fixtures/labeled/q12-guided.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "q12-plain",
+      "path": "fixtures/google/q12-plain.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "labeled-q12-plain",
+      "path": "fixtures/labeled/q12-plain.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "q13-guided",
+      "path": "fixtures/google/q13-guided.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "labeled-q13-guided",
+      "path": "fixtures/labeled/q13-guided.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "q13-plain",
+      "path": "fixtures/google/q13-plain.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "labeled-q13-plain",
+      "path": "fixtures/labeled/q13-plain.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "q14-guided",
+      "path": "fixtures/google/q14-guided.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "labeled-q14-guided",
+      "path": "fixtures/labeled/q14-guided.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "q14-plain",
+      "path": "fixtures/google/q14-plain.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "labeled-q14-plain",
+      "path": "fixtures/labeled/q14-plain.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "q15-guided",
+      "path": "fixtures/google/q15-guided.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "labeled-q15-guided",
+      "path": "fixtures/labeled/q15-guided.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "q15-plain",
+      "path": "fixtures/google/q15-plain.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "labeled-q15-plain",
+      "path": "fixtures/labeled/q15-plain.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "q16-guided",
+      "path": "fixtures/google/q16-guided.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "labeled-q16-guided",
+      "path": "fixtures/labeled/q16-guided.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "q16-plain",
+      "path": "fixtures/google/q16-plain.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "labeled-q16-plain",
+      "path": "fixtures/labeled/q16-plain.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "q17-guided",
+      "path": "fixtures/google/q17-guided.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "labeled-q17-guided",
+      "path": "fixtures/labeled/q17-guided.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "q17-plain",
+      "path": "fixtures/google/q17-plain.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "labeled-q17-plain",
+      "path": "fixtures/labeled/q17-plain.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "q18-guided",
+      "path": "fixtures/google/q18-guided.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "labeled-q18-guided",
+      "path": "fixtures/labeled/q18-guided.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "q18-plain",
+      "path": "fixtures/google/q18-plain.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "labeled-q18-plain",
+      "path": "fixtures/labeled/q18-plain.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "q19-guided",
+      "path": "fixtures/google/q19-guided.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "labeled-q19-guided",
+      "path": "fixtures/labeled/q19-guided.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "q19-plain",
+      "path": "fixtures/google/q19-plain.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "labeled-q19-plain",
+      "path": "fixtures/labeled/q19-plain.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "q20-guided",
+      "path": "fixtures/google/q20-guided.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "labeled-q20-guided",
+      "path": "fixtures/labeled/q20-guided.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "q20-plain",
+      "path": "fixtures/google/q20-plain.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "labeled-q20-plain",
+      "path": "fixtures/labeled/q20-plain.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "q21-guided",
+      "path": "fixtures/google/q21-guided.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "labeled-q21-guided",
+      "path": "fixtures/labeled/q21-guided.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "q21-plain",
+      "path": "fixtures/google/q21-plain.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "labeled-q21-plain",
+      "path": "fixtures/labeled/q21-plain.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "q22-guided",
+      "path": "fixtures/google/q22-guided.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "labeled-q22-guided",
+      "path": "fixtures/labeled/q22-guided.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "q22-plain",
+      "path": "fixtures/google/q22-plain.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "labeled-q22-plain",
+      "path": "fixtures/labeled/q22-plain.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "q23-guided",
+      "path": "fixtures/google/q23-guided.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "labeled-q23-guided",
+      "path": "fixtures/labeled/q23-guided.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "q23-plain",
+      "path": "fixtures/google/q23-plain.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "labeled-q23-plain",
+      "path": "fixtures/labeled/q23-plain.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "q24-guided",
+      "path": "fixtures/google/q24-guided.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "labeled-q24-guided",
+      "path": "fixtures/labeled/q24-guided.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "q24-plain",
+      "path": "fixtures/google/q24-plain.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
+    },
+    {
+      "id": "labeled-q24-plain",
+      "path": "fixtures/labeled/q24-plain.json",
+      "kind": "derived",
+      "derivedFrom": [
+        "machado-memorias-posthumas"
+      ],
+      "model": "gemini-3.5-flash-lite",
+      "recordedAt": "2026-09-08T15:37:31.392Z",
+      "reportVersion": "bench-report-1",
+      "storeEmbeddingModel": "gemini-embedding-2",
+      "storeChunking": {
+        "maxTokensPerChunk": 200,
+        "maxOverlapTokens": 20
+      }
     }
   ]
 }
