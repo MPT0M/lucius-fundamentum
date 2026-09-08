@@ -8,9 +8,11 @@
  * of files present, so that the disk test in `tests/` is thin and the same
  * rules are checked by unit tests with small hand-built manifests. The two
  * allowlists — which licenses a source may carry, who may sign a label — are
- * NOT here: they are declared in the disk test, where the owner adds to them.
- * A guard that lives in a comment is not a guard; one that lives in a test the
- * suite runs is.
+ * NOT here: the license list is declared in the disk test, its only reader,
+ * and the labeler list in `allowlists.ts`, read by that test and by the
+ * harness, which scores labels kept outside the repository. In both places the
+ * owner adds to them and the suite runs them. A guard that lives in a comment
+ * is not a guard; one the suite runs is.
  *
  * Why the license is on the source and inherited by the derived: a recorded
  * response contains verbatim text of the documents it cites, and a label is a

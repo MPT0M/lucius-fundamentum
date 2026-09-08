@@ -1,0 +1,17 @@
+{
+    // Emits the benchmark harness so `npm run bench` can execute it with plain
+    // Node. The harness imports the package sources by relative path, so both
+    // trees are compiled together under bench/.out (gitignored); nothing here
+    // reaches dist/ or the tarball. The tests are excluded: they run under
+    // vitest, which transpiles on its own.
+    "extends": "./tsconfig.typecheck.json",
+    "compilerOptions": {
+        "noEmit": false,
+        "declaration": false,
+        "declarationMap": false,
+        "sourceMap": false,
+        "outDir": "./bench/.out"
+    },
+    "include": ["src", "bench/src"],
+    "exclude": ["**/*.test.ts"]
+}

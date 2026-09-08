@@ -155,8 +155,8 @@ export interface BenchmarkRunReport {
     };
 }
 
-/** The one reading of the activation counter, in either spelling. Absent in both means the search did not run. */
-function toolUsePromptTokens(fixture: GoogleRawFixture): number {
+/** The one reading of the activation counter, in either spelling. Absent in both means the search did not run. Exported for the runner's progress log. */
+export function toolUsePromptTokens(fixture: GoogleRawFixture): number {
     return fixture.usageMetadata.toolUsePromptTokenCount ?? fixture.usageMetadata.tool_use_prompt_token_count ?? 0;
 }
 

@@ -37,9 +37,10 @@
   },
   "scripts": {
     "build": "tsc",
-    "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.typecheck.json",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.typecheck.json && tsc --noEmit -p tsconfig.bench.json",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "bench": "tsc -p tsconfig.bench.json && node bench/.out/bench/src/main.js"
   },
   "dependencies": {},
   "devDependencies": {
