@@ -8,6 +8,14 @@ All notable changes to this package are documented here. The format follows
 
 ### Changed
 
+- A URL region now stops at `$`, at a backtick and at an already masked code
+  region. Before, `https://x.y$a$` was one `url` region that swallowed the
+  formula, and a URL glued to inline code was dropped whole for overlapping
+  it. The price: a `$` anywhere in a URL ends the URL there. Text in which
+  no `$` or backtick occurs inside a URL masks exactly as before. The formula
+  pass now drops a match that overlaps an earlier region, like the code and
+  URL passes always did, so the spans stay disjoint when a `$` before a URL
+  meets the `$` the URL released.
 - `maskProtectedRegions` now returns a `ClassifiedMaskResult`: every span
   carries `kind` (`'code' | 'url' | 'formula' | 'abbreviation'`), the pass that
   painted it. `ClassifiedMaskResult` is a subtype of `MaskResult` — nothing was

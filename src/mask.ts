@@ -26,6 +26,12 @@
  * code and the period of `example.com` is a URL's, and by then both are mask
  * characters that no word pattern can match.
  *
+ * One exception to "a later pass cannot match inside an earlier region": a
+ * URL stops at `$` and leaves that `$` in the text, and the formula pattern
+ * crosses mask characters, so a `$` opened before the URL can close on it.
+ * That is why the formula pass, like the code and URL passes, drops a match
+ * that overlaps an earlier region and repaints only what it kept.
+ *
  * Length is preserved at every step, so all spans are valid against the
  * original, and `Chunk.text` is still cut from the original — a chunk never
  * carries a mask character.
@@ -43,17 +49,21 @@ const FENCED_CODE = /```[\s\S]*?```/g;
 const INLINE_CODE = /`[^`\n]+`/g;
 
 /**
- * `http(s)://` up to the first whitespace or common closing delimiter. The
- * trailing-punctuation problem (`https://x.y.` at a sentence end) is resolved
- * by trimming: a URL does not end in `.`, `,`, `;` or `:`.
+ * `http(s)://` up to the first whitespace, common closing delimiter, or the
+ * delimiter of another region. The trailing-punctuation problem
+ * (`https://x.y.` at a sentence end) is resolved by trimming: a URL does not
+ * end in `.`, `,`, `;` or `:`.
  *
- * KNOWN LIMITATION: `$` and the backtick are accepted inside a URL, so a URL
- * glued to a formula or code delimiter (`https://x.y$a$`) swallows the
- * delimiter, and the region is reported as `url` over what was a formula.
- * Declared in 5411978; kept visible by an `it.fails` in the tests. Changing it
- * changes masking behaviour and is a separate decision.
+ * A URL stops at `$`, at a backtick and at the mask character (U+E000, the
+ * `MASK_CHAR` of an already painted code region): a URL glued to a formula
+ * (`https://x.y$a$`) or to inline code must not swallow the delimiter and
+ * report the formula as `url`, nor cross into painted code and be dropped
+ * whole for overlapping it. The price is declared: a `$` anywhere in a URL —
+ * path or query string; RFC 3986 allows it — ends the URL there, and what
+ * follows is plain text. The backtick is not valid unencoded in a URL, so
+ * excluding it costs nothing.
  */
-const URL = /https?:\/\/[^\s<>"'\])]+/g;
+const URL = /https?:\/\/[^\s<>"'\])$`\uE000]+/g;
 const URL_TRAILING = /[.,;:!?]+$/u;
 
 /** Options of `maskProtectedRegions`; every field has a default. */
@@ -109,9 +119,16 @@ export function maskProtectedRegions(text: string, opts: MaskOptions = {}): Clas
     regions.push(...withKind(urls, 'url'));
     masked = paint(masked, urls);
 
-    const formulas = maskFormulas(masked);
-    regions.push(...withKind(formulas.spans, 'formula'));
-    masked = formulas.text;
+    // Filtered and repainted like code and URLs, not adopted whole: a URL now
+    // releases the `$` at its boundary, and a `$` opened before the URL can
+    // pair with it across the painted region. Such a match overlaps the URL and
+    // is dropped; its text is not painted, so the mask stays exactly the spans.
+    // The price, declared: any formula that CONTAINS an earlier region — a
+    // display block with a URL in it, an inline formula around inline code —
+    // is dropped too, and its own text is left unprotected.
+    const formulas = maskFormulas(masked).spans.filter((s) => !overlapsAny(s, regions));
+    regions.push(...withKind(formulas, 'formula'));
+    masked = paint(masked, formulas);
 
     // Abbreviations go LAST, on text where code, URLs and formulas are already
     // mask characters: a `Dr.` inside a code block is code, and the period of
