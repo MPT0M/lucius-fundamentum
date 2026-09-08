@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { aggregateRun, MAX_UNMATCHED_DOCUMENT_RATIO, MIN_SCORED_CITATIONS, type RunMeta } from './aggregate.js';
+import { aggregateRun, MAX_UNMATCHED_DOCUMENT_RATIO, MIN_SCORED_CITATIONS, recordedAtOf, type RunMeta } from './aggregate.js';
 import type { GoogleRawFixture } from './fixture.js';
 import type { ParseResult } from './parse.js';
 import { PASSAGE_CLASSES, type ClassMass, type ScoreReport } from './score.js';
@@ -237,12 +237,46 @@ describe('aggregateRun — the two gates are separate', () => {
         expect(out.publishable).toBe(false);
     });
 
+    it('an interval header covers the answers inside it, including its ends, and refuses one on either side', () => {
+        const interval = { ...META, recordedAt: '2026-09-08T11:17:27.530Z/2026-09-08T15:40:00.000Z' };
+        // Both ends belong to the interval: they are the answers that defined it.
+        const early = fixture({ recordedAt: '2026-09-08T11:17:27.530Z' });
+        const middle = fixture({ recordedAt: '2026-09-08T12:00:00.000Z' });
+        const late = fixture({ recordedAt: '2026-09-08T15:40:00.000Z' });
+        const covered = aggregateRun([report(), report(), report()], [parsed(), parsed(), parsed()], [early, middle, late], interval);
+        expect(covered.metaMismatch).toBe(0);
+        expect(covered.publishable).toBe(true);
+
+        const before = fixture({ recordedAt: '2026-09-07T23:00:00.000Z' });
+        const after = fixture({ recordedAt: '2026-09-09T08:00:00.000Z' });
+        const spilled = aggregateRun([report(), report()], [parsed(), parsed()], [before, after], interval);
+        expect(spilled.metaMismatch).toBe(2);
+        expect(spilled.publishable).toBe(false);
+    });
+
     it('sampleSufficient is decided by scored citations alone, at the declared minimum, and does not touch publishable', () => {
         const below = run(1, report({ citationsScored: MIN_SCORED_CITATIONS - 1 }));
         const at = run(1, report({ citationsScored: MIN_SCORED_CITATIONS }));
         expect(below.sampleSufficient).toBe(false);
         expect(below.publishable).toBe(true);
         expect(at.sampleSufficient).toBe(true);
+    });
+});
+
+describe('recordedAtOf — the header date is computed from the answers, never chosen', () => {
+    it('answers recorded together publish that instant', () => {
+        expect(recordedAtOf([fixture(), fixture()])).toBe(META.recordedAt);
+    });
+
+    it('answers recorded in more than one session publish the interval that covers them, earliest first', () => {
+        const a = fixture({ recordedAt: '2026-09-08T15:40:00.000Z' });
+        const b = fixture({ recordedAt: '2026-09-08T11:17:27.530Z' });
+        const c = fixture({ recordedAt: '2026-09-08T12:00:00.000Z' });
+        expect(recordedAtOf([a, b, c])).toBe('2026-09-08T11:17:27.530Z/2026-09-08T15:40:00.000Z');
+    });
+
+    it('a round with no answer has no date to publish', () => {
+        expect(() => recordedAtOf([])).toThrow(RangeError);
     });
 });
 

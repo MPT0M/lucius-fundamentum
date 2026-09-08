@@ -18,8 +18,11 @@
  *      and records the raw answer exactly as it came plus the round's
  *      identification. A recorded answer is the fixture: the label is written
  *      over its text, so it is never re-asked in place, and a round that has
- *      nothing to ask creates no store and touches no network. A new round of
- *      questions is a new output root;
+ *      nothing to ask creates no store and touches no network. Growing the
+ *      question set keeps the same root: the answers already there are reused,
+ *      and the report's header covers both sessions. Replacing what is being
+ *      measured — another model, another corpus — takes a new root, because
+ *      those answers are not comparable with these;
  *   3. checks every hand-written label found beside a recorded answer against
  *      the scorer's assumptions and against the answer it claims to
  *      transcribe. One refused label refuses the whole round, with every
@@ -28,9 +31,9 @@
  *      field saying why would read as either;
  *   4. parses, scores and aggregates per variant, one report per variant,
  *      written privately and, since a report carries counts and never text,
- *      publicly under `bench/reports/`. The report's `recordedAt` is the one
- *      the aggregated answers carry, not the clock of the run that reused
- *      them; answers recorded on different dates are refused together.
+ *      publicly under `bench/reports/`. The report's `recordedAt` comes from
+ *      the aggregated answers — the instant they share, or the interval that
+ *      covers them — never from the clock of the run that reused them.
  *
  * The raw answers stay outside the repository: the owner decided that the
  * emitter's generated text does not enter the public tree, only the numbers.
@@ -51,7 +54,7 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { maskProtectedRegions } from '../../src/mask.js';
-import { aggregateRun, toolUsePromptTokens, type BenchmarkRunReport, type RunMeta } from './aggregate.js';
+import { aggregateRun, recordedAtOf, toolUsePromptTokens, type BenchmarkRunReport, type RunMeta } from './aggregate.js';
 import { ALLOWED_LABELERS } from './allowlists.js';
 import type { MaskedCorpus, MaskedDocument } from './corpus.js';
 import type { GoogleRawFixture } from './fixture.js';
@@ -217,10 +220,6 @@ export async function runRound(options: RunOptions): Promise<RoundOutcome> {
                 problems.push(`${variant}/${fixture.id}: ${problem}`);
             }
         }
-        const dates = new Set(entries.map((e) => e.fixture.recordedAt));
-        if (dates.size > 1) {
-            problems.push(`${variant}: the labeled answers were recorded on different dates (${[...dates].join(', ')}); one report cannot carry them`);
-        }
     }
     if (problems.length > 0) {
         throw new Error(`the round is refused; fix the labels and run again:\n  ${problems.join('\n  ')}`);
@@ -235,10 +234,16 @@ export async function runRound(options: RunOptions): Promise<RoundOutcome> {
         const parsed = entries.map((e) => parseResponse(e.fixture, round, e.question.derivedFrom));
         const scored = entries.map((e, i) => scoreResponse(e.labeled, parsed[i]!.candidates, round));
         const fixtures = entries.map((e) => e.fixture);
-        // The header carries the date the answers were recorded, which the
-        // aggregator checks fixture by fixture; the clock of this run is not it.
-        const report = aggregateRun(scored, parsed, fixtures, { ...meta, recordedAt: fixtures[0]!.recordedAt });
-        const name = `${report.recordedAt.replace(/[:.]/g, '-')}-${variant}.json`;
+        // The header is derived from the very answers the aggregator then
+        // checks, so its date cannot fail that check here: the check is for a
+        // caller that brings its own `meta`. The clock of this run is not the
+        // header — it dates the answers recorded now, and nothing else.
+        const report = aggregateRun(scored, parsed, fixtures, { ...meta, recordedAt: recordedAtOf(fixtures) });
+        // The interval's separator is not a file name: `/` joins the two ends of
+        // the date. The count of answers joins the name because two rounds can
+        // share both ends and cover different sets; reprocessing the same set is
+        // meant to overwrite, and a different set should not.
+        const name = `${report.recordedAt.replace(/[:./]/g, '-')}-${variant}-${fixtures.length}.json`;
         writeJson(join(outRoot, 'reports', name), report);
         writeJson(join(benchRoot, 'reports', name), report);
         reports[variant] = report;

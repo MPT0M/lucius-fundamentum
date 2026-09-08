@@ -28,6 +28,15 @@
  * search did not run, which is a measurement of the emitter, not a failure of
  * the recording.
  *
+ * A round can be recorded in more than one session: adding a question must not
+ * invalidate the answers already recorded, and the labels written over them.
+ * So the header's `recordedAt` is either the instant every answer shares or,
+ * when they differ, the ISO 8601 interval `<earliest>/<latest>` that covers
+ * them — computed from the answers by `recordedAtOf`, never chosen. The
+ * mismatch check then asks whether the header covers each answer, which is
+ * the same question it always asked: does the published header hold for every
+ * answer it aggregates.
+ *
  * A column that averages over an empty set — no ambiguous source in the whole
  * round, say — reports 0 in every class. The counts published beside it
  * (`ambiguous.count`, `notLocated.count`, `precision.scored`, `goldSpans`) say
@@ -60,6 +69,7 @@ export const MAX_UNMATCHED_DOCUMENT_RATIO = 0.1;
 /** Who and what was measured. The header of the published table. */
 export interface RunMeta {
     readonly model: string;
+    /** One ISO 8601 instant, or the interval `<earliest>/<latest>` when the round spans sessions. See `recordedAtOf`. */
     readonly recordedAt: string;
     readonly reportVersion: string;
     readonly storeEmbeddingModel: string;
@@ -120,7 +130,7 @@ export interface BenchmarkRunReport {
     };
     /** `precision.scored >= MIN_SCORED_CITATIONS`. A gate apart from `publishable`. */
     readonly sampleSufficient: boolean;
-    /** Fixtures whose model, recording date or store differs from `meta`: the header must be true of every answer it covers. */
+    /** Fixtures whose model or store differs from `meta`, or whose recording date the header does not cover: the header must be true of every answer it covers. */
     readonly metaMismatch: number;
     /** The instrument held: no position, Part, field or length failure, and every fixture matches the header. */
     readonly publishable: boolean;
@@ -155,6 +165,30 @@ export interface BenchmarkRunReport {
     };
 }
 
+/**
+ * The header date for a set of recorded answers: their common instant, or the
+ * ISO 8601 interval covering them. Comparison is lexicographic, which is
+ * chronological for the fixed-width UTC form every fixture carries
+ * (`YYYY-MM-DDTHH:MM:SS.sssZ`, from `Date.prototype.toISOString`).
+ *
+ * ASSUMED of the caller: at least one fixture. A round with no answer has no
+ * date to publish, and the aggregator refuses to invent one.
+ */
+export function recordedAtOf(fixtures: readonly GoogleRawFixture[]): string {
+    if (fixtures.length === 0) throw new RangeError('recordedAtOf needs at least one recorded answer');
+    const dates = fixtures.map((f) => f.recordedAt);
+    const earliest = dates.reduce((a, b) => (a <= b ? a : b));
+    const latest = dates.reduce((a, b) => (a >= b ? a : b));
+    return earliest === latest ? earliest : `${earliest}/${latest}`;
+}
+
+/** Whether a header date holds for one answer: the same instant, or inside the interval. */
+function covers(header: string, recordedAt: string): boolean {
+    const slash = header.indexOf('/');
+    if (slash === -1) return header === recordedAt;
+    return header.slice(0, slash) <= recordedAt && recordedAt <= header.slice(slash + 1);
+}
+
 /** The one reading of the activation counter, in either spelling. Absent in both means the search did not run. Exported for the runner's progress log. */
 export function toolUsePromptTokens(fixture: GoogleRawFixture): number {
     return fixture.usageMetadata.toolUsePromptTokenCount ?? fixture.usageMetadata.tool_use_prompt_token_count ?? 0;
@@ -169,7 +203,7 @@ function hasGrounding(fixture: GoogleRawFixture): boolean {
 function matchesMeta(fixture: GoogleRawFixture, meta: RunMeta): boolean {
     return (
         fixture.model === meta.model &&
-        fixture.recordedAt === meta.recordedAt &&
+        covers(meta.recordedAt, fixture.recordedAt) &&
         fixture.storeEmbeddingModel === meta.storeEmbeddingModel &&
         fixture.storeChunking.maxTokensPerChunk === meta.storeChunking.maxTokensPerChunk &&
         fixture.storeChunking.maxOverlapTokens === meta.storeChunking.maxOverlapTokens
