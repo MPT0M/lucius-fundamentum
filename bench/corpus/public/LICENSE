@@ -1,0 +1,14 @@
+The documents in this directory are in the public domain.
+
+They are not covered by the Apache License 2.0 that governs the software in
+this repository. Each document is here because its copyright has expired
+(the author died more than seventy years ago) or because the law places it in
+the public domain (legislation). The provenance of every file — its source,
+the date it was collected and which of the two grounds applies — is recorded
+in ../manifest.json, and the test suite refuses any file in this directory
+that the manifest does not know or whose license value is not one of the two.
+
+Texts obtained from Project Gutenberg have had the Project Gutenberg header
+and footer removed; only the public-domain work itself is kept. The Project
+Gutenberg license and trademark apply to their edition, not to this copy of
+the work.
