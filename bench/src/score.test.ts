@@ -141,6 +141,16 @@ describe('scoreResponse — the overlap function and the threshold', () => {
         expect(r.granularityDistribution).toEqual([]);
         expect(r.outsideFixture).toBe(1);
     });
+
+    it('a located source whose origin did not resolve is scored in place, not counted as another document', () => {
+        // The parser locates an unresolved origin in the fixture's own view, so
+        // the snippet is inside the fixture by construction. Reading its
+        // `inFixture: false` as "another document" would count every citation
+        // of an emitter that returns no hints as pointing at the wrong document.
+        const r = score([cite(S0, [exact('A', 0, 9, NONE)])]);
+        expect(r.citationsCorrect).toBe(1);
+        expect(r.outsideFixture).toBe(0);
+    });
 });
 
 describe('scoreResponse — matching a marker to a segment', () => {

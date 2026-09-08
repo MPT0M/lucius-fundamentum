@@ -15,7 +15,9 @@ export interface ResolvedOrigin {
     /**
      * False when the hint resolved to a document that is NOT among the ones
      * this fixture was generated from: the citation points at another document.
-     * A third state, distinct from "did not resolve".
+     * Also false when nothing resolved, so the flag alone does not carry the
+     * three states — read the pair: `documentId !== null && !inFixture` is
+     * "another document"; `documentId === null` is "did not resolve".
      */
     readonly inFixture: boolean;
 }
