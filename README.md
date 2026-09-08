@@ -90,8 +90,8 @@ One book, one language, one day, one model. The ruler recognises four kinds of
 protected region — code, URLs, formulas, abbreviations — and this corpus
 exercises one: 99.9% of the gold is ordinary prose, because Machado de Assis
 wrote no source listings and no equations. Twelve claims carry no gold on
-purpose, the book not supporting them; each is a judgement, and the labels are
-published so it can be contested.
+purpose, because the book does not support them. Each of those is a judgement,
+and the labels are published so that it can be contested.
 
 Rounds against other providers are planned. A ruler that has only ever been
 held against one product has measured that product and not much else.
