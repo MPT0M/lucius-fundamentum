@@ -231,6 +231,12 @@ describe('aggregateRun — the two gates are separate', () => {
         expect(run(1, report(), parsed(), fixture({ storeEmbeddingModel: 'other' })).metaMismatch).toBe(1);
     });
 
+    it('a fixture recorded on another date than the header is a meta mismatch: a round that reuses old answers cannot stamp them with today', () => {
+        const out = run(1, report(), parsed(), fixture({ recordedAt: 'another-day' }));
+        expect(out.metaMismatch).toBe(1);
+        expect(out.publishable).toBe(false);
+    });
+
     it('sampleSufficient is decided by scored citations alone, at the declared minimum, and does not touch publishable', () => {
         const below = run(1, report({ citationsScored: MIN_SCORED_CITATIONS - 1 }));
         const at = run(1, report({ citationsScored: MIN_SCORED_CITATIONS }));

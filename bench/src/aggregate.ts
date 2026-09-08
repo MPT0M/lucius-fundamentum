@@ -120,7 +120,7 @@ export interface BenchmarkRunReport {
     };
     /** `precision.scored >= MIN_SCORED_CITATIONS`. A gate apart from `publishable`. */
     readonly sampleSufficient: boolean;
-    /** Fixtures whose model or store differs from `meta`. */
+    /** Fixtures whose model, recording date or store differs from `meta`: the header must be true of every answer it covers. */
     readonly metaMismatch: number;
     /** The instrument held: no position, Part, field or length failure, and every fixture matches the header. */
     readonly publishable: boolean;
@@ -169,6 +169,7 @@ function hasGrounding(fixture: GoogleRawFixture): boolean {
 function matchesMeta(fixture: GoogleRawFixture, meta: RunMeta): boolean {
     return (
         fixture.model === meta.model &&
+        fixture.recordedAt === meta.recordedAt &&
         fixture.storeEmbeddingModel === meta.storeEmbeddingModel &&
         fixture.storeChunking.maxTokensPerChunk === meta.storeChunking.maxTokensPerChunk &&
         fixture.storeChunking.maxOverlapTokens === meta.storeChunking.maxOverlapTokens
