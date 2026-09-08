@@ -1,0 +1,7 @@
+Public-domain corpus of the Lucius Fundamentum benchmark.
+
+machado-memorias-posthumas.txt
+  Machado de Assis, "Memorias Posthumas de Braz Cubas" (1881; author died 1908).
+  Obtained from Project Gutenberg, ebook #54829, with their header and footer
+  removed. Original spelling of the 1881 edition kept as published. Normalized
+  to Unicode NFC, LF line endings; no other change.
