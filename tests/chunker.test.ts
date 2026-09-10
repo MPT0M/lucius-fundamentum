@@ -230,3 +230,48 @@ describe('chunk — options are validated at the door', () => {
         expect(chunk(doc(''), SMALL)).toEqual([]);
     });
 });
+
+/**
+ * Regression: the budgets used to sum TRIMMED sentence lengths while the chunk
+ * was emitted as one continuous interval, so the whitespace between sentences
+ * was spent without being counted. Measured on the shipped corpus, 224 of 342
+ * chunks of the Machado text and 40 of 581 overlaps crossed their ceiling by
+ * exactly that whitespace.
+ *
+ * Every ceiling below is chosen to sit BETWEEN the trimmed sum and the
+ * interval, which is the only region where the two versions disagree. All
+ * three fail on the summing version.
+ */
+describe('chunk — the budget measures what is emitted, whitespace included', () => {
+    /** 25 code points each, measured, joined by a blank line of 2. */
+    const SENTENCE = 'Frase de vinte e quatro..';
+    const gapped = (n: number) => Array.from({ length: n }, () => SENTENCE).join('\n\n');
+
+    it('a chunk never exceeds the ceiling, even when the excess is only the gaps', () => {
+        // Three sentences: 75 trimmed, 79 as an interval. A ceiling of 76
+        // accepts the sum and refuses the interval.
+        for (const c of chunk(doc(gapped(3)), { maxChunkCodePoints: 76, maxOverlapCodePoints: 0 })) {
+            expect(countCodePoints(c.text)).toBeLessThanOrEqual(76);
+        }
+    });
+
+    it('the sentence that does not fit is refused for the gaps, not for its own length', () => {
+        const chunks = chunk(doc(gapped(3)), { maxChunkCodePoints: 76, maxOverlapCodePoints: 0 });
+        expect(chunks).toHaveLength(2);
+        // Two sentences and one gap. The summing version took all three and
+        // emitted 79 in a single chunk.
+        expect(countCodePoints(chunks[0]!.text)).toBe(52);
+        expect(countCodePoints(chunks[1]!.text)).toBe(25);
+    });
+
+    it('an overlap never exceeds its ceiling, gaps included', () => {
+        // A chunk of five sentences (133) and an overlap ceiling of 50:
+        // stepping back two sentences is 50 trimmed and 52 as an interval.
+        const chunks = chunk(doc(gapped(7)), { maxChunkCodePoints: 140, maxOverlapCodePoints: 50 });
+        expect(chunks.length).toBeGreaterThan(1);
+        for (let i = 1; i < chunks.length; i += 1) {
+            const repeated = chunks[i - 1]!.span.end - chunks[i]!.span.start;
+            expect(repeated).toBeLessThanOrEqual(50);
+        }
+    });
+});
