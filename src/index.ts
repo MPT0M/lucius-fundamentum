@@ -18,3 +18,5 @@ export type { SourceDoc, Chunk, BoundingBox, ChunkOptions, Segmenter } from './c
 export { createTokenizer, foldForIndex } from './tokenizer.js';
 export type { Token, Tokenizer, TokenizerOptions, WordSegmenter, Stemmer } from './tokenizer.js';
 export { stemPlural, RSLP_S_FOLDED } from './stemmer.js';
+export { luceneIdf, bm25TermScore, bm25Score, DEFAULT_BM25_PARAMS } from './bm25.js';
+export type { Bm25Params, CorpusStats, ScoredTerm } from './bm25.js';
