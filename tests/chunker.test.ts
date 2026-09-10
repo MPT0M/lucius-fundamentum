@@ -275,3 +275,59 @@ describe('chunk — the budget measures what is emitted, whitespace included', (
         }
     });
 });
+
+/**
+ * Regression: the overlap could step back so far that the next chunk had no
+ * room left for the sentence after it, and was emitted holding nothing but
+ * text already present in its predecessor. Measured on the corpus before the
+ * guard: three such chunks in 279, one of them `"Art. 12."` alone — eight code
+ * points, the article number cut off from the article.
+ *
+ * The invariant is stated over spans rather than over the mechanism, so it
+ * still holds if some future change produces redundancy by another route.
+ */
+describe('chunk — no chunk is pure repetition of the one before it', () => {
+    /** Exactly `n` code points, ending in a period. Generated, never counted by hand. */
+    const sentence = (n: number) => `Aa${'a'.repeat(n - 3)}.`;
+
+    it('a short tail sentence is not emitted alone when the next one cannot fit with it', () => {
+        // 40, 10 and 200 code points, blank line between. The chunk takes the
+        // first two (52); stepping back over the 10 would leave a chunk that
+        // cannot reach the 200, so it does not step back.
+        const text = [sentence(40), sentence(10), sentence(200)].join('\n\n');
+        const chunks = chunk(doc(text), { maxChunkCodePoints: 100, maxOverlapCodePoints: 50 });
+
+        expect(chunks).toHaveLength(2);
+        expect(countCodePoints(chunks[0]!.text)).toBe(52);
+        // The oversized sentence, alone and whole, as the contract promises.
+        expect(countCodePoints(chunks[1]!.text)).toBe(200);
+    });
+
+    it('no chunk is contained in its predecessor, over several shapes', () => {
+        const shapes = [
+            [40, 10, 200],
+            [30, 30, 30, 500],
+            [200, 12, 300, 15, 400],
+            [10, 10, 10, 10, 10, 900],
+        ];
+        for (const shape of shapes) {
+            const text = shape.map(sentence).join('\n\n');
+            const chunks = chunk(doc(text), { maxChunkCodePoints: 100, maxOverlapCodePoints: 50 });
+            for (let i = 1; i < chunks.length; i += 1) {
+                const previous = chunks[i - 1]!;
+                const current = chunks[i]!;
+                const contained =
+                    current.span.start >= previous.span.start && current.span.end <= previous.span.end;
+                expect({ shape, i, contained }).toEqual({ shape, i, contained: false });
+            }
+        }
+    });
+
+    it('every chunk still adds at least one code point the previous one did not have', () => {
+        const text = [40, 10, 200, 8, 150].map(sentence).join('\n\n');
+        const chunks = chunk(doc(text), { maxChunkCodePoints: 100, maxOverlapCodePoints: 50 });
+        for (let i = 1; i < chunks.length; i += 1) {
+            expect(chunks[i]!.span.end).toBeGreaterThan(chunks[i - 1]!.span.end);
+        }
+    });
+});

@@ -222,10 +222,24 @@ export function chunk(doc: SourceDoc, opts: ChunkOptions): readonly Chunk[] {
         // Measured as an interval for the same reason as the chunk budget
         // above: the repeated text runs from the sentence stepped back to
         // where this chunk ends, whitespace included.
+        //
+        // The second condition is what keeps the next chunk from being pure
+        // repetition. Stepping back costs room, and the next sentence is the
+        // only content the next chunk is guaranteed to add; step back so far
+        // that it no longer fits and the next chunk is emitted holding
+        // nothing but text already in this one. Measured on the corpus before
+        // this guard: three such chunks, one of them the eight code points of
+        // "Art. 12." alone, separated from the article it numbers — findable
+        // by a search that then shows the reader nothing.
+        //
+        // Stopping the step-back is the whole fix. No content is lost: what
+        // the overlap would have repeated is, by definition, already in this
+        // chunk.
         let next = last + 1;
         while (
             next - 1 > i &&
-            sentences[last]!.end - sentences[next - 1]!.start <= opts.maxOverlapCodePoints
+            sentences[last]!.end - sentences[next - 1]!.start <= opts.maxOverlapCodePoints &&
+            sentences[last + 1]!.end - sentences[next - 1]!.start <= opts.maxChunkCodePoints
         ) {
             next--;
         }
