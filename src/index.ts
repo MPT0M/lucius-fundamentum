@@ -17,3 +17,4 @@ export { chunk, DEFAULT_CHUNK_OPTIONS } from './chunker.js';
 export type { SourceDoc, Chunk, BoundingBox, ChunkOptions, Segmenter } from './chunker.js';
 export { createTokenizer, foldForIndex } from './tokenizer.js';
 export type { Token, Tokenizer, TokenizerOptions, WordSegmenter, Stemmer } from './tokenizer.js';
+export { stemPlural, RSLP_S_FOLDED } from './stemmer.js';
