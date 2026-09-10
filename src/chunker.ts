@@ -71,7 +71,12 @@ export interface Segmenter {
 }
 
 export interface ChunkOptions {
-    /** Target size. A single sentence longer than this becomes a chunk on its own. */
+    /**
+     * Ceiling for the interval a chunk covers, whitespace between sentences
+     * included. A single sentence longer than this is never split: it becomes
+     * a chunk on its own, over the ceiling, because cutting inside a sentence
+     * produces a citation that starts or ends mid-thought.
+     */
     readonly maxChunkCodePoints: number;
     /**
      * How much of the previous chunk's tail is repeated at the start of the
@@ -100,11 +105,17 @@ function defaultSegmenter(): Segmenter {
     return new Intl.Segmenter('pt-BR', { granularity: 'sentence' });
 }
 
-/** A sentence as a code point span into the source. */
+/**
+ * A sentence as a code point span into the source.
+ *
+ * There is deliberately no `length`. It existed, nobody read it after the
+ * budgets started measuring intervals, and a second way to express the size of
+ * the same thing is what let the budget and the emitted chunk disagree in the
+ * first place.
+ */
 interface Sentence {
     readonly start: number;
     readonly end: number;
-    readonly length: number;
 }
 
 /**
@@ -132,11 +143,19 @@ function sentencesOf(text: string, segmenter: Segmenter, abbreviations?: Abbrevi
 
 /**
  * The segmenter hands back each sentence WITH the whitespace that follows it
- * — the space after the period, the newline after the paragraph. A citation
- * that ends in a trailing space is sloppy, and the space would count against
- * the chunk budget. So the span is tightened to the first and last non-space
- * code point. The mask character is not whitespace, so a sentence that is
- * nothing but a formula keeps its full extent.
+ * — the space after the period, the newline after the paragraph. The span is
+ * tightened to the first and last non-space code point, because a citation
+ * that ends in a trailing space is sloppy.
+ *
+ * Trimming bounds the SENTENCE, not the chunk. The chunk is the continuous
+ * interval from the first sentence's start to the last one's end, so it does
+ * carry the whitespace between them, and the budget measures that interval —
+ * see `chunk`. An earlier version of this comment claimed the trailing space
+ * "would count against the chunk budget"; it did not, and that gap between
+ * what was counted and what was emitted is the defect the budgets now close.
+ *
+ * The mask character is not whitespace, so a sentence that is nothing but a
+ * formula keeps its full extent.
  *
  * Returns `null` for a segment that is whitespace only.
  */
@@ -147,7 +166,7 @@ function trimmedSpan(segment: string, start: number): Sentence | null {
     while (a < b && /\s/u.test(points[a]!)) a++;
     while (b > a && /\s/u.test(points[b - 1]!)) b--;
     if (a === b) return null;
-    return { start: start + a, end: start + b, length: b - a };
+    return { start: start + a, end: start + b };
 }
 
 /**
@@ -173,12 +192,21 @@ export function chunk(doc: SourceDoc, opts: ChunkOptions): readonly Chunk[] {
     let i = 0;
     while (i < sentences.length) {
         // Grow the chunk forward, sentence by sentence, while it fits.
+        //
+        // The budget measures the span that will be EMITTED, not the sum of
+        // the sentence lengths. Those two differ: a sentence span is trimmed,
+        // so the whitespace between two sentences belongs to neither, while
+        // the chunk is cut as one continuous interval and carries it. Summing
+        // lengths let a chunk pass the check and then be emitted over the
+        // ceiling by exactly that whitespace. Measuring the interval removes
+        // the second quantity that could drift from the first.
         const first = sentences[i]!;
         let last = i;
-        let size = first.length;
-        while (last + 1 < sentences.length && size + sentences[last + 1]!.length <= opts.maxChunkCodePoints) {
+        while (
+            last + 1 < sentences.length &&
+            sentences[last + 1]!.end - first.start <= opts.maxChunkCodePoints
+        ) {
             last++;
-            size += sentences[last]!.length;
         }
 
         const span: Span = { start: first.start, end: sentences[last]!.end };
@@ -190,11 +218,16 @@ export function chunk(doc: SourceDoc, opts: ChunkOptions): readonly Chunk[] {
         // while they fit in the overlap budget, so the next chunk begins
         // inside this one's tail. Never step back to (or past) where this
         // chunk began, or the loop would not advance.
+        //
+        // Measured as an interval for the same reason as the chunk budget
+        // above: the repeated text runs from the sentence stepped back to
+        // where this chunk ends, whitespace included.
         let next = last + 1;
-        let overlap = 0;
-        while (next - 1 > i && overlap + sentences[next - 1]!.length <= opts.maxOverlapCodePoints) {
+        while (
+            next - 1 > i &&
+            sentences[last]!.end - sentences[next - 1]!.start <= opts.maxOverlapCodePoints
+        ) {
             next--;
-            overlap += sentences[next]!.length;
         }
         i = next;
     }
