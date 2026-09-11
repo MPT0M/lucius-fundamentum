@@ -28,7 +28,12 @@
 import { chunk, type ChunkOptions, type SourceDoc } from '../../src/chunker.js';
 import type { Tokenizer } from '../../src/tokenizer.js';
 
-export interface TermFrequency {
+/**
+ * A term and what the corpus says about it. Deliberately NOT `TermFrequency`:
+ * it carries no count of occurrences inside a chunk, and that name collides
+ * with `ScoredTerm.termFrequency` in `src/bm25.ts`, which does.
+ */
+export interface TermDfEntry {
     readonly term: string;
     /** Number of chunks the term occurs in. */
     readonly documentFrequency: number;
@@ -42,7 +47,7 @@ export interface DfRegime {
     /** Every occurrence of every term, for the share below. */
     readonly totalOccurrences: number;
     /** Terms the classic idf would score below zero, most frequent first. */
-    readonly negativeIdfTerms: readonly TermFrequency[];
+    readonly negativeIdfTerms: readonly TermDfEntry[];
     /** How much of the running text those terms are. */
     readonly negativeIdfOccurrenceShare: number;
 }
@@ -83,7 +88,7 @@ export function measureDfRegime(doc: SourceDoc, opts: ChunkOptions, tokenizer: T
         }
     }
 
-    const negative: TermFrequency[] = [];
+    const negative: TermDfEntry[] = [];
     for (const [term, df] of documentFrequency) {
         const idf = classicIdf(chunks.length, df);
         if (idf < 0) negative.push({ term, documentFrequency: df, classicIdf: idf });
