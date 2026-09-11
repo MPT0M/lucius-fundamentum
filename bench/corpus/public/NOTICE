@@ -5,3 +5,77 @@ machado-memorias-posthumas.txt
   Obtained from Project Gutenberg, ebook #54829, with their header and footer
   removed. Original spelling of the 1881 edition kept as published. Normalized
   to Unicode NFC, LF line endings; no other change.
+
+The six files below are Brazilian official acts. Legislation, decrees and the
+resolutions of a federal council are outside copyright by statute (Lei 9.610,
+art. 8), which is what `public-domain-law` records in the manifest. They are
+here because the literary text above contains no numbered article, no acronym
+and no composite number, so it cannot tell a lexical search apart from a dense
+one; these can.
+
+Each was converted from its published form to plain text. What was changed is
+listed per file, and nothing else was: no spelling was modernized, no article
+was reordered, no passage was cut.
+
+Two changes were made to all six, for the same reason the literary text above
+carries them: this library measures positions in code points, and a corpus
+whose bytes depend on who checked it out cannot anchor a position. Line
+endings are LF, and the text is Unicode NFC. The second one was not free:
+ldb-9394 and resolucao-cne-ceb-2 each carried one "a" written as a plus a
+combining grave accent rather than as the single code point, inherited from
+the published HTML, and every offset after it differed by one. Composing them
+is the only change made to a letter anywhere in these files.
+
+lei-15100.txt
+  Lei n. 15.100, de 13 de janeiro de 2025 (use of personal electronic devices
+  by students). From the Diario Oficial da Uniao of 14 January 2025, section 1,
+  page 3. The PDF is the whole page, so the file also carries Lei Complementar
+  212 (Propag) and Lei 15.101, which were published beside it. They are kept:
+  a question about phones in school that retrieves an article about state debt
+  is a precision failure worth being able to measure.
+  Removed: the page number, the ISSN line and the digital-signature footer.
+
+decreto-12385.txt
+  Decreto n. 12.385, de 18 de fevereiro de 2025, which regulates Lei 15.100.
+  From the Diario Oficial da Uniao of 19 February 2025, section 1, page 3.
+  Removed: the "este conteudo nao substitui" footer. Repaired: ten places where
+  the extractor glued the italic span `caput` to its neighbours (`art. 84,caput`
+  became `art. 84, caput`), and one place where it glued two words across an
+  italic span (`ofensason-line` became `ofensas on-line`).
+
+resolucao-cne-ceb-2.txt
+  Resolucao CNE/CEB n. 2, de 21 de marco de 2025, the operational guidelines on
+  digital devices in schools. Thirteen pages.
+  Removed: twelve page-number lines the pagination had placed inside sentences.
+
+ldb-9394.txt
+  Lei n. 9.394, de 20 de dezembro de 1996 (Lei de Diretrizes e Bases da Educacao
+  Nacional), consolidated text as published by the Presidencia da Republica.
+  The consolidated form keeps repealed articles in place, each marked
+  "(Revogado pela Lei n. X)"; they are kept as published.
+  Removed: runs of layout whitespace, 2,606 non-breaking spaces the HTML used
+  to push the amendment notes to the right margin. Only runs were removed:
+  eight single non-breaking spaces survive as published, and a reader counting
+  them in this file will find those eight. No note was removed.
+
+pne-13005.txt
+  Lei n. 13.005, de 25 de junho de 2014 (Plano Nacional de Educacao), with the
+  Annex of twenty goals and their numbered strategies.
+
+decreto-11713.txt
+  Decreto n. 11.713, de 26 de setembro de 2023, which creates the Estrategia
+  Nacional de Escolas Conectadas. It cites strategies 7.15 and 7.20 of the
+  Annex to Lei 13.005, which is in this directory. That is the only reference
+  to a numbered strategy made from outside the PNE, which is why the test
+  suite uses it: `7.15` occurs in exactly two chunks of the whole corpus, one
+  in each document.
+
+Cross-document citation, counted on the six acts with the editorial margin
+removed (the margin carries amendment history, not citation): nine directed
+edges, the heaviest being decreto-12385 -> lei-15100, thirteen times. It is a
+connected graph, not a pile of unrelated files, which is the property a
+retrieval benchmark needs and the reason these six were chosen together.
+
+Do not take that on trust: `npm run bench:corpus` prints the graph from the
+files in this directory, and the suite fails if this paragraph and those files
+stop agreeing. Every number above the graph comes from the same command.

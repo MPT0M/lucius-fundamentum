@@ -40,7 +40,8 @@
     "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.typecheck.json && tsc --noEmit -p tsconfig.bench.json",
     "test": "vitest run",
     "test:watch": "vitest",
-    "bench": "tsc -p tsconfig.bench.json && node bench/.out/bench/src/main.js"
+    "bench": "tsc -p tsconfig.bench.json && node bench/.out/bench/src/main.js",
+    "bench:corpus": "tsc -p tsconfig.bench.json && node bench/.out/bench/src/corpus-probe.js"
   },
   "dependencies": {},
   "devDependencies": {
