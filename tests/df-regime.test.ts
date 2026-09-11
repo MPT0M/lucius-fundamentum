@@ -24,6 +24,63 @@ const measure = (stemmed: boolean) =>
 const withStemmer = measure(true);
 const withoutStemmer = measure(false);
 
+/**
+ * Small hand-made collections, so the arithmetic of the probe is checkable
+ * without reading a novel off disk. Every other test in this file depends on
+ * a file existing and on a corpus nobody can hold in their head; these do not.
+ */
+describe('df regime — the arithmetic, on collections small enough to count by hand', () => {
+    const tiny = (text: string) => ({ id: 't', title: 't', text });
+    // A ceiling large enough that each paragraph is its own chunk, and no
+    // overlap, so document frequency is countable by eye.
+    // Calibrated so each paragraph is its own chunk: the shortest is 11 code
+    // points and two of them plus the blank line span 24, so a ceiling of 20
+    // takes one and refuses the second. Measured, not guessed — a bigger
+    // ceiling put the whole fixture in one chunk and the counts meant nothing.
+    const ONE_CHUNK_EACH = { maxChunkCodePoints: 20, maxOverlapCodePoints: 0 };
+    const plain = createTokenizer();
+
+    it('counts a term once per chunk, however often it occurs in it', () => {
+        const regime = measureDfRegime(tiny('Casa casa casa.'), ONE_CHUNK_EACH, plain);
+        const casa = regime.negativeIdfTerms.find((t) => t.term === 'casa');
+        // One chunk, so `casa` is in 1 of 1 and its classic idf is negative.
+        expect(regime.chunkCount).toBe(1);
+        expect(casa?.documentFrequency).toBe(1);
+        expect(regime.totalOccurrences).toBe(3);
+    });
+
+    it('a term in half the chunks is not negative; one in more than half is', () => {
+        const four = 'Alfa comum.\n\nBeta comum.\n\nGama sozinha.\n\nDelta sozinha.';
+        const regime = measureDfRegime(tiny(four), ONE_CHUNK_EACH, plain);
+        expect(regime.chunkCount).toBe(4);
+        // `comum` is in 2 of 4 — exactly half, so the classic idf is zero and
+        // the probe reports nothing.
+        expect(regime.negativeIdfTerms.map((t) => t.term)).not.toContain('comum');
+        // `sozinha` is also 2 of 4. Nothing crosses.
+        expect(regime.negativeIdfTerms).toHaveLength(0);
+    });
+
+    it('the occurrence share counts occurrences, not distinct terms', () => {
+        const text = 'Alfa alfa alfa beta.\n\nAlfa gama.\n\nAlfa delta.';
+        const regime = measureDfRegime(tiny(text), ONE_CHUNK_EACH, plain);
+        expect(regime.chunkCount).toBe(3);
+        const alfa = regime.negativeIdfTerms.find((t) => t.term === 'alfa');
+        expect(alfa?.documentFrequency).toBe(3);
+        // 5 of the 8 occurrences are `alfa`.
+        expect(regime.totalOccurrences).toBe(8);
+        expect(regime.negativeIdfOccurrenceShare).toBeCloseTo(5 / 8, 10);
+    });
+
+    it('an empty document reports zero and does not divide by zero', () => {
+        const regime = measureDfRegime(tiny(''), ONE_CHUNK_EACH, plain);
+        expect(regime.chunkCount).toBe(0);
+        expect(regime.vocabularySize).toBe(0);
+        expect(regime.totalOccurrences).toBe(0);
+        expect(regime.negativeIdfTerms).toEqual([]);
+        expect(regime.negativeIdfOccurrenceShare).toBe(0);
+    });
+});
+
 describe('df regime — the classic idf goes negative, and on which terms', () => {
     it('is negative exactly when a term is in more than half the chunks', () => {
         expect(classicIdf(100, 51)).toBeLessThan(0);
