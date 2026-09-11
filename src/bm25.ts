@@ -81,7 +81,12 @@ export function bm25TermScore(
     stats: CorpusStats,
     params: Bm25Params = DEFAULT_BM25_PARAMS,
 ): number {
-    if (termFrequency <= 0 || documentFrequency <= 0) return 0;
+    // `chunkCount <= 0` with a term present is a caller contradicting itself:
+    // an index of no chunks cannot hold the term in one. `luceneIdf` would
+    // evaluate `ln((N + 1) / (df + 0.5))` below one and return a negative
+    // weight, which is the single thing this variant exists to never do. The
+    // function is public, so the caller is unknown.
+    if (termFrequency <= 0 || documentFrequency <= 0 || stats.chunkCount <= 0) return 0;
     const { k1, b } = params;
     const normalized = stats.averageLength > 0 ? chunkLength / stats.averageLength : 1;
     const saturation = termFrequency + k1 * (1 - b + b * normalized);
