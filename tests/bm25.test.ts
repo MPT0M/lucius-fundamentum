@@ -92,6 +92,19 @@ describe('bm25 — length is punished, and by how much is the knob', () => {
     it('an index with no length yet does not divide by zero', () => {
         expect(Number.isFinite(bm25TermScore(1, 0, 1, { chunkCount: 1, averageLength: 0 }))).toBe(true);
     });
+
+    it('an empty index scores zero rather than negative', () => {
+        // A caller saying "no chunks, and this term is in one of them"
+        // contradicts itself. Without the guard the formula would return a
+        // negative weight, which is the one thing this variant promises never
+        // to produce.
+        expect(bm25TermScore(1, 10, 1, { chunkCount: 0, averageLength: 0 })).toBe(0);
+        expect(bm25TermScore(5, 10, 3, { chunkCount: 0, averageLength: 100 })).toBe(0);
+    });
+
+    it('an empty query scores zero', () => {
+        expect(bm25Score([], 200, stats)).toBe(0);
+    });
 });
 
 /**
