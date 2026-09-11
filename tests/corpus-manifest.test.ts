@@ -13,6 +13,7 @@ import {
 } from '../bench/src/manifest.js';
 import type { GoogleRawFixture } from '../bench/src/fixture.js';
 import type { LabeledFixture } from '../bench/src/score.js';
+import { actNumber, citationGraph } from '../bench/src/corpus-probe.js';
 // The labeler allowlist has one home, read by this test and by the harness
 // that scores labels kept outside the repository; the owner adds handles there.
 import { ALLOWED_LABELERS } from '../bench/src/allowlists.js';
@@ -228,5 +229,72 @@ describe('the walk and the rules, on a temporary tree', () => {
                 'label "r1" carries parts that differ from the recorded response',
             ]);
         });
+    });
+});
+
+/**
+ * The NOTICE beside the corpus makes two claims about how the six normative
+ * acts cite one another. They are the reason those six were chosen together
+ * rather than any six public-domain files, so they are worth a guard: an edit
+ * to any `.txt` could otherwise leave the published prose describing a corpus
+ * that no longer exists, and nothing would say so.
+ *
+ * The graph itself is computed by `npm run bench:corpus`, from the files in
+ * the repository. This test only holds the prose and the computation to each
+ * other.
+ */
+describe('corpus - the citation graph the NOTICE describes', () => {
+    // Line-wrapped prose: collapse the wrapping so a claim that spans two
+    // lines still matches, and a reflow of the file does not fail the test.
+    const NOTICE = readFileSync(join(REPO_BENCH, 'corpus/public/NOTICE'), 'utf8').replace(/\s+/gu, ' ');
+
+    it('derives an act number from the file name, and refuses one too short to match', () => {
+        expect(actNumber('lei-15100')).toBe('15.100');
+        expect(actNumber('ldb-9394')).toBe('9.394');
+        // "CNE/CEB n. 2": a bare `2` would match a digit in every article of
+        // every file, so the resolution cites and is never cited.
+        expect(actNumber('resolucao-cne-ceb-2')).toBeNull();
+        expect(actNumber('machado-memorias-posthumas')).toBeNull();
+    });
+
+    it('the nine edges the NOTICE claims are the nine the corpus has', () => {
+        const edges = citationGraph();
+        expect(edges).toHaveLength(9);
+        expect(NOTICE).toContain('nine directed edges');
+    });
+
+    it('the heaviest edge is the one the NOTICE names, with the count it names', () => {
+        const heaviest = citationGraph()[0]!;
+        expect(heaviest.from).toBe('decreto-12385');
+        expect(heaviest.to).toBe('lei-15100');
+        expect(heaviest.count).toBe(13);
+        expect(NOTICE).toContain('decreto-12385 -> lei-15100, thirteen times');
+    });
+
+    it('the dot in an act number is a dot, not a wildcard', () => {
+        // The pattern is built from the act number, so the dot has to be
+        // escaped going in. It was not: `'\.'` in a JavaScript source file is
+        // the one-character string `.`, which makes the replace a no-op and
+        // the dot match any character. Nothing in the corpus of six happened
+        // to collide, so every count stayed right and nothing failed - the
+        // kind of bug that waits for the seventh document.
+        const cited = { id: 'lei-15100', title: 'a', text: 'this one is cited' };
+        const citing = {
+            id: 'decreto-99999',
+            title: 'b',
+            text: 'regulates Lei 15.100, and mentions the string 15X100, which is not a citation',
+        };
+        expect(citationGraph([cited, citing])).toEqual([
+            { from: 'decreto-99999', to: 'lei-15100', count: 1 },
+        ]);
+    });
+
+    it('no act cites itself, and the margin is not mistaken for citation', () => {
+        const edges = citationGraph();
+        expect(edges.filter((e) => e.from === e.to)).toEqual([]);
+        // `pne-13005` carries "(Vide Decreto no 11.713, de 2023)" in the
+        // editorial margin of Meta 7. That is amendment history filed by the
+        // publisher, not the PNE invoking the decree, and it must not appear.
+        expect(edges.find((e) => e.from === 'pne-13005' && e.to === 'decreto-11713')).toBeUndefined();
     });
 });

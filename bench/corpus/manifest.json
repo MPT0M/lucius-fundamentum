@@ -9,6 +9,54 @@
       "collectedAt": "2026-09-08"
     },
     {
+      "id": "lei-15100",
+      "path": "corpus/public/lei-15100.txt",
+      "kind": "source",
+      "license": "public-domain-law",
+      "sourceUrl": "https://www.in.gov.br/web/dou",
+      "collectedAt": "2026-09-09"
+    },
+    {
+      "id": "decreto-12385",
+      "path": "corpus/public/decreto-12385.txt",
+      "kind": "source",
+      "license": "public-domain-law",
+      "sourceUrl": "https://www.in.gov.br/web/dou",
+      "collectedAt": "2026-09-09"
+    },
+    {
+      "id": "resolucao-cne-ceb-2",
+      "path": "corpus/public/resolucao-cne-ceb-2.txt",
+      "kind": "source",
+      "license": "public-domain-law",
+      "sourceUrl": "https://www.in.gov.br/web/dou",
+      "collectedAt": "2026-09-09"
+    },
+    {
+      "id": "ldb-9394",
+      "path": "corpus/public/ldb-9394.txt",
+      "kind": "source",
+      "license": "public-domain-law",
+      "sourceUrl": "https://www.planalto.gov.br/ccivil_03/leis/l9394compilado.htm",
+      "collectedAt": "2026-09-09"
+    },
+    {
+      "id": "pne-13005",
+      "path": "corpus/public/pne-13005.txt",
+      "kind": "source",
+      "license": "public-domain-law",
+      "sourceUrl": "https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2014/lei/l13005.htm",
+      "collectedAt": "2026-09-10"
+    },
+    {
+      "id": "decreto-11713",
+      "path": "corpus/public/decreto-11713.txt",
+      "kind": "source",
+      "license": "public-domain-law",
+      "sourceUrl": "https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2023/decreto/d11713.htm",
+      "collectedAt": "2026-09-10"
+    },
+    {
       "id": "q01-guided",
       "path": "fixtures/google/q01-guided.json",
       "kind": "derived",
