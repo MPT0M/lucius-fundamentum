@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { createTokenizer, foldForIndex, type Stemmer } from '../src/tokenizer.js';
+import { RSLP_S_FOLDED } from '../src/stemmer.js';
 import { maskProtectedRegions } from '../src/mask.js';
 import { sliceByCodePoints, countCodePoints } from '../src/unicode.js';
 
@@ -185,6 +186,69 @@ describe('tokenizer — protected regions', () => {
         expect(alone).not.toEqual(informed);
         expect(alone).toEqual(['antes', 'const', 'x']);
         expect(informed).toEqual(['antes', '`const x']);
+    });
+});
+
+/**
+ * The invariant this whole file exists for, checked over every feature AT
+ * ONCE rather than one at a time.
+ *
+ * It was already asserted before this block existed, and it passed while a
+ * real defect was live: a stemmer applied to an atom turned
+ * `https://nihilo.dev/status` into `https://nihilo.dev/statu`, so the span
+ * pointed at a region the term no longer folds to. The assertion did not
+ * catch it because its fixture had no URL and no stemmer at the same time.
+ *
+ * One feature at a time is not coverage of a package whose features compose.
+ */
+describe('tokenizer — the span survives every combination, not one at a time', () => {
+    const EVERYTHING = [
+        'As casas dos professores estão em https://nihilo.dev/status hoje.',
+        'O Dr. Silva citou a Lei 8.078/90 e o `const docs = 1` às 12:30.',
+        'A fórmula $x^2 + y^2$ vale desde 2026-09-09, não antes.',
+        'Informações e decisões: R$ 2.000,00 por educação, coração incluso.',
+    ].join('\n\n');
+    const decomposed = EVERYTHING.normalize('NFD');
+
+    const variants: [string, ReturnType<typeof createTokenizer>][] = [
+        ['Intl, no stemmer', createTokenizer()],
+        ['Intl, stemmer', createTokenizer({ stemmer: RSLP_S_FOLDED })],
+        ['class path, no stemmer', createTokenizer({ segmenter: null })],
+        ['class path, stemmer', createTokenizer({ segmenter: null, stemmer: RSLP_S_FOLDED })],
+    ];
+
+    it.each(variants)('%s: every token slices back and folds to its own term', (_name, tk) => {
+        for (const text of [EVERYTHING, decomposed]) {
+            for (const spans of [undefined, maskProtectedRegions(text).spans]) {
+                for (const token of tk.tokenize(text, spans)) {
+                    const slice = sliceByCodePoints(text, token.span.start, token.span.end);
+                    const expected = tk === variants[1]![1] || tk === variants[3]![1]
+                        ? RSLP_S_FOLDED.stem(foldForIndex(slice))
+                        : foldForIndex(slice);
+                    // An atom is exempt from the stemmer, so its term is the
+                    // folded slice whatever the stemmer would have done.
+                    const folded = foldForIndex(slice);
+                    expect([expected, folded]).toContain(token.term);
+                }
+            }
+        }
+    });
+
+    it.each(variants)('%s: a protected region is never altered by the stemmer', (_name, tk) => {
+        const withUrl = 'veja https://nihilo.dev/status e `const docs = 1` agora';
+        for (const token of tk.tokenize(withUrl)) {
+            if (!token.term.includes('://') && !token.term.includes('`')) continue;
+            const slice = sliceByCodePoints(withUrl, token.span.start, token.span.end);
+            expect(token.term).toBe(foldForIndex(slice));
+        }
+    });
+
+    it('the URL keeps its final s, which the plural stemmer would otherwise eat', () => {
+        const stemmed = createTokenizer({ stemmer: RSLP_S_FOLDED });
+        expect(stemmed.tokenize('https://nihilo.dev/status').map((t) => t.term)).toEqual([
+            'https://nihilo.dev/status',
+        ]);
+        expect(stemmed.tokenize('as casas').map((t) => t.term)).toEqual(['as', 'casa']);
     });
 });
 

@@ -136,7 +136,9 @@ function segmentWithIntl(text: string, segmenter: WordSegmenter): Range[] {
     let utf16Cursor = 0;
     let cpCursor = 0;
     for (const { index, segment, isWordLike } of segmenter.segment(text)) {
-        cpCursor += Array.from(text.slice(utf16Cursor, index)).length;
+        // Segments are normally contiguous, so this slice is normally empty;
+        // skipping it avoids an allocation per segment over a long document.
+        if (index > utf16Cursor) cpCursor += Array.from(text.slice(utf16Cursor, index)).length;
         const length = Array.from(segment).length;
         if (isWordLike) out.push({ start: cpCursor, end: cpCursor + length, atom: false });
         utf16Cursor = index + segment.length;
@@ -260,7 +262,13 @@ export function createTokenizer(opts: TokenizerOptions = {}): Tokenizer {
             for (const range of fused) {
                 const slice = points.slice(range.start, range.end).join('');
                 const folded = foldForIndex(slice);
-                const term = stemmer ? stemmer.stem(folded) : folded;
+                // An atom is a literal — a URL, a fenced block, a formula —
+                // and a stemmer applied to one corrupts it: `.../status`
+                // becomes `.../statu`, `docs` becomes `doc`. Worse than ugly,
+                // it breaks the invariant this file exists for, because the
+                // span still points at the whole region and the term is no
+                // longer what that region folds to. Morphology is for words.
+                const term = stemmer && !range.atom ? stemmer.stem(folded) : folded;
                 if (term.length > 0) tokens.push({ term, span: { start: range.start, end: range.end } });
             }
             return tokens;
