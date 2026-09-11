@@ -20,3 +20,5 @@ export type { Token, Tokenizer, TokenizerOptions, WordSegmenter, Stemmer } from 
 export { stemPlural, RSLP_S_FOLDED } from './stemmer.js';
 export { luceneIdf, bm25TermScore, bm25Score, DEFAULT_BM25_PARAMS } from './bm25.js';
 export type { Bm25Params, CorpusStats, ScoredTerm } from './bm25.js';
+export { createIndex, loadIndex, CHUNKER_POLICY, INDEX_FORMAT_VERSION } from './index-build.js';
+export type { Index, IndexArtifact, IndexOptions, SearchOptions, SearchResult, StoredChunk } from './index-build.js';
