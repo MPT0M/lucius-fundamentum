@@ -27,6 +27,10 @@ describe('stemmer — plural, and only plural', () => {
         ['lençóis', 'lencol'],
         ['informações', 'informacao'],
         ['capitães', 'capitao'],
+        // One canonical case per rule that the oracle covers only in bulk.
+        ['professores', 'professor'],
+        ['fuzis', 'fuzil'],
+        ['cônsules', 'consul'],
     ])('%s → %s', (plural, singular) => {
         expect(stem(plural)).toBe(singular);
     });
@@ -96,6 +100,47 @@ describe('stemmer — the repair the projection required', () => {
     });
 });
 
+describe('stemmer — a term that means something else is a different defect', () => {
+    /**
+     * Two repairs that are not in the published table and are not there
+     * because folding broke something. They are there because the output was
+     * a DIFFERENT WORD.
+     *
+     * The line is between collision and truncation. `pois` gives `poi` and
+     * `ações` gives `acoe`: neither is a word, query and document truncate
+     * alike, and they still meet. `mães` giving `mao` sends it to the term of
+     * `mão`; `dois` giving `doi` sends it to the term of `dói`. Those are
+     * false matches, not lost precision, and they are repaired even though
+     * the published algorithm produces them.
+     */
+    it('mães meets its own singular instead of the term for mão', () => {
+        expect(stem('mães')).toBe('mae');
+        expect(stem('mãe')).toBe('mae');
+        expect(stem('mão')).toBe('mao');
+        expect(stem('mãos')).toBe('mao');
+        expect(stem('mães')).not.toBe(stem('mãos'));
+    });
+
+    it('dois stays whole instead of landing on the term for dói', () => {
+        expect(stem('dois')).toBe('dois');
+        expect(stem('dói')).toBe('doi');
+        expect(stem('dois')).not.toBe(stem('dói'));
+    });
+
+    it('the aes rule still fires for the words it was written for', () => {
+        expect(stem('capitães')).toBe('capitao');
+        expect(stem('alemães')).toBe('alemao');
+    });
+
+    it('a truncation into a non-word is left alone, on purpose', () => {
+        // Both sides of a search truncate the same way, so they still meet.
+        // Repairing these would diverge further from a published algorithm
+        // for no gain in retrieval.
+        expect(stem('pois')).toBe('poi');
+        expect(stem('ações')).toBe('acoe');
+    });
+});
+
 describe('stemmer — measured against the published algorithm', () => {
     /**
      * `tests/fixtures/rslp-s-oracle.json` is the published table applied to
@@ -117,20 +162,21 @@ describe('stemmer — measured against the published algorithm', () => {
         const archaic = differ.filter((w) => foldForIndex(w).endsWith('aes'));
         const rest = differ.filter((w) => !foldForIndex(w).endsWith('aes')).sort();
 
-        // Thirty-four pre-1943 spellings from the 19th-century novel, which
+        // Thirty-five pre-1943 spellings from the 19th-century novel, which
         // RSLP never handled either — it gives `tae` where we give `tao`, and
         // the modern `tal` is out of reach for both.
-        expect(archaic).toHaveLength(34);
+        expect(archaic).toHaveLength(35);
 
-        // And exactly these four — three of which this table gets BETTER than
+        // And exactly these five — four of which this table gets BETTER than
         // the published rules applied to folded text.
-        expect(rest).toEqual(['arvores', 'lapis', 'más', 'pais']);
+        expect(rest).toEqual(['arvores', 'dois', 'lapis', 'más', 'pais']);
     });
 
     it.each([
         ['arvores', 'arvore', 'arvor'],
         ['lapis', 'lapis', 'lapil'],
         ['pais', 'pais', 'pal'],
+        ['dois', 'dois', 'doi'],
     ])('%s reaches %s here, where the published rules on folded text give %s', (word, ours, published) => {
         expect(stem(word)).toBe(ours);
         expect(oracle.pairs[word]).toBe(published);
