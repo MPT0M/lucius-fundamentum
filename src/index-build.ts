@@ -7,10 +7,16 @@
  * `averageLength`, `k1`, `b` — and writes them into the artifact, so a score
  * is reproducible from the artifact alone and not from whoever called.
  *
- * Lexical only. `dense` is `null` in every artifact this file produces, and
- * `search` refuses rather than pretending: the vector half is a later lot,
- * and an index that quietly answered a hybrid query with half a hybrid would
- * be worse than one that says no.
+ * Both arms live here. `createIndex` builds the lexical one, synchronously and
+ * without leaving the machine; `createDenseIndex` adds vectors, which is async
+ * because embedding is and separate because it costs money.
+ *
+ * An index without vectors still refuses `search` rather than pretending —
+ * answering a hybrid query with half a hybrid, shaped like a whole answer, is
+ * worse than saying no. The refusal now depends on the artifact, not on the
+ * lot: an artifact with vectors loaded without a provider gets the same
+ * refusal, because vectors nobody can compare the query against search
+ * nothing.
  */
 
 import type { Span } from './types.js';
@@ -26,6 +32,8 @@ import { maskProtectedRegions, type ProtectedSpan } from './mask.js';
 import { createTokenizer, type Tokenizer } from './tokenizer.js';
 import { RSLP_S_FOLDED } from './stemmer.js';
 import { bm25TermScore, DEFAULT_BM25_PARAMS, type Bm25Params, type CorpusStats } from './bm25.js';
+import { dot, normalize, packVectors, unpackVectors } from './vector.js';
+import { assertChunkCeilingFits, assertChunksFit, type EmbeddingProvider } from './embedding.js';
 
 /**
  * The version of the CHUNKING LOGIC, not of its parameters.
@@ -201,11 +209,76 @@ function build(docs: readonly SourceDoc[], tokenizer: Tokenizer, chunkOptions: C
     };
 }
 
+/**
+ * The dense arm as it lives in memory: vectors already unit length, and the
+ * provider that has to embed the query with the same model that embedded the
+ * chunks. The artifact stores the same thing packed; this is the unpacked side.
+ */
+interface DenseRuntime {
+    readonly providerId: string;
+    readonly dimensions: number;
+    /** One per chunk, in chunk order, already normalized. */
+    readonly vectors: readonly (readonly number[])[];
+    readonly provider: EmbeddingProvider;
+}
+
+/**
+ * Turns per-chunk scores into the ranked, capped list both arms return.
+ *
+ * Extracted the moment the dense arm needed it: the lexical version was
+ * written once and about to be written a second time, and this repository has
+ * history with the twin fixed on one side only. Ordering, the tie rule and the
+ * page cap have to be the same for both, or the fusion of the two lists in the
+ * next lot would compare things ordered by different rules.
+ */
+function rankAndCap(
+    scores: ReadonlyMap<number, number>,
+    chunks: readonly Chunk[],
+    topK: number,
+    maxChunksPerPage: number | undefined,
+): readonly SearchResult[] {
+    const ordered = [...scores.entries()]
+        // Zero and below are dropped, and the two arms mean different things by
+        // it. In BM25 a non-positive score is a chunk no query term reached. In
+        // cosine it is a chunk pointing away from the query — orthogonal or
+        // opposite — which is worse than absent: returning it would fill a
+        // topK of 10 with the least related chunks in the corpus whenever fewer
+        // than ten are related at all.
+        //
+        // Debt, named rather than resolved: whether a dense query whose every
+        // cosine is non-positive should return nothing or the least bad
+        // candidate is a real question, and no test here can settle it. Real
+        // embeddings sit in a cone — most pairs score positive from a shared
+        // bias — so the empty case may be vanishingly rare in production or may
+        // not. The deterministic provider hashes near-uniformly and reproduces
+        // no such cone, which means the suite can neither confirm the risk nor
+        // dismiss it. It gets decided against a real provider, and the fusion
+        // in the next lot is what makes the answer matter.
+        .filter(([, score]) => score > 0)
+        // Ties break by chunk order so the same query on the same artifact
+        // always returns the same list.
+        .sort((x, y) => y[1] - x[1] || x[0] - y[0]);
+
+    const perPage = new Map<number, number>();
+    const out: SearchResult[] = [];
+    for (const [chunkIndex, score] of ordered) {
+        if (out.length >= topK) break;
+        const candidate = chunks[chunkIndex]!;
+        if (maxChunksPerPage !== undefined && candidate.pageNumber !== undefined) {
+            const taken = perPage.get(candidate.pageNumber) ?? 0;
+            if (taken >= maxChunksPerPage) continue;
+            perPage.set(candidate.pageNumber, taken + 1);
+        }
+        out.push({ chunk: candidate, score, rank: out.length + 1 });
+    }
+    return out;
+}
+
 function makeIndex(
     built: Built,
     tokenizer: Tokenizer,
     params: Bm25Params,
-    dense: IndexArtifact['dense'],
+    dense: DenseRuntime | null,
     // The policy the CHUNKS were cut under, not the one this build would use.
     // A loaded artifact reserialized has to keep saying what produced it —
     // stamping the current version on old boundaries is precisely the lie the
@@ -241,32 +314,42 @@ function makeIndex(
                 }
             }
 
-            const ordered = [...scores.entries()]
-                .filter(([, score]) => score > 0)
-                // Ties break by chunk order so the same query on the same
-                // artifact always returns the same list.
-                .sort((x, y) => y[1] - x[1] || x[0] - y[0]);
-
-            const perPage = new Map<number, number>();
-            const out: SearchResult[] = [];
-            for (const [chunkIndex, score] of ordered) {
-                if (out.length >= topK) break;
-                const candidate = built.chunks[chunkIndex]!;
-                if (opts.maxChunksPerPage !== undefined && candidate.pageNumber !== undefined) {
-                    const taken = perPage.get(candidate.pageNumber) ?? 0;
-                    if (taken >= opts.maxChunksPerPage) continue;
-                    perPage.set(candidate.pageNumber, taken + 1);
-                }
-                out.push({ chunk: candidate, score, rank: out.length + 1 });
-            }
-            return out;
+            return rankAndCap(scores, built.chunks, topK, opts.maxChunksPerPage);
         },
 
-        async search(): Promise<readonly SearchResult[]> {
-            throw new Error(
-                'search requires an embedding provider, and this index has none: its artifact carries ' +
-                    'dense === null. Use searchLexical for the lexical half, or build the index with a provider.',
-            );
+        async search(query: string, opts: SearchOptions = {}): Promise<readonly SearchResult[]> {
+            if (dense === null) {
+                throw new Error(
+                    'search requires an embedding provider, and this index has none: its artifact carries ' +
+                        'dense === null. Use searchLexical for the lexical half, or build the index with a provider.',
+                );
+            }
+            const topK = opts.topK ?? DEFAULT_TOP_K;
+            if (built.chunks.length === 0) return [];
+
+            const [raw] = await dense.provider.embed([query]);
+            if (raw === undefined) {
+                throw new Error(
+                    `provider ${dense.providerId} returned no vector for the query; it must return one per input`,
+                );
+            }
+            if (raw.length !== dense.dimensions) {
+                throw new Error(
+                    `provider ${dense.providerId} returned a ${raw.length}-dimension vector for the query, ` +
+                        `but the index was built with ${dense.dimensions}`,
+                );
+            }
+            // The query is normalized for the same reason the chunks were: with
+            // both at unit length the dot product IS the cosine, so the score
+            // means the same thing across queries. Skipping it would leave the
+            // order right and the number meaningless.
+            const q = normalize([...raw]);
+
+            const scores = new Map<number, number>();
+            for (let i = 0; i < dense.vectors.length; i += 1) {
+                scores.set(i, dot(q, dense.vectors[i]!));
+            }
+            return rankAndCap(scores, built.chunks, topK, opts.maxChunksPerPage);
         },
 
         serialize(): IndexArtifact {
@@ -279,7 +362,14 @@ function makeIndex(
                 bm25: { k1: params.k1, b: params.b, averageLength: built.averageLength },
                 chunks: built.stored,
                 postings,
-                dense,
+                dense:
+                    dense === null
+                        ? null
+                        : {
+                              providerId: dense.providerId,
+                              dimensions: dense.dimensions,
+                              vectors: packVectors(dense.vectors),
+                          },
             };
         },
     };
@@ -319,6 +409,82 @@ export function createIndex(docs: readonly SourceDoc[], opts: IndexOptions = {})
 }
 
 /**
+ * Builds an index with both arms.
+ *
+ * Async because embedding is, and separate from `createIndex` rather than a
+ * flag on it: this is the call that costs money and leaves the machine, and a
+ * signature that says so is worth more than one option fewer. The lexical
+ * index stays synchronous and free.
+ *
+ * The window guard runs in both layers before a single call is paid for — the
+ * cheap parameter check first, then every chunk that was actually cut. The
+ * order matters: an obviously wrong configuration fails without touching the
+ * network.
+ */
+export async function createDenseIndex(
+    docs: readonly SourceDoc[],
+    provider: EmbeddingProvider,
+    opts: IndexOptions = {},
+): Promise<Index> {
+    const chunkOptions = opts.chunkOptions ?? DEFAULT_CHUNK_OPTIONS;
+    assertChunkCeilingFits(chunkOptions.maxChunkCodePoints, provider);
+
+    const lexical = createIndex(docs, opts);
+    const artifact = lexical.serialize();
+    assertChunksFit(artifact.chunks, provider);
+
+    const vectors = artifact.chunks.length === 0
+        ? []
+        : await embedAll(artifact.chunks.map((c) => c.text), provider);
+
+    return loadIndex(
+        {
+            ...artifact,
+            dense: {
+                providerId: provider.id,
+                dimensions: provider.dimensions,
+                vectors: packVectors(vectors),
+            },
+        },
+        { tokenizer: opts.tokenizer ?? defaultTokenizer(), provider },
+    );
+}
+
+/**
+ * Embeds every chunk and normalizes once, at index time.
+ *
+ * Normalizing here and not at query time is what makes the hot loop a dot
+ * product instead of a cosine: no square root per chunk, on every search, for
+ * a value that never changes.
+ *
+ * The count is checked because a provider that silently returns fewer vectors
+ * than inputs would shift every subsequent chunk onto the wrong vector — an
+ * off-by-one with no exception and no symptom except results that are subtly
+ * wrong forever.
+ */
+async function embedAll(
+    texts: readonly string[],
+    provider: EmbeddingProvider,
+): Promise<readonly (readonly number[])[]> {
+    const raw = await provider.embed(texts);
+    if (raw.length !== texts.length) {
+        throw new Error(
+            `provider ${provider.id} returned ${raw.length} vectors for ${texts.length} chunks; ` +
+                'the dense arm needs exactly one per chunk, in order',
+        );
+    }
+    return raw.map((v, i) => {
+        if (v.length !== provider.dimensions) {
+            throw new Error(
+                `provider ${provider.id} returned a ${v.length}-dimension vector for chunk ${i}, ` +
+                    `but reports ${provider.dimensions} dimensions`,
+            );
+        }
+        return normalize([...v]);
+    });
+}
+
+/**
  * Rebuilds an index from an artifact.
  *
  * The artifact stores the NAME of the tokenizer, never the tokenizer — a
@@ -327,7 +493,10 @@ export function createIndex(docs: readonly SourceDoc[], opts: IndexOptions = {})
  * looked up in postings built by this one, and the misses would look like
  * absence rather than mismatch.
  */
-export function loadIndex(artifact: IndexArtifact, opts: { readonly tokenizer?: Tokenizer } = {}): Index {
+export function loadIndex(
+    artifact: IndexArtifact,
+    opts: { readonly tokenizer?: Tokenizer; readonly provider?: EmbeddingProvider } = {},
+): Index {
     if (artifact.formatVersion !== INDEX_FORMAT_VERSION) {
         throw new Error(
             `loadIndex cannot read format version ${artifact.formatVersion}; this build writes and reads ` +
@@ -389,7 +558,51 @@ export function loadIndex(artifact: IndexArtifact, opts: { readonly tokenizer?: 
         built,
         tokenizer,
         { k1: artifact.bm25.k1, b: artifact.bm25.b },
-        artifact.dense,
+        denseFromArtifact(artifact, opts.provider),
         artifact.chunkerPolicy,
     );
+}
+
+/**
+ * Rebuilds the in-memory dense arm from a stored artifact.
+ *
+ * Refuses a provider that is not the one that embedded the chunks, for the
+ * same reason `loadIndex` refuses the wrong tokenizer: vectors from two models
+ * share no space, so comparing them produces numbers that look like scores and
+ * rank by nothing. An index with vectors but no provider stays searchable
+ * lexically — `search` is what refuses, and it says why.
+ */
+function denseFromArtifact(
+    artifact: IndexArtifact,
+    provider: EmbeddingProvider | undefined,
+): DenseRuntime | null {
+    if (artifact.dense === null || provider === undefined) return null;
+
+    if (provider.id !== artifact.dense.providerId) {
+        throw new Error(
+            `loadIndex was given embedding provider "${provider.id}" but the artifact was built with ` +
+                `"${artifact.dense.providerId}". Vectors from two models do not share a space, and ` +
+                'comparing them yields numbers that rank by nothing.',
+        );
+    }
+    if (provider.dimensions !== artifact.dense.dimensions) {
+        throw new Error(
+            `provider "${provider.id}" reports ${provider.dimensions} dimensions but the artifact stores ` +
+                `${artifact.dense.dimensions}`,
+        );
+    }
+
+    const vectors = unpackVectors(artifact.dense.vectors, artifact.dense.dimensions);
+    if (vectors.length !== artifact.chunks.length) {
+        throw new Error(
+            `artifact carries ${vectors.length} vectors for ${artifact.chunks.length} chunks; ` +
+                'the dense arm needs exactly one per chunk, in chunk order',
+        );
+    }
+    return {
+        providerId: artifact.dense.providerId,
+        dimensions: artifact.dense.dimensions,
+        vectors,
+        provider,
+    };
 }
