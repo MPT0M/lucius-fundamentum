@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { openAiProvider } from '../src/providers/openai.js';
+import { geminiProvider } from '../src/providers/gemini.js';
 import { qwenProvider } from '../src/providers/qwen.js';
 import { EmbeddingProviderError } from '../src/providers/http.js';
 
@@ -113,6 +114,146 @@ describe('openai adapter', () => {
     });
 });
 
+describe('gemini adapter', () => {
+    it('sends one request per text, because several parts would fuse into one vector', async () => {
+        // The trap this adapter exists to avoid: batching by stuffing chunks
+        // into `parts` returns a single aggregated vector for the whole batch,
+        // which is a feature for multimodal fusion and ruin for indexing.
+        const { calls, fetchImpl } = recorder(() => ({ body: { embedding: { values: vector(1536) } } }));
+        const provider = geminiProvider({ apiKey: 'k', fetch: fetchImpl });
+
+        const out = await provider.embedDocuments(['um', 'dois', 'três']);
+        expect(out).toHaveLength(3);
+        expect(calls).toHaveLength(3);
+        for (const call of calls) {
+            expect((call.body.content as { parts: unknown[] }).parts).toHaveLength(1);
+        }
+    });
+
+    it('marks a query as a query and a document as a document, in the text itself', async () => {
+        // There is no field for this on this model: the task is a prefix the
+        // model was trained to read, so nothing validates it and omitting it
+        // degrades retrieval with no error.
+        const { calls, fetchImpl } = recorder(() => ({ body: { embedding: { values: vector(1536) } } }));
+        const provider = geminiProvider({ apiKey: 'k', fetch: fetchImpl });
+
+        await provider.embedQuery('posso usar celular?');
+        const queryText = ((calls[0]!.body.content as { parts: { text: string }[] }).parts[0]!).text;
+        expect(queryText).toContain('query:');
+        expect(queryText).toContain('posso usar celular?');
+
+        await provider.embedDocuments(['Art. 2º Fica proibido o uso']);
+        const docText = ((calls[1]!.body.content as { parts: { text: string }[] }).parts[0]!).text;
+        expect(docText).toContain('text:');
+        expect(docText).not.toContain('query:');
+    });
+
+    it('uses the key header this API wants, not a bearer token', async () => {
+        const { calls, fetchImpl } = recorder(() => ({ body: { embedding: { values: vector(1536) } } }));
+        await geminiProvider({ apiKey: 'k', fetch: fetchImpl }).embedQuery('q');
+        expect(calls[0]!.headers['x-goog-api-key']).toBe('k');
+        expect(calls[0]!.headers.authorization).toBeUndefined();
+    });
+
+    it('keeps the order of the inputs even though the requests run concurrently', async () => {
+        // Order is what ties a vector to its chunk. Concurrency that returned
+        // them shuffled would misalign the whole index with nothing raising.
+        const { fetchImpl } = recorder((call) => {
+            const text = ((call.body.content as { parts: { text: string }[] }).parts[0]!).text;
+            const n = Number(text.match(/\d+/u)![0]);
+            return { body: { embedding: { values: vector(1536, n / 100) } } };
+        });
+        const provider = geminiProvider({ apiKey: 'k', fetch: fetchImpl, concurrency: 4 });
+        const out = await provider.embedDocuments(Array.from({ length: 20 }, (_, i) => `texto ${i}`));
+        for (let i = 0; i < 20; i += 1) expect(out[i]![0]).toBeCloseTo(i / 100, 6);
+    });
+
+    it('stops the queue on the first failure instead of paying for the rest', async () => {
+        // Regression. Each rejection killed only the worker that saw it:
+        // Promise.all handed the error to the caller while the other workers
+        // kept draining the queue, and the later rejections were swallowed. On
+        // a corpus this meant hundreds of calls made after the caller gave up,
+        // and a rate limit answered by more requests.
+        const { calls, fetchImpl } = recorder((_call, n) =>
+            n === 2 ? { status: 429, body: 'slow down' } : { body: { embedding: { values: vector(1536) } } },
+        );
+        const provider = geminiProvider({ apiKey: 'k', fetch: fetchImpl, concurrency: 4 });
+
+        await expect(provider.embedDocuments(Array.from({ length: 200 }, (_, i) => `t${i}`))).rejects.toThrow(
+            EmbeddingProviderError,
+        );
+
+        // The four already in flight may finish; the other 196 must not start.
+        // The bound is `concurrency`, not the length of the corpus.
+        expect(calls.length).toBeLessThanOrEqual(4 + 4);
+    });
+
+    it('keeps at most `concurrency` requests in flight', async () => {
+        // The previous version of this test passed `concurrency: 4` and only
+        // checked the output order, which `Promise.all` over every task
+        // satisfies too — the option was inert as far as the suite could tell,
+        // and it is the option the whole rate-limit table rests on.
+        let inFlight = 0;
+        let peak = 0;
+        const release: (() => void)[] = [];
+        const fetchImpl = (() => {
+            inFlight += 1;
+            peak = Math.max(peak, inFlight);
+            return new Promise((resolve) => {
+                release.push(() => {
+                    inFlight -= 1;
+                    resolve(new Response(JSON.stringify({ embedding: { values: vector(1536) } })));
+                });
+            });
+        }) as unknown as typeof globalThis.fetch;
+
+        const provider = geminiProvider({ apiKey: 'k', fetch: fetchImpl, concurrency: 3 });
+        const pending = provider.embedDocuments(Array.from({ length: 12 }, (_, i) => `t${i}`));
+
+        // Drain by letting one finish at a time, so a ceiling higher than 3
+        // would show up as a peak higher than 3.
+        for (let done = 0; done < 12; done += 1) {
+            while (release.length === 0) await Promise.resolve();
+            release.shift()!();
+            await Promise.resolve();
+        }
+        await pending;
+
+        expect(peak).toBe(3);
+    });
+
+    it('refuses a concurrency that is not a whole number, instead of silently doing nothing', () => {
+        // Math.max(1, NaN) is NaN, and NaN workers produce an empty loop, a
+        // result array of holes, and a TypeError far from the cause.
+        // Number(process.env.CONCURRENCY) on an unset variable is enough.
+        expect(() => geminiProvider({ apiKey: 'k', concurrency: Number.NaN })).toThrow(/whole number/u);
+        expect(() => geminiProvider({ apiKey: 'k', concurrency: 0 })).toThrow(/whole number/u);
+        expect(() => geminiProvider({ apiKey: 'k', concurrency: 2.5 })).toThrow(/whole number/u);
+    });
+
+    it('takes the task prefix off the window it advertises', () => {
+        // This is the only adapter that changes the text before sending it, so
+        // the chunk the guard measures is not the string that ships.
+        const bare = 8192 * 3;
+        expect(geminiProvider({ apiKey: 'k' }).maxInputCodePoints).toBeLessThan(bare);
+    });
+
+    it('asks for the dimension count it declares', async () => {
+        const { calls, fetchImpl } = recorder(() => ({ body: { embedding: { values: vector(768) } } }));
+        const provider = geminiProvider({ apiKey: 'k', dimensions: 768, fetch: fetchImpl });
+        expect(provider.dimensions).toBe(768);
+        await provider.embedQuery('q');
+        expect(calls[0]!.body.output_dimensionality).toBe(768);
+    });
+
+    it('refuses a response without the embedding it promised', async () => {
+        const { fetchImpl } = recorder(() => ({ body: { somethingElse: true } }));
+        await expect(geminiProvider({ apiKey: 'k', fetch: fetchImpl }).embedQuery('q')).rejects.toThrow(
+            /embedding\.values/,
+        );
+    });
+});
+
 describe('qwen adapter', () => {
     it('splits a corpus into runs of the documented ceiling', async () => {
         const { calls, fetchImpl } = recorder((call) => ({
@@ -218,6 +359,7 @@ describe('qwen adapter', () => {
 describe('every adapter — the shared failures', () => {
     const build = {
         openai: (f: typeof globalThis.fetch) => openAiProvider({ apiKey: 'k', fetch: f }),
+        gemini: (f: typeof globalThis.fetch) => geminiProvider({ apiKey: 'k', fetch: f }),
         qwen: (f: typeof globalThis.fetch) => qwenProvider({ apiKey: 'k', fetch: f }),
     };
 
@@ -242,6 +384,7 @@ describe('every adapter — the shared failures', () => {
         // with this test still green under a name that promises otherwise.
         const expected = {
             openai: 'openai:text-embedding-3-small:1536',
+            gemini: 'gemini:gemini-embedding-2:1536',
             qwen: 'qwen:qwen3.7-text-embedding:1024',
         };
         for (const [name, make] of Object.entries(build)) {
@@ -326,6 +469,7 @@ describe('every adapter — the shared failures', () => {
 
     it('every id names the provider, the model and the width', () => {
         expect(openAiProvider({ apiKey: 'k' }).id).toBe('openai:text-embedding-3-small:1536');
+        expect(geminiProvider({ apiKey: 'k' }).id).toBe('gemini:gemini-embedding-2:1536');
         expect(qwenProvider({ apiKey: 'k' }).id).toBe('qwen:qwen3.7-text-embedding:1024');
     });
 });
