@@ -29,6 +29,25 @@ export interface EmbeddingProvider {
     /**
      * Embeds passages to be searched IN.
      *
+     * MAGNITUDE IS NOT PART OF THIS CONTRACT, even though every implementation
+     * currently satisfies the stronger promise. Measured on 2026-09-13:
+     * `gemini-embedding-2` at 1536 dimensions and `qwen3.7-text-embedding` at
+     * 1024 both return vectors of norm 1.0000, and the deterministic provider
+     * normalizes by construction.
+     *
+     * The contract stays silent anyway, for two reasons. A vendor can change
+     * this without changing anything a test here would notice — one of them
+     * documents not normalizing below its full width, which is not what the
+     * measurement found, and a promise that rests on a vendor's current
+     * behaviour is a promise this library cannot keep. And an adapter written
+     * by someone else has no reason to inherit it.
+     *
+     * Nothing inside the library depends on the difference: indexing and
+     * querying both normalize unconditionally, and normalizing twice changes
+     * nothing. It is written down for the caller who uses a provider directly,
+     * compares two vectors by dot product, and would otherwise get a number
+     * that is a cosine only by the vendor's good manners.
+     *
      * Two methods and not one with a flag, because the two are genuinely
      * different calls for most providers and a flag is forgettable: an adapter
      * that ignored it would work, return vectors, and retrieve worse than it
@@ -60,7 +79,21 @@ export interface EmbeddingProvider {
      */
     embedQuery(text: string): Promise<readonly number[]>;
 
-    /** Exact token count, when the provider offers one. */
+    /**
+     * Exact token count, when the provider offers one.
+     *
+     * NO ADAPTER IMPLEMENTS THIS YET, so nothing exercises it and the optional
+     * marker is currently load-bearing. It is declared because the window
+     * guards below convert code points to tokens at a fixed, pessimistic
+     * ratio, and a ratio is the wrong instrument for a ceiling: the only way
+     * to know a text fits is to count it with the tokenizer that will read it.
+     *
+     * The cheapest way in is already on the wire — OpenAI returns
+     * `usage.prompt_tokens` on every embedding response, the vendor's own
+     * count for the exact text that was sent, and the adapter throws it away.
+     * Reading it would implement this method for one provider and calibrate
+     * the ratio for the others at the same time.
+     */
     countTokens?(text: string): Promise<number>;
 }
 

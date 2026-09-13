@@ -245,15 +245,29 @@ function rankAndCap(
         // topK of 10 with the least related chunks in the corpus whenever fewer
         // than ten are related at all.
         //
-        // Debt, named rather than resolved: whether a dense query whose every
-        // cosine is non-positive should return nothing or the least bad
-        // candidate is a real question, and no test here can settle it. Real
-        // embeddings sit in a cone — most pairs score positive from a shared
-        // bias — so the empty case may be vanishingly rare in production or may
-        // not. The deterministic provider hashes near-uniformly and reproduces
-        // no such cone, which means the suite can neither confirm the risk nor
-        // dismiss it. It gets decided against a real provider, and the fusion
-        // in the next lot is what makes the answer matter.
+        // This was left as a named debt because the deterministic provider
+        // hashes near-uniformly and reproduces no cone, so the suite could
+        // neither confirm nor dismiss the empty-result risk. MEASURED against
+        // two real providers on 2026-09-13, with six short Portuguese texts
+        // chosen so that half share a subject and half share nothing — a
+        // question about school age, a recipe, an engine, the tides:
+        //
+        //     gemini-embedding-2       15 pairs, 0 non-positive, min 0.579
+        //     qwen3.7-text-embedding   15 pairs, 0 non-positive, min 0.251
+        //
+        // The cone is real and wide: even deliberately unrelated Portuguese
+        // sentences score well above zero. So this filter cannot empty a list
+        // that a real provider filled, and the question of what to return when
+        // every cosine is non-positive describes a case that does not occur
+        // outside a synthetic provider. The filter stays, now as a guard
+        // against the artifact being wrong rather than against the corpus.
+        //
+        // What the same measurement DID show, and matters for the fusion in
+        // the next lot: the two providers have very different floors. Gemini
+        // scores 0.53 between a question about school age and a recipe for
+        // salt cod; Qwen scores 0.26. An absolute threshold calibrated on one
+        // would be meaningless on the other, which is an argument for RRF —
+        // it reads positions, not scores.
         .filter(([, score]) => score > 0)
         // Ties break by chunk order so the same query on the same artifact
         // always returns the same list.
