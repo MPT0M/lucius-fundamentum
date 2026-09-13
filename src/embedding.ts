@@ -26,7 +26,40 @@ export interface EmbeddingProvider {
      * guard into decoration.
      */
     readonly maxInputCodePoints: number;
-    embed(texts: readonly string[]): Promise<readonly (readonly number[])[]>;
+    /**
+     * Embeds passages to be searched IN.
+     *
+     * Two methods and not one with a flag, because the two are genuinely
+     * different calls for most providers and a flag is forgettable: an adapter
+     * that ignored it would work, return vectors, and retrieve worse than it
+     * should, with nothing to show for it. Two methods cannot be half
+     * implemented.
+     *
+     * The shape follows the convention the ecosystem already uses, so an
+     * adapter author recognizes it without reading this. The types carry the
+     * asymmetry too: there are many documents and one query.
+     */
+    embedDocuments(texts: readonly string[]): Promise<readonly (readonly number[])[]>;
+
+    /**
+     * Embeds the text to be searched WITH.
+     *
+     * Questions and passages are different kinds of text — short and
+     * interrogative against long and declarative — and a model that embeds
+     * both identically tends to place questions near other questions rather
+     * than near the passages that answer them. Providers offer a way to say
+     * which is which, each in its own syntax: a prefix written into the text,
+     * or a parameter beside it.
+     *
+     * The published gains are modest where they are published at all, around
+     * one to five percent for the families that measure it, and one of the
+     * three adapters this library ships has no such notion because its
+     * training absorbed the asymmetry. It is here anyway because a provider's
+     * own documentation prescribes the asymmetric pair for retrieval, and
+     * without this method an adapter has no way to obey.
+     */
+    embedQuery(text: string): Promise<readonly number[]>;
+
     /** Exact token count, when the provider offers one. */
     countTokens?(text: string): Promise<number>;
 }
@@ -100,8 +133,14 @@ export function deterministicProvider(dimensions = 32): EmbeddingProvider {
         // Large enough never to be the thing under test here; the guard has its
         // own fixtures with a deliberately small window.
         maxInputCodePoints: 1_000_000,
-        async embed(texts: readonly string[]): Promise<readonly (readonly number[])[]> {
+        async embedDocuments(texts: readonly string[]): Promise<readonly (readonly number[])[]> {
             return texts.map((text) => normalize(spread(text, dimensions)));
+        },
+        // No asymmetry to honour: a hash has no notion of question or passage.
+        // Identical text still embeds identically through either door, which
+        // is what the mechanics under test rely on.
+        async embedQuery(text: string): Promise<readonly number[]> {
+            return normalize(spread(text, dimensions));
         },
     };
 }

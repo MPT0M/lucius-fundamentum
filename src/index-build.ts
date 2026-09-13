@@ -327,12 +327,7 @@ function makeIndex(
             const topK = opts.topK ?? DEFAULT_TOP_K;
             if (built.chunks.length === 0) return [];
 
-            const [raw] = await dense.provider.embed([query]);
-            if (raw === undefined) {
-                throw new Error(
-                    `provider ${dense.providerId} returned no vector for the query; it must return one per input`,
-                );
-            }
+            const raw = await dense.provider.embedQuery(query);
             if (raw.length !== dense.dimensions) {
                 throw new Error(
                     `provider ${dense.providerId} returned a ${raw.length}-dimension vector for the query, ` +
@@ -466,7 +461,7 @@ async function embedAll(
     texts: readonly string[],
     provider: EmbeddingProvider,
 ): Promise<readonly (readonly number[])[]> {
-    const raw = await provider.embed(texts);
+    const raw = await provider.embedDocuments(texts);
     if (raw.length !== texts.length) {
         throw new Error(
             `provider ${provider.id} returned ${raw.length} vectors for ${texts.length} chunks; ` +

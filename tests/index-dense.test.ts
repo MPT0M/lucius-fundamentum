@@ -80,6 +80,36 @@ describe('dense — search', () => {
     });
 });
 
+describe('dense — each door is used at the right end', () => {
+    it('indexing goes through embedDocuments and searching through embedQuery', async () => {
+        // The reason the interface has two methods instead of one flag is that
+        // the two ends are genuinely different calls for most providers. That
+        // buys nothing unless the library actually uses the right one at each
+        // end — and swapping them would still return vectors, still rank, and
+        // still be wrong, with no symptom. So the routing is pinned.
+        const seen: string[] = [];
+        const watcher: EmbeddingProvider = {
+            id: 'watcher',
+            dimensions: 4,
+            maxInputCodePoints: 1000,
+            async embedDocuments(texts) {
+                seen.push(`documents:${texts.length}`);
+                return texts.map(() => [1, 0, 0, 0]);
+            },
+            async embedQuery(text) {
+                seen.push(`query:${text}`);
+                return [1, 0, 0, 0];
+            },
+        };
+
+        const index = await createDenseIndex(CORPUS, watcher, { chunkOptions: SMALL });
+        expect(seen).toEqual(['documents:3']);
+
+        await index.search('a casa');
+        expect(seen).toEqual(['documents:3', 'query:a casa']);
+    });
+});
+
 describe('dense — a chunk pointing away from the query is absent, not last', () => {
     it('omits chunks whose cosine is zero or negative', async () => {
         // Two chunks placed by hand at right angles and in opposition to the
@@ -91,12 +121,15 @@ describe('dense — a chunk pointing away from the query is absent, not last', (
             id: 'opposed',
             dimensions: 2,
             maxInputCodePoints: 1000,
-            async embed(texts) {
+            async embedDocuments(texts) {
                 return texts.map((text) => {
                     if (text.includes('alinhado')) return [1, 0];
                     if (text.includes('ortogonal')) return [0, 1];
                     return [-1, 0];
                 });
+            },
+            async embedQuery() {
+                return [1, 0];
             },
         };
         const docs = [doc('d', ['Trecho alinhado.', 'Trecho ortogonal.', 'Trecho oposto.'].join('\n\n'))];
@@ -135,8 +168,11 @@ describe('dense — the refusals', () => {
         id: 'outro-provedor',
         dimensions: 8,
         maxInputCodePoints: 1000,
-        async embed(texts) {
+        async embedDocuments(texts) {
             return texts.map(() => Array.from({ length: 8 }, () => 1 / Math.sqrt(8)));
+        },
+        async embedQuery() {
+            return Array.from({ length: 8 }, () => 1 / Math.sqrt(8));
         },
     };
 
@@ -181,8 +217,8 @@ describe('dense — the refusals', () => {
         // scored against its neighbour's vector, forever, silently.
         const short: EmbeddingProvider = {
             ...provider,
-            async embed(texts) {
-                return (await provider.embed(texts)).slice(0, -1);
+            async embedDocuments(texts) {
+                return (await provider.embedDocuments(texts)).slice(0, -1);
             },
         };
         await expect(createDenseIndex(CORPUS, short, { chunkOptions: SMALL })).rejects.toThrow(
@@ -193,7 +229,7 @@ describe('dense — the refusals', () => {
     it('refuses a provider that returns a vector of the wrong size, naming the chunk', async () => {
         const wrong: EmbeddingProvider = {
             ...provider,
-            async embed(texts) {
+            async embedDocuments(texts) {
                 return texts.map(() => [1, 0, 0]);
             },
         };
@@ -210,9 +246,13 @@ describe('dense — the window guard runs before anything is paid for', () => {
             id: 'narrow',
             dimensions: 8,
             maxInputCodePoints: 10,
-            async embed(texts) {
+            async embedDocuments(texts) {
                 calls += 1;
                 return texts.map(() => Array.from({ length: 8 }, () => 1 / Math.sqrt(8)));
+            },
+            async embedQuery() {
+                calls += 1;
+                return Array.from({ length: 8 }, () => 1 / Math.sqrt(8));
             },
         };
         await expect(createDenseIndex(CORPUS, narrow, { chunkOptions: SMALL })).rejects.toThrow(
@@ -229,8 +269,11 @@ describe('dense — the window guard runs before anything is paid for', () => {
             id: 'narrow',
             dimensions: 8,
             maxInputCodePoints: 20,
-            async embed(texts) {
+            async embedDocuments(texts) {
                 return texts.map(() => Array.from({ length: 8 }, () => 1 / Math.sqrt(8)));
+            },
+            async embedQuery() {
+                return Array.from({ length: 8 }, () => 1 / Math.sqrt(8));
             },
         };
         const long = [doc('d', 'Uma frase única e bastante longa que passa do teto sem ponto no meio.')];

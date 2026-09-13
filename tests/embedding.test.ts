@@ -12,8 +12,11 @@ const narrow = (maxInputCodePoints: number): EmbeddingProvider => ({
     id: 'narrow',
     dimensions: 4,
     maxInputCodePoints,
-    async embed(texts) {
+    async embedDocuments(texts) {
         return texts.map(() => [1, 0, 0, 0]);
+    },
+    async embedQuery() {
+        return [1, 0, 0, 0];
     },
 });
 
@@ -71,19 +74,19 @@ describe('embedding — the deterministic provider', () => {
     const provider = deterministicProvider(16);
 
     it('embeds without leaving the machine, and the vectors are unit length', async () => {
-        const [v] = await provider.embed(['a escola pode proibir o celular']);
+        const [v] = await provider.embedDocuments(['a escola pode proibir o celular']);
         expect(v).toHaveLength(16);
         expect(norm([...v!])).toBeCloseTo(1, 12);
     });
 
     it('the same text embeds the same way, which is what makes a test reproducible', async () => {
-        const [a] = await provider.embed(['mesmo texto']);
-        const [b] = await provider.embed(['mesmo texto']);
+        const [a] = await provider.embedDocuments(['mesmo texto']);
+        const [b] = await provider.embedDocuments(['mesmo texto']);
         expect(a).toEqual(b);
     });
 
     it('different texts land in different directions', async () => {
-        const [a, b] = await provider.embed(['o aluno chegou', 'a prova foi adiada']);
+        const [a, b] = await provider.embedDocuments(['o aluno chegou', 'a prova foi adiada']);
         expect(dot([...a!], [...b!])).toBeLessThan(0.99);
     });
 
@@ -91,14 +94,14 @@ describe('embedding — the deterministic provider', () => {
         // Every component would be the same hash of nothing; without the
         // offset the vector could come out unnormalizable, and the failure
         // would surface far from here.
-        const [v] = await provider.embed(['']);
+        const [v] = await provider.embedDocuments(['']);
         expect(norm([...v!])).toBeCloseTo(1, 12);
     });
 
     it('embeds a batch in the order it was given', async () => {
-        const vectors = await provider.embed(['um', 'dois', 'três']);
+        const vectors = await provider.embedDocuments(['um', 'dois', 'três']);
         expect(vectors).toHaveLength(3);
-        const [again] = await provider.embed(['dois']);
+        const [again] = await provider.embedDocuments(['dois']);
         expect(vectors[1]).toEqual(again);
     });
 
@@ -116,8 +119,8 @@ describe('embedding — the deterministic provider', () => {
         // The pair a real provider would place close together. This one has no
         // reason to, and asserting otherwise would make the suite green on a
         // property it cannot have.
-        const [health, disease] = await provider.embed(['condições de saúde', 'doença']);
-        const [unrelated] = await provider.embed(['banda larga de alta velocidade']);
+        const [health, disease] = await provider.embedDocuments(['condições de saúde', 'doença']);
+        const [unrelated] = await provider.embedDocuments(['banda larga de alta velocidade']);
         const relatedScore = dot([...health!], [...disease!]);
         const unrelatedScore = dot([...health!], [...unrelated!]);
         expect(Number.isFinite(relatedScore)).toBe(true);
