@@ -2,7 +2,10 @@
     // Type-checks everything, shipped or not: the sources, the tests, the
     // benchmark harness under bench/ and the test runner's own config.
     // The root tsconfig.json compiles src/ alone, on purpose — the package has no
-    // runtime dependency on Node and its `lib` is ES2022. The tests do use Node
+    // runtime dependency on Node, and its `lib` is ES2022 plus WebWorker (the
+    // embedding adapters need fetch, Response and AbortSignal; WebWorker declares
+    // no document, window or storage API, so nothing browser-only leaks in). The
+    // distinction that matters here is Node, not the web globals. The tests do use Node
     // (fs, process, Buffer), and with the installed toolchain @types/node is
     // not picked up without an explicit `types` entry; measured on 2026-09-07:
     // without it, 9 × TS2591 in the tests; with it, zero. `rootDir` widens to the

@@ -25,3 +25,8 @@ export type { Index, IndexArtifact, IndexOptions, SearchOptions, SearchResult, S
 export { norm, normalize, dot, packVectors, unpackVectors } from './vector.js';
 export { assertChunkCeilingFits, assertChunksFit, deterministicProvider } from './embedding.js';
 export type { EmbeddingProvider } from './embedding.js';
+export { openAiProvider } from './providers/openai.js';
+export { qwenProvider } from './providers/qwen.js';
+export { EmbeddingProviderError } from './providers/http.js';
+export type { OpenAiOptions } from './providers/openai.js';
+export type { QwenOptions } from './providers/qwen.js';
