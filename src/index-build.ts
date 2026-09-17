@@ -223,6 +223,68 @@ interface DenseRuntime {
 }
 
 /**
+ * Orders chunk indices by score, drops the non-positive, and cuts to `depth`.
+ *
+ * Extracted so the two arms and the final list order by the same rule.
+ * Ordering lists by different rules and then comparing them would produce a
+ * ranking neither arm agreed to.
+ *
+ * Zero and below are dropped, and the two arms mean different things by
+ * it. In BM25 a non-positive score is a chunk no query term reached. In
+ * cosine it is a chunk pointing away from the query — orthogonal or
+ * opposite — which is worse than absent: returning it would fill a
+ * topK of 10 with the least related chunks in the corpus whenever fewer
+ * than ten are related at all.
+ *
+ * This was left as a named debt because the deterministic provider
+ * hashes near-uniformly and reproduces no cone, so the suite could
+ * neither confirm nor dismiss the empty-result risk. Measured against
+ * two real providers on 2026-09-13, over six short Portuguese texts
+ * written for the purpose — three sharing a subject, three sharing
+ * nothing: a question about school age, a recipe, an engine, the tides.
+ *
+ * TWO POPULATIONS, and only the second is the one this filter cuts:
+ *
+ *   document x document, both sides through embedDocuments, 15 pairs
+ *   each (C(6,2)):
+ *     gemini-embedding-2       0 non-positive, lowest 0.579
+ *     qwen3.7-text-embedding   0 non-positive, lowest 0.251
+ *
+ *   query x document, the query through embedQuery and the passages
+ *   through embedDocuments — which is what `search` compares, and on
+ *   Gemini the two sides carry different task prefixes:
+ *     gemini-embedding-2       6 scores, 0.837 down to 0.530
+ *     qwen3.7-text-embedding   6 scores, 0.838 down to 0.257
+ *
+ * In these thirty document pairs and twelve query scores nothing was
+ * non-positive, and the lowest of all was 0.251 — between texts chosen
+ * to have nothing in common. That is evidence of a cone, not proof of
+ * one: six hand-written sentences are not this corpus, whose chunks run
+ * near 1119 code points, and two providers are not every provider. What
+ * it does settle is the question the debt was really about — whether
+ * the empty case is something the suite failed to reproduce or
+ * something that does not arise — and it points firmly at the second.
+ * The filter stays, now guarding against an artifact built wrong rather
+ * than against a corpus that fails to match.
+ *
+ * Ties break by chunk order so the same query on the same artifact always
+ * returns the same list. That is part of the ordering rule and not a detail:
+ * a fused result is reproducible only because the arms feeding it are.
+ */
+function rankIndices(
+    scores: ReadonlyMap<number, number>,
+    depth: number,
+): readonly number[] {
+    return (
+        [...scores.entries()]
+            .filter(([, score]) => score > 0)
+            .sort((x, y) => y[1] - x[1] || x[0] - y[0])
+            .slice(0, depth)
+            .map(([chunkIndex]) => chunkIndex)
+    );
+}
+
+/**
  * Turns per-chunk scores into the ranked, capped list both arms return.
  *
  * Extracted the moment the dense arm needed it: the lexical version was
@@ -237,61 +299,18 @@ function rankAndCap(
     topK: number,
     maxChunksPerPage: number | undefined,
 ): readonly SearchResult[] {
-    const ordered = [...scores.entries()]
-        // Zero and below are dropped, and the two arms mean different things by
-        // it. In BM25 a non-positive score is a chunk no query term reached. In
-        // cosine it is a chunk pointing away from the query — orthogonal or
-        // opposite — which is worse than absent: returning it would fill a
-        // topK of 10 with the least related chunks in the corpus whenever fewer
-        // than ten are related at all.
-        //
-        // This was left as a named debt because the deterministic provider
-        // hashes near-uniformly and reproduces no cone, so the suite could
-        // neither confirm nor dismiss the empty-result risk. Measured against
-        // two real providers on 2026-09-13, over six short Portuguese texts
-        // written for the purpose — three sharing a subject, three sharing
-        // nothing: a question about school age, a recipe, an engine, the tides.
-        //
-        // TWO POPULATIONS, and only the second is the one this filter cuts:
-        //
-        //   document x document, both sides through embedDocuments, 15 pairs
-        //   each (C(6,2)):
-        //     gemini-embedding-2       0 non-positive, lowest 0.579
-        //     qwen3.7-text-embedding   0 non-positive, lowest 0.251
-        //
-        //   query x document, the query through embedQuery and the passages
-        //   through embedDocuments — which is what `search` compares, and on
-        //   Gemini the two sides carry different task prefixes:
-        //     gemini-embedding-2       6 scores, 0.837 down to 0.530
-        //     qwen3.7-text-embedding   6 scores, 0.838 down to 0.257
-        //
-        // In these thirty document pairs and twelve query scores nothing was
-        // non-positive, and the lowest of all was 0.251 — between texts chosen
-        // to have nothing in common. That is evidence of a cone, not proof of
-        // one: six hand-written sentences are not this corpus, whose chunks run
-        // near 1119 code points, and two providers are not every provider. What
-        // it does settle is the question the debt was really about — whether
-        // the empty case is something the suite failed to reproduce or
-        // something that does not arise — and it points firmly at the second.
-        // The filter stays, now guarding against an artifact built wrong rather
-        // than against a corpus that fails to match.
-        //
-        // What the same measurement shows for the fusion in the next lot: the
-        // two providers have very different floors on the SAME query pair —
-        // 0.530 against 0.257 for a question about school age and a recipe for
-        // salt cod. An absolute threshold calibrated on one would be
-        // meaningless on the other, which is an argument for RRF: it reads
-        // positions, not scores.
-        .filter(([, score]) => score > 0)
-        // Ties break by chunk order so the same query on the same artifact
-        // always returns the same list.
-        .sort((x, y) => y[1] - x[1] || x[0] - y[0]);
+    // The ordering, the tie rule and the non-positive filter live in
+    // `rankIndices`, called here and by both arms, so none of them can drift
+    // apart. They were written out twice for one commit and that is exactly
+    // the twin this extraction exists to prevent.
+    const ordered = rankIndices(scores, Number.POSITIVE_INFINITY);
 
     const perPage = new Map<number, number>();
     const out: SearchResult[] = [];
-    for (const [chunkIndex, score] of ordered) {
+    for (const chunkIndex of ordered) {
         if (out.length >= topK) break;
         const candidate = chunks[chunkIndex]!;
+        const score = scores.get(chunkIndex)!;
         if (maxChunksPerPage !== undefined && candidate.pageNumber !== undefined) {
             const taken = perPage.get(candidate.pageNumber) ?? 0;
             if (taken >= maxChunksPerPage) continue;
@@ -315,34 +334,65 @@ function makeIndex(
 ): Index {
     const stats: CorpusStats = { chunkCount: built.chunks.length, averageLength: built.averageLength };
 
+    /**
+     * BM25 over the postings. Pulled out of `searchLexical` so that the fusion
+     * scores the same way the lexical arm does, by calling the same function
+     * rather than by repeating it. This repository has history with a fix
+     * applied to one twin and not the other.
+     */
+    function lexicalScores(query: string): Map<number, number> {
+        const scores = new Map<number, number>();
+        const terms = tokenizer.tokenize(query).map((t) => t.term);
+        // A query whose terms all vanish is a legitimate answer of nothing,
+        // not an error: punctuation, an emoji, a stray bracket.
+        if (terms.length === 0 || built.chunks.length === 0) return scores;
+
+        for (const term of terms) {
+            const list = built.postings.get(term);
+            if (list === undefined) continue;
+            const documentFrequency = list.length;
+            for (const [chunkIndex, termFrequency] of list) {
+                const partial = bm25TermScore(
+                    termFrequency,
+                    built.lengths[chunkIndex]!,
+                    documentFrequency,
+                    stats,
+                    params,
+                );
+                scores.set(chunkIndex, (scores.get(chunkIndex) ?? 0) + partial);
+            }
+        }
+        return scores;
+    }
+
+    /** Cosine against every chunk vector. One provider call, for the query. */
+    async function denseScores(query: string, runtime: DenseRuntime): Promise<Map<number, number>> {
+        const raw = await runtime.provider.embedQuery(query);
+        if (raw.length !== runtime.dimensions) {
+            throw new Error(
+                `provider ${runtime.providerId} returned a ${raw.length}-dimension vector for the query, ` +
+                    `but the index was built with ${runtime.dimensions}`,
+            );
+        }
+        // The query is normalized for the same reason the chunks were: with
+        // both at unit length the dot product IS the cosine, so the score
+        // means the same thing across queries. Skipping it would leave the
+        // order right and the number meaningless.
+        const q = normalize([...raw]);
+
+        const scores = new Map<number, number>();
+        for (let i = 0; i < runtime.vectors.length; i += 1) {
+            scores.set(i, dot(q, runtime.vectors[i]!));
+        }
+        return scores;
+    }
+
     return {
         tokenizerId: tokenizer.id,
 
         searchLexical(query: string, opts: SearchOptions = {}): readonly SearchResult[] {
             const topK = opts.topK ?? DEFAULT_TOP_K;
-            const terms = tokenizer.tokenize(query).map((t) => t.term);
-            // A query whose terms all vanish is a legitimate answer of
-            // nothing, not an error: punctuation, an emoji, a stray bracket.
-            if (terms.length === 0 || built.chunks.length === 0) return [];
-
-            const scores = new Map<number, number>();
-            for (const term of terms) {
-                const list = built.postings.get(term);
-                if (list === undefined) continue;
-                const documentFrequency = list.length;
-                for (const [chunkIndex, termFrequency] of list) {
-                    const partial = bm25TermScore(
-                        termFrequency,
-                        built.lengths[chunkIndex]!,
-                        documentFrequency,
-                        stats,
-                        params,
-                    );
-                    scores.set(chunkIndex, (scores.get(chunkIndex) ?? 0) + partial);
-                }
-            }
-
-            return rankAndCap(scores, built.chunks, topK, opts.maxChunksPerPage);
+            return rankAndCap(lexicalScores(query), built.chunks, topK, opts.maxChunksPerPage);
         },
 
         async search(query: string, opts: SearchOptions = {}): Promise<readonly SearchResult[]> {
@@ -355,24 +405,7 @@ function makeIndex(
             const topK = opts.topK ?? DEFAULT_TOP_K;
             if (built.chunks.length === 0) return [];
 
-            const raw = await dense.provider.embedQuery(query);
-            if (raw.length !== dense.dimensions) {
-                throw new Error(
-                    `provider ${dense.providerId} returned a ${raw.length}-dimension vector for the query, ` +
-                        `but the index was built with ${dense.dimensions}`,
-                );
-            }
-            // The query is normalized for the same reason the chunks were: with
-            // both at unit length the dot product IS the cosine, so the score
-            // means the same thing across queries. Skipping it would leave the
-            // order right and the number meaningless.
-            const q = normalize([...raw]);
-
-            const scores = new Map<number, number>();
-            for (let i = 0; i < dense.vectors.length; i += 1) {
-                scores.set(i, dot(q, dense.vectors[i]!));
-            }
-            return rankAndCap(scores, built.chunks, topK, opts.maxChunksPerPage);
+            return rankAndCap(await denseScores(query, dense), built.chunks, topK, opts.maxChunksPerPage);
         },
 
         serialize(): IndexArtifact {
