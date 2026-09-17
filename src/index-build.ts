@@ -13,10 +13,10 @@
  *
  * An index without vectors still refuses `search` rather than pretending —
  * answering a hybrid query with half a hybrid, shaped like a whole answer, is
- * worse than saying no. The refusal now depends on the artifact, not on the
- * lot: an artifact with vectors loaded without a provider gets the same
- * refusal, because vectors nobody can compare the query against search
- * nothing.
+ * worse than saying no. The refusal depends on the artifact rather than on how
+ * the index was built: one carrying vectors but loaded without a provider gets
+ * the same refusal, because vectors nobody can compare the query against
+ * search nothing.
  */
 
 import type { Span } from './types.js';
@@ -40,10 +40,10 @@ import { assertChunkCeilingFits, assertChunksFit, type EmbeddingProvider } from 
  *
  * An artifact records this so that reusing vectors across a reindex can tell
  * whether the boundaries would still fall in the same places. It cannot be
- * derived from `maxChunkCodePoints` and `maxOverlapCodePoints`: the two fixes
- * that opened this lot moved every boundary in every document while leaving
- * both numbers at 1200 and 160. A derived id would have claimed compatibility
- * and reused vectors against chunks that no longer exist.
+ * derived from `maxChunkCodePoints` and `maxOverlapCodePoints`: two fixes to
+ * the chunker have already moved every boundary in every document while
+ * leaving both numbers at 1200 and 160. A derived id would have claimed
+ * compatibility and reused vectors against chunks that no longer exist.
  *
  * So it is bumped BY HAND, by whoever changes how the chunker cuts, and a
  * test pins the current value to make forgetting loud.
@@ -247,27 +247,41 @@ function rankAndCap(
         //
         // This was left as a named debt because the deterministic provider
         // hashes near-uniformly and reproduces no cone, so the suite could
-        // neither confirm nor dismiss the empty-result risk. MEASURED against
-        // two real providers on 2026-09-13, with six short Portuguese texts
-        // chosen so that half share a subject and half share nothing — a
-        // question about school age, a recipe, an engine, the tides:
+        // neither confirm nor dismiss the empty-result risk. Measured against
+        // two real providers on 2026-09-13, over six short Portuguese texts
+        // written for the purpose — three sharing a subject, three sharing
+        // nothing: a question about school age, a recipe, an engine, the tides.
         //
-        //     gemini-embedding-2       15 pairs, 0 non-positive, min 0.579
-        //     qwen3.7-text-embedding   15 pairs, 0 non-positive, min 0.251
+        // TWO POPULATIONS, and only the second is the one this filter cuts:
         //
-        // The cone is real and wide: even deliberately unrelated Portuguese
-        // sentences score well above zero. So this filter cannot empty a list
-        // that a real provider filled, and the question of what to return when
-        // every cosine is non-positive describes a case that does not occur
-        // outside a synthetic provider. The filter stays, now as a guard
-        // against the artifact being wrong rather than against the corpus.
+        //   document x document, both sides through embedDocuments, 15 pairs
+        //   each (C(6,2)):
+        //     gemini-embedding-2       0 non-positive, lowest 0.579
+        //     qwen3.7-text-embedding   0 non-positive, lowest 0.251
         //
-        // What the same measurement DID show, and matters for the fusion in
-        // the next lot: the two providers have very different floors. Gemini
-        // scores 0.53 between a question about school age and a recipe for
-        // salt cod; Qwen scores 0.26. An absolute threshold calibrated on one
-        // would be meaningless on the other, which is an argument for RRF —
-        // it reads positions, not scores.
+        //   query x document, the query through embedQuery and the passages
+        //   through embedDocuments — which is what `search` compares, and on
+        //   Gemini the two sides carry different task prefixes:
+        //     gemini-embedding-2       6 scores, 0.837 down to 0.530
+        //     qwen3.7-text-embedding   6 scores, 0.838 down to 0.257
+        //
+        // In these thirty document pairs and twelve query scores nothing was
+        // non-positive, and the lowest of all was 0.251 — between texts chosen
+        // to have nothing in common. That is evidence of a cone, not proof of
+        // one: six hand-written sentences are not this corpus, whose chunks run
+        // near 1119 code points, and two providers are not every provider. What
+        // it does settle is the question the debt was really about — whether
+        // the empty case is something the suite failed to reproduce or
+        // something that does not arise — and it points firmly at the second.
+        // The filter stays, now guarding against an artifact built wrong rather
+        // than against a corpus that fails to match.
+        //
+        // What the same measurement shows for the fusion in the next lot: the
+        // two providers have very different floors on the SAME query pair —
+        // 0.530 against 0.257 for a question about school age and a recipe for
+        // salt cod. An absolute threshold calibrated on one would be
+        // meaningless on the other, which is an argument for RRF: it reads
+        // positions, not scores.
         .filter(([, score]) => score > 0)
         // Ties break by chunk order so the same query on the same artifact
         // always returns the same list.

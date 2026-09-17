@@ -43,12 +43,17 @@ All notable changes to this package are documented here. The format follows
   no network and no key. A third member, `countTokens`, is optional and no
   adapter implements it yet; the window guards convert code points to tokens at
   a fixed ratio until one does.
-- Vector magnitude is deliberately outside the provider contract: an adapter
-  may return unit-length vectors or not, and these do differ. Nothing in the
-  library depends on it, because indexing and querying both normalize and
-  normalizing twice changes nothing — but a caller using a provider directly
-  and comparing two vectors by dot product should normalize first, or the
-  number is a cosine only by luck.
+- Vector magnitude is deliberately outside the provider contract, even though
+  every implementation currently satisfies the stronger promise: measured on
+  2026-09-13, `gemini-embedding-2` at 1536 dimensions and
+  `qwen3.7-text-embedding` at 1024 both return vectors of norm 1.0000, and the
+  deterministic provider normalizes by construction. The contract stays silent
+  because a promise resting on a vendor's current behaviour is not one this
+  library can keep, and an adapter written by someone else has no reason to
+  inherit it. Nothing here depends on the difference — indexing and querying
+  both normalize, and normalizing twice changes nothing — but a caller using a
+  provider directly and comparing two vectors by dot product should normalize
+  first, or the number is a cosine only by the vendor's good manners.
 - Adapters for three services: `openAiProvider`, `geminiProvider` and
   `qwenProvider`, plus `EmbeddingProviderError` so a caller can tell a provider
   failure from a bug in this library. They differ in ways worth knowing before
@@ -98,5 +103,8 @@ All notable changes to this package are documented here. The format follows
   (`"lib": ["ES2022", "WebWorker"]`). The adapters need `fetch`, `Response` and
   `AbortSignal`, and this is what makes the file header's claim that the
   library has to run in a Worker true of the build rather than only of the
-  prose. It adds no runtime dependency: `lib.webworker.d.ts` declares no
-  `document`, `window` or storage API.
+  prose. It adds no runtime dependency. It does widen what compiles: the
+  WebWorker lib declares no `document` and no `window`, but it does declare
+  `caches` and `indexedDB`, which exist in a Worker and not in Node. Nothing in
+  `src/` uses them, and a contribution that did would type-check here and throw
+  `ReferenceError` under the runtime this package declares.

@@ -128,10 +128,18 @@ export function requirePositiveInteger(value: number, optionName: string): numbe
  * Checks that a provider returned as many vectors as it was given inputs, and
  * that each has the promised width.
  *
- * Shared because all three can fail this way and the consequence is identical:
- * one vector fewer shifts every chunk after the gap onto its neighbour's
- * vector, and a wrong width makes the cosine a dimension mismatch later, far
- * from the call that caused it.
+ * The count branch is unreachable from the three adapters here: each of them
+ * builds its result array at the size it expects and refuses a hole before
+ * reaching this point. It is kept because this function is the contract an
+ * adapter fits, not a private helper of these three — an adapter written
+ * elsewhere can reach it — and because a check that becomes reachable through
+ * a later refactor should already be in place. The width branch does fire from
+ * all three.
+ *
+ * The consequence is what makes both worth checking: one vector fewer shifts
+ * every chunk after the gap onto its neighbour's vector, and a wrong width
+ * makes the cosine a dimension mismatch later, far from the call that caused
+ * it.
  */
 export function assertShape(
     vectors: readonly (readonly number[])[],

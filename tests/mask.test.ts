@@ -155,8 +155,15 @@ describe('maskProtectedRegions — every region says which pass painted it', () 
         expect(asPlain.spans[0]).toMatchObject({ start: 4, end: 5 });
     });
 
-    // Debt declared in 5411978 and paid here: the URL pattern used to accept `$`
-    // and the backtick, so a URL glued to a formula delimiter swallowed it.
+    // Debt declared in "a code block and a URL survive the cut, by the same
+    // rule as a formula" and paid here: the URL pattern used to accept `$` and
+    // the backtick, so a URL glued to a formula delimiter swallowed it.
+    //
+    // Cited by subject rather than by hash on purpose. A hash does not survive
+    // a history rewrite, and this one did not: the abbreviation that stood here
+    // stopped resolving the day the messages were rewritten, while every other
+    // reference in the repository kept working. `git log --grep` finds a
+    // subject; nothing finds a hash that no longer exists.
     it('a URL glued to a formula delimiter stops at the delimiter, and the formula is its own region', () => {
         const text = 'https://x.y$a$';
         const { spans } = maskProtectedRegions(text);

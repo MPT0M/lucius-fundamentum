@@ -83,10 +83,16 @@ export interface EmbeddingProvider {
      * Exact token count, when the provider offers one.
      *
      * NO ADAPTER IMPLEMENTS THIS YET, so nothing exercises it and the optional
-     * marker is currently load-bearing. It is declared because the window
-     * guards below convert code points to tokens at a fixed, pessimistic
-     * ratio, and a ratio is the wrong instrument for a ceiling: the only way
-     * to know a text fits is to count it with the tokenizer that will read it.
+     * marker is currently load-bearing. It is declared because a ratio is the
+     * wrong instrument for a ceiling: the only way to know a text fits is to
+     * count it with the tokenizer that will read it.
+     *
+     * The conversion happens in the ADAPTER, not in the guards below, and in
+     * the other direction: each adapter turns its published window in tokens
+     * into `maxInputCodePoints` by multiplying by a pessimistic constant, and
+     * the guards then compare code points against code points. So the estimate
+     * is made once, far from the comparison, and every guard inherits it
+     * without any of them naming it.
      *
      * The cheapest way in is already on the wire — OpenAI returns
      * `usage.prompt_tokens` on every embedding response, the vendor's own
