@@ -8,6 +8,39 @@ All notable changes to this package are documented here. The format follows
 
 ### Changed
 
+- **`search` is now the hybrid search, not the dense one.** It runs both arms,
+  ranks each to `FUSION_DEPTH`, and fuses them by reciprocal rank: a chunk both
+  arms found outranks a chunk one arm placed first, which is the whole claim of
+  hybrid retrieval. `searchLexical` is untouched and still answers from the
+  lexical arm alone; there is no longer a way to query the dense arm by itself,
+  which is deliberate — the two lots were kept apart precisely so that the
+  history has a point where each arm can be measured alone, and after the
+  fusion separating the contributions is inference rather than measurement.
+- **`SearchResult.score` from `search` changed meaning, and callers must not
+  threshold on it.** It was the cosine, between 0 and 1. It is now the
+  reciprocal-rank sum, between 0.00625 and 0.033 at the defaults — the floor is
+  not near zero and depends on `FUSION_DEPTH` as much as on `FUSION_K`, because
+  a chunk that reaches the fused list at all was ranked within the depth by at
+  least one arm, and the worst such rank is the depth itself. It is not a
+  similarity and not a probability: 0.03 does not mean "3% relevant", and it
+  carries no absolute meaning by construction, because the fusion reads
+  positions precisely so it never has to trust the scales underneath. Order by
+  it; never compare it to a constant. `searchLexical` still returns the BM25
+  score, which was never comparable across corpora either.
+- The page cap is applied once, to the fused list, and never inside an arm.
+  Capping per arm would remove a chunk from one list for a reason that is not
+  its relevance, and the fusion would read that absence as the arm having
+  ranked it low — a chunk penalised for a cap it never met.
+- **Known limit, declared rather than fixed: `search` draws from a pool of at
+  most `2 * FUSION_DEPTH` chunks — 200 at the defaults.** Each arm ranks that
+  deep and no deeper, so `topK` above 200 returns 200 with no error, and a
+  `maxChunksPerPage` whose 200 candidates happen to cluster on a few pages
+  returns fewer results than an uncapped corpus would have offered. That second
+  case is the page cap shortening a list for a reason that is not relevance —
+  the same failure its placement was chosen to avoid, reappearing one level up.
+  Raising the depth trades it for cost on every query, and neither side has
+  been measured, so the number stays and the limit is written down.
+  `searchLexical` has no such pool and honours any `topK`.
 - A URL region now stops at `$`, at a backtick and at an already masked code
   region. Before, `https://x.y$a$` was one `url` region that swallowed the
   formula, and a URL glued to inline code was dropped whole for overlapping
@@ -27,12 +60,12 @@ All notable changes to this package are documented here. The format follows
 
 ### Added
 
-- A dense arm. `createDenseIndex(documents, provider, options)` builds an index that
-  carries a vector per chunk, and `search` on it ranks by cosine instead of
-  refusing. It is `async` and separate from `createIndex` rather than a flag on
-  it: this is the call that costs money and leaves the machine, and the
-  signature says so. The lexical index stays synchronous and free, and
-  `searchLexical` is unchanged.
+- A dense arm. `createDenseIndex(documents, provider, options)` builds an index
+  that carries a vector per chunk, which is what lets `search` answer at all —
+  see above for what it does with them. It is `async` and separate from
+  `createIndex` rather than a flag on it: this is the call that costs money and
+  leaves the machine, and the signature says so. The lexical index stays
+  synchronous and free, and `searchLexical` is unchanged.
 - `EmbeddingProvider`, the contract an adapter fits: `embedDocuments` and
   `embedQuery` as two methods, not one with a flag. A question and a passage
   are different kinds of text, providers offer different ways to say which is

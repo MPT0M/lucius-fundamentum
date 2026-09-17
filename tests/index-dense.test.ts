@@ -12,6 +12,26 @@ const CORPUS = [doc('d', 'A casa azul.\n\nA casa verde.\n\nO carro azul.')];
 
 const provider = deterministicProvider(8);
 
+// A provider that lets the test place each chunk in the dense ranking by
+// hand, so the fusion can be exercised against a KNOWN pair of lists
+// rather than against whatever the hash happens to produce.
+const placed = (order: readonly string[]): EmbeddingProvider => ({
+    id: 'placed',
+    dimensions: 2,
+    maxInputCodePoints: 1000,
+    async embedDocuments(texts) {
+        // Closer to [1,0] the earlier the text appears in `order`.
+        return texts.map((text) => {
+            const i = order.findIndex((needle) => text.includes(needle));
+            const angle = (i === -1 ? order.length : i) * 0.3;
+            return [Math.cos(angle), Math.sin(angle)];
+        });
+    },
+    async embedQuery() {
+        return [1, 0];
+    },
+});
+
 describe('dense — what the artifact stores', () => {
     it('carries one vector per chunk, and says which provider made them', async () => {
         const index = await createDenseIndex(CORPUS, provider, { chunkOptions: SMALL });
@@ -24,8 +44,10 @@ describe('dense — what the artifact stores', () => {
 
     it('the stored vectors are already unit length, so the query is a dot product', async () => {
         // Normalizing at index time is the whole reason the hot loop has no
-        // square root in it. If this stops holding, `search` still returns an
-        // order but the score stops being a cosine.
+        // square root in it. If this stops holding, the dense arm's dot
+        // product stops being a cosine and its ranking is distorted before
+        // the fusion ever sees it — `search` still returns an order, and the
+        // order is wrong for a reason nothing downstream can detect.
         const index = await createDenseIndex(CORPUS, provider, { chunkOptions: SMALL });
         for (const v of unpackVectors(index.serialize().dense!.vectors, 8)) {
             expect(norm(v)).toBeCloseTo(1, 5);
@@ -57,7 +79,13 @@ describe('dense — search', () => {
         const first = index.serialize().chunks[0]!;
         const results = await index.search(first.text);
         expect(results[0]!.chunk.id).toBe(first.id);
-        expect(results[0]!.score).toBeCloseTo(1, 5);
+
+        // The cosine assertion that stood here was removed deliberately when
+        // `search` became the fusion: `score` is no longer a cosine, it is the
+        // reciprocal-rank sum, and a chunk ranked first by both arms scores
+        // 2/(60+1) = 0.0328 rather than 1. The property worth keeping is the
+        // ORDER, above. The score's new meaning is pinned in its own test.
+        expect(results[0]!.score).toBeCloseTo(2 / (60 + 1), 6);
     });
 
     it('topK caps the list and the page cap still applies', async () => {
@@ -359,5 +387,206 @@ describe('dense — the lexical arm is untouched', () => {
         expect(dense.searchLexical('casa azul').map((r) => [r.chunk.id, r.score])).toEqual(
             lexical.searchLexical('casa azul').map((r) => [r.chunk.id, r.score]),
         );
+    });
+});
+
+describe('fusion — agreement between the two arms beats leadership in one', () => {
+    const DOCS = [
+        doc('d', ['Alfa bravo.', 'Charlie delta.', 'Echo foxtrot.', 'Golf hotel.'].join('\n\n')),
+    ];
+
+    it('a chunk both arms found beats a chunk one arm ranked first', async () => {
+        // The fixture is built so that fusion and dense-alone DISAGREE, which
+        // is the only way this test can be about fusion at all. An earlier
+        // version picked a winner that won either way, and passed with the
+        // lexical list removed entirely.
+        //
+        //   query "alfa"
+        //   lexical:  Alfa rank 1, nothing else matches the term
+        //   dense:    Charlie 1, Echo 2, Alfa 3, Golf 4
+        //
+        //   Alfa    = 1/61 + 1/63 = 0.0323   <- found by both
+        //   Charlie = 1/61        = 0.0164   <- first in one, absent from the other
+        //
+        // Dense alone puts Charlie first. Fusion puts Alfa first, because
+        // agreement between two arms that fail differently outweighs
+        // leadership in one.
+        const index = await createDenseIndex(DOCS, placed(['Charlie', 'Echo', 'Alfa', 'Golf']), {
+            chunkOptions: SMALL,
+        });
+        const results = await index.search('alfa');
+
+        expect(results[0]!.chunk.text).toContain('Alfa');
+        expect(results[0]!.score).toBeCloseTo(1 / 61 + 1 / 63, 6);
+        expect(results[1]!.chunk.text).toContain('Charlie');
+    });
+
+    it('the score is the reciprocal-rank sum, not a similarity', async () => {
+        // Pinned because the number changed meaning when `search` became the
+        // fusion, and a caller thresholding on it would read 0.03 as "3%".
+        const index = await createDenseIndex(DOCS, placed(['Alfa', 'Charlie', 'Echo', 'Golf']), {
+            chunkOptions: SMALL,
+        });
+        const results = await index.search('alfa');
+        // First in both lists: 1/(60+1) twice.
+        expect(results[0]!.score).toBeCloseTo(2 / 61, 6);
+        expect(results[0]!.score).toBeLessThan(0.04);
+    });
+
+    it('every chunk an arm ranked within the depth reaches the fused list', async () => {
+        // "zulu" is in no chunk, so the lexical arm contributes nothing and
+        // the whole result came through the dense arm alone: fusion must not
+        // REQUIRE agreement, only reward it.
+        //
+        // Asserting the full count is what makes this a test of FUSION_DEPTH.
+        // Asserting only that the first result is there passed with the depth
+        // cut to 1 — a list truncated to a single item still has a correct
+        // first item.
+        const index = await createDenseIndex(DOCS, placed(['Golf', 'Echo', 'Charlie', 'Alfa']), {
+            chunkOptions: SMALL,
+        });
+        const results = await index.search('zulu');
+
+        expect(results).toHaveLength(4);
+        expect(results[0]!.chunk.text).toContain('Golf');
+        expect(results[0]!.score).toBeCloseTo(1 / 61, 6);
+        // Fourth in the only list that found it: 1/(60+4).
+        expect(results[3]!.score).toBeCloseTo(1 / 64, 6);
+    });
+
+    it('the page cap is applied to the fused list, not to each arm', async () => {
+        // Capping per arm would drop a chunk from one list for a reason that
+        // is not its relevance, and the fusion would read that absence as the
+        // arm ranking it low — a chunk penalised for a cap it never met.
+        //
+        // The fixture has to make the two rules DISAGREE about which chunk
+        // wins page 1, or the test passes under both. An earlier version did
+        // not: its page-1 winner led both arms, so it won either way, and the
+        // test stayed green with the cap moved inside the arms — testing the
+        // half of its own name it was written to protect.
+        //
+        //   page 1  'bravo'   lexical 1st, dense 3rd  -> 1/61 + 1/63 = 0.03227
+        //   page 1  'charlie' lexical 2nd, dense 1st  -> 1/62 + 1/61 = 0.03252
+        //   page 2  'delta'   lexical 3rd, dense 2nd
+        //
+        // The three chunks are the same length and each holds the query term
+        // once, so their BM25 scores are identical and the lexical order above
+        // comes entirely from the tie rule, not from relevance. That is fine
+        // here — inverting the tie rule still leaves 'charlie' winning page 1,
+        // checked by hand — but the table reads like a ranking and is not one.
+        //
+        // Fused first, capped after: 'charlie' outscores 'bravo' and takes
+        // page 1. Capped inside the arms: the lexical arm fills page 1 with
+        // 'bravo' and drops 'charlie', which then carries only its dense
+        // 1/61 = 0.01639 and loses the page it should have won.
+        const paged: SourceDoc[] = [
+            { id: 'p1', title: 'p1', text: 'Alfa bravo.\n\nAlfa charlie.', pageNumber: 1 },
+            { id: 'p2', title: 'p2', text: 'Alfa delta.', pageNumber: 2 },
+        ];
+        const index = await createDenseIndex(paged, placed(['Alfa charlie', 'Alfa delta', 'Alfa bravo']), {
+            chunkOptions: SMALL,
+        });
+        const capped = await index.search('alfa', { maxChunksPerPage: 1 });
+
+        expect(capped.length).toBeGreaterThan(1);
+        const pages = capped.map((r) => r.chunk.pageNumber);
+        expect(new Set(pages).size).toBe(pages.length);
+
+        // The assertion that distinguishes the two rules.
+        const fromPageOne = capped.find((r) => r.chunk.pageNumber === 1)!;
+        expect(fromPageOne.chunk.text).toContain('charlie');
+        expect(fromPageOne.score).toBeCloseTo(1 / 62 + 1 / 61, 6);
+    });
+
+    it('without page numbers the cap does not apply, so topK survives', async () => {
+        // The corpus the ruler measures is a .txt with no pages. Grouping by
+        // an absent pageNumber would put every chunk in one group and cut the
+        // list to the cap, making recall@10 unable to exceed recall@3 for a
+        // reason that has nothing to do with search.
+        const index = await createDenseIndex(DOCS, placed(['Alfa', 'Charlie', 'Echo', 'Golf']), {
+            chunkOptions: SMALL,
+        });
+        const results = await index.search('alfa charlie echo golf', { maxChunksPerPage: 1 });
+        expect(results.every((r) => r.chunk.pageNumber === undefined)).toBe(true);
+        expect(results.length).toBeGreaterThan(1);
+    });
+});
+
+describe('fusion — the two cases production hits that the fixtures did not', () => {
+    it('an empty corpus answers without paying for a query embedding', async () => {
+        // The sibling test asserts the empty result and stops there, which a
+        // refactor moving the guard below `embedQuery` would still satisfy —
+        // while paying a provider call on every search of an empty index. The
+        // property worth protecting is the call that does not happen.
+        let calls = 0;
+        const counted: EmbeddingProvider = {
+            id: 'counted',
+            dimensions: 8,
+            // Wide enough that the window guard never fires: this test is
+            // about the call that is NOT made, and a refusal before the call
+            // would satisfy it for the wrong reason.
+            maxInputCodePoints: 1_000_000,
+            async embedDocuments(texts) {
+                calls += 1;
+                return texts.map(() => Array.from({ length: 8 }, () => 1 / Math.sqrt(8)));
+            },
+            async embedQuery() {
+                calls += 1;
+                return Array.from({ length: 8 }, () => 1 / Math.sqrt(8));
+            },
+        };
+
+        const index = await createDenseIndex([], counted);
+        const before = calls;
+        expect(await index.search('qualquer coisa')).toEqual([]);
+        expect(calls).toBe(before);
+    });
+
+    it('two chunks each found by one arm at the same rank tie, and corpus order breaks the tie', async () => {
+        // The most frequent shape of disagreement in production, and nothing
+        // exercised it: each arm finds a different chunk and ranks it the same.
+        // Both score 1/(60+r), and in IEEE-754 that is the SAME double, not a
+        // near-miss — so the winner is decided entirely by `x[0] - y[0]` in the
+        // ordering rule, which is the chunk's position in the corpus.
+        //
+        // Stated plainly: when the two arms disagree evenly, the chunk that
+        // appears earlier in the document wins. That is a systematic bias
+        // toward the start of a text, and it is a consequence of the tie rule
+        // rather than a decision anyone took.
+        const docs = [doc('d', ['Alfa bravo.', 'Charlie delta.'].join('\n\n'))];
+
+        // Each arm finds exactly one chunk, and puts it first.
+        //   lexical: the query term reaches only Alfa      -> Alfa   rank 1
+        //   dense:   Alfa points away and is filtered out  -> Charlie rank 1
+        // So both score 1/(60+1) and neither has a second contribution.
+        const opposed: EmbeddingProvider = {
+            id: 'opposed',
+            dimensions: 2,
+            maxInputCodePoints: 1_000_000,
+            async embedDocuments(texts) {
+                return texts.map((text) => (text.includes('Alfa') ? [-1, 0] : [1, 0]));
+            },
+            async embedQuery() {
+                return [1, 0];
+            },
+        };
+        const index = await createDenseIndex(docs, opposed, { chunkOptions: SMALL });
+        const results = await index.search('alfa');
+
+        expect(results).toHaveLength(2);
+        const [first, second] = results;
+
+        // `toBe`, not `toBeCloseTo`: the point is that the two doubles are the
+        // same value, not that they are near. If they merely rounded close,
+        // the sort would still order them by score and corpus position would
+        // never be consulted.
+        expect(first!.score).toBe(second!.score);
+        expect(first!.score).toBe(1 / 61);
+
+        // And the winner is the chunk that appears earlier in the document —
+        // decided entirely by `x[0] - y[0]` in the ordering rule, with nothing
+        // about relevance in it.
+        expect(first!.chunk.text).toContain('Alfa');
+        expect(second!.chunk.text).toContain('Charlie');
     });
 });

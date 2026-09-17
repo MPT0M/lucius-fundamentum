@@ -94,6 +94,24 @@ export interface IndexOptions {
 }
 
 export interface SearchOptions {
+    /**
+     * How many results to return. Defaults to 10.
+     *
+     * `searchLexical` honours any value: it ranks every chunk a query term
+     * reached. `search` cannot, and the ceiling is not documented anywhere the
+     * caller would look otherwise: it fuses two lists of at most
+     * `FUSION_DEPTH` each, so the pool it draws from holds at most
+     * `2 * FUSION_DEPTH` chunks — 200 at the defaults. Asking for 300 returns
+     * 200, with no error, because the other hundred were never candidates.
+     *
+     * The same ceiling reaches `maxChunksPerPage`: a cap drawing from a pool
+     * of 200 that happen to cluster on five pages returns five results where
+     * an uncapped corpus would have offered ten. That is the page cap
+     * shortening a list for a reason that is not relevance, which is the
+     * failure the cap's own placement was chosen to avoid — declared here as a
+     * debt rather than fixed, because raising the depth trades it for cost on
+     * every query and neither side has been measured.
+     */
     readonly topK?: number;
     /** At most this many results from any one page. Ignored for unpaged sources. */
     readonly maxChunksPerPage?: number;
@@ -101,6 +119,23 @@ export interface SearchOptions {
 
 export interface SearchResult {
     readonly chunk: Chunk;
+    /**
+     * What the number means depends on which method produced it, and the
+     * difference is not cosmetic.
+     *
+     * From `searchLexical` it is the BM25 score: unbounded above, dependent on
+     * the corpus, comparable only within one result list.
+     *
+     * From `search` it is the reciprocal-rank sum, between
+     * `1/(FUSION_K+FUSION_DEPTH)` and `2/(FUSION_K+1)` — 0.00625 and 0.033 at
+     * the defaults. The floor is not near zero and cannot be: a chunk that
+     * reaches the fused list at all was ranked within the depth by at least
+     * one arm, and the worst such rank is `FUSION_DEPTH`. It is NOT a similarity
+     * and it is NOT a probability: a result scoring 0.03 is not "3% relevant".
+     * It carries no absolute meaning at all, by construction, because the
+     * fusion reads positions precisely so that it never has to trust the
+     * scales underneath. Use it to order, never to threshold.
+     */
     readonly score: number;
     /** 1-based position in this result list. */
     readonly rank: number;
@@ -108,13 +143,123 @@ export interface SearchResult {
 
 export interface Index {
     readonly tokenizerId: string;
+    /** The lexical arm alone: BM25 over the postings, synchronous and free. */
     searchLexical(query: string, opts?: SearchOptions): readonly SearchResult[];
-    /** Refuses while the artifact carries no vectors. */
+    /**
+     * The hybrid search: both arms, fused by reciprocal rank.
+     *
+     * A chunk both arms found outranks one a single arm placed first, which is
+     * the claim hybrid retrieval makes. Refuses while the artifact carries no
+     * vectors — `searchLexical` is what answers then, and the refusal says so.
+     * See `SearchResult.score`: the number it returns is not a similarity.
+     */
     search(query: string, opts?: SearchOptions): Promise<readonly SearchResult[]>;
     serialize(): IndexArtifact;
 }
 
 const DEFAULT_TOP_K = 10;
+
+/**
+ * The constant in the RRF denominator.
+ *
+ * 60 is the value the original paper used and the one every implementation
+ * since has copied, which makes it a convention rather than a measurement. It
+ * flattens the difference between the top positions: at k=60 the gap between
+ * rank 1 and rank 2 is under two percent of the score, so a chunk both arms
+ * placed high beats a chunk one arm placed first. That is the behaviour this
+ * fusion is for, and it is why the number is large relative to `topK`.
+ *
+ * ARBITRARY UNTIL MEASURED, and the ruler is what measures it. It goes into
+ * the round's report beside the numbers it produced, because a recall figure
+ * without the k that produced it cannot be compared with another.
+ */
+export const FUSION_K = 60;
+
+/**
+ * How deep each arm ranks before the lists are fused.
+ *
+ * Not a detail, but the effect is narrower than it looks, and the obvious
+ * description of it is wrong. Take a chunk ranked 40th by one arm and 3rd by
+ * the other. At depth 100 it scores 1/100 + 1/63 = 0.025873; at depth 10 the
+ * 40th place falls outside the slice and it scores 1/63 = 0.015873 — it is
+ * still in the fused list, through the arm that ranked it 3rd. Depth does not
+ * decide whether a chunk APPEARS. It decides whether the agreement between the
+ * two arms is allowed to count: at 0.025873 that chunk beats one a single arm
+ * put first (1/61 = 0.016393), and at 0.015873 it loses to it, by 0.00052.
+ *
+ * Deeper is not free, and the algebra says exactly how far it is worth going.
+ * Two arms agreeing at rank r beat one arm leading alone when
+ * `2/(k+r) > 1/(k+1)`, which holds for `r < k+2`: agreement wins through rank
+ * 61, ties EXACTLY at 62 — `1/122 + 1/122` and `1/61` are the same double,
+ * since doubling is exact in binary — and loses from 63 on. So with k at 60,
+ * the last 38 ranks of a depth of 100 admit chunks whose double agreement can
+ * no longer outrank a single arm's lead. They still enter the pool and can
+ * still be the only candidates a sparse query produces.
+ *
+ * 100 is ten times the default `topK`, chosen for that ratio and nothing more.
+ * ARBITRARY UNTIL MEASURED, and published with the numbers it produced.
+ */
+export const FUSION_DEPTH = 100;
+
+/**
+ * Reciprocal rank fusion: combines ranked lists by POSITION, never by score.
+ *
+ *     score(chunk) = Σ  1 / (k + rank in list i)
+ *
+ * Reading positions rather than scores is the whole point, because the two
+ * arms produce numbers that do not live on the same scale — BM25 is unbounded
+ * and corpus-dependent, cosine sits in [-1, 1]. Adding them would be adding
+ * metres to kilograms, and normalising them first requires knowing each arm's
+ * range, which depends on the corpus and on the provider.
+ *
+ * Measured on 2026-09-13, the provider half of that problem is real and not
+ * theoretical: on the same query-and-passage pair — a question about school
+ * age against a recipe for salt cod — `gemini-embedding-2` scores 0.530 and
+ * `qwen3.7-text-embedding` scores 0.257. A threshold calibrated on one would
+ * mean nothing on the other. Positions have no such problem.
+ *
+ * A chunk found by both arms accumulates two contributions and rises above one
+ * found by a single arm, even when that single arm ranked it first. Agreement
+ * between two methods that fail differently is worth more than leadership in
+ * one — that is the whole claim of hybrid search, and it is this sum.
+ *
+ * DEBT, named at the line that creates it: a chunk absent from a list is
+ * treated as ranked lower than every chunk present in it, which is right while
+ * every chunk can compete in both arms. The day a chunk cannot — a figure, an
+ * audio segment, anything the lexical arm has no terms for — absence stops
+ * being evidence and starts being a structural penalty: text would get two
+ * chances to score and a figure one, and figures would sink for a reason that
+ * has nothing to do with relevance. Whether the fix is to divide by the number
+ * of lists a chunk was eligible for, or something else, is not decided here,
+ * because nothing in this library can yet produce an ineligible chunk and a
+ * rule written against no case is a rule nobody can test.
+ *
+ * Two things make that deferral safe rather than lazy. The obvious fix is
+ * probably wrong: dividing by the number of lists a chunk was eligible for
+ * would PUNISH text for being eligible in an arm that did not find it — a
+ * passage at dense rank 1 and absent from the lexical list would score
+ * (1/61)/2 = 0.0082 while a figure at dense rank 1, eligible in one arm only,
+ * would score (1/61)/1 = 0.0164, and the figure would pass the passage. That
+ * is the inverse of the problem the division is meant to solve, and it is the
+ * first real case that should decide, not this comment.
+ *
+ * And the rule as written is already pinned: the test
+ * 'every chunk an arm ranked within the depth reaches the fused list' asserts
+ * that a chunk found by one arm scores exactly 1/61, with no penalty term. The
+ * day someone adds a divisor, that test turns red and the change becomes
+ * deliberate instead of silent.
+ */
+function fuseByRank(lists: readonly (readonly number[])[], k: number): Map<number, number> {
+    const fused = new Map<number, number>();
+    for (const list of lists) {
+        for (let position = 0; position < list.length; position += 1) {
+            const chunkIndex = list[position]!;
+            // Rank is 1-based: the first item scores 1/(k+1), not 1/k.
+            fused.set(chunkIndex, (fused.get(chunkIndex) ?? 0) + 1 / (k + position + 1));
+        }
+    }
+    return fused;
+}
 
 /**
  * FNV-1a, twice with different offsets, concatenated to 64 bits of hex.
@@ -290,8 +435,8 @@ function rankIndices(
  * Extracted the moment the dense arm needed it: the lexical version was
  * written once and about to be written a second time, and this repository has
  * history with the twin fixed on one side only. Ordering, the tie rule and the
- * page cap have to be the same for both, or the fusion of the two lists in the
- * next lot would compare things ordered by different rules.
+ * page cap have to be the same for both, or the fusion of the two lists in
+ * `search` would compare things ordered by different rules.
  */
 function rankAndCap(
     scores: ReadonlyMap<number, number>,
@@ -405,7 +550,16 @@ function makeIndex(
             const topK = opts.topK ?? DEFAULT_TOP_K;
             if (built.chunks.length === 0) return [];
 
-            return rankAndCap(await denseScores(query, dense), built.chunks, topK, opts.maxChunksPerPage);
+            // Both arms rank to FUSION_DEPTH and WITHOUT the page cap. Capping
+            // per arm first would drop a chunk from one list for a reason that
+            // is not its relevance, and the fusion would read that absence as
+            // the arm ranking it low. The cap belongs to the list a caller
+            // receives, so it is applied once, at the end, to the fused list.
+            const lexical = rankIndices(lexicalScores(query), FUSION_DEPTH);
+            const semantic = rankIndices(await denseScores(query, dense), FUSION_DEPTH);
+
+            const fused = fuseByRank([lexical, semantic], FUSION_K);
+            return rankAndCap(fused, built.chunks, topK, opts.maxChunksPerPage);
         },
 
         serialize(): IndexArtifact {
