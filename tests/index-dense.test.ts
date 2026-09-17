@@ -69,6 +69,10 @@ describe('dense — search', () => {
         expect(await index.search('casa', { topK: 2 })).toHaveLength(2);
         const capped = await index.search('casa', { maxChunksPerPage: 1 });
         const pages = capped.map((r) => r.chunk.pageNumber);
+        // Without this line the assertion below passes on a single result —
+        // a Set of one has size one — so a cap that returned nothing useful
+        // would look like a cap that worked.
+        expect(capped.length).toBeGreaterThan(1);
         expect(new Set(pages).size).toBe(pages.length);
     });
 
@@ -184,6 +188,26 @@ describe('dense — the refusals', () => {
         expect(() => loadIndex(artifact, { tokenizer: createTokenizer({ stemmer: RSLP_S_FOLDED }), provider: other })).toThrow(
             /outro-provedor/,
         );
+    });
+
+    it('refuses a query vector of the wrong width, not only a chunk vector', async () => {
+        // The refusal at query time is the fourth of four in this file, and it
+        // was the one the commit body did not enumerate and no test pinned —
+        // the same item missing from both lists, which is how a gap survives a
+        // review. The build-time twin was covered; this one asserts the message
+        // that names the query, so the two cannot be confused.
+        const index = await createDenseIndex(CORPUS, provider, { chunkOptions: SMALL });
+        const artifact = index.serialize();
+
+        const shrinksTheQuery: EmbeddingProvider = {
+            ...provider,
+            embedQuery: async () => [0.1, 0.2, 0.3],
+        };
+        const loaded = loadIndex(artifact, {
+            tokenizer: createTokenizer({ stemmer: RSLP_S_FOLDED }),
+            provider: shrinksTheQuery,
+        });
+        await expect(loaded.search('casa')).rejects.toThrow(/3-dimension vector for the query/);
     });
 
     it('an artifact from the lexical release loads lexically instead of throwing a TypeError', () => {
@@ -319,10 +343,14 @@ describe('dense — the window guard runs before anything is paid for', () => {
 });
 
 describe('dense — the lexical arm is untouched', () => {
-    it('a lexical-only index still refuses search and still answers searchLexical', () => {
+    it('a lexical-only index still refuses search and still answers searchLexical', async () => {
         const index = createIndex(CORPUS, { chunkOptions: SMALL });
         expect(index.serialize().dense).toBeNull();
         expect(index.searchLexical('casa').length).toBeGreaterThan(0);
+        // The refusal is half of what this test is named for, and it used to
+        // go unasserted: the body checked the artifact and the lexical arm and
+        // never called `search`, so the promise in the title was decoration.
+        await expect(index.search('casa')).rejects.toThrow(/searchLexical/);
     });
 
     it('adding vectors does not change what the lexical arm returns', async () => {

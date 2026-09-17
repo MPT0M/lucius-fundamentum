@@ -183,9 +183,16 @@ describe('gemini adapter', () => {
             EmbeddingProviderError,
         );
 
-        // The four already in flight may finish; the other 196 must not start.
-        // The bound is `concurrency`, not the length of the corpus.
-        expect(calls.length).toBeLessThanOrEqual(4 + 4);
+        // The exact count, not a tolerance. The previous version allowed up to
+        // `4 + 4` while the JSDoc promised `limit - 1` extras — two numbers,
+        // neither measured, and the looser one would have passed a regression
+        // that doubled the waste. Measured across twelve configurations
+        // (concurrency 4 and 8, failure at call 0, 3 and 10, with and without
+        // a resolve delay): the overshoot is exactly `limit - 1` every time,
+        // because `failed` is set in the same microtask as the rejection and
+        // every sibling sees it before its next turn of the loop.
+        // Here: 3 calls through the failure at index 2, plus 3 siblings in flight.
+        expect(calls.length).toBe(6);
     });
 
     it('keeps at most `concurrency` requests in flight', async () => {
@@ -231,11 +238,19 @@ describe('gemini adapter', () => {
         expect(() => geminiProvider({ apiKey: 'k', concurrency: 2.5 })).toThrow(/whole number/u);
     });
 
-    it('takes the task prefix off the window it advertises', () => {
+    it('takes the whole task prefix off the window it advertises', () => {
         // This is the only adapter that changes the text before sending it, so
         // the chunk the guard measures is not the string that ships.
+        //
+        // The assertion is the exact figure, because the dangerous direction is
+        // a discount that is too SMALL — that is what lets a chunk sitting at
+        // the ceiling overflow once the prefix is glued on, which is the silent
+        // truncation the guard exists to refuse. `toBeLessThan` passed on a
+        // discount of one code point and would have caught none of it.
         const bare = 8192 * 3;
-        expect(geminiProvider({ apiKey: 'k' }).maxInputCodePoints).toBeLessThan(bare);
+        // `task: search result | query: ` is the longer of the two prefixes.
+        const longest = [...'task: search result | query: '].length;
+        expect(geminiProvider({ apiKey: 'k' }).maxInputCodePoints).toBe(bare - longest);
     });
 
     it('asks for the dimension count it declares', async () => {
