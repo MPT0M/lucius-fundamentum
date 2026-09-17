@@ -60,19 +60,39 @@ export interface GeminiOptions {
      *     concurrency  8 ->  24s    55% of RPM,   62% of TPM
      *     concurrency 16 ->  12s   110% of RPM,  123% of TPM
      *
-     * Both ceilings are passed at 16, and tokens are the tighter of the two
-     * from 8 upward. Raise this only against a tier whose limits you have
-     * read, and read the token limit first.
+     * Both ceilings are passed at 16, and tokens are the tighter of the two on
+     * EVERY line, including the first: the two columns scale with the same
+     * factor, so their ratio does not depend on concurrency at all. It is
+     * `(1119 / r) * 2900 / 970000`, which at `r = 3` code points per token is
+     * 1.115 — the 8% against 7% on the concurrency-1 line is the same 1.115 as
+     * the 123% against 110% at sixteen.
+     *
+     * That ratio crosses 1.0 at **r = 3.35**, and above it requests become the
+     * tighter ceiling again. The OpenAI adapter in this same package puts
+     * Portuguese prose "near four code points per token", so the tipping point
+     * sits inside the range this repository itself declares: the order of the
+     * two ceilings is one decimal place from reversing, in the direction the
+     * sibling file considers most likely. Treat "tokens bind first" as true
+     * for `r = 3` and unsettled beyond it, until `CODE_POINTS_PER_TOKEN` stops
+     * being an assumption.
+     *
+     * Raise this only against a tier whose limits you have read, and read the
+     * token limit first.
      *
      * The token column is an ESTIMATE and the request column is not. Requests
      * are counted; tokens are converted from code points at the pessimistic
      * `CODE_POINTS_PER_TOKEN` below, because nobody can count a vendor's
-     * tokens without the vendor's tokenizer. An earlier version of this table
-     * used the corpus probe's `tokens` field, which counts BM25 index terms
-     * after folding and stemming — a different quantity that ran about 1.9x
-     * low and inverted the conclusion about which ceiling binds first. The
-     * chunk size is measurable here and the conversion is declared, which is
-     * the most this file can honestly claim.
+     * tokens without the vendor's tokenizer.
+     *
+     * An earlier version of this table took its per-chunk figure from the
+     * corpus probe's `tokens` field, which counts BM25 index terms after
+     * folding and stemming — a different quantity, and small enough to invert
+     * the conclusion about which ceiling binds first. Both operands are
+     * published rather than the ratio between them, so the next reader can do
+     * the division and see which quantity is which: 183 BM25 index terms per
+     * chunk against roughly 373 estimated model tokens. The chunk size is
+     * measurable from `npm run bench:corpus` and the conversion is declared,
+     * which is the most this file can honestly claim.
      */
     readonly concurrency?: number;
 }
@@ -174,11 +194,29 @@ function asDocument(text: string): string {
  * break.
  *
  * The first rejection stops the queue. What it cannot stop is the handful
- * already in flight, which have left the machine and will be paid for: at most
- * `limit - 1` extra calls, bounded and declared, rather than the remainder of
- * the corpus. Cancelling those would mean threading an `AbortSignal` from here
- * into every request, which is worth doing the day something needs to cancel
- * an index build on purpose.
+ * already in flight, which have left the machine and will be paid for.
+ *
+ * Without the shared flag the first rejection killed only the worker that saw
+ * it: `Promise.all` handed the error to the caller while the others kept
+ * draining the queue, paying for results nobody would read — hundreds of
+ * requests made after the caller gave up, and if the cause was a rate limit,
+ * aimed at an endpoint that had just said to stop. Nothing announced it: the
+ * later rejections reach the handler `Promise.all` attached to every worker at
+ * call time, so they are absorbed rather than surfacing as unhandled. Measured
+ * under `--unhandled-rejections=throw` with four staggered failures: no
+ * unhandled rejection, exit 0.
+ *
+ * That overshoot is `limit - 1`, and it is measured rather than reasoned:
+ * across twelve configurations — concurrency 4 and 8, failure at the first,
+ * fourth and eleventh call, with and without a delay before each response —
+ * the count was exactly `limit - 1` every time. `failed` is set in the same
+ * microtask as the rejection, so every sibling reads it before its next turn
+ * of the loop; there is no window in which one of them picks up another task.
+ * The test pins the exact number, not a tolerance.
+ *
+ * Cancelling the in-flight calls would mean threading an `AbortSignal` from
+ * here into every request, which is worth doing the day something needs to
+ * cancel an index build on purpose.
  */
 async function inBatches<T>(tasks: readonly (() => Promise<T>)[], limit: number): Promise<T[]> {
     const out = new Array<T>(tasks.length);
@@ -188,16 +226,6 @@ async function inBatches<T>(tasks: readonly (() => Promise<T>)[], limit: number)
     async function worker(): Promise<void> {
         for (;;) {
             if (failed) return;
-
-            // Without this the first rejection kills only the worker that saw
-            // it: `Promise.all` hands the error to the caller while the other
-            // workers keep draining the queue, paying for results nobody will
-            // read. On a corpus this size that is hundreds of requests made
-            // after the caller already gave up — and if the cause was a rate
-            // limit, they hammer an endpoint that just said to stop. The
-            // subsequent rejections are swallowed by `Promise.all`, so not
-            // even an unhandled rejection announces it.
-
             const index = next;
             next += 1;
             if (index >= tasks.length) return;

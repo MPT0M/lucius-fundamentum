@@ -120,6 +120,16 @@ export interface DocumentProfile {
     readonly compositeNumbers: number;
     readonly provisions: number;
     readonly tokens: number;
+    /**
+     * Code points summed over the CHUNKS, not over the document.
+     *
+     * Larger than `codePoints` because the chunker overlaps on purpose, and it
+     * is the figure an adapter needs: what it pays for is the chunk it sends,
+     * overlap included. `tokens` beside it counts something else entirely —
+     * BM25 index terms after folding and stemming — and reading one as the
+     * other put a wrong number into a published rate-limit table once.
+     */
+    readonly chunkCodePoints: number;
 }
 
 const count_ = (text: string, re: RegExp) => (text.match(re) ?? []).length;
@@ -148,6 +158,7 @@ export function profileDocument(doc: SourceDoc): DocumentProfile {
         compositeNumbers: count_(body, COMPOSITE_NUMBER),
         provisions: count_(body, PROVISION),
         tokens: pieces.reduce((sum, p) => sum + tokenizer.tokenize(p.text).length, 0),
+        chunkCodePoints: pieces.reduce((sum, p) => sum + countCodePoints(p.text), 0),
     };
 }
 
@@ -187,7 +198,17 @@ function main(): void {
     console.log(`chunks ${total((p) => p.chunks)}, of which ${total((p) => p.oversizedChunks)} oversized`);
     console.log(`overlaps ${total((p) => p.overlaps)}`);
     console.log(`redundant chunks ${total((p) => p.redundantChunks)} (the guard in the chunker keeps this at zero)`);
-    console.log(`tokens ${total((p) => p.tokens)}`);
+    console.log(`tokens ${total((p) => p.tokens)} (BM25 index terms, after folding and stemming)`);
+
+    // The figure an embedding adapter sizes its rate limits against. Printed
+    // because an adapter's JSDoc cites it, and a number cited from a table
+    // that no instrument here prints is a number nobody can re-derive.
+    const chunkCp = total((p) => p.chunkCodePoints);
+    const chunkCount = total((p) => p.chunks);
+    console.log(
+        `chunk code points ${chunkCp}, mean ${(chunkCp / chunkCount).toFixed(1)} per chunk ` +
+            '(overlap included: it is sent, so it is paid for)',
+    );
 
     const edges = citationGraph();
     console.log();
