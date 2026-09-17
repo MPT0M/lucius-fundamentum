@@ -580,12 +580,45 @@ export function loadIndex(
  * share no space, so comparing them produces numbers that look like scores and
  * rank by nothing. An index with vectors but no provider stays searchable
  * lexically — `search` is what refuses, and it says why.
+ *
+ * The absence test is `== null`, which catches `undefined` as well, and that
+ * is the whole point rather than a shorthand. `dense` is a required field of
+ * the type, but the type is a compile-time promise and an artifact arrives at
+ * runtime — including one written by the release before this field existed,
+ * which carries no `dense` key at all. That artifact declares the same
+ * `formatVersion`, passes the version check, and with `=== null` fell through
+ * to read `.providerId` off `undefined`: a raw TypeError, from the function
+ * whose whole job is refusing artifacts it cannot use. An index built before
+ * the dense arm shipped is not broken, it simply has no vectors, and the
+ * honest answer is the lexical one it already supports.
+ *
+ * `formatVersion` was NOT bumped for this. Bumping it would refuse a lexical
+ * artifact that this build can read perfectly well, which trades a crash for a
+ * different failure rather than removing one. The version exists for a change
+ * that makes an old artifact unreadable; adding an optional arm is not that.
  */
 function denseFromArtifact(
     artifact: IndexArtifact,
     provider: EmbeddingProvider | undefined,
 ): DenseRuntime | null {
-    if (artifact.dense === null || provider === undefined) return null;
+    if (artifact.dense == null || provider === undefined) return null;
+
+    // Present but malformed is a third case, and it used to be indistinguishable
+    // from the first: an artifact hand-edited or truncated between the `dense`
+    // key and its contents would reach the comparisons below and fail on a
+    // property of the wrong type, far from here. Same reasoning as the posting
+    // validation above, applied to the arm that arrived later.
+    const stored = artifact.dense;
+    if (
+        typeof stored.providerId !== 'string' ||
+        !Number.isInteger(stored.dimensions) ||
+        typeof stored.vectors !== 'string'
+    ) {
+        throw new Error(
+            'loadIndex: the artifact has a `dense` section, but it is not shaped like one — it needs ' +
+                '`providerId` (string), `dimensions` (integer) and `vectors` (string).',
+        );
+    }
 
     if (provider.id !== artifact.dense.providerId) {
         throw new Error(

@@ -186,6 +186,41 @@ describe('dense — the refusals', () => {
         );
     });
 
+    it('an artifact from the lexical release loads lexically instead of throwing a TypeError', () => {
+        // Regression. `dense` became a required field of IndexArtifact while
+        // INDEX_FORMAT_VERSION stayed 1, so an artifact written before the
+        // dense arm existed passes the version check carrying no `dense` key
+        // at all. The absence test was `=== null`, which does not match
+        // `undefined`, and the load fell through to read `.providerId` off it:
+        // a raw TypeError out of the function whose job is refusing artifacts.
+        const artifact = createIndex(CORPUS, { chunkOptions: SMALL }).serialize();
+        const fromOldRelease = JSON.parse(JSON.stringify(artifact)) as Record<string, unknown>;
+        delete fromOldRelease.dense;
+        expect('dense' in fromOldRelease).toBe(false);
+
+        const tokenizer = createTokenizer({ stemmer: RSLP_S_FOLDED });
+        const index = loadIndex(fromOldRelease as unknown as IndexArtifact, { tokenizer, provider });
+
+        // It has no vectors, so the lexical arm answers and `search` refuses
+        // by name rather than by crashing.
+        expect(index.searchLexical('casa').length).toBeGreaterThan(0);
+        expect(index.serialize().dense).toBeNull();
+    });
+
+    it('refuses an artifact whose dense section is present but not shaped like one', () => {
+        // The third case the absence test used to collapse into the first: a
+        // payload truncated or hand-edited between the key and its contents
+        // would otherwise fail on a property of the wrong type, far from here.
+        const artifact = createIndex(CORPUS, { chunkOptions: SMALL }).serialize();
+        const mangled = JSON.parse(JSON.stringify(artifact)) as Record<string, unknown>;
+        mangled.dense = { providerId: 'x', dimensions: 'oito', vectors: '' };
+
+        const tokenizer = createTokenizer({ stemmer: RSLP_S_FOLDED });
+        expect(() =>
+            loadIndex(mangled as unknown as IndexArtifact, { tokenizer, provider }),
+        ).toThrow(/not shaped like one/);
+    });
+
     it('refuses a provider whose dimensions disagree with the artifact', async () => {
         const artifact = (await createDenseIndex(CORPUS, provider, { chunkOptions: SMALL })).serialize();
         const wrongSize: EmbeddingProvider = { ...provider, dimensions: 16 };
