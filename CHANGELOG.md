@@ -70,7 +70,8 @@ All notable changes to this package are documented here. The format follows
   read: `MIN_LEXICAL_SUPPORT`, `LEXICAL_MARGIN`,
   `DEFAULT_COALESCE_MAX_CODE_POINTS`, `DEFAULT_MIN_CLUSTER_CODE_POINTS` and
   `DEFAULT_ATTRIBUTE_OPTIONS`. The first two ARE the coverage-versus-noise
-  trade in disguise; the harness of lot 2 is what will calibrate them.
+  trade in disguise, and the evaluation harness under `bench/` is what will
+  calibrate them.
 
 ### Known limits of the attribution, stated rather than discovered
 
@@ -177,9 +178,10 @@ All notable changes to this package are documented here. The format follows
   arms found outranks a chunk one arm placed first, which is the whole claim of
   hybrid retrieval. `searchLexical` is untouched and still answers from the
   lexical arm alone; there is no longer a way to query the dense arm by itself,
-  which is deliberate — the two lots were kept apart precisely so that the
-  history has a point where each arm can be measured alone, and after the
-  fusion separating the contributions is inference rather than measurement.
+  which is deliberate — the lexical arm shipped before the dense one precisely
+  so that the history has a point where each can be measured alone, and after
+  the fusion separating the contributions is inference rather than
+  measurement.
 - **`SearchResult.score` from `search` changed meaning, and callers must not
   threshold on it.** It was the cosine, between 0 and 1. It is now the
   reciprocal-rank sum, between 0.00625 and 0.033 at the defaults — the floor is

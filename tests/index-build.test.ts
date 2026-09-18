@@ -31,7 +31,7 @@ describe('index — what the artifact records', () => {
     });
 
     it('records the chunking policy as a version of the LOGIC, not of the numbers', () => {
-        // The two fixes that opened this lot moved every boundary while
+        // The two chunker fixes that produced `v2` moved every boundary while
         // leaving 1200 and 160 untouched. A policy derived from the numbers
         // would have claimed compatibility across that change.
         expect(artifact.chunkerPolicy).toBe(CHUNKER_POLICY);

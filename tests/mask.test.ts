@@ -114,7 +114,7 @@ describe('maskProtectedRegions — abbreviations come last', () => {
             expect(spans, text).toHaveLength(1);
         }
         // And outside those regions the same word is still protected.
-        // Deliberate contract change (lot 2): spans now carry `kind`. The old
+        // Deliberate contract change: spans now carry `kind`. The old
         // assertion fixed the exact set of keys, which was more than the
         // contract promised; the position it pinned is unchanged.
         expect(maskProtectedRegions('O Dr. Silva').spans).toEqual([{ start: 4, end: 5, kind: 'abbreviation' }]);
