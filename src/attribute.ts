@@ -649,6 +649,24 @@ export interface Placed {
     readonly moved: boolean;
     /** Whether it already took part in a fusion, in either pass. */
     readonly fused: boolean;
+    /**
+     * Whether `sourceSpan` is a MATCHED SENTENCE rather than the whole chunk.
+     *
+     * `place` writes the chunk's own span when no sentence of it matched the
+     * clause, and a chunk is around fifteen times a sentence. Fusing a span
+     * like that with a precise one takes `min`/`max` over the two and the
+     * precise claim inflates to the block: a popover that opened on one
+     * sentence opens on a paragraph.
+     *
+     * IT IS BLIND TO THE RUNG ON PURPOSE. The risk does not depend on which
+     * rung resolved the clause — it depends on whether the span knows its
+     * sentence. Measured, a LEXICAL winner reaches `matched === null` in a
+     * plain document of short sentences: the rung elects by `coverageOf`,
+     * weighted with `sustainWeight` which is always positive, while
+     * `matchedSentenceOf` weighs with `separationWeight` and requires a
+     * strictly positive total. Two different rulers.
+     */
+    readonly precise: boolean;
 }
 
 /**
@@ -687,6 +705,16 @@ export function coalescePass(
             !a.fused &&
             !b.fused &&
             a.span.chunkId === b.span.chunkId &&
+            // They have to AGREE, not both be precise. Two raw spans of the
+            // same chunk carry the SAME `sourceSpan` by construction —
+            // `chunkId` decides `chosen` decides `sourceSpan`, and the line
+            // above already requires equal `chunkId` — so `min`/`max` over
+            // them moves nothing. Refusing that pair would print two markers
+            // with identical chunk and identical source span, which the
+            // formatter does not merge because it dedupes by
+            // (anchorOffset, chunkId). The dangerous pair is the one that
+            // disagrees, and only that one.
+            a.precise === b.precise &&
             a.span.resolvedBy === 'lexical' &&
             b.span.resolvedBy === 'lexical' &&
             b.firstClause === a.lastClause + 1 &&
@@ -715,6 +743,8 @@ export function coalescePass(
                 firstClause: a.firstClause,
                 lastClause: b.lastClause,
                 terms,
+                // Both sides agreed, so there is nothing to choose.
+                precise: a.precise,
                 moved: a.moved || b.moved,
                 fused: true,
             });
@@ -963,6 +993,7 @@ function place(
         terms: clause.terms,
         moved: false,
         fused: false,
+        precise: matched !== null,
     };
 }
 

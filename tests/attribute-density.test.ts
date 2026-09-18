@@ -31,6 +31,11 @@ function placed(
         terms: new Set([`t${clause}`]),
         moved: false,
         fused: false,
+        // TRUE by default, and it matters which default. With `false` every
+        // span in this suite would be raw, the pairs would still agree, and
+        // the fusion would keep working — but a helper that defaults to the
+        // exceptional value describes a world the engine does not produce.
+        precise: true,
         ...extra,
     };
 }

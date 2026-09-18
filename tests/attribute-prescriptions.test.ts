@@ -121,6 +121,10 @@ describe('a fused span does not fuse again after the floor moves its anchor', ()
             terms: new Set([`t${clause}`]),
             moved: false,
             fused: false,
+            // TRUE, which is what the engine writes when a sentence matched —
+            // the ordinary case. A fixture defaulting to the exceptional value
+            // describes a world the engine does not produce.
+            precise: true,
         });
         // Every number here was measured rather than reasoned. The first pass
         // fuses greedily left to right, so a pair placed at the start swallows
@@ -191,6 +195,10 @@ describe('two short final clauses of one passage', () => {
             terms: new Set([`t${clause}`]),
             moved: false,
             fused: false,
+            // TRUE, which is what the engine writes when a sentence matched —
+            // the ordinary case. A fixture defaulting to the exceptional value
+            // describes a world the engine does not produce.
+            precise: true,
         });
         // Three clauses, and the arrangement was measured: the floor never moves
         // the FIRST anchor (nothing to measure against) and never moves the LAST
