@@ -270,6 +270,142 @@ export function lexicalRung(
     return { kind: 'clear', index: best, confidence };
 }
 
+/**
+ * Negation markers, folded the way the tokenizer folds them.
+ *
+ * Measured against `createTokenizer()` rather than written from the spelling:
+ * `não` arrives as `nao` and `ninguém` as `ninguem`. A list written the way the
+ * words are spelled would match nothing, and veto nothing, in silence.
+ */
+export const NEGATION_MARKERS: ReadonlySet<string> = new Set([
+    'nao',
+    'nunca',
+    'jamais',
+    'nenhum',
+    'nenhuma',
+    'ninguem',
+    'nada',
+    'nem',
+    'sem',
+]);
+
+/** Why the veto rejected a candidate. It never says which one to cite. */
+export type VetoReason = 'numeral' | 'negation';
+
+/**
+ * The terms that carry a number, which the tokenizer keeps whole: `8.078/90`,
+ * `2026-09-09` and `12:30` arrive as one term each, so a legal reference, an
+ * ISO date and a clock time are checked as the single facts they are rather
+ * than as loose digits.
+ */
+export function numeralsOf(terms: ReadonlySet<string>): ReadonlySet<string> {
+    const out = new Set<string>();
+    for (const term of terms) if (/\d/u.test(term)) out.add(term);
+    return out;
+}
+
+/** A sentence of a candidate passage, located in the SOURCE DOCUMENT. */
+export interface MatchedSentence {
+    readonly span: Span;
+    readonly terms: ReadonlySet<string>;
+}
+
+/**
+ * The sentence of a passage that best carries a clause, in document
+ * coordinates.
+ *
+ * Computed per CANDIDATE and on demand, not for the winner after the fact:
+ * the veto needs it to judge a candidate, and the veto runs before anything is
+ * chosen. Deriving it from the winner would need a winner to exist first, which
+ * is the circle this ordering exists to avoid.
+ *
+ * The offsets are the document's, not the chunk's — `chunk.text` is cut from
+ * the source, so the chunk's own start is all that has to be added.
+ *
+ * KNOWN LIMIT, inherited from segmenting a fragment: a protected region that
+ * crosses the chunk's edge masks differently here than in the whole document,
+ * because half of a fenced block has no fence (`tokenizer.ts`). Two chunks that
+ * overlap on the same sentence can therefore bound it differently, and the
+ * popover can open on a passage cut inside a URL or a formula.
+ */
+export function matchedSentenceOf(
+    clause: Clause,
+    chunk: { readonly text: string; readonly span: Span },
+    df: ReadonlyMap<string, number>,
+    candidateCount: number,
+    opts: AttributeOptions,
+): MatchedSentence | null {
+    const segmenter = opts.segmenter ?? defaultSegmenter();
+    let best: MatchedSentence | null = null;
+    let bestWeight = 0;
+    for (const local of sentencesOf(chunk.text, segmenter, opts.abbreviations)) {
+        const text = chunk.text.slice(...utf16Range(chunk.text, local));
+        const terms = distinctTerms(text, opts.tokenizer);
+        let weight = 0;
+        for (const term of clause.terms) {
+            if (terms.has(term)) weight += separationWeight(df.get(term) ?? 0, candidateCount);
+        }
+        if (weight > bestWeight) {
+            bestWeight = weight;
+            best = {
+                span: { start: chunk.span.start + local.start, end: chunk.span.start + local.end },
+                terms,
+            };
+        }
+    }
+    return best;
+}
+
+/**
+ * Whether a candidate is ineligible for this clause. It only ever rejects.
+ *
+ * A rejected candidate cannot be cited by ANY rung for this clause — that is
+ * the whole point. Sending a vetoed passage down to the dense rung without
+ * removing it from the pool would let the vectors re-elect it, and the veto
+ * would be decoration: the vetoed candidate is the lexical winner, so it is
+ * usually the nearest by cosine too.
+ *
+ * Rejecting is not choosing. Whoever wins among the survivors still wins by
+ * the rung's own criterion, and the runner-up is never promoted by elimination.
+ *
+ * The two rules check against DIFFERENT scopes, and the asymmetry is
+ * deliberate:
+ *
+ *   numeral    against the WHOLE passage. A figure cited three sentences later
+ *              still supports the clause that mentions it.
+ *   negation   against the MATCHED SENTENCE. A passage that says "X is allowed"
+ *              and, further down, "Y is not allowed" contains a negation
+ *              marker; checking the whole passage would fire against the
+ *              positive clause about X, which it supports perfectly.
+ *
+ * False veto is the one direction a veto must not err in. It exists to drop
+ * what is not supported, and dropping what IS supported loses a correct
+ * citation with nothing to show for it.
+ *
+ * DECLARED LIMIT: negation without a lexical marker — "deixou de", "está longe
+ * de" — does not fire, and the citation passes. That is the safe direction, and
+ * reinforcing negation ("não vi ninguém") puts markers on both sides rather
+ * than producing a false veto.
+ */
+export function vetoes(
+    clause: Clause,
+    candidateTerms: ReadonlySet<string>,
+    matched: MatchedSentence | null,
+): VetoReason | null {
+    for (const numeral of numeralsOf(clause.terms)) {
+        if (!candidateTerms.has(numeral)) return 'numeral';
+    }
+    const clauseNegated = hasNegation(clause.terms);
+    const passageNegated = matched ? hasNegation(matched.terms) : false;
+    if (clauseNegated !== passageNegated) return 'negation';
+    return null;
+}
+
+function hasNegation(terms: ReadonlySet<string>): boolean {
+    for (const term of terms) if (NEGATION_MARKERS.has(term)) return true;
+    return false;
+}
+
 /** The distinct terms of a text, as the injected tokenizer sees them. */
 export function distinctTerms(text: string, tokenizer: Tokenizer): ReadonlySet<string> {
     const out = new Set<string>();
