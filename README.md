@@ -36,8 +36,8 @@ package.
 **Search.** `createIndex` builds a lexical index and `createDenseIndex` adds
 vectors; the two are fused by reciprocal rank. No LLM in the loop, any
 embedding provider, and it runs where you run. `FUSION_K` and `FUSION_DEPTH`
-are exported to be READ: a recall figure published without them cannot be
-compared with another one.
+are exported to be read, not tuned: a recall figure published without them
+cannot be compared with another one.
 
 **Chunking.** `chunk()` cuts a document into pieces that know exactly where they
 came from. Boundaries always fall on sentence ends — never inside a formula, a
