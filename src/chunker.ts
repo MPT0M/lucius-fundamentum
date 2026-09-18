@@ -16,7 +16,8 @@
 
 import type { Span } from './types.js';
 import { countCodePoints, sliceByCodePoints } from './unicode.js';
-import { maskProtectedRegions } from './mask.js';
+import { defaultSegmenter, sentencesOf } from './sentences.js';
+import type { Segmenter, Sentence } from './sentences.js';
 import type { AbbreviationList } from './abbreviations.js';
 
 /**
@@ -60,16 +61,6 @@ export interface Chunk {
     readonly boxes?: readonly BoundingBox[];
 }
 
-/**
- * Anything with the shape of `Intl.Segmenter`: given a string, yields the
- * segments with their UTF-16 start index. Injectable so the library does not
- * hard-wire a runtime API — `Intl.Segmenter` is the default where it exists,
- * and a caller on a runtime without it supplies its own.
- */
-export interface Segmenter {
-    segment(text: string): Iterable<{ readonly index: number; readonly segment: string }>;
-}
-
 export interface ChunkOptions {
     /**
      * Ceiling for the interval a chunk covers, whitespace between sentences
@@ -100,74 +91,6 @@ export const DEFAULT_CHUNK_OPTIONS: Readonly<Omit<ChunkOptions, 'segmenter'>> = 
     maxChunkCodePoints: 1200,
     maxOverlapCodePoints: 160,
 };
-
-function defaultSegmenter(): Segmenter {
-    return new Intl.Segmenter('pt-BR', { granularity: 'sentence' });
-}
-
-/**
- * A sentence as a code point span into the source.
- *
- * There is deliberately no `length`. It existed, nobody read it after the
- * budgets started measuring intervals, and a second way to express the size of
- * the same thing is what let the budget and the emitted chunk disagree in the
- * first place.
- */
-interface Sentence {
-    readonly start: number;
-    readonly end: number;
-}
-
-/**
- * Sentence spans of `text`, in code points, computed on the MASKED text so no
- * boundary can land inside a formula, code, URL or after an abbreviation.
- * Because the mask preserves length, the spans are valid on the original.
- */
-function sentencesOf(text: string, segmenter: Segmenter, abbreviations?: AbbreviationList): Sentence[] {
-    const masked = maskProtectedRegions(text, abbreviations ? { abbreviations } : {}).text;
-    const out: Sentence[] = [];
-    let utf16Cursor = 0;
-    let cpCursor = 0;
-    for (const { index, segment } of segmenter.segment(masked)) {
-        // Segments come in order and are contiguous; advance the code point
-        // cursor by the code points between the last segment and this one
-        // (normally zero) rather than recounting from the start each time.
-        cpCursor += countCodePoints(masked.slice(utf16Cursor, index));
-        const trimmed = trimmedSpan(segment, cpCursor);
-        if (trimmed) out.push(trimmed);
-        utf16Cursor = index + segment.length;
-        cpCursor += countCodePoints(segment);
-    }
-    return out;
-}
-
-/**
- * The segmenter hands back each sentence WITH the whitespace that follows it
- * — the space after the period, the newline after the paragraph. The span is
- * tightened to the first and last non-space code point, because a citation
- * that ends in a trailing space is sloppy.
- *
- * Trimming bounds the SENTENCE, not the chunk. The chunk is the continuous
- * interval from the first sentence's start to the last one's end, so it does
- * carry the whitespace between them, and the budget measures that interval —
- * see `chunk`. An earlier version of this comment claimed the trailing space
- * "would count against the chunk budget"; it did not, and that gap between
- * what was counted and what was emitted is the defect the budgets now close.
- *
- * The mask character is not whitespace, so a sentence that is nothing but a
- * formula keeps its full extent.
- *
- * Returns `null` for a segment that is whitespace only.
- */
-function trimmedSpan(segment: string, start: number): Sentence | null {
-    const points = Array.from(segment);
-    let a = 0;
-    let b = points.length;
-    while (a < b && /\s/u.test(points[a]!)) a++;
-    while (b > a && /\s/u.test(points[b - 1]!)) b--;
-    if (a === b) return null;
-    return { start: start + a, end: start + b };
-}
 
 /**
  * Cuts `doc.text` into chunks of at most `maxChunkCodePoints`, on sentence

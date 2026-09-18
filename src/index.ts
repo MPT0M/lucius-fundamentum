@@ -14,7 +14,8 @@ export type { MaskOptions, ProtectedSpan, ProtectedRegionKind, ClassifiedMaskRes
 export { maskAbbreviationPeriods, PT_BR_ABBREVIATIONS } from './abbreviations.js';
 export type { AbbreviationList } from './abbreviations.js';
 export { chunk, DEFAULT_CHUNK_OPTIONS } from './chunker.js';
-export type { SourceDoc, Chunk, BoundingBox, ChunkOptions, Segmenter } from './chunker.js';
+export type { SourceDoc, Chunk, BoundingBox, ChunkOptions } from './chunker.js';
+export type { Segmenter } from './sentences.js';
 export { createTokenizer, foldForIndex } from './tokenizer.js';
 export type { Token, Tokenizer, TokenizerOptions, WordSegmenter, Stemmer } from './tokenizer.js';
 export { stemPlural, RSLP_S_FOLDED } from './stemmer.js';
