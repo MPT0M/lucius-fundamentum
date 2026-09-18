@@ -6,8 +6,8 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { readFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { readFileSync, readdirSync } from 'node:fs';
+import { join, relative } from 'node:path';
 import vitestConfig from '../vitest.config.js';
 
 const pkg = JSON.parse(readFileSync(join(process.cwd(), 'package.json'), 'utf8')) as {
@@ -67,5 +67,97 @@ describe('package contract', () => {
         const include = (vitestConfig as { test?: { include?: string[] } }).test?.include ?? [];
         expect(include).toContain('bench/src/**/*.test.ts');
         expect(include).toContain('tests/**/*.test.ts');
+    });
+});
+
+/**
+ * Zero dependencies is half the promise; the other half is that `src/` never
+ * reaches for something only Node has. Nothing enforced it. A
+ * `import { readFileSync } from 'node:fs'` added here type-checks, builds and
+ * leaves the suite green, and the failure surfaces in a browser that loads the
+ * package — far from the line that caused it, and only once someone has built
+ * an interface on top.
+ *
+ * `vector.ts` already avoids `Buffer` deliberately and says so in a comment.
+ * This is that decision with a guard under it.
+ */
+const NODE_ONLY_IMPORT = /\bfrom\s+['"]node:|\brequire\s*\(/;
+const NODE_ONLY_GLOBAL = /\b(?:Buffer|process|__dirname|__filename)\b/;
+
+/**
+ * Comments mention `Buffer` and `process.env` to explain why they are NOT
+ * used, so scanning raw source reports the explanation as the violation. Block
+ * comments go first; then `//` to end of line, but not the `//` inside a URL.
+ *
+ * It removes a trailing `//` inside a string literal too, which can only hide
+ * a violation sharing that line — the reason the control below feeds the
+ * scanner sources it must reject rather than trusting the expression.
+ */
+function withoutComments(source: string): string {
+    return source
+        .replace(/\/\*[\s\S]*?\*\//g, '')
+        .split('\n')
+        .map((line) => line.replace(/(^|[^:])\/\/.*$/, '$1'))
+        .join('\n');
+}
+
+function sourceFilesUnder(dir: string): string[] {
+    return readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+        const full = join(dir, entry.name);
+        if (entry.isDirectory()) return sourceFilesUnder(full);
+        return entry.isFile() && entry.name.endsWith('.ts') ? [full] : [];
+    });
+}
+
+describe('the core runs where there is no Node', () => {
+    const root = join(process.cwd(), 'src');
+
+    it('imports nothing from `node:` and calls no Node global', () => {
+        const offending = sourceFilesUnder(root).flatMap((file) => {
+            const code = withoutComments(readFileSync(file, 'utf8'));
+            return code
+                .split('\n')
+                .map((text, i) => ({ file: relative(root, file), line: i + 1, text: text.trim() }))
+                .filter((l) => NODE_ONLY_IMPORT.test(l.text) || NODE_ONLY_GLOBAL.test(l.text));
+        });
+
+        expect(offending, offending.map((o) => `${o.file}:${o.line}  ${o.text}`).join('\n')).toEqual(
+            [],
+        );
+    });
+
+    it('detects every shape it is supposed to detect', () => {
+        // Without this the test above passes on an empty directory, on a
+        // regex that matches nothing, and on a comment stripper that ate the
+        // file. Each line below is a real way the promise has been broken.
+        const violations = [
+            "import { readFileSync } from 'node:fs';",
+            'const fs = require("fs");',
+            'const b = Buffer.from(text);',
+            'const n = process.env.CONCURRENCY;',
+            'const here = __dirname;',
+        ];
+        for (const line of violations) {
+            const code = withoutComments(line);
+            expect(
+                NODE_ONLY_IMPORT.test(code) || NODE_ONLY_GLOBAL.test(code),
+                line,
+            ).toBe(true);
+        }
+    });
+
+    it('does not fire on the comments that explain the absence', () => {
+        // The two real ones, verbatim from `src/`. A stripper that missed
+        // them would make the guard unusable and the obvious repair would be
+        // to loosen the pattern, which removes the guard instead.
+        const harmless = [
+            ' * `Buffer` is Node-only and this library has to run in a Worker; `btoa` takes',
+            ' * the option that caused it. `Number(process.env.CONCURRENCY)` on an unset',
+            "const base = 'https://generativelanguage.googleapis.com/v1beta';",
+        ];
+        for (const line of harmless) {
+            const code = withoutComments(`/**\n${line}\n */`);
+            expect(NODE_ONLY_IMPORT.test(code) || NODE_ONLY_GLOBAL.test(code), line).toBe(false);
+        }
     });
 });
