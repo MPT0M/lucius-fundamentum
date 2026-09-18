@@ -94,8 +94,15 @@ terms may be absent from the passage for every one that is present. It and
 `LEXICAL_MARGIN` are the coverage-versus-noise trade in disguise: raise them
 and the library cites less and is wrong less often.
 
+**The answer is attributed once, after the model finishes writing it.** There
+is no mode that marks text while it is being produced; `opts.onState` reports
+progress for a caller who wants to show something during the wait, and emits
+an identifier rather than a sentence, because the words belong to whoever
+writes the interface.
+
 `CHANGELOG.md` carries the known limits — what the veto cannot see, why
-`confidence` is local to one call, and what streaming costs.
+`confidence` is local to one call, and why two attributions of the same text
+can place a marker differently.
 
 ## Where this is going
 

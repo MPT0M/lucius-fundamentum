@@ -8,9 +8,10 @@ All notable changes to this package are documented here. The format follows
 
 ### Added
 
-- **Attribution.** `attribute`, `attributeLexical` and `attributeStream` take a
-  text a model already wrote plus the passages a search already returned, and
-  say which stretch of the text each passage supports. Nothing rewrites the
+- **Attribution.** `attribute` and `attributeLexical` take a text a model
+  already wrote plus the passages a search already returned, and say which
+  stretch of the text each passage supports. The answer is attributed ONCE,
+  after the model has finished writing it. Nothing rewrites the
   answer: the engine returns structure, and `formatAttribution` writes the
   markers separately and hands the spans back REINDEXED, because inserting a
   marker moves every later offset and a caller using the original spans would
@@ -28,11 +29,34 @@ All notable changes to this package are documented here. The format follows
   `attributeLexical` answers, and nothing is paid.
 - **`rungs`, the instrument.** `Attribution.rungs` counts clauses per rung so
   the harness can publish the fraction each one resolved without an instrument
-  of its own. **The counters are MODE-DEPENDENT and no invariant covers them:**
-  `dense` is always zero from `attributeLexical` and from `attributeStream`.
-  What `attributeStream` guarantees about `spans` and `sources` holds against
-  `attributeLexical` and NOT against `attribute` over a provider — the limit
-  below says why.
+  of its own. **`dense` is always zero from `attributeLexical`**, because that
+  door does not run the rung and the clauses it would have decided land in
+  `unattributed`. The two doors are two instruments: a counter from one
+  compared against the other compares different measurements of different
+  work.
+- **Progress, for a caller who asks.** `opts.onState` receives four events:
+  `local-done` with a preview, `provider-wait`, and `provider-done` or
+  `provider-failed`. Leaving it out produces nothing — the preview is built
+  inside the branch that emits it, so nothing is paid. **What is emitted is
+  an identifier, never a sentence:** which words a reader sees belongs to
+  whoever writes the interface. There is no percentage, because how many
+  clauses remain is unknowable until the text ends.
+- **`provider-wait` exists only when there will be a wait.** Not without a
+  provider, and not when every clause resolved on the words and the network
+  is never called. Measured, everything that is not the network takes 3,4 ms
+  — median of twenty runs over a document of 32.520 code points — so an
+  indicator hung on the start of the work would flash and vanish in both
+  cases. Hung on this event it cannot, because the event does not exist.
+- **THE PREVIEW REPLACES, IT DOES NOT AMEND.** Between `local-done` and the
+  returned result a marker can move, change number and be fused away. Swap
+  the block; patching marker by marker drifts. The numbers are under "the
+  floor is not mode-invariant" below.
+- **A remote failure no longer destroys local work.** The dense rung is
+  guarded, the result comes back with what the local rungs found, and
+  `Attribution.providerFailure` says the rung was TRIED and failed — which
+  is what tells it apart from no provider at all, for a caller who asked
+  for no events. `retryable` reads an HTTP status, a standardised number,
+  and never the provider's prose.
 - **Five thresholds, all arbitrary until measured** and all exported to be
   read: `MIN_LEXICAL_SUPPORT`, `LEXICAL_MARGIN`,
   `DEFAULT_COALESCE_MAX_CODE_POINTS`, `DEFAULT_MIN_CLUSTER_CODE_POINTS` and
@@ -60,49 +84,42 @@ All notable changes to this package are documented here. The format follows
   segmenting the whole document, when a protected region crosses the chunk
   edge: half of a fenced block has no fence. The popover can open on a passage
   cut inside a URL or a formula.
-- **The streaming window is two clauses, and the SIZE is not proved.** Measured,
-  the suite passes with one as well. Two follows from the design — coalescence
-  needs the neighbour, and the floor can defer that neighbour one clause
-  further — and no fixture distinguishes the two values. A window of zero does
-  break the invariant, so the window itself is load-bearing.
-- **Streaming re-attributes the whole buffer on every delta**, and re-tokenizes
-  every candidate with it: quadratic in the answer, linear in the candidates,
-  per delta. Chosen because it makes the subset guarantee true by construction;
-  not measured against a long answer in small deltas.
-- **The floor is not mode-invariant, so `attribute` with a provider can MOVE a
-  marker the stream already showed.** The streaming door runs the two local
-  rungs; `attribute` with a provider runs three and places extra spans. The
-  floor walks the spans in order and defers any anchor closer than
-  `minClusterCodePoints` to the previous one, and it reads neither the rung nor
-  the chunk — so a dense span landing between two lexical ones becomes the
+- **The floor is not invariant between two attributions of the same text with
+  different rungs available, so a marker can MOVE.** It does not depend on
+  `onState`: it depends on there being two calls. The floor walks the spans in
+  order and defers any anchor closer than `minClusterCodePoints` to the
+  previous one, reading neither the rung nor the chunk — so a dense span
+  landing between two lexical ones becomes the
   previous anchor of the later one and can push it to the next clause.
-  Reproduced: same document, same candidates, an answer whose second clause only
-  the vectors resolve —
+  Reproduced: same document, same candidates, an answer whose second clause
+  only the vectors resolve —
 
       attributeLexical      lei#0@43  lei#3@119  lei#4@237
       attribute + provider  lei#0@43  lei#2@119  lei#3@179  lei#4@237
 
-  and the stream had shown `lei#3@119` before the end. The FIRST coalescence
-  pass is mode-invariant by construction — it fuses over clause adjacency
-  within the lexical subset, which both modes produce identically — and
-  neither the floor nor the second pass was given the same treatment. Until
-  they are, treat `attributeStream` as agreeing with `attributeLexical` —
-  which it does exactly, for every delta size — and not with `attribute` over
-  a provider.
+  **THREE PATHS REACH TWO CALLS, and none of them is exotic.** The two lines
+  above are the two public doors. A caller can paint for free with
+  `attributeLexical` and improve with `attribute` later. And a failed provider
+  now returns `retryable: true`, which
+  invites a retry, and a retry that succeeds is the second call.
+
+  The FIRST coalescence pass is invariant by construction — it fuses over
+  clause adjacency, and the clause sequence is identical for both doors.
+  Neither the floor nor the second pass was given the same treatment.
 - **And the third density pass AMPLIFIES that divergence, so a marker can also
   disappear rather than only move.** The pass fuses pairs the floor moved
   (`a.moved && b.moved`), and `moved` is the floor's verdict, so a pair the
-  floor pushed together in one mode and left apart in the other fuses in one
-  mode only: two markers where the other shows one. MEASURED AT THE
+  floor pushed together in one call and left apart in the other fuses in one
+  of them only: two markers where the other shows one. MEASURED AT THE
   `applyDensity` LEVEL, not through the public API — 198 of 216 arrangements of
   two same-passage clauses with a dense span in front of them, with the
   defaults:
 
-      stream  x@10[0-10]  y@100[88-100]  y@200[188-200]
-      batch   x@10[0-10]  z@130[28-40]   y@330[88-200]
+      lexical only          x@10[0-10]  y@100[88-100]  y@200[188-200]
+      attribute + provider  x@10[0-10]  z@130[28-40]   y@330[88-200]
 
   Through the public API only the MOVE is reproduced; every arrangement tried
-  there had the pair already fused by the first pass, where the modes agree. The
+  there had the pair already fused by the first pass, where both doors agree. The
   effect is stated at the level it was measured, and a reader wanting it
   end-to-end will have to build the case.
 - **Paraphrase groups now, and only the mixed pair still costs a marker.**
