@@ -406,6 +406,81 @@ function hasNegation(terms: ReadonlySet<string>): boolean {
     return false;
 }
 
+/**
+ * How far the sentence sits from the nearer edge of the chunk that carries it.
+ *
+ * Two subtractions and a minimum. The number is only ever compared against
+ * another chunk's, so its scale means nothing on its own.
+ */
+export function centrality(sentence: Span, chunk: Span): number {
+    return Math.min(sentence.start - chunk.start, chunk.end - sentence.end);
+}
+
+/**
+ * Which chunk a citation names when several carry the very same sentence.
+ *
+ * The chunker overlaps on purpose, in whole sentences, so a sentence on a seam
+ * lives at the END of one chunk and at the START of the next. Both carry it,
+ * both support the clause equally, and one has to be named.
+ *
+ * > The chunk in which the cited sentence sits FURTHEST from an edge wins.
+ * > Ties go to the chunk with MORE TEXT AFTER the sentence, and then to the
+ * > lower starting offset, which is total and deterministic.
+ *
+ * "Lowest offset" would have been cheaper and is wrong: on a seam the sentence
+ * is pinned to the END of the earlier chunk, so that rule picks the view where
+ * the reader opens the popover on the cited line with nothing after it — every
+ * time, and by what is cheap to compute rather than by what serves reading.
+ * Centrality costs two subtractions.
+ *
+ * **The middle tie-break is load-bearing, and centrality alone is not enough.**
+ * On a true seam the sentence ends the earlier chunk AND opens the later one,
+ * so it is pinned to an edge in BOTH and centrality is zero on both sides:
+ *
+ *     sentence 180..200,  chunk N = 0..200,  chunk N+1 = 180..400
+ *     N    before 180, after   0  ->  min 0
+ *     N+1  before   0, after 200  ->  min 0
+ *
+ * Breaking that tie by the lower offset would name N — the view with nothing
+ * after the cited line, which is the one this rule exists to refuse. Comparing
+ * the text that FOLLOWS the sentence names N+1, and that is what the reader
+ * gets: the citation plus what comes next. Centrality still decides every case
+ * where the sentence is inside both chunks rather than on their boundary, which
+ * is why it stays first.
+ *
+ * This is ONLY for the seam: the same sentence, at the same document offsets,
+ * in more than one chunk. A fact stated twice in a document — once in the
+ * introduction, once in the conclusion — is two independent occurrences at
+ * different offsets, and merging them would hide from the reader that the
+ * source says it twice, which is usually the more interesting fact.
+ *
+ * What the choice decides is what the reader sees AROUND the citation, and how
+ * stable the identifier is between runs. It is NOT what keeps the chip from
+ * duplicating: one span carries one `chunkId`, so there is no path from "the
+ * sentence is in two chunks" to "two chips" for the contract to worry about.
+ */
+export function chooseChunkForSeam<T extends { readonly span: Span }>(
+    sentence: Span,
+    candidates: readonly T[],
+    fallback: T,
+): T {
+    let best: T | null = null;
+    for (const candidate of candidates) {
+        if (candidate.span.start > sentence.start || candidate.span.end < sentence.end) continue;
+        if (best === null || beatsForSeam(sentence, candidate.span, best.span)) best = candidate;
+    }
+    return best ?? fallback;
+}
+
+/** The three comparisons of the seam rule, in order, so the order is visible. */
+function beatsForSeam(sentence: Span, challenger: Span, holder: Span): boolean {
+    const byCentrality = centrality(sentence, challenger) - centrality(sentence, holder);
+    if (byCentrality !== 0) return byCentrality > 0;
+    const byTextAfter = challenger.end - holder.end;
+    if (byTextAfter !== 0) return byTextAfter > 0;
+    return challenger.start < holder.start;
+}
+
 /** The distinct terms of a text, as the injected tokenizer sees them. */
 export function distinctTerms(text: string, tokenizer: Tokenizer): ReadonlySet<string> {
     const out = new Set<string>();
