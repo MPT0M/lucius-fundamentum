@@ -99,10 +99,19 @@ describe('the seam is real: the chunker overlaps in whole sentences', () => {
         expect(chunks.length).toBeGreaterThanOrEqual(1);
         expect(small.length).toBeGreaterThan(1);
 
-        // Every sentence is measured once, in document coordinates, and a
-        // sentence carried by two chunks has the SAME span in both — which is
-        // why the seam never duplicates a citation and the rule above only
-        // decides what the reader sees around it.
+        // What this asserts: the chunker really does overlap in whole
+        // sentences, so a sentence carried by two chunks is a configuration
+        // that occurs rather than one this rule imagines.
+        //
+        // What it does NOT assert: that the sentence gets the same span from
+        // either chunk. The sentences are measured ONCE over the whole
+        // document here, so sameness is a property of the measurement, not a
+        // result. Production segments `chunk.text`, where a protected region
+        // crossing an edge masks differently on each side. What keeps the
+        // seam from duplicating a citation is that one span carries one
+        // `chunkId` — not this. What the rule above decides is what the reader
+        // sees AROUND the citation, and how stable the identifier is between
+        // runs.
         const sentences = sentencesOf(text, defaultSegmenter());
         const carriedTwice = sentences.filter(
             (s) => small.filter((c) => c.span.start <= s.start && c.span.end >= s.end).length > 1,

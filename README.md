@@ -2,8 +2,8 @@
 
 > Document grounding and citation attribution that never loses a character.
 
-**Under construction.** The text foundation is in place and tested; search and
-attribution land in later releases. Nothing is published to npm yet.
+**Under construction.** The text foundation, search and attribution are in place
+and tested. Nothing is published to npm yet.
 
 ## The rule
 
@@ -33,6 +33,12 @@ package.
 **Portuguese abbreviations.** `PT_BR_ABBREVIATIONS` and
 `maskAbbreviationPeriods`, so that "Dr." and "art." do not become sentence ends.
 
+**Search.** `createIndex` builds a lexical index and `createDenseIndex` adds
+vectors; the two are fused by reciprocal rank. No LLM in the loop, any
+embedding provider, and it runs where you run. `FUSION_K` and `FUSION_DEPTH`
+are exported to be READ: a recall figure published without them cannot be
+compared with another one.
+
 **Chunking.** `chunk()` cuts a document into pieces that know exactly where they
 came from. Boundaries always fall on sentence ends — never inside a formula, a
 code span, a URL, or right after an abbreviation. Each chunk carries its `span`
@@ -57,17 +63,46 @@ const chunks = chunk(
 // each chunk: { id, documentId, text, span: { start, end } }
 ```
 
+## Attribution
+
+Given a text a model already wrote and the passages a search returned, the
+attributor says which stretch of the text each passage supports.
+
+```ts
+// One tokenizer, passed to both. `createIndex` defaults it when none is given
+// and does not hand back what it built, so the short path leaves no handle to
+// attribute with — and attributing with a different tokenizer than the one
+// that indexed is not detectable from inside.
+const tokenizer = createTokenizer();
+const index = createIndex(docs, { tokenizer });
+const results = index.searchLexical(question, { topK: 10 });
+
+const attribution = attributeLexical(answer, results, { tokenizer });
+const formatted = formatAttribution(attribution, { markerStyle: 'bracket' });
+const { text, spans } = formatted;
+```
+
+**It checks support, not relevance.** The clause says something the passage
+contains — that is what is verified. Whether that passage answers the question
+that was asked is a different instrument, and this one does not have it. A
+citation can be perfectly faithful and point at the wrong passage, and nothing
+here would notice. The promise is auditability, not accuracy.
+
+**`MIN_LEXICAL_SUPPORT` is a ratio, not a similarity threshold.** With weights
+close to each other, the default of `0.25` means at most three of a clause's
+terms may be absent from the passage for every one that is present. It and
+`LEXICAL_MARGIN` are the coverage-versus-noise trade in disguise: raise them
+and the library cites less and is wrong less often.
+
+`CHANGELOG.md` carries the known limits — what the veto cannot see, why
+`confidence` is local to one call, and what streaming costs.
+
 ## Where this is going
 
-**Search.** Hybrid retrieval — lexical and dense — over your documents, with no
-LLM in the loop. Works with any embedding provider and runs where you run.
-
-**Attribution.** Given a text and the retrieved passages, says which stretch of
-the text is supported by which passage, with positions you can trust.
-
-**Measurement.** `bench/` holds the ruler these two will be measured with: a
-public-domain corpus with its own provenance record, and a harness that scores
-citation positions against labeled spans.
+**Measurement.** `bench/` holds the ruler search and attribution will be
+measured with: a public-domain corpus with its own provenance record, and a
+harness that scores citation positions against labeled spans. It is what will
+calibrate the thresholds this package exports rather than tunes.
 
 ## The measured round
 

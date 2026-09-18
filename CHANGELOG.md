@@ -6,6 +6,107 @@ All notable changes to this package are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+
+- **Attribution.** `attribute`, `attributeLexical` and `attributeStream` take a
+  text a model already wrote plus the passages a search already returned, and
+  say which stretch of the text each passage supports. Nothing rewrites the
+  answer: the engine returns structure, and `formatAttribution` writes the
+  markers separately and hands the spans back REINDEXED, because inserting a
+  marker moves every later offset and a caller using the original spans would
+  get drift.
+- **What it checks, and what it does not.** It verifies SUPPORT — the clause
+  says something the passage contains — and not RELEVANCE. A passage can
+  support a sentence perfectly and still be the wrong passage to have cited,
+  and nothing here notices. The promise is auditability, not accuracy.
+- **Three rungs, because the last one costs money.** A lexical pass, then a
+  hard veto on figures, dates and negation that only ever REJECTS, then the
+  vectors for what the words could not separate. The dense rung costs TWO
+  network calls per call to `attribute`, however many clauses are ambiguous —
+  one for the candidate passages, one for every unresolved clause together.
+  Without `opts.provider` it does not run, `attribute` answers exactly what
+  `attributeLexical` answers, and nothing is paid.
+- **`rungs`, the instrument.** `Attribution.rungs` counts clauses per rung so
+  the harness can publish the fraction each one resolved without an instrument
+  of its own. **The counters are MODE-DEPENDENT and no invariant covers them:**
+  `dense` is always zero from `attributeLexical` and from `attributeStream`.
+  What `attributeStream` guarantees about `spans` and `sources` holds against
+  `attributeLexical` and NOT against `attribute` over a provider — the limit
+  below says why.
+- **Five thresholds, all arbitrary until measured** and all exported to be
+  read: `MIN_LEXICAL_SUPPORT`, `LEXICAL_MARGIN`,
+  `DEFAULT_COALESCE_MAX_CODE_POINTS`, `DEFAULT_MIN_CLUSTER_CODE_POINTS` and
+  `DEFAULT_ATTRIBUTE_OPTIONS`. The first two ARE the coverage-versus-noise
+  trade in disguise; the harness of lot 2 is what will calibrate them.
+
+### Known limits of the attribution, stated rather than discovered
+
+- **Without a key the coverage is structurally lower.** In a browser with no
+  provider only the two local rungs run, so a clause the words cannot separate
+  comes back with no marker. A figure measured with a provider does not hold
+  for that mode.
+- **`confidence` is local to the candidates it was computed over.** The weights
+  come from their frequencies, so the same clause and passage score differently
+  under a different `topK`. Order by it, never threshold across calls. Spans
+  resolved by the dense rung score systematically lower, because low lexical
+  coverage is exactly what sent them there — split by `resolvedBy` before
+  comparing.
+- **Negation without a lexical marker does not fire the veto** (`deixou de`,
+  `está longe de`). It errs by letting through, never by dropping a correct
+  citation.
+- **Segmenting a passage in isolation can bound a sentence differently** from
+  segmenting the whole document, when a protected region crosses the chunk
+  edge: half of a fenced block has no fence. The popover can open on a passage
+  cut inside a URL or a formula.
+- **The streaming window is two clauses, and the SIZE is not proved.** Measured,
+  the suite passes with one as well. Two follows from the design — coalescence
+  needs the neighbour, and the floor can defer that neighbour one clause
+  further — and no fixture distinguishes the two values. A window of zero does
+  break the invariant, so the window itself is load-bearing.
+- **Streaming re-attributes the whole buffer on every delta**, and re-tokenizes
+  every candidate with it: quadratic in the answer, linear in the candidates,
+  per delta. Chosen because it makes the subset guarantee true by construction;
+  not measured against a long answer in small deltas.
+- **The floor is not mode-invariant, so `attribute` with a provider can MOVE a
+  marker the stream already showed.** The streaming door runs the two local
+  rungs; `attribute` with a provider runs three and places extra spans. The
+  floor walks the spans in order and defers any anchor closer than
+  `minClusterCodePoints` to the previous one, and it reads neither the rung nor
+  the chunk — so a dense span landing between two lexical ones becomes the
+  previous anchor of the later one and can push it to the next clause.
+  Reproduced: same document, same candidates, an answer whose second clause only
+  the vectors resolve —
+
+      attributeLexical      lei#0@43  lei#3@119  lei#4@237
+      attribute + provider  lei#0@43  lei#2@119  lei#3@179  lei#4@237
+
+  and the stream had shown `lei#3@119` before the end. The FIRST coalescence
+  pass is mode-invariant by construction — it fuses over clause adjacency
+  within the lexical subset, which both modes produce identically — and
+  neither the floor nor the second pass was given the same treatment. Until
+  they are, treat `attributeStream` as agreeing with `attributeLexical` —
+  which it does exactly, for every delta size — and not with `attribute` over
+  a provider.
+- **And the third density pass AMPLIFIES that divergence, so a marker can also
+  disappear rather than only move.** The pass fuses pairs the floor moved
+  (`a.moved && b.moved`), and `moved` is the floor's verdict, so a pair the
+  floor pushed together in one mode and left apart in the other fuses in one
+  mode only: two markers where the other shows one. MEASURED AT THE
+  `applyDensity` LEVEL, not through the public API — 198 of 216 arrangements of
+  two same-passage clauses with a dense span in front of them, with the
+  defaults:
+
+      stream  x@10[0-10]  y@100[88-100]  y@200[188-200]
+      batch   x@10[0-10]  z@130[28-40]   y@330[88-200]
+
+  Through the public API only the MOVE is reproduced; every arrangement tried
+  there had the pair already fused by the first pass, where the modes agree. The
+  effect is stated at the level it was measured, and a reader wanting it
+  end-to-end will have to build the case.
+- **The dense rung re-embeds the candidate passages** rather than reading the
+  vectors the index already holds. It pays twice, and in exchange both sides of
+  every comparison are born in the same call, through the same door.
+
 ### Changed
 
 - **`search` is now the hybrid search, not the dense one.** It runs both arms,

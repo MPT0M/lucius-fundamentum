@@ -84,8 +84,17 @@ export interface AttributionSpan {
  * vetoed winner sends its clause down a rung and is never replaced by the
  * runner-up.
  *
- * These count CLAUSES. `Attribution.spans` counts SPANS, and the two differ
- * whenever coalescence merges two clauses into one marker.
+ * These count CLAUSES, each one once: a clause whose winner the veto rejects
+ * twice still adds one to `vetoed`. `Attribution.spans` counts SPANS, and the
+ * two differ whenever coalescence merges two clauses into one marker.
+ *
+ * **They are MODE-DEPENDENT, and no invariant covers them.** `dense` is always
+ * zero from `attributeLexical` and from `attributeStream`, because neither
+ * runs that rung, and the clauses it would have decided land in
+ * `unattributed` instead. Comparing these counters across modes compares two
+ * different instruments. What `attributeStream` guarantees about `spans` and
+ * `sources` holds against `attributeLexical` and NOT against `attribute` over
+ * a provider — see `AttributionStream`.
  */
 export interface RungCounts {
     readonly lexical: number;
@@ -549,7 +558,9 @@ export interface Placed {
  * Fuses neighbouring citations of the same passage.
  *
  * **Adjacency is measured over CLAUSES, not over spans**, and that is what
- * makes the rule produce the same result in every mode. The span list of a
+ * makes THIS PASS produce the same result in every mode. The second pass is a
+ * different matter: it is eligible on `moved`, which the floor writes, and the
+ * floor does depend on the mode. The span list of a
  * streaming caller is a subset of the batch one — a clause only the vectors can
  * resolve produces no span while the text is being written — so a rule reading
  * span neighbours would fuse a pair in one mode and not the other, and a marker
@@ -747,7 +758,15 @@ export const DEFAULT_ATTRIBUTE_OPTIONS: Readonly<
 interface Pending {
     readonly clause: Clause;
     readonly clauseIndex: number;
-    /** Candidates the veto rejected. No rung may cite one of these. */
+    /**
+     * Candidates the veto rejected. No rung may cite one of these.
+     *
+     * NON-EMPTY MEANS THE VETO ALREADY FIRED FOR THIS CLAUSE, and the dense
+     * rung reads it that way so `rungs.vetoed` counts the clause once however
+     * many candidates the veto goes on to reject. Seed this set for any other
+     * reason — a pre-filter, a candidate from the wrong document — and that
+     * counter undercounts in silence.
+     */
     readonly ineligible: ReadonlySet<number>;
 }
 
@@ -931,7 +950,7 @@ export async function attribute(
 ): Promise<Attribution> {
     const prepared = prepare(text, results, opts);
     const provider = opts.provider;
-    if (provider === undefined || prepared.pending.length === 0 || results.length === 0) {
+    if (provider === undefined || prepared.pending.length === 0) {
         return finish(text, results, prepared, opts, {
             lexical: prepared.placed.length,
             dense: 0,
@@ -968,6 +987,8 @@ export async function attribute(
         // that dropped the clause on the first rejection would lose a citation
         // that another passage could have carried.
         const ineligible = new Set(item.ineligible);
+        // Already counted upstream when the lexical winner was rejected.
+        let countedVeto = item.ineligible.size > 0;
         let chosen: number | null = null;
         let matched: MatchedSentence | null = null;
         for (;;) {
@@ -981,7 +1002,15 @@ export async function attribute(
                 opts,
             );
             if (vetoes(item.clause, prepared.candidateTerms[chosen]!, matched) === null) break;
-            prepared.vetoed += 1;
+            // The COUNTER marks the clause, once, however many candidates the
+            // veto goes on to reject for it. The ineligible set is what keeps
+            // the loop narrowing; counting here as well would publish more
+            // veto events than there are clauses, and the ruler divides this
+            // by clauses examined.
+            if (!countedVeto) {
+                prepared.vetoed += 1;
+                countedVeto = true;
+            }
             ineligible.add(chosen);
         }
         if (chosen === null) return;
@@ -1053,15 +1082,24 @@ function sliceCodePoints(text: string, start: number, end: number): string {
 /**
  * Attribution for a message being written, delivered as it is written.
  *
- * > **Same input, same attribution. The mode chooses WHEN a marker appears,
- * > never WHICH.**
+ * > **Same input, same attribution against `attributeLexical`. The mode
+ * > chooses WHEN a marker appears, never WHICH.**
  *
- * `stream` is a strict subset of `batch`: it runs the two local rungs, so a
- * clause that would need the vectors comes out with no marker and the closing
- * envelope merely adds it. Nothing is ever retracted in front of a reader —
- * a marker already on the page does not vanish, does not change number and does
- * not move. That is what makes the mode honest, and it is the only reason the
- * symbol exists.
+ * `stream` is a strict subset of `attributeLexical`: it runs the two local
+ * rungs, so a clause that would need the vectors comes out with no marker and
+ * the closing envelope merely adds it. Against THAT door nothing is ever
+ * retracted in front of a reader — a marker already on the page does not
+ * vanish, does not change number and does not move.
+ *
+ * **AGAINST `attribute` OVER A PROVIDER IT DOES NOT HOLD, and the break is
+ * measured rather than suspected.** The floor defers an anchor too close to
+ * the previous one and reads neither the rung nor the chunk, so a dense span
+ * landing between two lexical ones becomes the previous anchor of the later
+ * one and moves it. The second coalescence pass then fuses pairs the floor
+ * moved, so the divergence can also merge two markers into one. A caller who
+ * streams and then calls `attribute` with a provider to fill in the gaps must
+ * expect the page to settle differently. `CHANGELOG.md` carries the
+ * reproduction under "the floor is not mode-invariant".
  *
  * `opts.provider` is IGNORED here, deliberately and not by omission: a door
  * that accepted a provider and then went to the network while someone reads
@@ -1087,6 +1125,20 @@ export interface AttributionStream {
  */
 export const STREAM_LOOKAHEAD_CLAUSES = 2;
 
+/**
+ * Opens a stream over one message. See `AttributionStream` for the rule that
+ * makes the mode safe.
+ *
+ * **COST, declared rather than left to be found.** Every `push` re-attributes
+ * the whole buffer and re-tokenizes every candidate: quadratic in the answer
+ * and linear in the candidates, per delta. It was chosen because it makes the
+ * subset guarantee true BY CONSTRUCTION — there is no incremental state that
+ * could drift from what the batch door computes — and that is the property
+ * worth the most here. It has NOT been measured against a long answer in
+ * small deltas; the fixtures in this package are all under a few hundred code
+ * points, so the cost never shows in the suite. A caller streaming a long
+ * answer should measure before assuming it is free.
+ */
 export function attributeStream(
     results: readonly SearchResult[],
     opts: AttributeOptions,

@@ -128,7 +128,11 @@ export function assertChunkCeilingFits(maxChunkCodePoints: number, provider: Emb
 }
 
 /**
- * Rejects the chunk that actually does not fit, naming it and both sizes.
+ * Rejects the item that actually does not fit, naming it and both sizes.
+ *
+ * The items are chunks when the index calls, and clauses of an answer when
+ * the attributor does. The message names whatever id it was handed and adds
+ * no noun of its own: `chunk clause 3: ...` reads like a bug in the caller.
  *
  * This is the half that matters. Silent truncation is the failure this library
  * exists to refuse: the provider returns a vector, the vector is plausible, the
@@ -144,7 +148,7 @@ export function assertChunksFit(
         const size = countCodePoints(chunk.text);
         if (size <= provider.maxInputCodePoints) continue;
         throw new Error(
-            `chunk ${chunk.id}: ${size} code points, window of provider ${provider.id}: ${provider.maxInputCodePoints}`,
+            `${chunk.id}: ${size} code points, window of provider ${provider.id}: ${provider.maxInputCodePoints}`,
         );
     }
 }

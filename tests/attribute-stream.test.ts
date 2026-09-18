@@ -7,6 +7,7 @@ import {
     createTokenizer,
     deterministicProvider,
     type AttributionSpan,
+    type EmbeddingProvider,
     type SourceDoc,
     type SearchResult,
 } from '../src/index.js';
@@ -48,7 +49,7 @@ const ANSWER =
     'O relator concede efeito suspensivo ao agravo. ' +
     'A perícia será custeada pela parte requerente.';
 
-describe('attributeStream — the mode chooses WHEN, never WHICH', () => {
+describe('attributeStream — WHEN, never WHICH, against the lexical door', () => {
     const results = search('prazo contagem relator perícia');
 
     it('the envelope matches the batch door exactly, whatever the delta size', () => {
@@ -62,8 +63,10 @@ describe('attributeStream — the mode chooses WHEN, never WHICH', () => {
     });
 
     it('what was shown while writing is a PREFIX of what the envelope holds', () => {
-        // Nothing is retracted: a marker already on the page does not vanish,
-        // does not change number and does not move.
+        // Nothing is retracted AGAINST THE LEXICAL DOOR: a marker already on
+        // the page does not vanish, does not change number and does not move.
+        // Against `attribute` over a provider it can move and can be fused
+        // away; see CHANGELOG, "the floor is not mode-invariant".
         for (const size of [1, 5, 23]) {
             const { shown, envelope } = stream(ANSWER, results, size);
             expect(envelope.spans.slice(0, shown.length)).toEqual(shown);
@@ -154,16 +157,69 @@ describe('attributeStream — what it does NOT promise', () => {
         expect(envelope.spans.length).toBeLessThanOrEqual(full.spans.length);
     });
 
-    it('a span the stream showed is still present once the dense rung has run', async () => {
-        // The second pass, with the dense rung ON. The first pass turns it off
-        // on both sides, and with it off the case where a dense span sits
-        // between two lexical ones cannot arise at all — the blind spot of the
-        // fixture rather than of the rule.
-        const { shown } = stream(ANSWER, results, 6);
-        const full = await attribute(ANSWER, results, {
-            tokenizer,
-            provider: deterministicProvider(16),
-        });
+    it('the dense rung runs, and on a LAST clause the floor cannot take a span back', async () => {
+        // The second pass, with the dense rung ON — and the precondition is
+        // asserted rather than assumed. MEASURED over `ANSWER`: `rungs.dense`
+        // came back 0 under BOTH providers, because every clause of it resolves
+        // lexically. So the "second pass" was the first pass with a provider
+        // hanging off it, and the case it exists for — a dense span sitting
+        // BETWEEN two lexical ones, where a fusion rule reading span neighbours
+        // would differ between modes — never arose.
+        //
+        // What creates the case is the ANSWER, not the provider: the middle
+        // clause below shares no rare term with any single passage. Measured,
+        // `deterministicProvider` reaches the dense rung on it too; the scripted
+        // provider is here so that WHICH passage wins does not depend on the
+        // geometry of a hash (`lei#1` under one, `lei#2` under the other). The
+        // assertion is what fails if the case stops arising.
+        //
+        // AND THE MECHANISM THIS GUARDS IS THE FLOOR, NOT FUSION. Fusion cannot
+        // differ here whatever the modes do: it requires equal `chunkId` AND
+        // both sides `'lexical'` (`attribute.ts:593-595`), so a dense span never
+        // fuses and two spans of different chunks never fuse. `applyFloor` is
+        // the one that reads the list in order, and it is blind to rung and to
+        // chunk — a dense span entering between two lexical ones becomes the
+        // `previousAnchor` of the later one, which the stream never saw.
+        //
+        // THIS FIXTURE DOES NOT PROVE THE GUARANTEE IT ASSERTS. It passes on a
+        // geometry that hides the break: the affected span is the LAST clause,
+        // and the floor gives way on the last clause by design. Measured with
+        // one clause more, the same shapes give
+        //
+        //     attributeLexical      lei#0@43  lei#3@119  lei#4@237
+        //     attribute + provider  lei#0@43  lei#2@119(dense)  lei#3@179 …
+        //
+        // and the stream had already shown `lei#3@119`. See CHANGELOG, "the
+        // floor is not mode-invariant".
+        const answer =
+            'O prazo para recurso é de 15 dias corridos. ' +
+            'O prazo do relator. ' +
+            'A perícia contábil será custeada pela parte requerente.';
+        const unit = (v: number[]) => {
+            const n = Math.hypot(...v);
+            return v.map((x) => x / n);
+        };
+        const provider: EmbeddingProvider = {
+            id: 'scripted',
+            dimensions: 3,
+            maxInputCodePoints: 100000,
+            async embedDocuments(texts) {
+                return texts.map((t) =>
+                    t.includes('prazo do relator') || t.includes('relator pode')
+                        ? unit([1, 0, 0])
+                        : unit([-1, 1, 0]),
+                );
+            },
+            async embedQuery() {
+                return unit([-1, 1, 0]);
+            },
+        };
+
+        const { shown } = stream(answer, results, 6);
+        const full = await attribute(answer, results, { tokenizer, provider });
+
+        expect(full.rungs.dense).toBeGreaterThan(0);
+        expect(shown.length).toBeGreaterThan(0);
         for (const span of shown) {
             expect(full.spans).toContainEqual(span);
         }

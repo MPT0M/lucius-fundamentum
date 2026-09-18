@@ -308,9 +308,9 @@ describe('dense — the refusals', () => {
                 return (await provider.embedDocuments(texts)).slice(0, -1);
             },
         };
-        // A guarda mudou de casa para `embedding.ts` e passou a servir dois
-        // chamadores, entao a mensagem fala de INPUT e nao de chunk: o
-        // atribuidor embeda oracoes, que nao sao chunks. Mudanca deliberada.
+        // The guard moved to `embedding.ts` and now serves two callers, so the
+        // message speaks of INPUTS rather than chunks: the attributor embeds
+        // clauses, and clauses are not chunks. Deliberate.
         await expect(createDenseIndex(CORPUS, short, { chunkOptions: SMALL })).rejects.toThrow(
             /exactly one per input/,
         );

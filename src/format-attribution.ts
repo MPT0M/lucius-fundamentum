@@ -8,6 +8,15 @@
  * original spans would get drift: the same class of defect that makes a chat
  * client turn its citation chips off when a message carries a visual block.
  * Leaving that mine in a public contract is not an option.
+ *
+ * **The offsets that come back are code points, and that is where a consumer
+ * reintroduces the defect.** `text[span.start]` and `substring` index UTF-16
+ * units, and a DOM range takes units too, so an emoji or a rare CJK character
+ * earlier in the answer puts the highlight in the wrong place. The cheap test
+ * for whether naive indexing is safe on a given string is
+ * `text.length === countCodePoints(text)`: equal means pure BMP, where units
+ * and code points coincide. Unequal means converting, and `sliceByCodePoints`
+ * is exported for it.
  */
 
 import type { Span } from './types.js';
@@ -21,9 +30,9 @@ import type { Attribution, AttributionSpan } from './attribute.js';
  * `sources` travels with it, and that is a deliberate addition to the shape the
  * spec drew. The marker's number is a POSITION IN `sources` — the only set both
  * delivery modes produce identically — so a consumer holding the formatted text
- * alone would receive `[4]` with nothing to resolve the 4 against. With a
- * footer the gap closes itself; with `markerStyle: 'none'` there would be
- * nothing at all.
+ * alone would receive `[4]` with nothing to resolve the 4 against. The pairing
+ * that leaves nothing at all is `bibliography: 'none'`; `markerStyle: 'none'`
+ * still emits the footer, and that pair is the voice case.
  *
  * `rungs` does not travel: it is what the ruler reads, not what the page shows.
  */
