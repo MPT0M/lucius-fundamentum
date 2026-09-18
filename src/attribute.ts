@@ -481,6 +481,201 @@ function beatsForSeam(sentence: Span, challenger: Span, holder: Span): boolean {
     return challenger.start < holder.start;
 }
 
+/**
+ * Two citations of the same passage closer than this fuse into one marker, so
+ * the reader does not get two numbers stuck to the same idea.
+ *
+ * ARBITRARY UNTIL MEASURED, in the same regime as the two thresholds above.
+ */
+export const DEFAULT_COALESCE_MAX_CODE_POINTS = 80;
+
+/**
+ * No anchor is emitted closer than this to the previous one; it is deferred to
+ * the next clause instead. Short sentences from different passages otherwise
+ * turn the text into a washing line of chips.
+ *
+ * ZERO turns the floor off and puts an anchor on every clause, with no room to
+ * breathe. That is illegible as prose and is exactly what a line-by-line audit
+ * needs — every claim with its support beside it, with nothing grouped on the
+ * reader's behalf — which is the only reason the option is public.
+ *
+ * ARBITRARY UNTIL MEASURED.
+ */
+export const DEFAULT_MIN_CLUSTER_CODE_POINTS = 70;
+
+/** A span on its way through the density rules, with what they need to decide. */
+export interface Placed {
+    readonly span: AttributionSpan;
+    /** Position in the clause sequence. Adjacency is measured here, not on spans. */
+    readonly firstClause: number;
+    readonly lastClause: number;
+    /** The union of the terms of every clause this span covers. */
+    readonly terms: ReadonlySet<string>;
+    /** Whether the floor already moved this anchor. */
+    readonly moved: boolean;
+    /** Whether it already took part in a fusion, in either pass. */
+    readonly fused: boolean;
+}
+
+/**
+ * Fuses neighbouring citations of the same passage.
+ *
+ * **Adjacency is measured over CLAUSES, not over spans**, and that is what
+ * makes the rule produce the same result in every mode. The span list of a
+ * streaming caller is a subset of the batch one — a clause only the vectors can
+ * resolve produces no span while the text is being written — so a rule reading
+ * span neighbours would fuse a pair in one mode and not the other, and a marker
+ * already on screen would change. The clause sequence is identical in both,
+ * because segmentation is deterministic: the streaming caller KNOWS the clause
+ * in between exists, it just has no span for it.
+ *
+ * Skipping over that clause would be worse than a mode difference. `Span` is a
+ * contiguous range, so fusing across it produces a `textSpan` that CONTAINS the
+ * clause in the middle — a marker claiming support over a stretch its passage
+ * does not support, which is the failure this package is named for.
+ *
+ * It does not chain: a fused span is closed and cannot fuse again, here or in
+ * the second pass. Chaining would let a span grow across a whole run of near
+ * clauses with no ceiling, and then nothing could be called final until the run
+ * ended — which is the bounded delay the streaming mode depends on.
+ */
+export function coalescePass(
+    items: readonly Placed[],
+    eligible: (a: Placed, b: Placed) => boolean,
+    recompute: (terms: ReadonlySet<string>, chunkId: string) => number,
+    maxDistance: number,
+): Placed[] {
+    const out: Placed[] = [];
+    let i = 0;
+    while (i < items.length) {
+        const a = items[i]!;
+        const b = items[i + 1];
+        if (
+            b !== undefined &&
+            !a.fused &&
+            !b.fused &&
+            a.span.chunkId === b.span.chunkId &&
+            a.span.resolvedBy === 'lexical' &&
+            b.span.resolvedBy === 'lexical' &&
+            b.firstClause === a.lastClause + 1 &&
+            b.span.anchorOffset - a.span.anchorOffset <= maxDistance &&
+            eligible(a, b)
+        ) {
+            const terms = new Set([...a.terms, ...b.terms]);
+            out.push({
+                span: {
+                    textSpan: { start: a.span.textSpan.start, end: b.span.textSpan.end },
+                    // The anchor moves to the later resting place; the spans do not.
+                    anchorOffset: b.span.anchorOffset,
+                    sourceSpan: {
+                        start: Math.min(a.span.sourceSpan.start, b.span.sourceSpan.start),
+                        end: Math.max(a.span.sourceSpan.end, b.span.sourceSpan.end),
+                    },
+                    chunkId: a.span.chunkId,
+                    documentId: a.span.documentId,
+                    // Recomputed over the UNION, never chosen between the two:
+                    // `confidence` is published as a fraction of the clause's
+                    // weight, and the minimum of two fractions is a fraction of
+                    // nothing.
+                    confidence: recompute(terms, a.span.chunkId),
+                    resolvedBy: 'lexical',
+                },
+                firstClause: a.firstClause,
+                lastClause: b.lastClause,
+                terms,
+                moved: a.moved || b.moved,
+                fused: true,
+            });
+            i += 2;
+            continue;
+        }
+        out.push(a);
+        i += 1;
+    }
+    return out;
+}
+
+/**
+ * Defers an anchor that would land too close to the previous one.
+ *
+ * The anchor moves; the span does not. `textSpan` keeps pointing at the clause
+ * that is actually supported, because making the span follow the anchor would
+ * open the popover on the wrong sentence.
+ *
+ * **On the last clause the floor gives way and the anchor stays where it is.**
+ * There is no next clause to defer to, and the two readings of "not emitted"
+ * differ in something the reader sees: leaving it in place breaks the floor on
+ * one anchor, and suppressing it makes the last citation of every short answer
+ * disappear without a symptom. The floor is a legibility heuristic; losing a
+ * citation is a loss of correctness, and in a library whose whole argument is
+ * auditability the second is not a trade. This is the ONLY place the floor is
+ * broken by design.
+ */
+export function applyFloor(
+    items: readonly Placed[],
+    clauseEnds: readonly number[],
+    minCluster: number,
+): Placed[] {
+    if (minCluster <= 0) return [...items];
+    const out: Placed[] = [];
+    let previousAnchor: number | null = null;
+    for (const item of items) {
+        const anchor = item.span.anchorOffset;
+        const tooClose = previousAnchor !== null && anchor - previousAnchor < minCluster;
+        const next = clauseEnds[item.lastClause + 1];
+        if (tooClose && next !== undefined) {
+            out.push({ ...item, span: { ...item.span, anchorOffset: next }, moved: true });
+            previousAnchor = next;
+            continue;
+        }
+        out.push(item);
+        previousAnchor = anchor;
+    }
+    return out;
+}
+
+/**
+ * The three density passes, in the order that matters.
+ *
+ * > coalescence, then the floor, then coalescence again over what the floor
+ * > moved.
+ *
+ * The two rules do not commute, and the order is not a detail. Three clauses of
+ * the same passage anchored at 0, 40 and 100, with the defaults:
+ *
+ *     floor first   40 is deferred (40 < 70); {0, 100} remain; 100 apart, no
+ *                   fusion -> TWO chips
+ *     fusion first  0 and 40 fuse; the result and 100 are 60 apart -> ONE chip
+ *
+ * Same input, different output on the page. Fusing first is the order that
+ * serves the reader: reduce what is the same source BEFORE spacing what is
+ * left, because spacing first defers an anchor that would have disappeared in
+ * the fusion and produces two chips where one was enough.
+ *
+ * The third pass exists because the floor can CREATE what the fusion just
+ * prevented. Everything of the same passage within the fusion window is already
+ * merged, so any surviving pair of that passage is further apart than the
+ * window — and those are exactly the pairs the floor defers, landing them next
+ * to each other again. The second pass sees only anchors the floor moved, and
+ * it terminates for a reason that does not depend on who it sees: fusing
+ * CHOOSES between existing anchors and never creates a position, so after it
+ * nothing has moved and there is nothing for a fourth pass to find.
+ */
+export function applyDensity(
+    items: readonly Placed[],
+    clauseEnds: readonly number[],
+    recompute: (terms: ReadonlySet<string>, chunkId: string) => number,
+    opts: { readonly coalesceMaxCodePoints?: number; readonly minClusterCodePoints?: number } = {},
+): readonly AttributionSpan[] {
+    const coalesce = opts.coalesceMaxCodePoints ?? DEFAULT_COALESCE_MAX_CODE_POINTS;
+    const floor = opts.minClusterCodePoints ?? DEFAULT_MIN_CLUSTER_CODE_POINTS;
+
+    const fused = coalescePass(items, () => true, recompute, coalesce);
+    const spaced = applyFloor(fused, clauseEnds, floor);
+    const settled = coalescePass(spaced, (a, b) => a.moved && b.moved, recompute, coalesce);
+    return settled.map((item) => item.span);
+}
+
 /** The distinct terms of a text, as the injected tokenizer sees them. */
 export function distinctTerms(text: string, tokenizer: Tokenizer): ReadonlySet<string> {
     const out = new Set<string>();
