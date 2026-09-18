@@ -16,6 +16,9 @@ import type { Tokenizer } from './tokenizer.js';
 import type { SearchResult } from './index-build.js';
 import type { AbbreviationList } from './abbreviations.js';
 import { luceneIdf } from './bm25.js';
+import { assertChunksFit, embedDocumentsChecked } from './embedding.js';
+import type { EmbeddingProvider } from './embedding.js';
+import { dot } from './vector.js';
 import { sentencesOf, defaultSegmenter } from './sentences.js';
 import type { Segmenter } from './sentences.js';
 
@@ -127,6 +130,12 @@ export interface AttributeOptions {
     /** The same sentence boundary the chunker cut on. */
     readonly segmenter?: Segmenter;
     readonly abbreviations?: AbbreviationList;
+    /**
+     * Absent, only the two local rungs run and `attribute` answers exactly
+     * what `attributeLexical` answers. Present, the clauses the words cannot
+     * separate are decided by the vectors, at the cost of two network calls.
+     */
+    readonly provider?: EmbeddingProvider;
     /** See `DEFAULT_COALESCE_MAX_CODE_POINTS`. */
     readonly coalesceMaxCodePoints?: number;
     /** See `DEFAULT_MIN_CLUSTER_CODE_POINTS`. Zero turns the floor off. */
@@ -728,58 +737,66 @@ function utf16Range(text: string, span: Span): [number, number] {
  * `DEFAULT_CHUNK_OPTIONS` already uses for the same reason.
  */
 export const DEFAULT_ATTRIBUTE_OPTIONS: Readonly<
-    Omit<AttributeOptions, 'tokenizer' | 'segmenter' | 'abbreviations'>
+    Omit<AttributeOptions, 'tokenizer' | 'provider' | 'segmenter' | 'abbreviations'>
 > = {
     coalesceMaxCodePoints: DEFAULT_COALESCE_MAX_CODE_POINTS,
     minClusterCodePoints: DEFAULT_MIN_CLUSTER_CODE_POINTS,
 };
 
+/** A clause the local rungs could not settle, with what the next rung needs. */
+interface Pending {
+    readonly clause: Clause;
+    readonly clauseIndex: number;
+    /** Candidates the veto rejected. No rung may cite one of these. */
+    readonly ineligible: ReadonlySet<number>;
+}
+
+/** Everything the two doors share, computed once and without a network. */
+interface Prepared {
+    readonly clauses: readonly Clause[];
+    readonly candidateTerms: readonly ReadonlySet<string>[];
+    readonly df: ReadonlyMap<string, number>;
+    readonly termsByChunk: ReadonlyMap<string, ReadonlySet<string>>;
+    readonly placed: Placed[];
+    readonly pending: Pending[];
+    vetoed: number;
+}
+
 /**
- * Attribution without a key: the two local rungs, and nothing that touches the
- * network.
- *
- * This is the whole of what runs in a browser with no API key, and the
- * consequence is worth saying rather than leaving to be discovered: a clause
- * the words cannot separate comes back with NO chip here, where the dense rung
- * would have decided it. Coverage in this mode is structurally lower than any
- * figure measured with a provider, and a number published for one does not hold
- * for the other.
- *
- * The pipeline, in the order that has no circle in it:
+ * The local half of the pipeline, in the order that has no circle in it.
  *
  *   1  the lexical rung ranks the candidates
  *   2  the MATCHED SENTENCE of the candidate under judgement is computed
  *   3  the veto judges (clause, candidate) using that sentence; a rejected
- *      candidate is ineligible for this clause in every rung
+ *      candidate is ineligible for this clause in EVERY rung
  *   4  the seam re-chooses among chunks carrying the very same sentence
  *   5  the source span is that sentence, in document coordinates
- *   6  the density rules place the anchors
  *
  * Step 2 sits before step 3 because the veto needs it, and after nothing:
  * deriving it from the winner would need a winner to exist first.
+ *
+ * A clause the rungs here cannot settle becomes `Pending` and carries its own
+ * set of rejected candidates with it. That set is why the veto is not
+ * decoration: the vetoed candidate is the lexical winner, so it is usually the
+ * nearest by cosine too, and a rung that did not know it was rejected would
+ * re-elect it.
  */
-export function attributeLexical(
-    text: string,
-    results: readonly SearchResult[],
-    opts: AttributeOptions,
-): Attribution {
+function prepare(text: string, results: readonly SearchResult[], opts: AttributeOptions): Prepared {
     const clauses = clausesOf(text, opts);
     const candidateTerms = results.map((r) => distinctTerms(r.chunk.text, opts.tokenizer));
     const df = candidateFrequencies(candidateTerms);
     const termsByChunk = new Map<string, ReadonlySet<string>>();
     results.forEach((r, i) => termsByChunk.set(r.chunk.id, candidateTerms[i]!));
 
-    let lexical = 0;
-    let vetoed = 0;
-    let unattributed = 0;
     const placed: Placed[] = [];
+    const pending: Pending[] = [];
+    let vetoed = 0;
 
     clauses.forEach((clause, clauseIndex) => {
         const outcome = lexicalRung(clause, candidateTerms, df);
-        if (outcome.kind !== 'clear') {
-            // With no provider there is no rung below this one, so a tie ends
-            // the same way as nothing to attribute. `attribute` sends it down.
-            unattributed += 1;
+        if (outcome.kind === 'unattributable') return;
+        if (outcome.kind === 'tied') {
+            pending.push({ clause, clauseIndex, ineligible: new Set() });
             return;
         }
 
@@ -787,46 +804,248 @@ export function attributeLexical(
         const matched = matchedSentenceOf(clause, winner.chunk, df, results.length, opts);
         if (vetoes(clause, candidateTerms[outcome.index]!, matched) !== null) {
             vetoed += 1;
-            unattributed += 1;
+            // Down a rung, never sideways: promoting the runner-up would make
+            // the veto choose, and the only thing the veto does is reject.
+            pending.push({ clause, clauseIndex, ineligible: new Set([outcome.index]) });
             return;
         }
 
-        const chosen = matched
-            ? chooseChunkForSeam(
-                  matched.span,
-                  results
-                      .map((r) => r.chunk)
-                      .filter((c) => c.documentId === winner.chunk.documentId),
-                  winner.chunk,
-              )
-            : winner.chunk;
-
-        lexical += 1;
-        placed.push({
-            span: {
-                textSpan: clause.span,
-                anchorOffset: clause.span.end,
-                sourceSpan: matched ? matched.span : chosen.span,
-                chunkId: chosen.id,
-                documentId: chosen.documentId,
-                confidence: outcome.confidence,
-                resolvedBy: 'lexical',
-            },
-            firstClause: clauseIndex,
-            lastClause: clauseIndex,
-            terms: clause.terms,
-            moved: false,
-            fused: false,
-        });
+        placed.push(
+            place(clause, clauseIndex, results, outcome.index, matched, outcome.confidence, 'lexical'),
+        );
     });
 
+    return { clauses, candidateTerms, df, termsByChunk, placed, pending, vetoed };
+}
+
+/** Builds the span for a decided clause, including the seam re-choice. */
+function place(
+    clause: Clause,
+    clauseIndex: number,
+    results: readonly SearchResult[],
+    winnerIndex: number,
+    matched: MatchedSentence | null,
+    confidence: number,
+    resolvedBy: ResolvedBy,
+): Placed {
+    const winner = results[winnerIndex]!;
+    const chosen = matched
+        ? chooseChunkForSeam(
+              matched.span,
+              results.map((r) => r.chunk).filter((c) => c.documentId === winner.chunk.documentId),
+              winner.chunk,
+          )
+        : winner.chunk;
+    return {
+        span: {
+            textSpan: clause.span,
+            anchorOffset: clause.span.end,
+            sourceSpan: matched ? matched.span : chosen.span,
+            chunkId: chosen.id,
+            documentId: chosen.documentId,
+            confidence,
+            resolvedBy,
+        },
+        firstClause: clauseIndex,
+        lastClause: clauseIndex,
+        terms: clause.terms,
+        moved: false,
+        fused: false,
+    };
+}
+
+/** Assembles the envelope once the rungs have had their say. */
+function finish(
+    text: string,
+    results: readonly SearchResult[],
+    prepared: Prepared,
+    opts: AttributeOptions,
+    counts: { lexical: number; dense: number; unattributed: number },
+): Attribution {
+    const ordered = [...prepared.placed].sort((a, b) => a.firstClause - b.firstClause);
     const spans = applyDensity(
-        placed,
-        clauses.map((c) => c.span.end),
+        ordered,
+        prepared.clauses.map((c) => c.span.end),
         (terms, chunkId) =>
-            coverageOf(terms, termsByChunk.get(chunkId) ?? new Set(), df, results.length) ?? 0,
+            coverageOf(
+                terms,
+                prepared.termsByChunk.get(chunkId) ?? new Set<string>(),
+                prepared.df,
+                results.length,
+            ) ?? 0,
         opts,
     );
+    return { text, spans, sources: results, rungs: { ...counts, vetoed: prepared.vetoed } };
+}
 
-    return { text, spans, sources: results, rungs: { lexical, vetoed, dense: 0, unattributed } };
+/**
+ * Attribution without a key: the two local rungs, and nothing that touches the
+ * network.
+ *
+ * This is the whole of what works in a browser with no API key, and the
+ * consequence is worth saying rather than leaving to be discovered: a clause
+ * the words cannot separate comes back with NO chip here, where the dense rung
+ * would have decided it. Coverage in this mode is structurally lower than any
+ * figure measured with a provider, and a number published for one does not hold
+ * for the other.
+ */
+export function attributeLexical(
+    text: string,
+    results: readonly SearchResult[],
+    opts: AttributeOptions,
+): Attribution {
+    const prepared = prepare(text, results, opts);
+    return finish(text, results, prepared, opts, {
+        lexical: prepared.placed.length,
+        dense: 0,
+        unattributed: prepared.clauses.length - prepared.placed.length,
+    });
+}
+
+/**
+ * The full ladder. Without `opts.provider` it answers exactly what
+ * `attributeLexical` answers, and pays nothing.
+ *
+ * **Two network calls, however many clauses are ambiguous.** One embeds the
+ * candidate passages, one embeds every unresolved clause together. Embedding a
+ * clause at a time would be one call per sentence, which is the cost that made
+ * the ladder necessary in the first place: a ladder whose last rung costs what
+ * skipping the ladder costs is not a ladder.
+ *
+ * Both sides go through `embedDocuments`, never `embedQuery`. A clause of an
+ * answer is declarative text compared against declarative text; it is not a
+ * question looking for a passage, which is the asymmetry the other door exists
+ * for. Different doors would put the two sides in spaces with different task
+ * prefixes, and the cosine would measure the prefix.
+ *
+ * The candidates are re-embedded rather than read out of the index. It pays
+ * again for vectors the index already holds, and in exchange both sides of
+ * every comparison are born in the same call, from the same provider, through
+ * the same door: there is no path here for a vector from an old artifact to be
+ * compared against a fresh one.
+ */
+export async function attribute(
+    text: string,
+    results: readonly SearchResult[],
+    opts: AttributeOptions,
+): Promise<Attribution> {
+    const prepared = prepare(text, results, opts);
+    const provider = opts.provider;
+    if (provider === undefined || prepared.pending.length === 0 || results.length === 0) {
+        return finish(text, results, prepared, opts, {
+            lexical: prepared.placed.length,
+            dense: 0,
+            unattributed: prepared.clauses.length - prepared.placed.length,
+        });
+    }
+
+    const passages = results.map((r) => r.chunk.text);
+    const clauseTexts = prepared.pending.map((p) =>
+        sliceCodePoints(text, p.clause.span.start, p.clause.span.end),
+    );
+
+    // The window guard runs on BOTH lists. A clause is not safe for being
+    // short: the chunker never splits a sentence, so a long period of quoted
+    // statute is one clause, over the ceiling, and the text a model writes has
+    // the same freedom.
+    assertChunksFit(
+        results.map((r) => ({ id: r.chunk.id, text: r.chunk.text })),
+        provider,
+    );
+    assertChunksFit(
+        clauseTexts.map((t, i) => ({ id: `clause ${prepared.pending[i]!.clauseIndex}`, text: t })),
+        provider,
+    );
+
+    const passageVectors = await embedDocumentsChecked(passages, provider);
+    const clauseVectors = await embedDocumentsChecked(clauseTexts, provider);
+
+    let dense = 0;
+    prepared.pending.forEach((item, i) => {
+        // The veto keeps rejecting and the rung keeps choosing among what is
+        // left, which is what makes the ineligible set load-bearing rather than
+        // a second opinion: it is how the loop narrows, and how it ends. A rung
+        // that dropped the clause on the first rejection would lose a citation
+        // that another passage could have carried.
+        const ineligible = new Set(item.ineligible);
+        let chosen: number | null = null;
+        let matched: MatchedSentence | null = null;
+        for (;;) {
+            chosen = denseRung(clauseVectors[i]!, passageVectors, ineligible);
+            if (chosen === null) break;
+            matched = matchedSentenceOf(
+                item.clause,
+                results[chosen]!.chunk,
+                prepared.df,
+                results.length,
+                opts,
+            );
+            if (vetoes(item.clause, prepared.candidateTerms[chosen]!, matched) === null) break;
+            prepared.vetoed += 1;
+            ineligible.add(chosen);
+        }
+        if (chosen === null) return;
+        dense += 1;
+        const confidence =
+            coverageOf(
+                item.clause.terms,
+                prepared.candidateTerms[chosen]!,
+                prepared.df,
+                results.length,
+            ) ?? 0;
+        prepared.placed.push(
+            place(item.clause, item.clauseIndex, results, chosen, matched, confidence, 'dense'),
+        );
+    });
+
+    return finish(text, results, prepared, opts, {
+        lexical: prepared.placed.length - dense,
+        dense,
+        unattributed: prepared.clauses.length - prepared.placed.length,
+    });
+}
+
+/**
+ * Picks the nearest eligible passage by cosine, or nothing.
+ *
+ * **Non-positive cosines are dropped before the margin is applied**, and the
+ * reason is the sign rather than the size. In cosine, non-positive means a
+ * passage pointing AWAY from the clause, orthogonal or opposite, which is worse
+ * than absent. And `LEXICAL_MARGIN` is MULTIPLICATIVE, so it inverts over
+ * negatives: with -0.10 and -0.50 the comparison passes, and the clause would
+ * take a chip pointing at the passage that points furthest away from it. A
+ * multiplicative margin over a signed quantity is a ruler in the wrong unit.
+ */
+function denseRung(
+    clauseVector: readonly number[],
+    passageVectors: readonly (readonly number[])[],
+    ineligible: ReadonlySet<number>,
+): number | null {
+    // Seeded below every possible cosine rather than at zero, so the guard
+    // below is the thing that excludes a passage pointing away — not an
+    // accident of the initial value. A seed of zero would do the same job
+    // silently, and a later reader removing the guard would see no test fail.
+    let best = -1;
+    let bestScore = -Infinity;
+    let runnerUp = -Infinity;
+    passageVectors.forEach((vector, index) => {
+        if (ineligible.has(index)) return;
+        const score = dot([...clauseVector], [...vector]);
+        if (score <= 0) return;
+        if (score > bestScore) {
+            runnerUp = bestScore;
+            bestScore = score;
+            best = index;
+        } else if (score > runnerUp) {
+            runnerUp = score;
+        }
+    });
+    if (best < 0) return null;
+    if (runnerUp > 0 && bestScore < LEXICAL_MARGIN * runnerUp) return null;
+    return best;
+}
+
+/** Slices in code points, which is the unit of every offset in this package. */
+function sliceCodePoints(text: string, start: number, end: number): string {
+    return Array.from(text).slice(start, end).join('');
 }

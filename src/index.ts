@@ -44,6 +44,7 @@ export type { OpenAiOptions } from './providers/openai.js';
 export type { GeminiOptions } from './providers/gemini.js';
 export type { QwenOptions } from './providers/qwen.js';
 export {
+    attribute,
     attributeLexical,
     MIN_LEXICAL_SUPPORT,
     LEXICAL_MARGIN,
