@@ -33,7 +33,12 @@ import { createTokenizer, type Tokenizer } from './tokenizer.js';
 import { RSLP_S_FOLDED } from './stemmer.js';
 import { bm25TermScore, DEFAULT_BM25_PARAMS, type Bm25Params, type CorpusStats } from './bm25.js';
 import { dot, normalize, packVectors, unpackVectors } from './vector.js';
-import { assertChunkCeilingFits, assertChunksFit, type EmbeddingProvider } from './embedding.js';
+import {
+    assertChunkCeilingFits,
+    assertChunksFit,
+    embedDocumentsChecked,
+    type EmbeddingProvider,
+} from './embedding.js';
 
 /**
  * The version of the CHUNKING LOGIC, not of its parameters.
@@ -645,7 +650,10 @@ export async function createDenseIndex(
 
     const vectors = artifact.chunks.length === 0
         ? []
-        : await embedAll(artifact.chunks.map((c) => c.text), provider);
+        : await embedDocumentsChecked(
+              artifact.chunks.map((c) => c.text),
+              provider,
+          );
 
     return loadIndex(
         {
@@ -658,40 +666,6 @@ export async function createDenseIndex(
         },
         { tokenizer: opts.tokenizer ?? defaultTokenizer(), provider },
     );
-}
-
-/**
- * Embeds every chunk and normalizes once, at index time.
- *
- * Normalizing here and not at query time is what makes the hot loop a dot
- * product instead of a cosine: no square root per chunk, on every search, for
- * a value that never changes.
- *
- * The count is checked because a provider that silently returns fewer vectors
- * than inputs would shift every subsequent chunk onto the wrong vector — an
- * off-by-one with no exception and no symptom except results that are subtly
- * wrong forever.
- */
-async function embedAll(
-    texts: readonly string[],
-    provider: EmbeddingProvider,
-): Promise<readonly (readonly number[])[]> {
-    const raw = await provider.embedDocuments(texts);
-    if (raw.length !== texts.length) {
-        throw new Error(
-            `provider ${provider.id} returned ${raw.length} vectors for ${texts.length} chunks; ` +
-                'the dense arm needs exactly one per chunk, in order',
-        );
-    }
-    return raw.map((v, i) => {
-        if (v.length !== provider.dimensions) {
-            throw new Error(
-                `provider ${provider.id} returned a ${v.length}-dimension vector for chunk ${i}, ` +
-                    `but reports ${provider.dimensions} dimensions`,
-            );
-        }
-        return normalize([...v]);
-    });
 }
 
 /**

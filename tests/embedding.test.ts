@@ -3,6 +3,7 @@ import {
     assertChunkCeilingFits,
     assertChunksFit,
     deterministicProvider,
+    embedDocumentsChecked,
     type EmbeddingProvider,
 } from '../src/embedding.js';
 import { norm, dot } from '../src/vector.js';
@@ -125,5 +126,50 @@ describe('embedding — the deterministic provider', () => {
         const unrelatedScore = dot([...health!], [...unrelated!]);
         expect(Number.isFinite(relatedScore)).toBe(true);
         expect(Number.isFinite(unrelatedScore)).toBe(true);
+    });
+});
+
+describe('embedDocumentsChecked — the guard two layers share', () => {
+    const base = deterministicProvider(4);
+
+    it('hands back unit vectors even when the provider does not', async () => {
+        // The attributor compares fresh vectors with `dot` and calls the result
+        // a cosine. That is only true for unit vectors, and MAGNITUDE IS NOT
+        // PART of the provider contract — so the guarantee has to live here.
+        // A provider whose vectors are unit by construction cannot prove this:
+        // normalizing twice changes nothing, and the test would be green with
+        // and without the normalization.
+        const long: EmbeddingProvider = {
+            ...base,
+            async embedDocuments(texts) {
+                return texts.map(() => [30, 40, 0, 0]);
+            },
+        };
+        const out = await embedDocumentsChecked(['a', 'b'], long);
+        for (const v of out) expect(norm([...v])).toBeCloseTo(1, 12);
+    });
+
+    it('refuses fewer vectors than inputs, which would shift every later text', async () => {
+        const short: EmbeddingProvider = {
+            ...base,
+            async embedDocuments(texts) {
+                return texts.slice(1).map(() => [1, 0, 0, 0]);
+            },
+        };
+        await expect(embedDocumentsChecked(['a', 'b'], short)).rejects.toThrow(
+            /exactly one per input/,
+        );
+    });
+
+    it('refuses a vector of the wrong width, naming which input', async () => {
+        const wrong: EmbeddingProvider = {
+            ...base,
+            async embedDocuments(texts) {
+                return texts.map((_, i) => (i === 1 ? [1, 0] : [1, 0, 0, 0]));
+            },
+        };
+        await expect(embedDocumentsChecked(['a', 'b'], wrong)).rejects.toThrow(
+            /2-dimension vector for input 1/,
+        );
     });
 });

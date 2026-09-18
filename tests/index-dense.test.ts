@@ -308,12 +308,15 @@ describe('dense — the refusals', () => {
                 return (await provider.embedDocuments(texts)).slice(0, -1);
             },
         };
+        // A guarda mudou de casa para `embedding.ts` e passou a servir dois
+        // chamadores, entao a mensagem fala de INPUT e nao de chunk: o
+        // atribuidor embeda oracoes, que nao sao chunks. Mudanca deliberada.
         await expect(createDenseIndex(CORPUS, short, { chunkOptions: SMALL })).rejects.toThrow(
-            /one per chunk/,
+            /exactly one per input/,
         );
     });
 
-    it('refuses a provider that returns a vector of the wrong size, naming the chunk', async () => {
+    it('refuses a provider that returns a vector of the wrong size, naming the input', async () => {
         const wrong: EmbeddingProvider = {
             ...provider,
             async embedDocuments(texts) {
@@ -321,7 +324,7 @@ describe('dense — the refusals', () => {
             },
         };
         await expect(createDenseIndex(CORPUS, wrong, { chunkOptions: SMALL })).rejects.toThrow(
-            /3-dimension vector for chunk 0/,
+            /3-dimension vector for input 0/,
         );
     });
 });

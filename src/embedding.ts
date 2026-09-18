@@ -150,6 +150,51 @@ export function assertChunksFit(
 }
 
 /**
+ * Embeds several texts through `embedDocuments` and hands back unit vectors,
+ * refusing an answer that does not match the question.
+ *
+ * Two layers call this, and they must check the same things. The index embeds
+ * its chunks here; the attributor embeds the candidate passages and the clauses
+ * it cannot separate lexically. A second implementation would have to repeat
+ * three guarantees, and repeating them is how one of them goes missing.
+ *
+ * **Count.** A provider that silently returns fewer vectors than inputs would
+ * shift every subsequent text onto its neighbour's vector — an off-by-one with
+ * no exception and no symptom except results that are subtly wrong forever.
+ *
+ * **Dimension.** A vector of the wrong width is a provider disagreeing with its
+ * own `dimensions`, and the error names which input, because "a vector was the
+ * wrong size" is not debuggable.
+ *
+ * **Normalization.** The caller gets unit vectors, so a dot product IS the
+ * cosine (`vector.ts`). This is what makes the index's hot loop a dot product
+ * instead of a cosine — no square root per chunk on every search, for a value
+ * that never changes — and it is what keeps a caller who compares fresh vectors
+ * from ordering by vector length without noticing.
+ */
+export async function embedDocumentsChecked(
+    texts: readonly string[],
+    provider: EmbeddingProvider,
+): Promise<readonly (readonly number[])[]> {
+    const raw = await provider.embedDocuments(texts);
+    if (raw.length !== texts.length) {
+        throw new Error(
+            `provider ${provider.id} returned ${raw.length} vectors for ${texts.length} inputs; ` +
+                'exactly one per input is needed, in order',
+        );
+    }
+    return raw.map((v, i) => {
+        if (v.length !== provider.dimensions) {
+            throw new Error(
+                `provider ${provider.id} returned a ${v.length}-dimension vector for input ${i}, ` +
+                    `but reports ${provider.dimensions} dimensions`,
+            );
+        }
+        return normalize([...v]);
+    });
+}
+
+/**
  * A provider that embeds without leaving the machine.
  *
  * It exists so the dense arm — indexing, cosine, the artifact, the fusion that
