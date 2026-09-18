@@ -34,7 +34,13 @@ export {
 } from './index-build.js';
 export type { Index, IndexArtifact, IndexOptions, SearchOptions, SearchResult, StoredChunk } from './index-build.js';
 export { norm, normalize, dot, packVectors, unpackVectors } from './vector.js';
-export { assertChunkCeilingFits, assertChunksFit, deterministicProvider } from './embedding.js';
+export {
+    assertChunkCeilingFits,
+    assertChunksFit,
+    deterministicProvider,
+    EmbeddingCheckError,
+} from './embedding.js';
+export type { EmbeddingCheckReason } from './embedding.js';
 export type { EmbeddingProvider } from './embedding.js';
 export { openAiProvider } from './providers/openai.js';
 export { geminiProvider } from './providers/gemini.js';

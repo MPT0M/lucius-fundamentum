@@ -4,8 +4,10 @@ import {
     assertChunksFit,
     deterministicProvider,
     embedDocumentsChecked,
+    EmbeddingCheckError,
     type EmbeddingProvider,
 } from '../src/embedding.js';
+import { EmbeddingProviderError, postJson } from '../src/providers/http.js';
 import { norm, dot } from '../src/vector.js';
 
 /** A window small enough that ordinary fixtures cross it. */
@@ -171,5 +173,109 @@ describe('embedDocumentsChecked — the guard two layers share', () => {
         await expect(embedDocumentsChecked(['a', 'b'], wrong)).rejects.toThrow(
             /2-dimension vector for input 1/,
         );
+    });
+});
+
+describe('a failed check says WHY in a field, not in a sentence', () => {
+    // TARGET OF THE REVERSAL: drop `reason` and leave the caller matching a
+    // substring against `message`. That is the coupling this package refuses
+    // for a provider's prose, and it would be odd to accept it for its own.
+    const tooBig = (size: number) => ({
+        id: 'c',
+        documentId: 'd',
+        text: 'x'.repeat(size),
+        span: { start: 0, end: size },
+    });
+
+    it('a chunk past the window says input-too-large', () => {
+        try {
+            assertChunksFit([tooBig(50)], narrow(10));
+            expect.unreachable('should have thrown');
+        } catch (error) {
+            expect(error).toBeInstanceOf(EmbeddingCheckError);
+            expect((error as EmbeddingCheckError).reason).toBe('input-too-large');
+        }
+    });
+
+    it('the ceiling guard says input-too-large before any chunk exists', () => {
+        try {
+            assertChunkCeilingFits(50, narrow(10));
+            expect.unreachable('should have thrown');
+        } catch (error) {
+            expect((error as EmbeddingCheckError).reason).toBe('input-too-large');
+        }
+    });
+
+    it('a short answer says bad-count and a wrong width says bad-dimensions', async () => {
+        const short: EmbeddingProvider = {
+            id: 'short',
+            dimensions: 4,
+            maxInputCodePoints: 1000,
+            async embedDocuments() {
+                return [[1, 0, 0, 0]];
+            },
+            async embedQuery() {
+                return [1, 0, 0, 0];
+            },
+        };
+        await expect(embedDocumentsChecked(['a', 'b'], short)).rejects.toMatchObject({
+            reason: 'bad-count',
+        });
+
+        const wide: EmbeddingProvider = {
+            ...short,
+            async embedDocuments(texts) {
+                return texts.map(() => [1, 0, 0, 0, 0]);
+            },
+        };
+        await expect(embedDocumentsChecked(['a'], wide)).rejects.toMatchObject({
+            reason: 'bad-dimensions',
+        });
+    });
+});
+
+describe('a provider failure without a status keeps its cause', () => {
+    // TARGET OF THE REVERSAL: fold the cause into the message, as the code did
+    // before this commit. Then a timeout and a DNS failure arrive identical,
+    // and the only discriminator left is a substring.
+    it('a timeout arrives distinguishable from a refused connection', async () => {
+        const throwing = (error: unknown) => async () => {
+            throw error;
+        };
+
+        const timeout = Object.assign(new Error('The operation was aborted'), {
+            name: 'TimeoutError',
+        });
+        await expect(
+            postJson({
+                url: 'https://example.invalid/x',
+                headers: {},
+                body: {},
+                providerId: 'p',
+                fetch: throwing(timeout) as unknown as typeof globalThis.fetch,
+            }),
+        ).rejects.toSatisfy((error: unknown) => {
+            const failure = error as EmbeddingProviderError;
+            expect(failure.status).toBeUndefined();
+            expect((failure.cause as Error).name).toBe('TimeoutError');
+            return true;
+        });
+
+        const refused = Object.assign(new TypeError('fetch failed'), {
+            cause: { code: 'ECONNREFUSED' },
+        });
+        await expect(
+            postJson({
+                url: 'https://example.invalid/x',
+                headers: {},
+                body: {},
+                providerId: 'p',
+                fetch: throwing(refused) as unknown as typeof globalThis.fetch,
+            }),
+        ).rejects.toSatisfy((error: unknown) => {
+            const failure = error as EmbeddingProviderError;
+            expect((failure.cause as Error).name).toBe('TypeError');
+            return true;
+        });
     });
 });

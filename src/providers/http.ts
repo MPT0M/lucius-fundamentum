@@ -14,8 +14,17 @@ export class EmbeddingProviderError extends Error {
         readonly providerId: string,
         readonly status: number | undefined,
         message: string,
+        /**
+         * What the runtime threw, KEPT rather than folded into the message.
+         *
+         * Without a status there is no way to tell a timeout from a DNS failure
+         * except by reading text, and text is what changes without notice. With
+         * the cause in hand the two separate structurally:
+         * `AbortSignal.timeout` rejects with `name === 'TimeoutError'`.
+         */
+        cause?: unknown,
     ) {
-        super(message);
+        super(message, { cause });
         this.name = 'EmbeddingProviderError';
     }
 }
@@ -71,10 +80,17 @@ export async function postJson(opts: PostOptions): Promise<unknown> {
         // id and status this class exists to carry.
         text = await response.text();
     } catch (cause) {
-        // A timeout and a DNS failure arrive here the same way, and the caller
-        // needs to know which: one is worth retrying now, the other is not.
+        // A timeout and a DNS failure arrive here the same way and the caller
+        // needs to know which: one is worth retrying now, the other is not. The
+        // message keeps the text for whoever is reading a log; the CAUSE travels
+        // whole, so that the decision is made on `name` and not on a substring.
         const reason = cause instanceof Error ? cause.message : String(cause);
-        throw new EmbeddingProviderError(opts.providerId, undefined, `request failed: ${reason}`);
+        throw new EmbeddingProviderError(
+            opts.providerId,
+            undefined,
+            `request failed: ${reason}`,
+            cause,
+        );
     }
 
     if (!response.ok) {

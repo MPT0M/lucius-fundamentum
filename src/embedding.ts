@@ -119,9 +119,36 @@ export interface EmbeddingProvider {
  * library out, and the tail of those two chunks would simply be absent from
  * the index with nothing to show for it.
  */
+/**
+ * What went wrong with an embedding call, as a FIELD rather than a sentence.
+ *
+ * A caller that has to match a substring against `message` to know whether a
+ * retry is worth making is coupled to prose that changes without notice. This
+ * package refuses that coupling for a provider's errors and it would be odd to
+ * accept it for its own.
+ *
+ * `input-too-large` is deliberately NOT in `ProviderFailure['reason']` over in
+ * `attribute`: it is checked BEFORE the network is called, it would fail on
+ * every call with the same input, and degrading there would turn a caller's
+ * configuration error into permanent silent behaviour. It throws.
+ */
+export type EmbeddingCheckReason = 'input-too-large' | 'bad-count' | 'bad-dimensions';
+
+/** Named so a caller can classify without reading the message. */
+export class EmbeddingCheckError extends Error {
+    constructor(
+        readonly reason: EmbeddingCheckReason,
+        message: string,
+    ) {
+        super(message);
+        this.name = 'EmbeddingCheckError';
+    }
+}
+
 export function assertChunkCeilingFits(maxChunkCodePoints: number, provider: EmbeddingProvider): void {
     if (maxChunkCodePoints <= provider.maxInputCodePoints) return;
-    throw new Error(
+    throw new EmbeddingCheckError(
+        'input-too-large',
         `chunk ceiling ${maxChunkCodePoints} code points exceeds the window of provider ` +
             `${provider.id}: ${provider.maxInputCodePoints}`,
     );
@@ -147,7 +174,8 @@ export function assertChunksFit(
     for (const chunk of chunks) {
         const size = countCodePoints(chunk.text);
         if (size <= provider.maxInputCodePoints) continue;
-        throw new Error(
+        throw new EmbeddingCheckError(
+            'input-too-large',
             `${chunk.id}: ${size} code points, window of provider ${provider.id}: ${provider.maxInputCodePoints}`,
         );
     }
@@ -182,14 +210,16 @@ export async function embedDocumentsChecked(
 ): Promise<readonly (readonly number[])[]> {
     const raw = await provider.embedDocuments(texts);
     if (raw.length !== texts.length) {
-        throw new Error(
+        throw new EmbeddingCheckError(
+            'bad-count',
             `provider ${provider.id} returned ${raw.length} vectors for ${texts.length} inputs; ` +
                 'exactly one per input is needed, in order',
         );
     }
     return raw.map((v, i) => {
         if (v.length !== provider.dimensions) {
-            throw new Error(
+            throw new EmbeddingCheckError(
+                'bad-dimensions',
                 `provider ${provider.id} returned a ${v.length}-dimension vector for input ${i}, ` +
                     `but reports ${provider.dimensions} dimensions`,
             );
