@@ -103,6 +103,30 @@ All notable changes to this package are documented here. The format follows
   there had the pair already fused by the first pass, where the modes agree. The
   effect is stated at the level it was measured, and a reader wanting it
   end-to-end will have to build the case.
+- **A span the vectors resolved never fuses, so paraphrase gets one marker per
+  clause — and no option reduces that count.** Coalescence runs over the
+  `'lexical'` subset only, because that is the one set both delivery modes
+  produce identically; a span carrying `resolvedBy: 'dense'` is outside it and
+  so is any pair containing one. The population this falls on is exactly the
+  one that would most benefit: text that paraphrases its source is what reaches
+  the vectors in the first place, so the better a model writes, the more
+  markers it collects. Measured, four consecutive clauses of one passage,
+  anchors twenty code points apart:
+
+      resolved by   floor 0   floor 70   floor 200
+      words              2         2          2
+      vectors            4         4          4
+
+  THE DENSITY OPTIONS DO NOT MITIGATE THIS. The floor moves anchors — here from
+  `20,40,60,80` to `20,60,80,200` — and never merges two into one, because it
+  defers each anchor to the end of its OWN next clause and two clauses have two
+  ends. Raising `minClusterCodePoints` from 70 to 200 changes nothing. Only
+  coalescence reduces the count, and coalescence is what is unavailable.
+
+  The way out is NOT to relax the fusion rule, which is what keeps a marker
+  from moving while a reader watches: it is to let the streaming door hold its
+  output until the message closes, so that one pass sees the vectors and the
+  page settles once. That is a contract change and it is not made here.
 - **The dense rung re-embeds the candidate passages** rather than reading the
   vectors the index already holds. It pays twice, and in exchange both sides of
   every comparison are born in the same call, through the same door.
