@@ -43,10 +43,19 @@ All notable changes to this package are documented here. The format follows
   clauses remain is unknowable until the text ends.
 - **`provider-wait` exists only when there will be a wait.** Not without a
   provider, and not when every clause resolved on the words and the network
-  is never called. Measured, everything that is not the network takes 3.4 ms
-  — median of twenty runs over a document of 32,520 code points — so an
-  indicator hung on the start of the work would flash and vanish in both
-  cases. Hung on this event it cannot, because the event does not exist.
+  is never called. Measured by `bench/src/attribution-cost.ts` — a document of
+  32,520 code points, an answer of 1,608, ten candidates — the LEXICAL door
+  takes **milliseconds**, median of twenty runs, against a network call in the
+  hundreds of them; the dense door adds the preview, the cosine loop and a
+  second density pass on top of that, all of the same order. The figure moves
+  with what else the machine is doing — the same code on the same machine
+  gave 3.1 ms alone and 8.3 ms with the test suite loading it from a second
+  shell — which
+  is why the ORDER is published and not a decimal, and why the test pins a
+  collapse ceiling rather than a value; run `npm run bench:cost` and disagree
+  with it. An indicator hung on the
+  start of the work would flash and vanish; hung on this event it cannot,
+  because the event does not exist.
 - **THE PREVIEW REPLACES, IT DOES NOT AMEND.** Between `local-done` and the
   returned result a marker can move, change number and be fused away. Swap
   the block; patching marker by marker drifts. The numbers are under "the floor
