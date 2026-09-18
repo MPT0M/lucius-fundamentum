@@ -59,3 +59,5 @@ export type {
     RungCounts,
     ResolvedBy,
 } from './attribute.js';
+export { formatAttribution } from './format-attribution.js';
+export type { FormattedAttribution, FormatOptions } from './format-attribution.js';
