@@ -63,6 +63,7 @@ export type {
     AttributionSpan,
     AttributeOptions,
     RungCounts,
+    ProviderFailure,
     ResolvedBy,
 } from './attribute.js';
 export { formatAttribution } from './format-attribution.js';

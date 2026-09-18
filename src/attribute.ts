@@ -16,7 +16,7 @@ import type { Tokenizer } from './tokenizer.js';
 import type { SearchResult } from './index-build.js';
 import type { AbbreviationList } from './abbreviations.js';
 import { luceneIdf } from './bm25.js';
-import { assertChunksFit, embedDocumentsChecked } from './embedding.js';
+import { assertChunksFit, embedDocumentsChecked, EmbeddingCheckError } from './embedding.js';
 import type { EmbeddingProvider } from './embedding.js';
 import { dot } from './vector.js';
 import { sentencesOf, defaultSegmenter } from './sentences.js';
@@ -94,6 +94,28 @@ export interface AttributionSpan {
  * one compared against the other compares different measurements of
  * different work.
  */
+/**
+ * What went wrong with the dense rung, when it was tried and failed.
+ *
+ * Present on the result, not only on an event, so that a caller who asked for
+ * nothing still finds out: without it a failed provider and an absent provider
+ * both produce `rungs.dense === 0` and the degradation is silent, which is
+ * what this field exists to prevent.
+ *
+ * `retryable` is what decides whether offering a retry is honest. It reads a
+ * NUMBER — the HTTP status, standardised — and never the provider's prose,
+ * which is what changes without notice.
+ *
+ * `input-too-large` is absent on purpose: that check runs BEFORE the network
+ * and throws, because it would fail on every call with the same input and
+ * degrading would turn a configuration error into permanent silent behaviour.
+ */
+export interface ProviderFailure {
+    readonly reason: 'auth' | 'quota' | 'timeout' | 'network' | 'bad-dimensions' | 'bad-count';
+    readonly retryable: boolean;
+    readonly cause: unknown;
+}
+
 export interface RungCounts {
     readonly lexical: number;
     readonly vetoed: number;
@@ -114,6 +136,14 @@ export interface Attribution {
      */
     readonly sources: readonly SearchResult[];
     readonly rungs: RungCounts;
+    /**
+     * Present when the dense rung was TRIED and failed.
+     *
+     * Its absence together with `rungs.dense === 0` means no provider was
+     * given. Its presence means one was, and the answer below is what the
+     * local rungs found on their own.
+     */
+    readonly providerFailure?: ProviderFailure;
 }
 
 export interface AttributeOptions {
@@ -874,6 +904,7 @@ function finish(
     prepared: Prepared,
     opts: AttributeOptions,
     counts: { lexical: number; dense: number; unattributed: number },
+    providerFailure?: ProviderFailure,
 ): Attribution {
     const ordered = [...prepared.placed].sort((a, b) => a.firstClause - b.firstClause);
     const spans = applyDensity(
@@ -888,7 +919,13 @@ function finish(
             ) ?? 0,
         opts,
     );
-    return { text, spans, sources: results, rungs: { ...counts, vetoed: prepared.vetoed } };
+    const envelope: Attribution = {
+        text,
+        spans,
+        sources: results,
+        rungs: { ...counts, vetoed: prepared.vetoed },
+    };
+    return providerFailure === undefined ? envelope : { ...envelope, providerFailure };
 }
 
 /**
@@ -970,8 +1007,33 @@ export async function attribute(
         provider,
     );
 
-    const passageVectors = await embedDocumentsChecked(passages, provider);
-    const clauseVectors = await embedDocumentsChecked(clauseTexts, provider);
+    // THE ONLY THING GUARDED IS THE NETWORK, and the two guards above are
+    // deliberately outside it: `assertChunksFit` measures the caller's
+    // configuration before anything is spent, it would fail identically on
+    // every call, and catching it would convert a configuration error into
+    // permanent silent degradation.
+    let passageVectors: readonly (readonly number[])[];
+    let clauseVectors: readonly (readonly number[])[];
+    try {
+        passageVectors = await embedDocumentsChecked(passages, provider);
+        clauseVectors = await embedDocumentsChecked(clauseTexts, provider);
+    } catch (error) {
+        // The local rungs already finished, and what they found is complete and
+        // correct. Letting the exception through would throw that away and hand
+        // a caller with a key LESS than a caller without one.
+        return finish(
+            text,
+            results,
+            prepared,
+            opts,
+            {
+                lexical: prepared.placed.length,
+                dense: 0,
+                unattributed: prepared.clauses.length - prepared.placed.length,
+            },
+            classify(error),
+        );
+    }
 
     let dense = 0;
     prepared.pending.forEach((item, i) => {
@@ -1026,6 +1088,45 @@ export async function attribute(
         dense,
         unattributed: prepared.clauses.length - prepared.placed.length,
     });
+}
+
+/**
+ * Turns a thrown thing into a reason a caller can act on.
+ *
+ * Reads a NUMBER where there is one. HTTP status is standardised (RFC 9110);
+ * a provider's message is not, and matching a substring against it is coupling
+ * to text that changes without notice.
+ *
+ * WHERE IT STOPS, declared: with no status — timeout, DNS, refused connection
+ * — only the timeout separates, by `name === 'TimeoutError'`, which is what
+ * `AbortSignal.timeout` rejects with. A refused connection and an unknown host
+ * both come back `network`. Telling those two apart would need the provider to
+ * classify its own failure, and that is a contract change this lot does not
+ * make.
+ */
+function classify(error: unknown): ProviderFailure {
+    if (error instanceof EmbeddingCheckError) {
+        // `input-too-large` never reaches here: it is thrown before the network
+        // and is not caught.
+        return {
+            reason: error.reason === 'bad-count' ? 'bad-count' : 'bad-dimensions',
+            retryable: false,
+            cause: error,
+        };
+    }
+
+    const status = (error as { status?: unknown })?.status;
+    if (typeof status === 'number') {
+        if (status === 401 || status === 403) return { reason: 'auth', retryable: false, cause: error };
+        if (status === 429) return { reason: 'quota', retryable: true, cause: error };
+        if (status === 408 || status === 504) return { reason: 'timeout', retryable: true, cause: error };
+        return { reason: 'network', retryable: true, cause: error };
+    }
+
+    const inner = (error as { cause?: unknown })?.cause;
+    const named = inner instanceof Error ? inner.name : (error as { name?: unknown })?.name;
+    if (named === 'TimeoutError') return { reason: 'timeout', retryable: true, cause: error };
+    return { reason: 'network', retryable: true, cause: error };
 }
 
 /**
