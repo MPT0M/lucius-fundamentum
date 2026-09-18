@@ -21,6 +21,8 @@
  * above any figure this machine produces.
  */
 
+import { resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { attributeLexical, createIndex, createTokenizer } from '../../src/index.js';
 import type { SearchResult, SourceDoc } from '../../src/index.js';
 
@@ -100,7 +102,16 @@ export function measure(): {
     };
 }
 
-if (process.argv[1] !== undefined && import.meta.url.endsWith(process.argv[1].replace(/\\/g, '/'))) {
+// Run directly, or merely imported? Comparing `import.meta.url` to `argv[1]`
+// as TEXT answers wrongly whenever the path holds a character a URL escapes:
+// a directory with a space is `%20` on one side and a space on the other, the
+// two never match, and the script exits zero having printed nothing. Resolve
+// both to filesystem paths and the comparison is about the file, not spelling.
+const runDirectly =
+    process.argv[1] !== undefined &&
+    resolve(fileURLToPath(import.meta.url)) === resolve(process.argv[1]);
+
+if (runDirectly) {
     const out = measure();
     console.log(`document ................ ${out.documentCodePoints} code points`);
     console.log(`answer .................. ${out.answerCodePoints} code points`);
