@@ -43,3 +43,18 @@ export { EmbeddingProviderError } from './providers/http.js';
 export type { OpenAiOptions } from './providers/openai.js';
 export type { GeminiOptions } from './providers/gemini.js';
 export type { QwenOptions } from './providers/qwen.js';
+export {
+    attributeLexical,
+    MIN_LEXICAL_SUPPORT,
+    LEXICAL_MARGIN,
+    DEFAULT_COALESCE_MAX_CODE_POINTS,
+    DEFAULT_MIN_CLUSTER_CODE_POINTS,
+    DEFAULT_ATTRIBUTE_OPTIONS,
+} from './attribute.js';
+export type {
+    Attribution,
+    AttributionSpan,
+    AttributeOptions,
+    RungCounts,
+    ResolvedBy,
+} from './attribute.js';

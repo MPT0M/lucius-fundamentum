@@ -107,11 +107,30 @@ export interface Attribution {
 }
 
 export interface AttributeOptions {
-    /** The SAME tokenizer that indexed. See the doc comment on `Tokenizer.id`. */
+    /**
+     * The SAME tokenizer that indexed the corpus.
+     *
+     * Attributing with a different one is not detectable from inside this
+     * function: it receives `SearchResult[]`, and a result carries no tokenizer
+     * id. The caller holds both halves and can check in one line —
+     * `index.tokenizerId === tokenizer.id` — which is why the id is public on
+     * `Index`. Construct the tokenizer once and pass it to both:
+     *
+     *     const tokenizer = createTokenizer();
+     *     const index = createIndex(docs, { tokenizer });
+     *     const a = attributeLexical(text, results, { tokenizer });
+     *
+     * `createIndex` defaults the tokenizer when none is given and does not hand
+     * back what it built, so the short path leaves no handle to attribute with.
+     */
     readonly tokenizer: Tokenizer;
     /** The same sentence boundary the chunker cut on. */
     readonly segmenter?: Segmenter;
     readonly abbreviations?: AbbreviationList;
+    /** See `DEFAULT_COALESCE_MAX_CODE_POINTS`. */
+    readonly coalesceMaxCodePoints?: number;
+    /** See `DEFAULT_MIN_CLUSTER_CODE_POINTS`. Zero turns the floor off. */
+    readonly minClusterCodePoints?: number;
 }
 
 /** A clause of the answer, with the distinct terms it was reduced to. */
@@ -697,4 +716,117 @@ function utf16Range(text: string, span: Span): [number, number] {
     const start = points.slice(0, span.start).join('').length;
     const end = start + points.slice(span.start, span.end).join('').length;
     return [start, end];
+}
+
+/**
+ * The tunable half of `AttributeOptions`, with the injected half omitted.
+ *
+ * `tokenizer` cannot have a default — a library that picked one would decide
+ * for the caller which terms the corpus was indexed with — and neither can the
+ * segmenter or the abbreviation list, for the same reason. So the default is
+ * the options MINUS what has to be injected, which is the shape
+ * `DEFAULT_CHUNK_OPTIONS` already uses for the same reason.
+ */
+export const DEFAULT_ATTRIBUTE_OPTIONS: Readonly<
+    Omit<AttributeOptions, 'tokenizer' | 'segmenter' | 'abbreviations'>
+> = {
+    coalesceMaxCodePoints: DEFAULT_COALESCE_MAX_CODE_POINTS,
+    minClusterCodePoints: DEFAULT_MIN_CLUSTER_CODE_POINTS,
+};
+
+/**
+ * Attribution without a key: the two local rungs, and nothing that touches the
+ * network.
+ *
+ * This is the whole of what runs in a browser with no API key, and the
+ * consequence is worth saying rather than leaving to be discovered: a clause
+ * the words cannot separate comes back with NO chip here, where the dense rung
+ * would have decided it. Coverage in this mode is structurally lower than any
+ * figure measured with a provider, and a number published for one does not hold
+ * for the other.
+ *
+ * The pipeline, in the order that has no circle in it:
+ *
+ *   1  the lexical rung ranks the candidates
+ *   2  the MATCHED SENTENCE of the candidate under judgement is computed
+ *   3  the veto judges (clause, candidate) using that sentence; a rejected
+ *      candidate is ineligible for this clause in every rung
+ *   4  the seam re-chooses among chunks carrying the very same sentence
+ *   5  the source span is that sentence, in document coordinates
+ *   6  the density rules place the anchors
+ *
+ * Step 2 sits before step 3 because the veto needs it, and after nothing:
+ * deriving it from the winner would need a winner to exist first.
+ */
+export function attributeLexical(
+    text: string,
+    results: readonly SearchResult[],
+    opts: AttributeOptions,
+): Attribution {
+    const clauses = clausesOf(text, opts);
+    const candidateTerms = results.map((r) => distinctTerms(r.chunk.text, opts.tokenizer));
+    const df = candidateFrequencies(candidateTerms);
+    const termsByChunk = new Map<string, ReadonlySet<string>>();
+    results.forEach((r, i) => termsByChunk.set(r.chunk.id, candidateTerms[i]!));
+
+    let lexical = 0;
+    let vetoed = 0;
+    let unattributed = 0;
+    const placed: Placed[] = [];
+
+    clauses.forEach((clause, clauseIndex) => {
+        const outcome = lexicalRung(clause, candidateTerms, df);
+        if (outcome.kind !== 'clear') {
+            // With no provider there is no rung below this one, so a tie ends
+            // the same way as nothing to attribute. `attribute` sends it down.
+            unattributed += 1;
+            return;
+        }
+
+        const winner = results[outcome.index]!;
+        const matched = matchedSentenceOf(clause, winner.chunk, df, results.length, opts);
+        if (vetoes(clause, candidateTerms[outcome.index]!, matched) !== null) {
+            vetoed += 1;
+            unattributed += 1;
+            return;
+        }
+
+        const chosen = matched
+            ? chooseChunkForSeam(
+                  matched.span,
+                  results
+                      .map((r) => r.chunk)
+                      .filter((c) => c.documentId === winner.chunk.documentId),
+                  winner.chunk,
+              )
+            : winner.chunk;
+
+        lexical += 1;
+        placed.push({
+            span: {
+                textSpan: clause.span,
+                anchorOffset: clause.span.end,
+                sourceSpan: matched ? matched.span : chosen.span,
+                chunkId: chosen.id,
+                documentId: chosen.documentId,
+                confidence: outcome.confidence,
+                resolvedBy: 'lexical',
+            },
+            firstClause: clauseIndex,
+            lastClause: clauseIndex,
+            terms: clause.terms,
+            moved: false,
+            fused: false,
+        });
+    });
+
+    const spans = applyDensity(
+        placed,
+        clauses.map((c) => c.span.end),
+        (terms, chunkId) =>
+            coverageOf(terms, termsByChunk.get(chunkId) ?? new Set(), df, results.length) ?? 0,
+        opts,
+    );
+
+    return { text, spans, sources: results, rungs: { lexical, vetoed, dense: 0, unattributed } };
 }
