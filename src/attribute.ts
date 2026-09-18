@@ -1049,3 +1049,87 @@ function denseRung(
 function sliceCodePoints(text: string, start: number, end: number): string {
     return Array.from(text).slice(start, end).join('');
 }
+
+/**
+ * Attribution for a message being written, delivered as it is written.
+ *
+ * > **Same input, same attribution. The mode chooses WHEN a marker appears,
+ * > never WHICH.**
+ *
+ * `stream` is a strict subset of `batch`: it runs the two local rungs, so a
+ * clause that would need the vectors comes out with no marker and the closing
+ * envelope merely adds it. Nothing is ever retracted in front of a reader —
+ * a marker already on the page does not vanish, does not change number and does
+ * not move. That is what makes the mode honest, and it is the only reason the
+ * symbol exists.
+ *
+ * `opts.provider` is IGNORED here, deliberately and not by omission: a door
+ * that accepted a provider and then went to the network while someone reads
+ * would be a silent promise of latency.
+ */
+export interface AttributionStream {
+    /** Consumes a delta and returns the spans that are now FINAL. */
+    push(delta: string): readonly AttributionSpan[];
+    /** Closes the buffer and returns the complete envelope. */
+    end(): Attribution;
+}
+
+/**
+ * How many closed clauses must follow a span before it can be called final.
+ *
+ * TWO, and the unit is the clause rather than the code point. Code point is the
+ * wrong unit for measuring a wait: what decides whether a span can still change
+ * is how many clauses have yet to close, and a clause has no maximum length —
+ * the chunker never splits a sentence, so a long period of quoted statute is
+ * one clause. The number is two because nothing in this engine looks further:
+ * coalescence needs the neighbour, and the floor may defer that neighbour one
+ * clause further, which the second pass then needs to see.
+ */
+export const STREAM_LOOKAHEAD_CLAUSES = 2;
+
+export function attributeStream(
+    results: readonly SearchResult[],
+    opts: AttributeOptions,
+): AttributionStream {
+    let buffer = '';
+    let emitted = 0;
+
+    /**
+     * The spans that cannot change any more: those anchored at or before the
+     * end of the clause `STREAM_LOOKAHEAD_CLAUSES` back from the last one.
+     *
+     * The last clause is excluded on top of that, because it has not closed —
+     * the model may still be writing it, and a prefix can segment differently
+     * from the whole text when the tail ends in something like an abbreviation.
+     */
+    const settled = (): readonly AttributionSpan[] => {
+        const clauses = clausesOf(buffer, opts);
+        const cutoff = clauses.length - 1 - STREAM_LOOKAHEAD_CLAUSES;
+        if (cutoff < 0) return [];
+        const safeUpTo = clauses[cutoff]!.span.end;
+        return attributeLexical(buffer, results, opts).spans.filter(
+            (span) => span.anchorOffset <= safeUpTo,
+        );
+    };
+
+    return {
+        push(delta: string): readonly AttributionSpan[] {
+            buffer += delta;
+            const ready = settled();
+            const fresh = ready.slice(emitted);
+            emitted = ready.length;
+            return fresh;
+        },
+        end(): Attribution {
+            // `attributeLexical` segments the whole buffer, and the segmenter
+            // hands back a final fragment even with no terminator — so a model
+            // cut mid-sentence still gets its last clause attributed. Dropping
+            // it would make the stream produce FEWER spans than `attribute`
+            // over the same text, and the envelope would contradict what the
+            // batch door answers.
+            const full = attributeLexical(buffer, results, opts);
+            emitted = full.spans.length;
+            return full;
+        },
+    };
+}

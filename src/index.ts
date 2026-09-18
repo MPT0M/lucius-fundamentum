@@ -46,6 +46,8 @@ export type { QwenOptions } from './providers/qwen.js';
 export {
     attribute,
     attributeLexical,
+    attributeStream,
+    STREAM_LOOKAHEAD_CLAUSES,
     MIN_LEXICAL_SUPPORT,
     LEXICAL_MARGIN,
     DEFAULT_COALESCE_MAX_CODE_POINTS,
@@ -54,6 +56,7 @@ export {
 } from './attribute.js';
 export type {
     Attribution,
+    AttributionStream,
     AttributionSpan,
     AttributeOptions,
     RungCounts,
