@@ -49,7 +49,18 @@ export const MIN_LEXICAL_SUPPORT = 0.25;
 export const LEXICAL_MARGIN = 1.25;
 
 /** Which rung produced a span. The veto never chooses, so it never appears. */
-export type ResolvedBy = 'lexical' | 'dense';
+/**
+ * Which rung settled the clause — and `'mixed'` when a fusion joined two that
+ * were settled differently.
+ *
+ * `'mixed'` exists because calling such a span `'dense'` would lie about the
+ * provenance of the literal half, and `'lexical'` would lie about the
+ * paraphrased one. It also earns its own population for `confidence`: the
+ * fused number is recomputed over the UNION by `coverageOf`, which is a
+ * lexical measure, so filing it under `'dense'` would contaminate the group
+ * the CHANGELOG declares scores systematically lower.
+ */
+export type ResolvedBy = 'lexical' | 'dense' | 'mixed';
 
 /**
  * One stretch of the answer, and the passage that supports it.
@@ -679,10 +690,15 @@ export interface Placed {
  * identical for both, because segmentation is deterministic: the lexical door
  * KNOWS the clause in between exists, it just has no span for it.
  *
- * Skipping over that clause would be worse than a mode difference. `Span` is a
- * contiguous range, so fusing across it produces a `textSpan` that CONTAINS the
- * clause in the middle — a marker claiming support over a stretch its passage
- * does not support, which is the failure this package is named for.
+ * **THE RUNG IS NOT A CONDITION.** Restricting the merge to the lexical subset
+ * penalises the population that most needs it: paraphrase is what reaches the
+ * vectors at all, so the better a model writes, the more markers it collects.
+ *
+ * Skipping over the clause in between is refused, and the reason is the promise
+ * this package is named for rather than a preference. `Span` is a contiguous
+ * range, so fusing across it produces a `textSpan` that CONTAINS the clause in
+ * the middle — a marker claiming support over a stretch its passage does not
+ * support.
  *
  * It does not chain: a fused span is closed and cannot fuse again, here or in
  * the second pass. Chaining would let a span grow across a whole run of near
@@ -715,8 +731,6 @@ export function coalescePass(
             // (anchorOffset, chunkId). The dangerous pair is the one that
             // disagrees, and only that one.
             a.precise === b.precise &&
-            a.span.resolvedBy === 'lexical' &&
-            b.span.resolvedBy === 'lexical' &&
             b.firstClause === a.lastClause + 1 &&
             b.span.anchorOffset - a.span.anchorOffset <= maxDistance &&
             eligible(a, b)
@@ -738,7 +752,13 @@ export function coalescePass(
                     // weight, and the minimum of two fractions is a fraction of
                     // nothing.
                     confidence: recompute(terms, a.span.chunkId),
-                    resolvedBy: 'lexical',
+                    // The three cases, and none of them is a literal. Two
+                    // sides that agree keep what they agreed on; two that
+                    // differ get the honest third value.
+                    resolvedBy:
+                        a.span.resolvedBy === b.span.resolvedBy
+                            ? a.span.resolvedBy
+                            : 'mixed',
                 },
                 firstClause: a.firstClause,
                 lastClause: b.lastClause,

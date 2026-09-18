@@ -50,7 +50,9 @@ All notable changes to this package are documented here. The format follows
   under a different `topK`. Order by it, never threshold across calls. Spans
   resolved by the dense rung score systematically lower, because low lexical
   coverage is exactly what sent them there — split by `resolvedBy` before
-  comparing.
+  comparing, and treat `'mixed'` as a THIRD group rather than folding it into
+  either. A fused span's number is recomputed over the union by a lexical
+  measure, so it belongs to neither of the two the sentence above compares.
 - **Negation without a lexical marker does not fire the veto** (`deixou de`,
   `está longe de`). It errs by letting through, never by dropping a correct
   citation.
@@ -103,30 +105,31 @@ All notable changes to this package are documented here. The format follows
   there had the pair already fused by the first pass, where the modes agree. The
   effect is stated at the level it was measured, and a reader wanting it
   end-to-end will have to build the case.
-- **A span the vectors resolved never fuses, so paraphrase gets one marker per
-  clause — and no option reduces that count.** Coalescence runs over the
-  `'lexical'` subset only, because that is the one set both delivery modes
-  produce identically; a span carrying `resolvedBy: 'dense'` is outside it and
-  so is any pair containing one. The population this falls on is exactly the
-  one that would most benefit: text that paraphrases its source is what reaches
-  the vectors in the first place, so the better a model writes, the more
-  markers it collects. Measured, four consecutive clauses of one passage,
-  anchors twenty code points apart:
+- **Paraphrase groups now, and only the mixed pair still costs a marker.**
+  Coalescence used to run over the `'lexical'` subset alone, because that was
+  the one set both doors produced identically. The constraint fell on exactly
+  the population that most needed the merge — text that paraphrases its source
+  is what reaches the vectors at all, so the better a model wrote, the more
+  markers it collected.
+  Measured, four consecutive clauses of one passage, anchors twenty code points
+  apart: the vector row read four markers where the word row read two, at every
+  floor setting. It now reads two.
 
-      resolved by   floor 0   floor 70   floor 200
-      words              2         2          2
-      vectors            4         4          4
+  **What still costs a marker** is a pair where one side matched a sentence in
+  its chunk and the other did not. Those do not fuse, because the `sourceSpan`
+  of the second is the whole chunk and merging would widen the first one's
+  claim from a sentence to a block. Two spans that BOTH lack a matched sentence
+  do fuse: they carry the same `sourceSpan` by construction, so nothing widens.
 
-  THE DENSITY OPTIONS DO NOT MITIGATE THIS. The floor moves anchors — here from
-  `20,40,60,80` to `20,60,80,200` — and never merges two into one, because it
-  defers each anchor to the end of its OWN next clause and two clauses have two
-  ends. Raising `minClusterCodePoints` from 70 to 200 changes nothing. Only
-  coalescence reduces the count, and coalescence is what is unavailable.
-
-  The way out is NOT to relax the fusion rule, which is what keeps a marker
-  from moving while a reader watches: it is to let the streaming door hold its
-  output until the message closes, so that one pass sees the vectors and the
-  page settles once. That is a contract change and it is not made here.
+- **`resolvedBy` gains `'mixed'`.** A span fused from one lexical and one dense
+  side carries a literal citation and a paraphrase at once; calling it
+  `'dense'` would lie about the first and `'lexical'` about the second. It also
+  earns its own population for `confidence`: the fused number is recomputed
+  over the UNION by a LEXICAL measure, so filing it under `'dense'` would put
+  it in the group these notes declare scores systematically lower, and
+  comparing the two groups would then compare instruments. **Split by
+  `resolvedBy` before comparing, and treat `'mixed'` as a third group rather
+  than folding it into either.**
 - **The dense rung re-embeds the candidate passages** rather than reading the
   vectors the index already holds. It pays twice, and in exchange both sides of
   every comparison are born in the same call, through the same door.
