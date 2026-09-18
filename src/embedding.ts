@@ -104,22 +104,6 @@ export interface EmbeddingProvider {
 }
 
 /**
- * Rejects, before any call is paid for, a chunking configuration whose ceiling
- * already exceeds what the provider accepts.
- *
- * This is the cheap half of the guard and it catches the obvious case early.
- * It is NOT sufficient, and the reason is that the parameter is a budget, not
- * a bound: a single sentence longer than the ceiling is emitted whole rather
- * than cut in half, so a configuration that passes here can still produce a
- * chunk the provider would truncate in silence.
- *
- * Measured by `npm run bench:corpus` on the corpus in this repository: 2 of
- * 636 chunks exceed `maxChunkCodePoints`. Rare, and that is the point — a
- * failure that fires twice in six hundred is one nobody finds by trying the
- * library out, and the tail of those two chunks would simply be absent from
- * the index with nothing to show for it.
- */
-/**
  * What went wrong with an embedding call, as a FIELD rather than a sentence.
  *
  * A caller that has to match a substring against `message` to know whether a
@@ -145,6 +129,22 @@ export class EmbeddingCheckError extends Error {
     }
 }
 
+/**
+ * Rejects, before any call is paid for, a chunking configuration whose ceiling
+ * already exceeds what the provider accepts.
+ *
+ * This is the cheap half of the guard and it catches the obvious case early.
+ * It is NOT sufficient, and the reason is that the parameter is a budget, not
+ * a bound: a single sentence longer than the ceiling is emitted whole rather
+ * than cut in half, so a configuration that passes here can still produce a
+ * chunk the provider would truncate in silence.
+ *
+ * Measured by `npm run bench:corpus` on the corpus in this repository: 2 of
+ * 636 chunks exceed `maxChunkCodePoints`. Rare, and that is the point — a
+ * failure that fires twice in six hundred is one nobody finds by trying the
+ * library out, and the tail of those two chunks would simply be absent from
+ * the index with nothing to show for it.
+ */
 export function assertChunkCeilingFits(maxChunkCodePoints: number, provider: EmbeddingProvider): void {
     if (maxChunkCodePoints <= provider.maxInputCodePoints) return;
     throw new EmbeddingCheckError(

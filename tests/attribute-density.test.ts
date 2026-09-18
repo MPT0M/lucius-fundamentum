@@ -52,9 +52,10 @@ describe('coalescePass — adjacency is measured over CLAUSES', () => {
     });
 
     it('does NOT fuse across a clause that produced no span', () => {
-        // The streaming caller has no span for the middle clause; the batch one
-        // has a dense span there. A rule reading span neighbours would fuse here
-        // in one mode and not the other, and the marker on screen would change.
+        // `attributeLexical` has no span for the middle clause; `attribute` with
+        // a provider has a dense one there. A rule reading span NEIGHBOURS would
+        // fuse here for one door and not the other, and the same text would get
+        // different markers depending on which was called.
         // Worse: `Span` is contiguous, so the fused textSpan would CONTAIN the
         // clause in between — support claimed over text the passage lacks.
         const out = coalescePass(

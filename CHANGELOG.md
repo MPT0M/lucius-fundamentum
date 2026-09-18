@@ -43,14 +43,14 @@ All notable changes to this package are documented here. The format follows
   clauses remain is unknowable until the text ends.
 - **`provider-wait` exists only when there will be a wait.** Not without a
   provider, and not when every clause resolved on the words and the network
-  is never called. Measured, everything that is not the network takes 3,4 ms
-  — median of twenty runs over a document of 32.520 code points — so an
+  is never called. Measured, everything that is not the network takes 3.4 ms
+  — median of twenty runs over a document of 32,520 code points — so an
   indicator hung on the start of the work would flash and vanish in both
   cases. Hung on this event it cannot, because the event does not exist.
 - **THE PREVIEW REPLACES, IT DOES NOT AMEND.** Between `local-done` and the
   returned result a marker can move, change number and be fused away. Swap
-  the block; patching marker by marker drifts. The numbers are under "the
-  floor is not mode-invariant" below.
+  the block; patching marker by marker drifts. The numbers are under "the floor
+  is not invariant between two attributions" below.
 - **A remote failure no longer destroys local work.** The dense rung is
   guarded, the result comes back with what the local rungs found, and
   `Attribution.providerFailure` says the rung was TRIED and failed — which
@@ -147,6 +147,16 @@ All notable changes to this package are documented here. The format follows
   comparing the two groups would then compare instruments. **Split by
   `resolvedBy` before comparing, and treat `'mixed'` as a third group rather
   than folding it into either.**
+- **Without an HTTP status, a refused connection and an unknown host are the
+  same `network`.** A provider failure classifies by status, which is a
+  standardised number: `401`/`403` give `auth`, `429` `quota`, `408`/`504`
+  `timeout`, the rest `network`. Without a status only the timeout separates,
+  by `name === 'TimeoutError'`. **The discriminator for the other two exists
+  and is runtime-dependent** — a `fetch` failure in Node carries a code at
+  `cause.cause.code` — and this package declares Node, `workerd`, Bun and the
+  browser, so reading it would hold on one runtime and not the others. That is
+  the limit, and it is smaller than the missing contract an earlier draft
+  claimed.
 - **The dense rung re-embeds the candidate passages** rather than reading the
   vectors the index already holds. It pays twice, and in exchange both sides of
   every comparison are born in the same call, through the same door.

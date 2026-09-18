@@ -132,8 +132,10 @@ describe('the classification reads a number, never prose', () => {
         expect(await reasonOf(timeout)).toMatchObject({ reason: 'timeout', retryable: true });
 
         // A refused connection and an unknown host both land here as `network`.
-        // That is the limit written down in CHANGELOG, not an oversight: telling
-        // them apart needs the provider to classify its own failure.
+        // The limit is written down in CHANGELOG, and it is SMALLER than a
+        // missing contract: the discriminator exists — a `fetch` failure in Node
+        // carries `cause.cause.code` — and it is runtime-dependent, while this
+        // package declares Node, workerd, Bun and the browser.
         const refused = new EmbeddingProviderError(
             'p',
             undefined,

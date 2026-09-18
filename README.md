@@ -100,6 +100,13 @@ progress for a caller who wants to show something during the wait, and emits
 an identifier rather than a sentence, because the words belong to whoever
 writes the interface.
 
+**A provider failure does not throw — it degrades.** `attribute` catches it,
+answers with what the local rungs found, and describes the failure on
+`Attribution.providerFailure`, whose `retryable` says whether repeating is
+worth offering. A `try/catch` around the call will not fire; inspect the
+field. What does throw is a configuration error checked before the network
+— a chunk wider than the provider's window, say.
+
 `CHANGELOG.md` carries the known limits — what the veto cannot see, why
 `confidence` is local to one call, and why two attributions of the same text
 can place a marker differently.

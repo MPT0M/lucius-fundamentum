@@ -172,7 +172,7 @@ function writeMarkers(text: string, insertions: readonly Insertion[]): string {
 /**
  * The bibliography lists what was CITED, in number order — never `sources`.
  *
- * `sources` is the complete inventory and comes back filled in every mode,
+ * `sources` is the complete inventory and comes back filled from both doors,
  * uncited results included. A footer compiled from it would publish, with a
  * `topK` of ten and three passages cited, ten entries and seven with no
  * counterpart in the text. A bibliography asserting provenance the answer does

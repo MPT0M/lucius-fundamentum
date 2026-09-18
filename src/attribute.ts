@@ -48,7 +48,6 @@ export const MIN_LEXICAL_SUPPORT = 0.25;
  */
 export const LEXICAL_MARGIN = 1.25;
 
-/** Which rung produced a span. The veto never chooses, so it never appears. */
 /**
  * Which rung settled the clause — and `'mixed'` when a fusion joined two that
  * were settled differently.
@@ -87,24 +86,6 @@ export interface AttributionSpan {
     readonly resolvedBy: ResolvedBy;
 }
 
-/**
- * What the ruler reads, without needing an instrument of its own.
- *
- * `lexical + dense + unattributed` is the number of clauses examined — they
- * partition. `vetoed` crosses the last two and never the first, because a
- * vetoed winner sends its clause down a rung and is never replaced by the
- * runner-up.
- *
- * These count CLAUSES, each one once: a clause whose winner the veto rejects
- * twice still adds one to `vetoed`. `Attribution.spans` counts SPANS, and the
- * two differ whenever coalescence merges two clauses into one marker.
- *
- * **`dense` is always zero from `attributeLexical`**, because that door does
- * not run the rung, and the clauses it would have decided land in
- * `unattributed` instead. The two doors are two instruments: a counter from
- * one compared against the other compares different measurements of
- * different work.
- */
 /**
  * What went wrong with the dense rung, when it was tried and failed.
  *
@@ -186,6 +167,24 @@ export type AttributeState =
     | { readonly kind: 'provider-done' }
     | { readonly kind: 'provider-failed'; readonly failure: ProviderFailure };
 
+/**
+ * What the ruler reads, without needing an instrument of its own.
+ *
+ * `lexical + dense + unattributed` is the number of clauses examined — they
+ * partition. `vetoed` crosses the last two and never the first, because a
+ * vetoed winner sends its clause down a rung and is never replaced by the
+ * runner-up.
+ *
+ * These count CLAUSES, each one once: a clause whose winner the veto rejects
+ * twice still adds one to `vetoed`. `Attribution.spans` counts SPANS, and the
+ * two differ whenever coalescence merges two clauses into one marker.
+ *
+ * **`dense` is always zero from `attributeLexical`**, because that door does
+ * not run the rung, and the clauses it would have decided land in
+ * `unattributed` instead. The two doors are two instruments: a counter from
+ * one compared against the other compares different measurements of
+ * different work.
+ */
 export interface RungCounts {
     readonly lexical: number;
     readonly vetoed: number;
@@ -702,8 +701,9 @@ export interface Placed {
  *
  * It does not chain: a fused span is closed and cannot fuse again, here or in
  * the second pass. Chaining would let a span grow across a whole run of near
- * clauses with no ceiling, and then nothing could be called final until the run
- * ended — which is the bounded delay the streaming mode depends on.
+ * clauses with no ceiling: one marker would end up claiming support over a
+ * stretch as long as the run, and a reader clicking it would open a passage
+ * that supports part of what the marker covers.
  */
 export function coalescePass(
     items: readonly Placed[],
@@ -1230,9 +1230,16 @@ export async function attribute(
  * WHERE IT STOPS, declared: with no status — timeout, DNS, refused connection
  * — only the timeout separates, by `name === 'TimeoutError'`, which is what
  * `AbortSignal.timeout` rejects with. A refused connection and an unknown host
- * both come back `network`. Telling those two apart would need the provider to
- * classify its own failure, and that is a contract change this lot does not
- * make.
+ * both come back `network`.
+ *
+ * **The discriminator EXISTS and is runtime-dependent**, which is a smaller
+ * limit than a missing contract. A `fetch` failure in Node carries a code —
+ * `ENOTFOUND`, `ECONNREFUSED` — two levels down, at `cause.cause.code`, since
+ * `postJson` keeps the `TypeError` as its own cause. `package.json` declares
+ * Node, `workerd`, Bun and the browser, and that code is a Node convention.
+ * So the honest statement is not "this needs a new method on
+ * `EmbeddingProvider`" — it is that the separation would hold on one runtime
+ * and not the others.
  */
 function classify(error: unknown): ProviderFailure {
     if (error instanceof EmbeddingCheckError) {
