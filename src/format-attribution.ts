@@ -28,8 +28,8 @@ import type { Attribution, AttributionSpan } from './attribute.js';
  * What the reader's layer receives.
  *
  * `sources` travels with it, and that is a deliberate addition to the shape the
- * spec drew. The marker's number is a POSITION IN `sources` — the only set both
- * delivery modes produce identically — so a consumer holding the formatted text
+ * spec drew. The marker's number is a POSITION IN `sources` — the complete
+ * inventory, identical for both doors — so a consumer holding the formatted text
  * alone would receive `[4]` with nothing to resolve the 4 against. The pairing
  * that leaves nothing at all is `bibliography: 'none'`; `markerStyle: 'none'`
  * still emits the footer, and that pair is the voice case.

@@ -88,13 +88,11 @@ export interface AttributionSpan {
  * twice still adds one to `vetoed`. `Attribution.spans` counts SPANS, and the
  * two differ whenever coalescence merges two clauses into one marker.
  *
- * **They are MODE-DEPENDENT, and no invariant covers them.** `dense` is always
- * zero from `attributeLexical` and from `attributeStream`, because neither
- * runs that rung, and the clauses it would have decided land in
- * `unattributed` instead. Comparing these counters across modes compares two
- * different instruments. What `attributeStream` guarantees about `spans` and
- * `sources` holds against `attributeLexical` and NOT against `attribute` over
- * a provider — see `AttributionStream`.
+ * **`dense` is always zero from `attributeLexical`**, because that door does
+ * not run the rung, and the clauses it would have decided land in
+ * `unattributed` instead. The two doors are two instruments: a counter from
+ * one compared against the other compares different measurements of
+ * different work.
  */
 export interface RungCounts {
     readonly lexical: number;
@@ -110,9 +108,9 @@ export interface Attribution {
     /**
      * The `results` as received, in order, untouched — no filtering, no
      * reordering. Not a convenience: the marker's number is a position in this
-     * list, and it is by being identical in every mode that the number does not
-     * change when a streamed message closes. Trimming it to "only what was
-     * cited" would move every number.
+     * list, and it is by being the complete inventory that the number means the
+     * same thing to two callers holding the same results. Trimming it to "only
+     * what was cited" would move every number.
      */
     readonly sources: readonly SearchResult[];
     readonly rungs: RungCounts;
@@ -557,16 +555,12 @@ export interface Placed {
 /**
  * Fuses neighbouring citations of the same passage.
  *
- * **Adjacency is measured over CLAUSES, not over spans**, and that is what
- * makes THIS PASS produce the same result in every mode. The second pass is a
- * different matter: it is eligible on `moved`, which the floor writes, and the
- * floor does depend on the mode. The span list of a
- * streaming caller is a subset of the batch one — a clause only the vectors can
- * resolve produces no span while the text is being written — so a rule reading
- * span neighbours would fuse a pair in one mode and not the other, and a marker
- * already on screen would change. The clause sequence is identical in both,
- * because segmentation is deterministic: the streaming caller KNOWS the clause
- * in between exists, it just has no span for it.
+ * **Adjacency is measured over CLAUSES, not over spans.** The two doors produce
+ * different span lists for the same text — `attributeLexical` has no span for a
+ * clause only the vectors can resolve — so a rule reading span neighbours would
+ * fuse a pair for one caller and not for the other. The clause sequence is
+ * identical for both, because segmentation is deterministic: the lexical door
+ * KNOWS the clause in between exists, it just has no span for it.
  *
  * Skipping over that clause would be worse than a mode difference. `Span` is a
  * contiguous range, so fusing across it produces a `textSpan` that CONTAINS the
@@ -1077,111 +1071,4 @@ function denseRung(
 /** Slices in code points, which is the unit of every offset in this package. */
 function sliceCodePoints(text: string, start: number, end: number): string {
     return Array.from(text).slice(start, end).join('');
-}
-
-/**
- * Attribution for a message being written, delivered as it is written.
- *
- * > **Same input, same attribution against `attributeLexical`. The mode
- * > chooses WHEN a marker appears, never WHICH.**
- *
- * `stream` is a strict subset of `attributeLexical`: it runs the two local
- * rungs, so a clause that would need the vectors comes out with no marker and
- * the closing envelope merely adds it. Against THAT door nothing is ever
- * retracted in front of a reader — a marker already on the page does not
- * vanish, does not change number and does not move.
- *
- * **AGAINST `attribute` OVER A PROVIDER IT DOES NOT HOLD, and the break is
- * measured rather than suspected.** The floor defers an anchor too close to
- * the previous one and reads neither the rung nor the chunk, so a dense span
- * landing between two lexical ones becomes the previous anchor of the later
- * one and moves it. The second coalescence pass then fuses pairs the floor
- * moved, so the divergence can also merge two markers into one. A caller who
- * streams and then calls `attribute` with a provider to fill in the gaps must
- * expect the page to settle differently. `CHANGELOG.md` carries the
- * reproduction under "the floor is not mode-invariant".
- *
- * `opts.provider` is IGNORED here, deliberately and not by omission: a door
- * that accepted a provider and then went to the network while someone reads
- * would be a silent promise of latency.
- */
-export interface AttributionStream {
-    /** Consumes a delta and returns the spans that are now FINAL. */
-    push(delta: string): readonly AttributionSpan[];
-    /** Closes the buffer and returns the complete envelope. */
-    end(): Attribution;
-}
-
-/**
- * How many closed clauses must follow a span before it can be called final.
- *
- * TWO, and the unit is the clause rather than the code point. Code point is the
- * wrong unit for measuring a wait: what decides whether a span can still change
- * is how many clauses have yet to close, and a clause has no maximum length —
- * the chunker never splits a sentence, so a long period of quoted statute is
- * one clause. The number is two because nothing in this engine looks further:
- * coalescence needs the neighbour, and the floor may defer that neighbour one
- * clause further, which the second pass then needs to see.
- */
-export const STREAM_LOOKAHEAD_CLAUSES = 2;
-
-/**
- * Opens a stream over one message. See `AttributionStream` for the rule that
- * makes the mode safe.
- *
- * **COST, declared rather than left to be found.** Every `push` re-attributes
- * the whole buffer and re-tokenizes every candidate: quadratic in the answer
- * and linear in the candidates, per delta. It was chosen because it makes the
- * subset guarantee true BY CONSTRUCTION — there is no incremental state that
- * could drift from what the batch door computes — and that is the property
- * worth the most here. It has NOT been measured against a long answer in
- * small deltas; the fixtures in this package are all under a few hundred code
- * points, so the cost never shows in the suite. A caller streaming a long
- * answer should measure before assuming it is free.
- */
-export function attributeStream(
-    results: readonly SearchResult[],
-    opts: AttributeOptions,
-): AttributionStream {
-    let buffer = '';
-    let emitted = 0;
-
-    /**
-     * The spans that cannot change any more: those anchored at or before the
-     * end of the clause `STREAM_LOOKAHEAD_CLAUSES` back from the last one.
-     *
-     * The last clause is excluded on top of that, because it has not closed —
-     * the model may still be writing it, and a prefix can segment differently
-     * from the whole text when the tail ends in something like an abbreviation.
-     */
-    const settled = (): readonly AttributionSpan[] => {
-        const clauses = clausesOf(buffer, opts);
-        const cutoff = clauses.length - 1 - STREAM_LOOKAHEAD_CLAUSES;
-        if (cutoff < 0) return [];
-        const safeUpTo = clauses[cutoff]!.span.end;
-        return attributeLexical(buffer, results, opts).spans.filter(
-            (span) => span.anchorOffset <= safeUpTo,
-        );
-    };
-
-    return {
-        push(delta: string): readonly AttributionSpan[] {
-            buffer += delta;
-            const ready = settled();
-            const fresh = ready.slice(emitted);
-            emitted = ready.length;
-            return fresh;
-        },
-        end(): Attribution {
-            // `attributeLexical` segments the whole buffer, and the segmenter
-            // hands back a final fragment even with no terminator — so a model
-            // cut mid-sentence still gets its last clause attributed. Dropping
-            // it would make the stream produce FEWER spans than `attribute`
-            // over the same text, and the envelope would contradict what the
-            // batch door answers.
-            const full = attributeLexical(buffer, results, opts);
-            emitted = full.spans.length;
-            return full;
-        },
-    };
 }

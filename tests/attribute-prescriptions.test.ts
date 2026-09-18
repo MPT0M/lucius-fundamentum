@@ -11,7 +11,6 @@ import { describe, it, expect } from 'vitest';
 import {
     attribute,
     attributeLexical,
-    attributeStream,
     formatAttribution,
     createIndex,
     createTokenizer,
@@ -163,61 +162,6 @@ describe('indexing and attributing reduce the same text to the same terms', () =
         const out = attributeLexical(nfd, results, { tokenizer });
         expect(out.rungs.lexical).toBeGreaterThan(0);
         expect(out.spans[0]!.documentId).toBe('acentos');
-    });
-});
-
-describe('the marker number does not change between modes', () => {
-    it('a chunk cited after a dense-only clause keeps its number', async () => {
-        // TARGET OF THE REVERSAL: number by order of first citation instead of
-        // by position in `sources`, and the stream and the batch disagree.
-        const results = search('prazo perícia relator contagem');
-        const answer =
-            'O prazo para recurso é de 15 dias corridos. ' +
-            'O prazo do relator. ' +
-            'A perícia contábil será custeada pela parte requerente.';
-
-        const handle = attributeStream(results, { tokenizer });
-        handle.push(answer);
-        const streamed = formatAttribution(handle.end(), { markerStyle: 'bracket' });
-
-        const full = await attribute(answer, results, {
-            tokenizer,
-            provider: scripted([['prazo do relator', [1, 0, 0]], ['relator pode', [1, 0, 0]]], [-1, 1, 0]),
-        });
-        const batch = formatAttribution(full, { markerStyle: 'bracket' });
-
-        // The dense rung did decide the middle clause — without this the second
-        // half of the comparison is the first half with a provider attached.
-        expect(full.rungs.dense).toBeGreaterThan(0);
-
-        // Markers are written in anchor order, one per distinct passage at a
-        // point, so the k-th marker in the text belongs to the k-th cited chunk.
-        // Pairing them is what makes this compare the NUMBER OF A CHUNK rather
-        // than mere presence — a containment check passes under any numbering,
-        // because the batch prints strictly more markers than the stream.
-        const numbers = (formatted: { text: string; spans: readonly { chunkId: string; anchorOffset: number }[] }) => {
-            const markers = formatted.text.match(/\[\d+\]/g) ?? [];
-            const chunks = [...new Set([...formatted.spans].sort((a, b) => a.anchorOffset - b.anchorOffset).map((s) => s.chunkId))];
-            // Pairing by position holds only while no chunk is cited at two
-            // anchors: dedupe is by (anchorOffset, chunkId), so the same chunk
-            // twice prints two markers and the k-th marker stops being the
-            // k-th chunk. True in this fixture, and asserted so that it fails
-            // loudly rather than comparing the wrong pairs.
-            expect(markers).toHaveLength(chunks.length);
-            return new Map(chunks.map((id, i) => [id, markers[i]]));
-        };
-        const inStream = numbers(streamed);
-        const inBatch = numbers(batch);
-        expect(inStream.size).toBeGreaterThan(0);
-        let compared = 0;
-        for (const [chunkId, marker] of inStream) {
-            if (!inBatch.has(chunkId)) continue;
-            expect(inBatch.get(chunkId)).toBe(marker);
-            compared += 1;
-        }
-        // And the comparison has to have happened: a loop over an empty
-        // intersection is the vacuous assertion this lot keeps producing.
-        expect(compared).toBeGreaterThanOrEqual(2);
     });
 });
 
