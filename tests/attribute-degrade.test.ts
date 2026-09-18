@@ -10,6 +10,7 @@ import {
 } from '../src/index.js';
 import { EmbeddingCheckError } from '../src/embedding.js';
 import { EmbeddingProviderError } from '../src/providers/http.js';
+import { openAiProvider } from '../src/providers/openai.js';
 
 const DOC: SourceDoc = {
     id: 'lei',
@@ -186,5 +187,51 @@ describe('what is checked BEFORE the network still throws', () => {
         await expect(attribute(ANSWER, results, { tokenizer, provider: narrow })).rejects.toThrow(
             EmbeddingCheckError,
         );
+    });
+});
+
+describe('a REAL adapter returning the wrong shape is not worth retrying', () => {
+    const results = search('prazo contagem relator perícia');
+
+    it('bad-dimensions survives the trip through the adapter', async () => {
+        // TARGET OF THE REVERSAL: drop the `shape` field from the throw in
+        // `assertShape`, or stop reading it in `classify`. Either way this
+        // failure arrives with no HTTP status and no cause, falls through to
+        // the default, and comes back `network`/`retryable: true` — a retry
+        // button on a provider that will return the same wrong width again.
+        //
+        // The other fixtures in this file inject `EmbeddingCheckError` already
+        // built, through a hand-made provider. They prove the classify table
+        // and nothing about the path production takes: `assertShape` runs
+        // INSIDE `provider.embedDocuments`, before anything downstream, and
+        // throws an `EmbeddingProviderError`. The defect lived in that gap.
+        // One vector PER INPUT, with the wrong width. Reading the request is
+        // what makes the count right: `readVectors` refuses a hole before
+        // `assertShape` is reached, so a short answer would test the wrong
+        // branch — measured, the first version of this fixture did exactly
+        // that and reported the count error instead of the width one.
+        const narrowVectors: typeof globalThis.fetch = (async (
+            _url: string,
+            init: { body: string },
+        ) => {
+            const sent = JSON.parse(init.body) as { input: readonly string[] };
+            return new Response(
+                JSON.stringify({
+                    data: sent.input.map((_, index) => ({ index, embedding: [1, 0] })),
+                }),
+                { status: 200, headers: { 'content-type': 'application/json' } },
+            );
+        }) as unknown as typeof globalThis.fetch;
+
+        const provider = openAiProvider({ apiKey: 'k', fetch: narrowVectors });
+
+        const out = await attribute(ANSWER, results, { tokenizer, provider });
+
+        expect(out.providerFailure).toMatchObject({
+            reason: 'bad-dimensions',
+            retryable: false,
+        });
+        // And the local work survived, which is the other half of the promise.
+        expect(out.spans).toEqual(attributeLexical(ANSWER, results, { tokenizer }).spans);
     });
 });

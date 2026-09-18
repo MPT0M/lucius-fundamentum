@@ -23,6 +23,16 @@ export class EmbeddingProviderError extends Error {
          * `AbortSignal.timeout` rejects with `name === 'TimeoutError'`.
          */
         cause?: unknown,
+        /**
+         * Set when the failure is the SHAPE of the answer, not the call.
+         *
+         * `assertShape` runs inside the adapter, so it fires before any check
+         * downstream and arrives with no HTTP status. Without this field a
+         * caller classifying by status would read it as a network failure and
+         * offer a retry — and a provider that returns a wrong-width vector
+         * returns it again. Repeating cannot fix a shape.
+         */
+        readonly shape?: 'bad-count' | 'bad-dimensions',
     ) {
         super(message, { cause });
         this.name = 'EmbeddingProviderError';
@@ -168,6 +178,8 @@ export function assertShape(
             providerId,
             undefined,
             `returned ${vectors.length} vectors for ${expectedCount} inputs`,
+            undefined,
+            'bad-count',
         );
     }
     for (let i = 0; i < vectors.length; i += 1) {
@@ -177,6 +189,8 @@ export function assertShape(
                 providerId,
                 undefined,
                 `returned a ${width}-dimension vector at position ${i}, but ${dimensions} was requested`,
+                undefined,
+                'bad-dimensions',
             );
         }
     }

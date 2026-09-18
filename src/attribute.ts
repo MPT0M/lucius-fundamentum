@@ -1227,10 +1227,10 @@ export async function attribute(
  * a provider's message is not, and matching a substring against it is coupling
  * to text that changes without notice.
  *
- * WHERE IT STOPS, declared: with no status — timeout, DNS, refused connection
- * — only the timeout separates, by `name === 'TimeoutError'`, which is what
- * `AbortSignal.timeout` rejects with. A refused connection and an unknown host
- * both come back `network`.
+ * WHERE IT STOPS, declared: with no status and no shape — timeout, DNS, refused
+ * connection — only the timeout separates, by `name === 'TimeoutError'`, which
+ * is what `AbortSignal.timeout` rejects with. A refused connection and an
+ * unknown host both come back `network`.
  *
  * **The discriminator EXISTS and is runtime-dependent**, which is a smaller
  * limit than a missing contract. A `fetch` failure in Node carries a code —
@@ -1250,6 +1250,15 @@ function classify(error: unknown): ProviderFailure {
             retryable: false,
             cause: error,
         };
+    }
+
+    // The adapter's own shape check fires INSIDE `provider.embedDocuments`,
+    // before anything downstream, and arrives with no HTTP status. Read its
+    // field first: classifying it by the absent status would call a permanent
+    // failure `network` and invite a retry that cannot succeed.
+    const shape = (error as { shape?: unknown })?.shape;
+    if (shape === 'bad-count' || shape === 'bad-dimensions') {
+        return { reason: shape, retryable: false, cause: error };
     }
 
     const status = (error as { status?: unknown })?.status;
