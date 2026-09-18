@@ -111,7 +111,12 @@ describe('the classification reads a number, never prose', () => {
         });
     });
 
-    it('a 504 is a timeout and a 500 is network, both worth retrying', async () => {
+    it('a 408 and a 504 are timeouts and a 500 is network, all worth retrying', async () => {
+        // 408 is declared in `classify` beside 504, and only 504 had a witness.
+        expect(await reasonOf(new EmbeddingProviderError('p', 408, 'client timeout'))).toMatchObject({
+            reason: 'timeout',
+            retryable: true,
+        });
         expect(await reasonOf(new EmbeddingProviderError('p', 504, 'gateway'))).toMatchObject({
             reason: 'timeout',
             retryable: true,

@@ -185,6 +185,29 @@ describe('without onState the result is unchanged', () => {
         });
         expect(quiet).toEqual(loud);
     });
+
+    it('and the same holds on the FAILED path, which is where they could differ', async () => {
+        // The test above compares two successful calls, and `providerFailure`
+        // is absent on both sides — so it proves nothing about that field. The
+        // catch branch is the only path where the
+        // envelope carries it AND the callback is invoked, so it is the only
+        // one where a divergence could hide.
+        const results = search('prazo contagem relator perícia');
+        const failing: EmbeddingProvider = {
+            ...scripted,
+            async embedDocuments() {
+                throw new EmbeddingProviderError('p', 429, 'slow down');
+            },
+        };
+        const quiet = await attribute(NEEDS_VECTORS, results, { tokenizer, provider: failing });
+        const loud = await attribute(NEEDS_VECTORS, results, {
+            tokenizer,
+            provider: failing,
+            onState: () => {},
+        });
+        expect(quiet).toEqual(loud);
+        expect(quiet.providerFailure).toMatchObject({ reason: 'quota', retryable: true });
+    });
 });
 
 describe('a configuration error rejects AFTER local-done', () => {
