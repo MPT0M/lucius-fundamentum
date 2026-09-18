@@ -116,6 +116,65 @@ export interface ProviderFailure {
     readonly cause: unknown;
 }
 
+/**
+ * Progress, for a caller who asked for it.
+ *
+ * WHAT THIS EMITS IS AN IDENTIFIER, never a sentence. Which words a reader
+ * sees, in which language, is a decision belonging to whoever writes the
+ * interface — this package does not know there is a screen. For the same
+ * reason there is no percentage: how many clauses remain is unknowable until
+ * the text ends, so any progress bar would be invented.
+ *
+ * THE SEQUENCE IS PART OF THE CONTRACT:
+ *
+ *     always                              local-done
+ *     with a provider AND a pending clause
+ *                                         provider-wait
+ *                                         provider-done | provider-failed
+ *     with a chunk wider than the window
+ *                                         nothing more: the promise REJECTS
+ *     otherwise                           nothing more: it ends at local-done
+ *
+ * The last two rows are the pair a consumer must not merge: both stop at
+ * `local-done` and only one of them is a finished attribution. A chunk wider
+ * than the provider's window is checked BEFORE the network, so it rejects the
+ * promise after the event was already emitted — an indicator hung on
+ * `local-done` has to be cleared by the `catch` as well as by the resolve.
+ *
+ * `provider-wait` fires ONCE per call to `attribute`, not once per trip to the
+ * network — there are two trips, and they are one wait to whoever is looking.
+ * Exactly one of `provider-done` and `provider-failed` closes a sequence that
+ * opened with `provider-wait`; half an answer does not make the vectors
+ * available, so a failure on the second trip emits `provider-failed` and not
+ * both.
+ */
+export type AttributeState =
+    /**
+     * The local rungs are done. `preview` is what they found — useful because
+     * the network call that follows takes an order of magnitude longer than
+     * the local pass. Neither duration is promised here: the local one is
+     * measured by `bench/src/attribution-cost.ts`, and nothing in this package
+     * measures the remote one.
+     *
+     * **THE FINAL RESULT REPLACES THIS PREVIEW WHOLE. It does not amend it.**
+     * Between the two a marker can move, change number and be fused away: the
+     * floor reads the span list in order without looking at the rung, and the
+     * dense spans are not in the preview. A consumer swaps the block; one that
+     * patches marker by marker will drift.
+     */
+    | { readonly kind: 'local-done'; readonly preview: Attribution }
+    /**
+     * EMITTED ONLY WHEN THERE WILL BE A WAIT. Not without a provider, and not
+     * when every clause resolved locally and the network is never called.
+     *
+     * An indicator hung on the start of the work would flash for the few
+     * milliseconds the local pass takes, in both of those cases. Hung on this
+     * event it does not flash, because the event does not exist.
+     */
+    | { readonly kind: 'provider-wait' }
+    | { readonly kind: 'provider-done' }
+    | { readonly kind: 'provider-failed'; readonly failure: ProviderFailure };
+
 export interface RungCounts {
     readonly lexical: number;
     readonly vetoed: number;
@@ -177,6 +236,16 @@ export interface AttributeOptions {
     readonly coalesceMaxCodePoints?: number;
     /** See `DEFAULT_MIN_CLUSTER_CODE_POINTS`. Zero turns the floor off. */
     readonly minClusterCodePoints?: number;
+    /**
+     * Follow the work. ABSENT MEANS NO EVENT IS PRODUCED — not produced and
+     * discarded: the preview is built inside the branch that emits it, so
+     * without this field it is never constructed and nothing is paid.
+     *
+     * An optional feature does not change the call of whoever does not use
+     * it. `attribute` returns exactly what it returned before for a caller
+     * who leaves this out.
+     */
+    readonly onState?: (event: AttributeState) => void;
 }
 
 /** A clause of the answer, with the distinct terms it was reduced to. */
@@ -981,12 +1050,26 @@ export async function attribute(
 ): Promise<Attribution> {
     const prepared = prepare(text, results, opts);
     const provider = opts.provider;
-    if (provider === undefined || prepared.pending.length === 0) {
-        return finish(text, results, prepared, opts, {
-            lexical: prepared.placed.length,
-            dense: 0,
-            unattributed: prepared.clauses.length - prepared.placed.length,
+    const localCounts = {
+        lexical: prepared.placed.length,
+        dense: 0,
+        unattributed: prepared.clauses.length - prepared.placed.length,
+    };
+
+    // The preview is built INSIDE this branch. Without `onState` the call to
+    // `finish` never runs, which is what makes the feature free for a caller
+    // who did not ask for it.
+    if (opts.onState) {
+        opts.onState({
+            kind: 'local-done',
+            preview: finish(text, results, prepared, opts, localCounts),
         });
+    }
+
+    if (provider === undefined || prepared.pending.length === 0) {
+        // No wait, so no `provider-wait`. This is the case an indicator hung
+        // on the start of the work would have flashed through.
+        return finish(text, results, prepared, opts, localCounts);
     }
 
     const passages = results.map((r) => r.chunk.text);
@@ -1014,6 +1097,8 @@ export async function attribute(
     // permanent silent degradation.
     let passageVectors: readonly (readonly number[])[];
     let clauseVectors: readonly (readonly number[])[];
+    // ONE event for TWO trips: the wait is one from where the reader stands.
+    opts.onState?.({ kind: 'provider-wait' });
     try {
         passageVectors = await embedDocumentsChecked(passages, provider);
         clauseVectors = await embedDocumentsChecked(clauseTexts, provider);
@@ -1021,19 +1106,13 @@ export async function attribute(
         // The local rungs already finished, and what they found is complete and
         // correct. Letting the exception through would throw that away and hand
         // a caller with a key LESS than a caller without one.
-        return finish(
-            text,
-            results,
-            prepared,
-            opts,
-            {
-                lexical: prepared.placed.length,
-                dense: 0,
-                unattributed: prepared.clauses.length - prepared.placed.length,
-            },
-            classify(error),
-        );
+        const failure = classify(error);
+        // `provider-done` is NOT emitted here. It means the vectors are
+        // available, and a failure on either trip leaves them unavailable.
+        opts.onState?.({ kind: 'provider-failed', failure });
+        return finish(text, results, prepared, opts, localCounts, failure);
     }
+    opts.onState?.({ kind: 'provider-done' });
 
     let dense = 0;
     prepared.pending.forEach((item, i) => {

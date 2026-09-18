@@ -64,6 +64,7 @@ export type {
     AttributeOptions,
     RungCounts,
     ProviderFailure,
+    AttributeState,
     ResolvedBy,
 } from './attribute.js';
 export { formatAttribution } from './format-attribution.js';
