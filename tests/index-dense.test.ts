@@ -594,15 +594,47 @@ describe('fusion — the two cases production hits that the fixtures did not', (
     });
 });
 
-describe('a keyless save keeps the vectors', () => {
-    it('serializing an index loaded without a provider preserves its dense section', async () => {
-        // TARGET OF THE REVERSAL: write `serialize`'s dense section from the
-        // runtime alone. The round trip below then loses the vectors, and the
-        // only way back is embedding the whole corpus a second time.
+describe('the index says whether the hybrid arm can run', () => {
+    it('reports `absent` when nothing was ever embedded', async () => {
+        const index = createIndex(CORPUS, { chunkOptions: SMALL });
+
+        expect(index.denseArm).toBe('absent');
+        await expect(index.search('casa')).rejects.toThrow(/needs vectors and this index has none/);
+    });
+
+    it('reports `ready` when the vectors and a provider are both present', async () => {
+        const index = await createDenseIndex(CORPUS, provider, { chunkOptions: SMALL });
+
+        expect(index.denseArm).toBe('ready');
+        expect((await index.search('casa')).length).toBeGreaterThan(0);
+    });
+
+    it('reports `needs-provider` for stored vectors reloaded without one', async () => {
+        // THE CASE A BOOLEAN CANNOT EXPRESS, and the one a caller gets wrong
+        // in the expensive direction: the artifact HAS the vectors, so the
+        // repair is to pass the provider, not to embed the corpus again.
+        const built = await createDenseIndex(CORPUS, provider, { chunkOptions: SMALL });
+        const reloaded = loadIndex(built.serialize());
+
+        expect(reloaded.denseArm).toBe('needs-provider');
+        expect(reloaded.serialize().dense).not.toBeNull();
+
+        // And the refusal names THIS cause. The message it replaced said the
+        // artifact carried `dense === null`, which is false here and points
+        // at the repair that costs money.
+        await expect(reloaded.search('casa')).rejects.toThrow(
+            /loaded without one.*already in the artifact/s,
+        );
+    });
+
+    it('a save without a provider keeps the vectors it was loaded with', async () => {
+        // TARGET OF THE REVERSAL: write `serialize`'s `dense` from the runtime
+        // alone. The round trip below then returns `absent`, and the only way
+        // back is embedding the whole corpus a second time.
         //
-        // The loss is silent: the file stays valid, it is merely smaller, and
+        // The loss was silent: the file stays valid, it is merely smaller, and
         // nothing on the way out says the expensive half left. Someone who
-        // opens a tool with no key, edits the collection and saves has paid
+        // opens the tool with no key, edits the collection and saves has paid
         // for embeddings that no longer exist.
         const built = await createDenseIndex(CORPUS, provider, { chunkOptions: SMALL });
         const keyless = loadIndex(built.serialize());
@@ -611,8 +643,17 @@ describe('a keyless save keeps the vectors', () => {
         expect(rewritten.dense).not.toBeNull();
         expect(rewritten.dense).toEqual(built.serialize().dense);
 
-        // And they still work once the provider comes back.
+        // And the vectors still work once the provider comes back, which is
+        // the claim `needs-provider` makes to whoever reads the field.
         const recovered = loadIndex(rewritten, { provider });
+        expect(recovered.denseArm).toBe('ready');
         expect((await recovered.search('casa')).length).toBeGreaterThan(0);
+    });
+
+    it('answers lexically in all three states, because that arm never needed a key', () => {
+        const absent = createIndex(CORPUS, { chunkOptions: SMALL });
+
+        expect(absent.denseArm).toBe('absent');
+        expect(absent.searchLexical('casa').length).toBeGreaterThan(0);
     });
 });

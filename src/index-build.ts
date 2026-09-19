@@ -146,8 +146,31 @@ export interface SearchResult {
     readonly rank: number;
 }
 
+/**
+ * Whether `search` can run, and when it cannot, which of the two reasons.
+ *
+ * THE TWO FAILURES COST DIFFERENT THINGS, which is the whole reason this is
+ * not a boolean. `needs-provider` is one call away: the vectors are in the
+ * artifact and an index loaded with the provider that built them searches
+ * immediately. `absent` means the corpus was never embedded, so reaching
+ * hybrid means embedding every document — money and time proportional to the
+ * collection. A caller that collapses them offers "re-read 40 documents" to
+ * someone who only had to supply a key.
+ *
+ * It is derived, never stored: an artifact carries vectors or not, and a load
+ * supplies a provider or not. Reading it costs nothing and it cannot drift
+ * from what `search` will do, which is what keeping the same fact in the
+ * caller cannot promise.
+ */
+export type DenseArm = 'ready' | 'needs-provider' | 'absent';
+
 export interface Index {
     readonly tokenizerId: string;
+    /**
+     * Whether the hybrid `search` can run on this index, and why not when it
+     * cannot. See `DenseArm`: the two negative values are not interchangeable.
+     */
+    readonly denseArm: DenseArm;
     /** The lexical arm alone: BM25 over the postings, synchronous and free. */
     searchLexical(query: string, opts?: SearchOptions): readonly SearchResult[];
     /**
@@ -476,6 +499,11 @@ function makeIndex(
     tokenizer: Tokenizer,
     params: Bm25Params,
     dense: DenseRuntime | null,
+    // Passed in rather than derived from `dense` because `dense === null` is
+    // the one thing that CANNOT tell the two negative cases apart — it is null
+    // both for an artifact with no vectors and for one loaded without a
+    // provider. Only the caller knows which.
+    denseArm: DenseArm,
     // The dense section exactly as it arrived, kept so that `serialize` can
     // write back vectors this process never loaded. Present and unloaded is
     // the `needs-provider` case; writing from the runtime alone DELETED them,
@@ -544,6 +572,7 @@ function makeIndex(
 
     return {
         tokenizerId: tokenizer.id,
+        denseArm,
 
         searchLexical(query: string, opts: SearchOptions = {}): readonly SearchResult[] {
             const topK = opts.topK ?? DEFAULT_TOP_K;
@@ -552,9 +581,19 @@ function makeIndex(
 
         async search(query: string, opts: SearchOptions = {}): Promise<readonly SearchResult[]> {
             if (dense === null) {
+                // Naming which of the two, because the repairs are not the
+                // same size. The single message this replaced said "its
+                // artifact carries dense === null", which is FALSE for a
+                // loaded artifact that does carry vectors, and sends a reader
+                // to re-embed a corpus that never needed it.
                 throw new Error(
-                    'search requires an embedding provider, and this index has none: its artifact carries ' +
-                        'dense === null. Use searchLexical for the lexical half, or build the index with a provider.',
+                    denseArm === 'needs-provider'
+                        ? 'search needs an embedding provider and this index was loaded without one. The ' +
+                          'vectors are already in the artifact: pass the provider that built them to ' +
+                          'loadIndex and nothing has to be embedded again. searchLexical answers meanwhile.'
+                        : 'search needs vectors and this index has none — it was built by createIndex, ' +
+                          'which does not embed. Build it with createDenseIndex to embed the corpus once, ' +
+                          'or use searchLexical, which is the whole answer this index can give.',
                 );
             }
             const topK = opts.topK ?? DEFAULT_TOP_K;
@@ -636,7 +675,7 @@ export function createIndex(docs: readonly SourceDoc[], opts: IndexOptions = {})
                 'in a script the tokenizer drops entirely gives exactly this.',
         );
     }
-    return makeIndex(built, tokenizer, params, null, null, CHUNKER_POLICY);
+    return makeIndex(built, tokenizer, params, null, 'absent', null, CHUNKER_POLICY);
 }
 
 /**
@@ -755,11 +794,18 @@ export function loadIndex(
         averageLength: artifact.bm25.averageLength,
     };
     const dense = denseFromArtifact(artifact, opts.provider);
+    // `== null` and not `=== null`, for the reason `denseFromArtifact`
+    // documents: an artifact written before the dense arm existed carries no
+    // `dense` key at all, and it has no vectors rather than a broken one.
+    const denseArm: DenseArm =
+        dense !== null ? 'ready' : artifact.dense == null ? 'absent' : 'needs-provider';
+
     return makeIndex(
         built,
         tokenizer,
         { k1: artifact.bm25.k1, b: artifact.bm25.b },
         dense,
+        denseArm,
         artifact.dense ?? null,
         artifact.chunkerPolicy,
     );

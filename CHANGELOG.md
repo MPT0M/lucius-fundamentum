@@ -8,6 +8,16 @@ All notable changes to this package are documented here. The format follows
 
 ### Added
 
+- **`Index.denseArm` answers whether `search` can run, before you call it.**
+  `'ready'`, or one of two refusals that do not cost the same. `'needs-provider'`
+  means the vectors are in the artifact and `loadIndex` was called without a
+  provider: the repair is one argument and nothing is embedded again.
+  `'absent'` means the corpus was never embedded, so reaching hybrid costs a
+  pass over every document. A boolean collapses exactly the two that differ,
+  and a caller holding its own flag cannot see the first case at all, because
+  it depends on how THIS process loaded the index rather than on how it was
+  built. `search`'s refusal now names which of the two, for the same reason.
+
 - **Attribution.** `attribute` and `attributeLexical` take a text a model
   already wrote plus the passages a search already returned, and say which
   stretch of the text each passage supports. The answer is attributed ONCE,

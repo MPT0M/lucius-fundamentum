@@ -32,7 +32,7 @@ export {
     FUSION_K,
     FUSION_DEPTH,
 } from './index-build.js';
-export type { Index, IndexArtifact, IndexOptions, SearchOptions, SearchResult, StoredChunk } from './index-build.js';
+export type { DenseArm, Index, IndexArtifact, IndexOptions, SearchOptions, SearchResult, StoredChunk } from './index-build.js';
 export { norm, normalize, dot, packVectors, unpackVectors } from './vector.js';
 export {
     assertChunkCeilingFits,
