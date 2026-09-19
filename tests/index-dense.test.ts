@@ -593,3 +593,26 @@ describe('fusion — the two cases production hits that the fixtures did not', (
         expect(second!.chunk.text).toContain('Charlie');
     });
 });
+
+describe('a keyless save keeps the vectors', () => {
+    it('serializing an index loaded without a provider preserves its dense section', async () => {
+        // TARGET OF THE REVERSAL: write `serialize`'s dense section from the
+        // runtime alone. The round trip below then loses the vectors, and the
+        // only way back is embedding the whole corpus a second time.
+        //
+        // The loss is silent: the file stays valid, it is merely smaller, and
+        // nothing on the way out says the expensive half left. Someone who
+        // opens a tool with no key, edits the collection and saves has paid
+        // for embeddings that no longer exist.
+        const built = await createDenseIndex(CORPUS, provider, { chunkOptions: SMALL });
+        const keyless = loadIndex(built.serialize());
+
+        const rewritten = keyless.serialize();
+        expect(rewritten.dense).not.toBeNull();
+        expect(rewritten.dense).toEqual(built.serialize().dense);
+
+        // And they still work once the provider comes back.
+        const recovered = loadIndex(rewritten, { provider });
+        expect((await recovered.search('casa')).length).toBeGreaterThan(0);
+    });
+});

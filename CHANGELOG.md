@@ -253,6 +253,18 @@ All notable changes to this package are documented here. The format follows
   vectors the index already holds. It pays twice, and in exchange both sides of
   every comparison are born in the same call, through the same door.
 
+### Fixed
+
+- **Saving an index loaded without a provider no longer deletes its vectors.**
+  `serialize` wrote the dense section from what the process had LOADED, and an
+  index loaded without a provider loads none — so a round trip through a
+  keyless session returned an artifact with `dense: null` and the embeddings of
+  the whole corpus gone. The file stayed valid and merely got smaller; the next
+  load reported `absent`, which is the reading that sends someone to pay for
+  the corpus twice. It now falls back to the section it was loaded with. The
+  runtime still wins when both exist, because `createDenseIndex` produces
+  vectors that have no stored twin yet.
+
 ### Changed
 
 - **`search` is now the hybrid search, not the dense one.** It runs both arms,

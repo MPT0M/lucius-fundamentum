@@ -476,6 +476,11 @@ function makeIndex(
     tokenizer: Tokenizer,
     params: Bm25Params,
     dense: DenseRuntime | null,
+    // The dense section exactly as it arrived, kept so that `serialize` can
+    // write back vectors this process never loaded. Present and unloaded is
+    // the `needs-provider` case; writing from the runtime alone DELETED them,
+    // and the loss was silent and expensive — see `serialize`.
+    storedDense: IndexArtifact['dense'],
     // The policy the CHUNKS were cut under, not the one this build would use.
     // A loaded artifact reserialized has to keep saying what produced it —
     // stamping the current version on old boundaries is precisely the lie the
@@ -577,14 +582,25 @@ function makeIndex(
                 bm25: { k1: params.k1, b: params.b, averageLength: built.averageLength },
                 chunks: built.stored,
                 postings,
+                // FALLING BACK TO `storedDense` IS THE WHOLE POINT, not a
+                // tidy default. Writing from the runtime alone means an index
+                // loaded without a provider serializes without the vectors it
+                // was loaded WITH: open the tool with no key, save, and the
+                // embeddings of the whole corpus are gone. Nothing says so —
+                // the file is valid, smaller, and the next load reports
+                // `absent`, which sends the reader to embed it all again.
+                //
+                // The runtime comes first because it is the one that can be
+                // newer: `createDenseIndex` builds vectors and reloads
+                // through here, and those have no stored twin yet.
                 dense:
-                    dense === null
-                        ? null
-                        : {
+                    dense !== null
+                        ? {
                               providerId: dense.providerId,
                               dimensions: dense.dimensions,
                               vectors: packVectors(dense.vectors),
-                          },
+                          }
+                        : (storedDense ?? null),
             };
         },
     };
@@ -620,7 +636,7 @@ export function createIndex(docs: readonly SourceDoc[], opts: IndexOptions = {})
                 'in a script the tokenizer drops entirely gives exactly this.',
         );
     }
-    return makeIndex(built, tokenizer, params, null, CHUNKER_POLICY);
+    return makeIndex(built, tokenizer, params, null, null, CHUNKER_POLICY);
 }
 
 /**
@@ -738,11 +754,13 @@ export function loadIndex(
         lengths,
         averageLength: artifact.bm25.averageLength,
     };
+    const dense = denseFromArtifact(artifact, opts.provider);
     return makeIndex(
         built,
         tokenizer,
         { k1: artifact.bm25.k1, b: artifact.bm25.b },
-        denseFromArtifact(artifact, opts.provider),
+        dense,
+        artifact.dense ?? null,
         artifact.chunkerPolicy,
     );
 }
