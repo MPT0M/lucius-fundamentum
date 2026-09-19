@@ -100,6 +100,24 @@ progress for a caller who wants to show something during the wait, and emits
 an identifier rather than a sentence, because the words belong to whoever
 writes the interface.
 
+**Reporting is opt-in twice over**, and the second one is easy to miss. Pass no
+`onState` and nothing is produced: no event, and the preview is never even
+built. Pass one and use only the event kinds, and you have a loading state that
+appears only when there is a wait — `provider-wait` is not emitted without a
+provider, nor when the words resolved every clause. Pass one and also paint the
+`local-done` preview, and you have taken on the third posture: the final result
+replaces that preview rather than extending it, because a span the vectors add
+changes which markers are neighbours, and neighbours decide what fuses and what
+gets nudged. Swap the block; patching marker by marker drifts. An interface
+that only wants a spinner should ignore the preview and never meet this.
+
+**`index.denseArm` says whether hybrid search can run before you call it.**
+`ready`, or one of two refusals that cost different things: `needs-provider`
+means the vectors are in the artifact and a provider was not supplied to
+`loadIndex`, so the repair is one argument; `absent` means the corpus was never
+embedded, so the repair is embedding all of it. Collapsing them into a boolean
+offers a re-index to someone who only had to pass a key.
+
 **A provider failure does not throw — it degrades.** `attribute` catches it,
 answers with what the local rungs found, and describes the failure on
 `Attribution.providerFailure`, whose `retryable` says whether repeating is
