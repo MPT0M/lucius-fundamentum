@@ -53,8 +53,8 @@ function search(query: string): readonly SearchResult[] {
 }
 
 /**
- * The ten lines. Walks the cited spans, resolves each passage to its number,
- * and pairs it with the caller's own record.
+ * The whole of it. Walks the cited spans, resolves each passage to its
+ * number, and pairs it with the caller's own record.
  */
 function sourceList(formatted: FormattedAttribution): string[] {
     const numbers = new Map<number, string>();

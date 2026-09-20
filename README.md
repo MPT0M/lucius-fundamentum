@@ -82,6 +82,23 @@ const formatted = formatAttribution(attribution, { markerStyle: 'bracket' });
 const { text, spans } = formatted;
 ```
 
+**`granularity` chooses how dense the markers are.** `'cluster'`, the default,
+anchors once per clause: each marker asserts that its source supports that
+clause. `'paragraph'` anchors once per block, and the promise changes with it
+— a marker there says the source was used somewhere in the block, not that it
+carries all of it. The two are different claims rather than different amounts
+of the same claim, which is why they are modes and not a knob.
+
+```ts
+const dense = attributeLexical(answer, results, { tokenizer });
+const sparse = attributeLexical(answer, results, { tokenizer, granularity: 'paragraph' });
+```
+
+A marker is written before the clause's closing punctuation, with a space:
+`O prazo é de quinze dias [1], [2].` The space is uniform across scripts, so
+Japanese gets `この規定は十五日です [1]。` with a space the writing system does not
+ask for. That is a deliberate house style, not a bug.
+
 **Provenance travels in the data; this package does not compile a source
 list.** A good line needs the document's name, its page, its URL — things that
 live in your registry, not in a `SourceDoc`. So `formatted` hands back

@@ -3,6 +3,8 @@
 All notable changes to this package are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). While the version is
 `0.x`, a breaking change bumps the minor and is written up with its migration.
+That rule governs changes made FROM the first release onward, so entries under
+`[Unreleased]` written before it break nothing and carry no migration.
 
 ## [Unreleased]
 
@@ -63,15 +65,62 @@ All notable changes to this package are documented here. The format follows
 
 ### Added
 
+- **`granularity: 'paragraph'` puts one anchor per block instead of one per
+  clause.** Every source used anywhere in a paragraph is cited once, at the
+  receded end of the block's last clause — not at the paragraph boundary,
+  which would render `"...aqui. [1]\n\n"` and put the marker after the
+  punctuation again.
+
+  It is a different promise from `'cluster'`, not a looser one. A conjunctive
+  marker says each source supports its whole scope; a collective one says each
+  source was used somewhere inside it. The reader learns the convention at the
+  first marker, and mixing the two inside one mode is what this design
+  refuses.
+
+  A clause belongs to the block its START falls in. That only matters for a
+  clause straddling a boundary, which happens when the segmenter did not treat
+  the blank line as a sentence break — and a mode cannot inherit an
+  "almost always", so the tie-break is written down.
+
+  The paragraph boundary is a blank line matched as newline, optional
+  horizontal whitespace, newline — never a literal `\n\n`, which no CRLF
+  document matches and whose failure is silent: zero boundaries is one marker
+  for the whole answer, with no error. It is matched over MASKED text, so a
+  blank line inside a fenced code block does not fabricate a block; the mask
+  preserves length, so the offsets stay valid on the original.
+
+  The floor is switched off in this mode rather than left to no-op: every
+  anchor in a block is the same offset, so every distance is zero, the floor
+  would fire on all of them and spread them through the interior. That also
+  makes the third density pass vacuous for free, since it is gated on a flag
+  only the floor sets.
+
+  **Fusion is refused across a block**, and that gate is the behaviour change
+  worth naming here. Ungated, two clauses of the same passage on either side
+  of a blank line fused: the merged span took the later anchor and swallowed
+  the boundary, so the first paragraph came out with no marker at all -
+  measured as one span at anchor 53 covering {0, 54}, rendering
+  `O prazo é de quinze dias.` bare, against the promise this mode makes by
+  name. The gate is cheap because same anchor IS same block here, which is
+  exactly what the anchor assignment guarantees.
+
+  A consequence of the two together: **both `minClusterCodePoints` and
+  `coalesceMaxCodePoints` are ignored in this mode**, silently, and a test
+  pins each one. Inside a block every anchor is the same offset, so the
+  fusion distance is always zero and any window accepts it; across a block
+  the gate answers before the window is consulted.
+
 - **`AttributeOptions.granularity` gives the anchor density a name.**
-  `'cluster'` is the only value, it is the default, and it is exactly what the
+  `'cluster'` is the default, and it is exactly what the
   package already produced: one anchor per clause, spaced by
   `minClusterCodePoints` and fused by `coalesceMaxCodePoints`. Zero behaviour
   changes — the addition is a word for the mode, so a second density can be
   added later without the first one being "the way it works".
 
   The union publishes only what exists. A value whose mode does not work gives
-  a compile error to a TypeScript caller and silence to a JavaScript one.
+  a compile error to a TypeScript caller and silence to a JavaScript one, so
+  `'paragraph'` entered the union together with the code that answers it,
+  not ahead of it.
   `'document'` is not planned at all: one marker for a whole answer is
   `markerStyle: 'none'` plus a source list, decided at the layer that renders.
 
@@ -150,12 +199,13 @@ All notable changes to this package are documented here. The format follows
   is what tells it apart from no provider at all, for a caller who asked
   for no events. `retryable` reads an HTTP status, a standardised number,
   and never the provider's prose.
-- **Five thresholds, all arbitrary until measured** and all exported to be
-  read: `MIN_LEXICAL_SUPPORT`, `LEXICAL_MARGIN`,
+- **Five thresholds, all arbitrary until measured** and all
+  exported to be read: `MIN_LEXICAL_SUPPORT`, `LEXICAL_MARGIN`,
   `DEFAULT_COALESCE_MAX_CODE_POINTS`, `DEFAULT_MIN_CLUSTER_CODE_POINTS` and
   `DEFAULT_ATTRIBUTE_OPTIONS`. The first two ARE the coverage-versus-noise
   trade in disguise, and the evaluation harness under `bench/` is what will
-  calibrate them.
+  calibrate them. Not a closed inventory of what the package exports to be
+  read — later entries add their own, and `DEFAULT_GRANULARITY` is one.
 
 - A dense arm. `createDenseIndex(documents, provider, options)` builds an index
   that carries a vector per chunk, which is what lets `search` answer at all —

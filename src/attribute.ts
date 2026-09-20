@@ -19,7 +19,7 @@ import { luceneIdf } from './bm25.js';
 import { assertChunksFit, embedDocumentsChecked, EmbeddingCheckError } from './embedding.js';
 import type { EmbeddingProvider } from './embedding.js';
 import { dot } from './vector.js';
-import { sentencesOf, defaultSegmenter, recedeAnchor } from './sentences.js';
+import { sentencesOf, defaultSegmenter, recedeAnchor, paragraphEndsOf } from './sentences.js';
 import type { Segmenter } from './sentences.js';
 
 /**
@@ -237,7 +237,7 @@ export interface Attribution {
  * gets silence, which is the reason not to publish a name before the mode
  * behind it works.
  */
-export type AttributionGranularity = 'cluster';
+export type AttributionGranularity = 'cluster' | 'paragraph';
 
 export interface AttributeOptions {
     /**
@@ -275,14 +275,40 @@ export interface AttributeOptions {
      * existing mode a word, so a second one can be added without the first
      * being "the way it works".
      *
+     * `'paragraph'` is collective: one anchor per block, carrying every
+     * source used anywhere inside it, and the reader learns the convention at
+     * the first marker. It is a different promise from `'cluster'`, not a
+     * looser one — a conjunctive marker says each source supports its whole
+     * scope, a collective one says each source was used somewhere in it — and
+     * mixing the two inside one mode is what this design refuses.
+     *
      * `'document'` is deliberately absent. One marker for a whole answer is
      * `markerStyle: 'none'` plus a source list the caller composes, which is
      * the same output decided at the layer that knows how to render it.
      */
     readonly granularity?: AttributionGranularity;
-    /** See `DEFAULT_COALESCE_MAX_CODE_POINTS`. */
+    /**
+     * See `DEFAULT_COALESCE_MAX_CODE_POINTS`.
+     *
+     * **Ignored in `granularity: 'paragraph'`, silently**, for the same reason
+     * as `minClusterCodePoints` below and by a shorter argument than it looks:
+     * inside a block every anchor is the same offset, so the fusion distance
+     * is always zero and any window accepts it; across a block the gate
+     * refuses before the distance is consulted. There is no input where this
+     * value changes the collective output.
+     */
     readonly coalesceMaxCodePoints?: number;
-    /** See `DEFAULT_MIN_CLUSTER_CODE_POINTS`. Zero turns the floor off. */
+    /**
+     * See `DEFAULT_MIN_CLUSTER_CODE_POINTS`. Zero turns the floor off.
+     *
+     * **Ignored in `granularity: 'paragraph'`, silently.** Every anchor in a
+     * block is the same offset there, so every distance is zero and the floor
+     * would fire on all of them, spacing them through the interior — a
+     * conjunctive marker inside a collective mode. Passing a value changes
+     * nothing rather than erroring, because the option is meaningful in the
+     * default mode and refusing it here would make the two modes take
+     * different option shapes.
+     */
     readonly minClusterCodePoints?: number;
     /**
      * Follow the work. ABSENT MEANS NO EVENT IS PRODUCED — not produced and
@@ -907,14 +933,39 @@ export function applyDensity(
     items: readonly Placed[],
     clauseAnchors: readonly number[],
     recompute: (terms: ReadonlySet<string>, chunkId: string) => number,
-    opts: { readonly coalesceMaxCodePoints?: number; readonly minClusterCodePoints?: number } = {},
+    opts: {
+        readonly coalesceMaxCodePoints?: number;
+        readonly minClusterCodePoints?: number;
+        /**
+         * Extra condition on the FIRST pass, on top of adjacency and same
+         * passage. Absent, the pass fuses whatever qualifies, which is right
+         * when every anchor stands for one clause.
+         *
+         * It exists for the collective mode, where fusing two clauses across
+         * a blank line silently deletes the first block's marker: the fused
+         * span takes the LATER anchor, and the paragraph that lost its own
+         * has nothing left pointing at it. That is not a smaller marker, it
+         * is a missing one, against a promise the mode makes by name.
+         */
+        readonly canFuse?: (a: Placed, b: Placed) => boolean;
+    } = {},
 ): readonly AttributionSpan[] {
     const coalesce = opts.coalesceMaxCodePoints ?? DEFAULT_COALESCE_MAX_CODE_POINTS;
     const floor = opts.minClusterCodePoints ?? DEFAULT_MIN_CLUSTER_CODE_POINTS;
 
-    const fused = coalescePass(items, () => true, recompute, coalesce);
+    const fused = coalescePass(items, opts.canFuse ?? (() => true), recompute, coalesce);
     const spaced = applyFloor(fused, clauseAnchors, floor);
-    const settled = coalescePass(spaced, (a, b) => a.moved && b.moved, recompute, coalesce);
+    // `canFuse` guards this pass too, not only the first. Today the third is
+    // already vacuous wherever `canFuse` is set, because that is the collective
+    // mode and its floor is off, so `moved` is never true - but that is a
+    // second, distant fact holding up the same invariant. Whoever switches the
+    // floor back on there should not have to find this line to keep the gate.
+    const settled = coalescePass(
+        spaced,
+        (a, b) => a.moved && b.moved && (opts.canFuse?.(a, b) ?? true),
+        recompute,
+        coalesce,
+    );
     return settled.map((item) => item.span);
 }
 
@@ -954,8 +1005,10 @@ function utf16Range(text: string, span: Span): [number, number] {
  * it here.** `Omit` preserves optionality, so a new `foo?:` leaves this
  * literal compiling unchanged, and the default would be published, documented
  * and missing from the one object whose job is to state the defaults - with
- * the suite green. Every entry below is a line no tool would have demanded,
- * and a test asserts each one against its constant for that reason.
+ * the suite green. Every entry below is a line no tool would have demanded.
+ * Only `granularity` is tied to its constant by a test; the other two are
+ * checked against literals elsewhere, which pins the constants rather than
+ * these entries, and is a weaker thing.
  */
 export const DEFAULT_ATTRIBUTE_OPTIONS: Readonly<
     Omit<AttributeOptions, 'tokenizer' | 'provider' | 'segmenter' | 'abbreviations'>
@@ -1095,9 +1148,16 @@ function finish(
     providerFailure?: ProviderFailure,
 ): Attribution {
     const ordered = [...prepared.placed].sort((a, b) => a.firstClause - b.firstClause);
+    // This is the one point that holds the raw text and the clause list at the
+    // same time, which is what the collective mode needs: the paragraph
+    // boundaries come from the text, the anchors from the clauses.
+    const collective = (opts.granularity ?? DEFAULT_GRANULARITY) === 'paragraph';
+    const anchors = collective
+        ? paragraphAnchors(text, prepared.clauses)
+        : prepared.clauses.map((c) => c.anchorOffset);
     const spans = applyDensity(
-        ordered,
-        prepared.clauses.map((c) => c.anchorOffset),
+        collective ? ordered.map(toParagraphAnchor(anchors)) : ordered,
+        anchors,
         (terms, chunkId) =>
             coverageOf(
                 terms,
@@ -1105,7 +1165,28 @@ function finish(
                 prepared.df,
                 results.length,
             ) ?? 0,
-        opts,
+        // The floor is switched off in the collective mode rather than left to
+        // no-op. Every anchor in a block is the SAME offset, so every distance
+        // is zero, the floor fires on all of them and spreads them through the
+        // interior - a conjunctive marker inside a collective mode, which is
+        // the mixture this design refuses by name. Turning it off also makes
+        // the third pass vacuous for free: it is gated on `moved`, and only
+        // the floor sets that.
+        //
+        // And fusion is gated to one block. Same anchor IS same block here,
+        // because that is exactly what `paragraphAnchors` assigns - so the
+        // predicate needs no block index threaded through the density rules.
+        // Without it, two clauses of one passage on either side of a blank
+        // line fuse, the merged span takes the later anchor, and the first
+        // paragraph loses its marker entirely.
+        collective
+            ? {
+                  ...opts,
+                  minClusterCodePoints: 0,
+                  canFuse: (a: Placed, b: Placed) =>
+                      a.span.anchorOffset === b.span.anchorOffset,
+              }
+            : opts,
     );
     const envelope: Attribution = {
         text,
@@ -1386,4 +1467,58 @@ function denseRung(
 /** Slices in code points, which is the unit of every offset in this package. */
 function sliceCodePoints(text: string, start: number, end: number): string {
     return Array.from(text).slice(start, end).join('');
+}
+
+/**
+ * The anchor each clause gets in the collective mode: one per paragraph,
+ * shared by every clause inside it.
+ *
+ * **A clause belongs to the paragraph its START falls in.** A clause can only
+ * straddle a boundary when the segmenter did not treat the blank line as a
+ * sentence break, and then something has to break the tie; deciding by the
+ * start means a straddling clause is cited with the block it opens, which is
+ * where a reader is when they meet the marker. The rule is written here
+ * because "normally a clause is inside one paragraph" is exactly the kind of
+ * almost-always a mode cannot inherit.
+ *
+ * The anchor is the RECEDED end of the last clause of the block, not the
+ * paragraph boundary itself. Anchoring at the boundary would produce
+ * `"...aqui. [1]\n\n"` — a marker after the punctuation, which is the
+ * convention this package just stopped using.
+ */
+function paragraphAnchors(text: string, clauses: readonly Clause[]): number[] {
+    const ends = paragraphEndsOf(text);
+    // Resolved once per clause and kept, rather than searched again on the
+    // second pass. Both passes need the same answer, and computing it twice
+    // is not only wasted work — it is two places that could disagree after an
+    // edit to the predicate.
+    const blocks = clauses.map((clause) => ends.findIndex((end) => clause.span.start < end));
+    const anchorOfBlock = new Map<number, number>();
+    blocks.forEach((block, i) => {
+        if (block >= 0) anchorOfBlock.set(block, clauses[i]!.anchorOffset);
+    });
+    return clauses.map(
+        (clause, i) => anchorOfBlock.get(blocks[i]!) ?? clause.anchorOffset,
+    );
+}
+
+/**
+ * Moves a placed span onto its paragraph's shared anchor.
+ *
+ * **At the one call site no fusion has run yet**, so every `Placed` covers a
+ * single clause and `firstClause === lastClause`: the index chosen here has no
+ * observable consequence today. `lastClause` is used because it is the one
+ * that stays correct if the order ever changes — a widened span belongs to the
+ * block it ends in, which is where its anchor already sat.
+ *
+ * An earlier version of this comment justified the choice with the fused case
+ * as though it reached here. It does not, and saying so would let a reader
+ * believe the fused case is handled. What handles it is the fusion gate in
+ * `finish`, which refuses to merge across a block at all.
+ */
+function toParagraphAnchor(anchors: readonly number[]): (item: Placed) => Placed {
+    return (item) => ({
+        ...item,
+        span: { ...item.span, anchorOffset: anchors[item.lastClause] ?? item.span.anchorOffset },
+    });
 }

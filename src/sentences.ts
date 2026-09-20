@@ -140,3 +140,44 @@ export function recedeAnchor(points: readonly string[], start: number, end: numb
     while (at > start && RECEDES.test(points[at - 1]!)) at--;
     return at === start ? end : at;
 }
+
+/**
+ * Where each paragraph of a text ends, in code points.
+ *
+ * A paragraph boundary is a blank line: a newline, optional horizontal
+ * whitespace, another newline. `\n\n` written literally is wrong and fails in
+ * silence — a CRLF document never matches it, zero boundaries becomes one
+ * marker for the whole answer, and nothing throws.
+ *
+ * **It masks internally, and takes raw text for that reason.** The earlier
+ * design took already-masked text, which left a precondition no public door
+ * could satisfy: `sentencesOf` masks and returns spans only, discarding the
+ * masked string, so nothing in the attribution path holds one. Taking raw
+ * text mirrors `sentencesOf` and removes the trap instead of documenting it.
+ *
+ * The mask is what keeps a blank line inside a fenced code block from
+ * fabricating a boundary: `paint` overwrites every code point of a protected
+ * region, newlines included, and the length is preserved, so the offsets this
+ * returns are valid on the original text.
+ *
+ * The cost is a second masking pass per attribution: this one, plus the one
+ * inside `sentencesOf`. They are not the same mask — that one is given the
+ * abbreviation list and this one is not — but they agree on every newline,
+ * which is all this function reads, and both preserve length. The
+ * alternative, having `sentencesOf` return its masked string, changes an
+ * existing contract to save a pass nobody has measured, so it was refused.
+ *
+ * The last paragraph ends at the end of the text, whether or not the text
+ * closes with a blank line.
+ */
+export function paragraphEndsOf(text: string): number[] {
+    const masked = maskProtectedRegions(text).text;
+    const points = Array.from(masked);
+    const BLANK_LINE = /\r?\n[^\S\r\n]*\r?\n/gu;
+    const ends: number[] = [];
+    for (const match of masked.matchAll(BLANK_LINE)) {
+        ends.push(countCodePoints(masked.slice(0, match.index)));
+    }
+    ends.push(points.length);
+    return ends;
+}
