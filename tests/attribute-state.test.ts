@@ -14,7 +14,6 @@ import { EmbeddingProviderError } from '../src/providers/http.js';
 
 const DOC: SourceDoc = {
     id: 'lei',
-    title: 'Lei',
     text:
         'O prazo para recurso é de 15 dias corridos. ' +
         'A contagem exclui o dia inicial e inclui o do vencimento. ' +

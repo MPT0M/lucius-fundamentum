@@ -10,7 +10,7 @@ const text = readFileSync(
     fileURLToPath(new URL('../bench/corpus/public/machado-memorias-posthumas.txt', import.meta.url)),
     'utf8',
 );
-const doc = { id: 'machado-memorias-posthumas', title: 'Memórias Póstumas', text };
+const doc = { id: 'machado-memorias-posthumas', text };
 
 const measure = (stemmed: boolean) =>
     measureDfRegime(
@@ -30,7 +30,7 @@ const withoutStemmer = measure(false);
  * a file existing and on a corpus nobody can hold in their head; these do not.
  */
 describe('df regime — the arithmetic, on collections small enough to count by hand', () => {
-    const tiny = (text: string) => ({ id: 't', title: 't', text });
+    const tiny = (text: string) => ({ id: 't', text });
     // A ceiling large enough that each paragraph is its own chunk, and no
     // overlap, so document frequency is countable by eye.
     // Calibrated so each paragraph is its own chunk: the shortest is 11 code

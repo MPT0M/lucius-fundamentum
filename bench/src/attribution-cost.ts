@@ -71,7 +71,7 @@ export function measure(): {
     readonly modelledTotalMs: number;
     readonly localFraction: number;
 } {
-    const doc: SourceDoc = { id: 'lei', title: 'Lei', text: BASE.repeat(120) };
+    const doc: SourceDoc = { id: 'lei', text: BASE.repeat(120) };
     const tokenizer = createTokenizer();
     const index = createIndex([doc], { tokenizer });
     const results: readonly SearchResult[] = index.searchLexical(

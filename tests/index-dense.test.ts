@@ -7,7 +7,7 @@ import { unpackVectors, packVectors, norm } from '../src/vector.js';
 import type { SourceDoc } from '../src/chunker.js';
 
 const SMALL = { maxChunkCodePoints: 15, maxOverlapCodePoints: 0 };
-const doc = (id: string, text: string): SourceDoc => ({ id, title: id, text });
+const doc = (id: string, text: string): SourceDoc => ({ id, text });
 const CORPUS = [doc('d', 'A casa azul.\n\nA casa verde.\n\nO carro azul.')];
 
 const provider = deterministicProvider(8);
@@ -90,8 +90,8 @@ describe('dense — search', () => {
 
     it('topK caps the list and the page cap still applies', async () => {
         const paged: SourceDoc[] = [
-            { id: 'p1', title: 'p1', text: 'A casa azul.\n\nA casa verde.\n\nA casa velha.', pageNumber: 1 },
-            { id: 'p2', title: 'p2', text: 'A casa nova.', pageNumber: 2 },
+            { id: 'p1', text: 'A casa azul.\n\nA casa verde.\n\nA casa velha.', pageNumber: 1 },
+            { id: 'p2', text: 'A casa nova.', pageNumber: 2 },
         ];
         const index = await createDenseIndex(paged, provider, { chunkOptions: SMALL });
         expect(await index.search('casa', { topK: 2 })).toHaveLength(2);
@@ -483,8 +483,8 @@ describe('fusion — agreement between the two arms beats leadership in one', ()
         // 'bravo' and drops 'charlie', which then carries only its dense
         // 1/61 = 0.01639 and loses the page it should have won.
         const paged: SourceDoc[] = [
-            { id: 'p1', title: 'p1', text: 'Alfa bravo.\n\nAlfa charlie.', pageNumber: 1 },
-            { id: 'p2', title: 'p2', text: 'Alfa delta.', pageNumber: 2 },
+            { id: 'p1', text: 'Alfa bravo.\n\nAlfa charlie.', pageNumber: 1 },
+            { id: 'p2', text: 'Alfa delta.', pageNumber: 2 },
         ];
         const index = await createDenseIndex(paged, placed(['Alfa charlie', 'Alfa delta', 'Alfa bravo']), {
             chunkOptions: SMALL,

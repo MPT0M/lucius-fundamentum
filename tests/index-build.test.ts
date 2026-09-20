@@ -17,7 +17,7 @@ import type { SourceDoc } from '../src/chunker.js';
  * and the postings stop matching what the fixture looks like it says.
  */
 const SMALL = { maxChunkCodePoints: 15, maxOverlapCodePoints: 0 };
-const doc = (id: string, text: string): SourceDoc => ({ id, title: id, text });
+const doc = (id: string, text: string): SourceDoc => ({ id, text });
 
 describe('index — what the artifact records', () => {
     const index = createIndex([doc('d', 'A casa azul.\n\nA casa verde.\n\nO carro azul.')], {
@@ -206,8 +206,8 @@ describe('index — the ranking', () => {
 
 describe('index — the diversity cap', () => {
     const paged: SourceDoc[] = [
-        { id: 'p1', title: 'p1', text: 'A casa azul.\n\nA casa verde.\n\nA casa velha.', pageNumber: 1 },
-        { id: 'p2', title: 'p2', text: 'A casa nova.', pageNumber: 2 },
+        { id: 'p1', text: 'A casa azul.\n\nA casa verde.\n\nA casa velha.', pageNumber: 1 },
+        { id: 'p2', text: 'A casa nova.', pageNumber: 2 },
     ];
     const index = createIndex(paged, { chunkOptions: SMALL });
 

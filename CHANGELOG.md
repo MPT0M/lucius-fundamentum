@@ -6,6 +6,29 @@ All notable changes to this package are documented here. The format follows
 
 ## [Unreleased]
 
+### Removed
+
+- **The library no longer compiles a bibliography footer, and `SourceDoc` loses
+  `title`, `sourceUri` and `metadata`.** The two go together, and the reason is
+  circularity: a footer only reads well if the library knows the documents'
+  names, it does not — the name lives in the registry of whoever assembled the
+  `SourceDoc` — and the only repair, carrying `title` down to the `Chunk`,
+  creates a field whose sole reader would be the footer itself. Neither is
+  needed for what the package does, which is say which passage supports which
+  stretch. The footer that existed already refused to use a title, emitting
+  `documentId#chunkId` rather than inventing prose; it was solving the wrong
+  half of the problem.
+
+  Provenance now travels in `sources` and `spans`, and the caller composes the
+  list with its own records. `tests/source-list-example.test.ts` is the worked
+  reference. **The debt this creates, stated by the commit that creates it:**
+  a caller that ignores `sources` gets text with no provenance at all, where
+  the footer used to give a floor for doing nothing.
+
+  `FormatOptions.bibliography` is gone with it. `pageNumber` stays — it has a
+  real reader in `maxChunksPerPage`, which the other three never had anywhere
+  in `src/`.
+
 ### Added
 
 - **`Index.denseArm` answers whether `search` can run, before you call it.**

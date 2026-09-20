@@ -4,7 +4,7 @@ import { MASK_CHAR } from '../src/math.js';
 import { countCodePoints, sliceByCodePoints } from '../src/unicode.js';
 
 function doc(text: string, extra: Partial<SourceDoc> = {}): SourceDoc {
-    return { id: 'd1', title: 'Doc', text, ...extra };
+    return { id: 'd1', text, ...extra };
 }
 
 /**

@@ -6,7 +6,7 @@ import { chunk } from '../src/chunker.js';
 
 /** Sentences as the chunker sees them, one per chunk (budget of one code point). */
 const sentences = (text: string, abbreviations?: AbbreviationList) =>
-    chunk({ id: 'd', title: 'd', text }, { maxChunkCodePoints: 1, maxOverlapCodePoints: 0, ...(abbreviations ? { abbreviations } : {}) })
+    chunk({ id: 'd', text }, { maxChunkCodePoints: 1, maxOverlapCodePoints: 0, ...(abbreviations ? { abbreviations } : {}) })
         .map((c) => c.text);
 
 describe('maskAbbreviationPeriods — the period after a title stops ending the sentence', () => {

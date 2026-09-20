@@ -278,10 +278,9 @@ describe('corpus - the citation graph the NOTICE describes', () => {
         // the dot match any character. Nothing in the corpus of six happened
         // to collide, so every count stayed right and nothing failed - the
         // kind of bug that waits for the seventh document.
-        const cited = { id: 'lei-15100', title: 'a', text: 'this one is cited' };
+        const cited = { id: 'lei-15100', text: 'this one is cited' };
         const citing = {
             id: 'decreto-99999',
-            title: 'b',
             text: 'regulates Lei 15.100, and mentions the string 15X100, which is not a citation',
         };
         expect(citationGraph([cited, citing])).toEqual([

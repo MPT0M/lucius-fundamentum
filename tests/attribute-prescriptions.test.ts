@@ -23,7 +23,6 @@ import { applyDensity, type Placed } from '../src/attribute.js';
 
 const DOC: SourceDoc = {
     id: 'lei',
-    title: 'Lei',
     text:
         'O prazo para recurso é de 15 dias corridos. ' +
         'A contagem exclui o dia inicial e inclui o do vencimento. ' +
@@ -161,7 +160,7 @@ describe('indexing and attributing reduce the same text to the same terms', () =
         expect(nfd).not.toBe(nfc);
         expect(normalizeUnicode(nfd)).toBe(nfc);
 
-        const doc: SourceDoc = { id: 'acentos', title: 'Acentos', text: nfc };
+        const doc: SourceDoc = { id: 'acentos', text: nfc };
         const results = search('coração questão aferição', doc);
         const out = attributeLexical(nfd, results, { tokenizer });
         expect(out.rungs.lexical).toBeGreaterThan(0);
@@ -237,7 +236,6 @@ describe('an astral character inside the PASSAGE', () => {
         // `sourceSpan` — measured in UTF-16 units it would come back short.
         const doc: SourceDoc = {
             id: 'astral',
-            title: 'Astral',
             text: '💡 O prazo para recurso é de 15 dias corridos. A perícia segue depois.',
         };
         const results = search('prazo recurso dias', doc);

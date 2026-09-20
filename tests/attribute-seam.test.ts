@@ -91,9 +91,9 @@ describe('the seam is real: the chunker overlaps in whole sentences', () => {
             'A primeira frase abre o texto. A segunda frase continua o tema. ' +
             'A terceira frase fecha o parágrafo. A quarta frase inicia outro. ' +
             'A quinta frase encerra tudo.';
-        const chunks = cutIntoChunks({ id: 'doc', title: 'Doc', text }, DEFAULT_CHUNK_OPTIONS);
+        const chunks = cutIntoChunks({ id: 'doc', text }, DEFAULT_CHUNK_OPTIONS);
         const small = cutIntoChunks(
-            { id: 'doc', title: 'Doc', text },
+            { id: 'doc', text },
             { maxChunkCodePoints: 70, maxOverlapCodePoints: 40 },
         );
         expect(chunks.length).toBeGreaterThanOrEqual(1);

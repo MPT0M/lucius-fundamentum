@@ -27,12 +27,14 @@ import type { AbbreviationList } from './abbreviations.js';
  */
 export interface SourceDoc {
     readonly id: string;
-    readonly title: string;
     readonly text: string;
-    /** Present when the text came from a paged source. Absent for pasted text. */
+    /**
+     * Present when the text came from a paged source. Absent for pasted text.
+     * Read by `maxChunksPerPage` in the index builder, which is the only reason
+     * this field survives while `title`, `sourceUri` and `metadata` did not:
+     * those three had no reader in `src/` at all.
+     */
     readonly pageNumber?: number;
-    readonly sourceUri?: string;
-    readonly metadata?: Readonly<Record<string, string | number>>;
 }
 
 /**

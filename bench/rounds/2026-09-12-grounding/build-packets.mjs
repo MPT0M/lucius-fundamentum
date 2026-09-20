@@ -27,7 +27,7 @@ const { createIndex } = await import(new URL('dist/index-build.js', RAIZ).href);
 const docs = readdirSync(CORPUS)
     .filter((n) => n.endsWith('.txt'))
     .sort()
-    .map((n) => ({ id: n.replace(/\.txt$/, ''), title: n, text: readFileSync(CORPUS + n, 'utf8') }));
+    .map((n) => ({ id: n.replace(/\.txt$/, ''), text: readFileSync(CORPUS + n, 'utf8') }));
 
 const linhas = readFileSync(fileURLToPath(new URL('questions.md', AQUI)), 'utf8').split(/\r?\n/);
 const perguntas = [];

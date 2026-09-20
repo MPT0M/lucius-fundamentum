@@ -101,7 +101,7 @@ describe('the predicate is blind to the rung, and the LEXICAL case is real', () 
     it('a lexical span can carry the whole chunk as its sourceSpan', () => {
         let text = '';
         for (let i = 0; i < 40; i += 1) text += frase(i);
-        const doc: SourceDoc = { id: 'd', title: 'D', text };
+        const doc: SourceDoc = { id: 'd', text };
         const index = createIndex([doc], {
             tokenizer,
             chunkOptions: { maxChunkCodePoints: 80, maxOverlapCodePoints: 40 },

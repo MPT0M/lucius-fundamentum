@@ -30,9 +30,15 @@ import type { Attribution, AttributionSpan } from './attribute.js';
  * `sources` travels with it, and that is a deliberate addition to the shape the
  * spec drew. The marker's number is a POSITION IN `sources` — the complete
  * inventory, identical for both doors — so a consumer holding the formatted text
- * alone would receive `[4]` with nothing to resolve the 4 against. The pairing
- * that leaves nothing at all is `bibliography: 'none'`; `markerStyle: 'none'`
- * still emits the footer, and that pair is the voice case.
+ * alone would receive `[4]` with nothing to resolve the 4 against.
+ *
+ * **Provenance travels in the data, not in the formatted text, and that is what
+ * serves a screen reader.** `markerStyle: 'none'` returns the answer with no
+ * marker in it; `sources` and `spans` still say which passage supports which
+ * stretch, and the caller composes a source list from its own registry — file
+ * name, page, URL, things this package does not know. A caller that ignores
+ * `sources` gets text with no provenance at all, which is the cost of the
+ * package not compiling that list itself.
  *
  * `rungs` does not travel: it is what the ruler reads, not what the page shows.
  */
@@ -54,11 +60,10 @@ export interface FormatOptions {
      *
      * `'none'` emits nothing. Nothing is inserted, so nothing shifts and the
      * spans come back untouched: it is the control the other two are measured
-     * against, and it is the mode a screen reader wants, which is why the
-     * bibliography axis is separate.
+     * against, and it is the mode a screen reader wants — the provenance it
+     * needs is in `sources` and `spans`, not in the text.
      */
     readonly markerStyle?: 'interactive' | 'bracket' | 'none';
-    readonly bibliography?: 'footer' | 'none';
 }
 
 /** One marker to be written into the text: what, and where. */
@@ -74,7 +79,6 @@ export function formatAttribution(
     opts: FormatOptions = {},
 ): FormattedAttribution {
     const markerStyle = opts.markerStyle ?? 'interactive';
-    const bibliography = opts.bibliography ?? 'none';
 
     // 1. NUMBER, before anything is built. The width of a marker depends on the
     //    number — `[9]` is three characters and `[10]` is four — so building
@@ -136,8 +140,7 @@ export function formatAttribution(
         sourceSpan: span.sourceSpan,
     }));
 
-    let text = writeMarkers(attribution.text, insertions);
-    if (bibliography === 'footer') text += footerFor(attribution, insertions);
+    const text = writeMarkers(attribution.text, insertions);
 
     return { text, spans, sources: attribution.sources };
 }
@@ -169,37 +172,4 @@ function writeMarkers(text: string, insertions: readonly Insertion[]): string {
     return out + points.slice(cursor).join('');
 }
 
-/**
- * The bibliography lists what was CITED, in number order — never `sources`.
- *
- * `sources` is the complete inventory and comes back filled from both doors,
- * uncited results included. A footer compiled from it would publish, with a
- * `topK` of ten and three passages cited, ten entries and seven with no
- * counterpart in the text. A bibliography asserting provenance the answer does
- * not have is the inverse of this package's argument.
- *
- * It carries identifiers rather than prose: a reader's layer knows how to show
- * a document better than this function does, and inventing a title here would
- * be inventing.
- */
-function footerFor(attribution: Attribution, insertions: readonly Insertion[]): string {
-    const cited = new Map<number, string>();
-    for (const insertion of insertions) {
-        const source = attribution.sources[insertion.sourceIndex];
-        if (source !== undefined) cited.set(insertion.sourceIndex, source.chunk.documentId);
-    }
-    // With `markerStyle: 'none'` there are no insertions, and the footer is the
-    // only provenance the reader gets — so it is built from the spans instead.
-    if (insertions.length === 0) {
-        for (const span of attribution.spans) {
-            const index = attribution.sources.findIndex((r) => r.chunk.id === span.chunkId);
-            if (index >= 0) cited.set(index, span.documentId);
-        }
-    }
-    if (cited.size === 0) return '';
-    const lines = [...cited.entries()]
-        .sort((a, b) => a[0] - b[0])
-        .map(([index, documentId]) => `[${index + 1}] ${documentId}#${attribution.sources[index]!.chunk.id}`);
-    return `\n\n${lines.join('\n')}`;
-}
 

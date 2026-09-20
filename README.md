@@ -56,7 +56,7 @@ that treats zero as absent sends it to the wrong place in silence.
 import { chunk, DEFAULT_CHUNK_OPTIONS } from '@nihilo-dev/fundamentum';
 
 const chunks = chunk(
-  { id: 'lei-8078', title: 'CDC', text: source },
+  { id: 'lei-8078', text: source },
   DEFAULT_CHUNK_OPTIONS
 );
 
@@ -81,6 +81,17 @@ const attribution = attributeLexical(answer, results, { tokenizer });
 const formatted = formatAttribution(attribution, { markerStyle: 'bracket' });
 const { text, spans } = formatted;
 ```
+
+**Provenance travels in the data; this package does not compile a source
+list.** A good line needs the document's name, its page, its URL — things that
+live in your registry, not in a `SourceDoc`. So `formatted` hands back
+`sources` and `spans` and you compose the list yourself, which also means
+`markerStyle: 'none'` loses nothing: the text has no marker and the
+provenance is still there to read. A worked example runs in
+`tests/source-list-example.test.ts` — it is a test rather than a snippet here
+because a snippet nothing compiles rots at the first signature change. The
+cost, stated plainly: ignore `sources` and your output has no provenance at
+all.
 
 **It checks support, not relevance.** The clause says something the passage
 contains — that is what is verified. Whether that passage answers the question

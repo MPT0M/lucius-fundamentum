@@ -170,7 +170,6 @@ export function readCorpus(): SourceDoc[] {
         .sort()
         .map((name) => ({
             id: name.replace(/\.txt$/, ''),
-            title: name.replace(/\.txt$/, ''),
             text: readFileSync(CORPUS_DIR + name, 'utf8'),
         }));
 }

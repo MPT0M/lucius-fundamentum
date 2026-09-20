@@ -120,7 +120,9 @@ describe('formatAttribution — reindexing counts INSERTIONS, never spans', () =
     });
 });
 
-describe('formatAttribution — the two axes are independent', () => {
+// Named for one axis, not two: the bibliography axis was removed with the
+// footer, and provenance now travels in `sources` and `spans` instead.
+describe('formatAttribution — the marker axis, and what rides alongside it', () => {
     const sources = [result('doc#0', 'doc', 1), result('doc#1', 'doc', 2), result('doc#2', 'doc', 3)];
     const one = attribution('Uma frase.', [span(10, 'doc#1')], sources);
 
@@ -131,18 +133,13 @@ describe('formatAttribution — the two axes are independent', () => {
         expect(out.spans[0]!.anchorOffset).toBe(10);
     });
 
-    it('the footer lists only what was CITED, not the whole inventory', () => {
-        // Three results, one cited. A footer built from `sources` would publish
-        // two entries with no counterpart in the text.
-        const out = formatAttribution(one, { markerStyle: 'bracket', bibliography: 'footer' });
-        const footer = out.text.slice(out.text.indexOf('\n\n'));
-        expect(footer.trim()).toBe('[2] doc#doc#1');
-    });
-
-    it("'none' with a footer is the voice case: no marker, provenance intact", () => {
-        const out = formatAttribution(one, { markerStyle: 'none', bibliography: 'footer' });
-        expect(out.text.startsWith('Uma frase.')).toBe(true);
-        expect(out.text).toContain('[2] doc#doc#1');
+    it("'none' is the voice case: nothing is added to the text, provenance is in the data", () => {
+        // What the removed footer used to provide, a caller now composes from
+        // these two. The test asserts they are enough to do it.
+        const out = formatAttribution(one, { markerStyle: 'none' });
+        expect(out.text).toBe('Uma frase.');
+        expect(out.spans.map((s) => s.chunkId)).toEqual(['doc#1']);
+        expect(out.sources.findIndex((r) => r.chunk.id === 'doc#1')).toBe(1);
     });
 
     it('sources travel with the formatted output, so a number can be resolved', () => {
