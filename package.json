@@ -1,7 +1,7 @@
 {
   "name": "@nihilo-dev/fundamentum",
   "version": "0.1.0",
-  "description": "Text foundation for document grounding: code-point-exact positions, formula-safe sentence chunking, Unicode normalization. Under construction — search and attribution land in later releases.",
+  "description": "Document grounding with code-point-exact positions: formula-safe sentence chunking, Unicode normalization, lexical and hybrid search, and attribution that says which passage supports which stretch of an answer.",
   "license": "Apache-2.0",
   "author": "MPT0M <dev@nihilo.dev>",
   "repository": {
