@@ -29,6 +29,38 @@ All notable changes to this package are documented here. The format follows
   real reader in `maxChunksPerPage`, which the other three never had anywhere
   in `src/`.
 
+### Changed
+
+- **A marker is now written before the clause's trailing punctuation, preceded
+  by a space, and a second marker at the same anchor joins with `, `.**
+  `O prazo é de quinze dias [1], [2].` where the output used to be
+  `O prazo é de quinze dias.[1][2]`. The punctuation closes the clause the
+  citation is inside of, so a marker after it reads as belonging to whatever
+  follows.
+
+  This is convergence, not invention: both texts that describe this package
+  already published the new spelling and only the code disagreed. Three of the
+  four mechanisms live in the formatter — the space, the separator and the
+  numeric order — and only the recede is in the engine.
+
+  The recede predicate is three Unicode properties, `\p{Sentence_Terminal}`,
+  `\p{Quotation_Mark}` and `…`, and it deliberately excludes `\p{Pe}`. The
+  test is detachability: delete `(BRASIL, 1988)` and the clause still stands,
+  so a marker before it would attribute the source to an aside; delete quoted
+  material and the clause collapses, so the quote is inside the assertion.
+  A clause that is punctuation all the way down keeps its anchor at the end:
+  reaching the floor means there is nothing to sit in front of, and a marker
+  before everything it cites has no reading at all.
+
+  **In formatted coordinates a `textSpan` now covers the markers written
+  inside it.** The anchor sits in the clause's interior, so the insertion lands
+  there and `end` moves past it. Keeping the marker out is not possible: the
+  region would be discontiguous and `Span {start, end}` cannot express a hole.
+  `markerStyle: 'none'` still returns the clause untouched.
+
+  Markers at one anchor are ordered by the number the reader sees, not by
+  chunk identifier — the old comparator could legally emit `[3], [1]`.
+
 ### Added
 
 - **`AttributeOptions.granularity` gives the anchor density a name.**

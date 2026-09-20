@@ -40,6 +40,16 @@ import type { Attribution, AttributionSpan } from './attribute.js';
  * `sources` gets text with no provenance at all, which is the cost of the
  * package not compiling that list itself.
  *
+ * **In this coordinate space a `textSpan` covers the clause TOGETHER WITH the
+ * markers written inside it.** The anchor sits before the trailing
+ * punctuation, so an insertion lands in the clause's interior and `end` moves
+ * past it. Keeping the marker out was tried and is not merely inelegant, it is
+ * arithmetically impossible: the region it would need is discontiguous, and a
+ * `Span {start, end}` cannot express a hole. An `end` short of the marker cuts
+ * it in half - `'...corridos ['`. A caller that wants the clause without
+ * markers uses `markerStyle: 'none'`, where nothing is inserted and nothing
+ * shifts.
+ *
  * `rungs` does not travel: it is what the ruler reads, not what the page shows.
  */
 export interface FormattedAttribution {
@@ -50,6 +60,18 @@ export interface FormattedAttribution {
 
 export interface FormatOptions {
     /**
+     * A marker is written BEFORE the clause's trailing punctuation, preceded
+     * by a space, and a second marker at the same anchor is joined with `, `:
+     * `O prazo é de quinze dias [1], [2].` The punctuation closes the clause
+     * the citation is inside of, so a marker after it reads as belonging to
+     * whatever comes next.
+     *
+     * The space is a deliberate, uniform choice and not derived from the
+     * script. In Japanese, `この規定は十五日です [1]。` carries a space that the
+     * writing system does not ask for; it is the same convention everywhere
+     * rather than a per-locale rule, and it is written down here so nobody
+     * "fixes" it against a Japanese fixture.
+     *
      * `'interactive'` emits `[1](#cite-0), [2](#cite-1)`: independent brackets,
      * the number legible INSIDE each one, and a self-standing anchor, so a UI
      * that does not intercept `#cite-` still shows something a reader can read
@@ -102,16 +124,26 @@ export function formatAttribution(
         // appear inside the key is a collision waiting for the one corpus
         // that uses it.
         const seen = new Map<number, Set<string>>();
-        for (const span of [...attribution.spans].sort(byAnchorThenChunk)) {
+        // The affix depends on POSITION IN THE GROUP, so the count per offset
+        // is kept while the group is built: the first marker at an anchor
+        // opens with a space, each later one with `, `.
+        const written = new Map<number, number>();
+        for (const span of [...attribution.spans].sort(byAnchorThenSource(indexByChunk))) {
             const atOffset = seen.get(span.anchorOffset) ?? new Set<string>();
             if (atOffset.has(span.chunkId)) continue;
-            atOffset.add(span.chunkId);
-            seen.set(span.anchorOffset, atOffset);
             const sourceIndex = indexByChunk.get(span.chunkId);
             if (sourceIndex === undefined) continue;
+            atOffset.add(span.chunkId);
+            seen.set(span.anchorOffset, atOffset);
+            const position = written.get(span.anchorOffset) ?? 0;
+            written.set(span.anchorOffset, position + 1);
             insertions.push({
                 offset: span.anchorOffset,
-                text: marker(markerStyle, sourceIndex),
+                // The affix goes INSIDE `insertion.text`, never written
+                // separately: `shift` sums the width of this string, and a
+                // separator added outside it would be uncounted, drifting
+                // every span after the group by exactly its length.
+                text: (position === 0 ? ' ' : ', ') + marker(markerStyle, sourceIndex),
                 sourceIndex,
             });
         }
@@ -145,8 +177,22 @@ export function formatAttribution(
     return { text, spans, sources: attribution.sources };
 }
 
-function byAnchorThenChunk(a: AttributionSpan, b: AttributionSpan): number {
-    return a.anchorOffset - b.anchorOffset || (a.chunkId < b.chunkId ? -1 : a.chunkId > b.chunkId ? 1 : 0);
+/**
+ * Orders the markers of one anchor by the NUMBER the reader will see.
+ *
+ * Sorting by `chunkId` put the group in identifier order, which is not the
+ * order of the numbers written from it — `[3], [1]` is a legal output of that
+ * comparator and reads as a mistake. The tie-break is the position in
+ * `sources`, which is what the number is. A chunk with no entry in `sources`
+ * emits no marker at all, so where it sorts cannot be observed; it is sent to
+ * the end rather than to the front so that it never splits a real group.
+ */
+function byAnchorThenSource(
+    indexByChunk: ReadonlyMap<string, number>,
+): (a: AttributionSpan, b: AttributionSpan) => number {
+    const rank = (span: AttributionSpan): number =>
+        indexByChunk.get(span.chunkId) ?? Number.MAX_SAFE_INTEGER;
+    return (a, b) => a.anchorOffset - b.anchorOffset || rank(a) - rank(b);
 }
 
 function marker(style: 'interactive' | 'bracket', sourceIndex: number): string {

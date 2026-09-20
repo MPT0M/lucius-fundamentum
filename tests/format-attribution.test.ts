@@ -54,6 +54,29 @@ describe('formatAttribution — the number indexes the CHUNK', () => {
         expect(out.text).toContain('[1](#cite-0)');
         expect(out.text).toContain('[2](#cite-1)');
     });
+
+    it('two sources at one anchor join with ", ", and the group opens with a space', () => {
+        // Asserted on the WHOLE string, not with `toContain`. Two `toContain`
+        // calls stay true if the separator is dropped or changed, which is how
+        // a convention published in three places ends up measured in none.
+        const sources = [result('doc#0', 'doc', 1), result('doc#1', 'doc', 2)];
+        const out = formatAttribution(
+            attribution('Uma frase.', [span(9, 'doc#0'), span(9, 'doc#1')], sources),
+            { markerStyle: 'bracket' },
+        );
+        expect(out.text).toBe('Uma frase [1], [2].');
+    });
+
+    it('orders a group by the number shown, not by chunk identifier', () => {
+        // `doc#a` sorts before `doc#b` as a string but is source 2, so an
+        // identifier-ordered comparator emits `[2], [1]` here.
+        const sources = [result('doc#b', 'doc', 1), result('doc#a', 'doc', 2)];
+        const out = formatAttribution(
+            attribution('Uma frase.', [span(9, 'doc#a'), span(9, 'doc#b')], sources),
+            { markerStyle: 'bracket' },
+        );
+        expect(out.text).toBe('Uma frase [1], [2].');
+    });
 });
 
 describe('formatAttribution — deduplication, and what it must NOT hide', () => {
@@ -91,7 +114,15 @@ describe('formatAttribution — reindexing counts INSERTIONS, never spans', () =
             attribution('Uma frase curta e depois outra frase mais.', [...shared, later], sources),
             { markerStyle: 'bracket' },
         );
-        const width = '[1]'.length;
+        // The width is DERIVED from the output, not written out. A hand-written
+        // `'[1]'.length` was correct only while a marker was exactly three code
+        // points; the affix that now precedes it made the literal wrong, and
+        // the `.find()` then returned undefined — a crash, not a failed
+        // assertion, which is the worst way for a test to notice a change.
+        // Measured from the original anchor (10) to the first closing bracket,
+        // so it covers the affix as well as the marker. Pure ASCII here, so
+        // slicing by units is safe; the astral case is a separate test.
+        const width = out.text.slice(10, out.text.indexOf(']') + 1).length;
         const moved = out.spans.find((s) => s.textSpan.start === 30 + width)!;
         expect(moved).toBeDefined();
         expect(moved.anchorOffset).toBe(40 + width);
@@ -113,10 +144,17 @@ describe('formatAttribution — reindexing counts INSERTIONS, never spans', () =
         // The anchor sits at 11: after `frase`, before the period. Measured in
         // UTF-16 units the same number would land one position earlier, inside
         // the word, because the emoji is two units and one code point.
+        //
+        // This span is hand-built, so the anchor here is a fixture and not the
+        // engine's opinion. That is the whole reason the previous expectation
+        // was worthless: `'💡 Uma frase[1].'` passed both before and after the
+        // marker convention changed, because 11 was picked to make it pass.
+        // What the engine actually produces at this position is asserted in
+        // tests/attribute-lexical-door.test.ts, against a real attribution.
         const out = formatAttribution(attribution(text, [span(11, 'doc#0')], sources), {
             markerStyle: 'bracket',
         });
-        expect(out.text).toBe('💡 Uma frase[1].');
+        expect(out.text).toBe('💡 Uma frase [1].');
     });
 });
 

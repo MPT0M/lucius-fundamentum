@@ -102,3 +102,41 @@ export function trimmedSpan(segment: string, start: number): Sentence | null {
     if (a === b) return null;
     return { start: start + a, end: start + b };
 }
+
+/**
+ * Where a citation marker belongs at the end of a clause: before the trailing
+ * punctuation, not after it.
+ *
+ * Walks back from `end` while the preceding code point is punctuation that
+ * closes the clause, stopping at `start`. `'...quinze dias corridos.'` anchors
+ * before the period, so the marker reads `...corridos [1].` rather than
+ * `...corridos.[1]`.
+ *
+ * **The predicate is three Unicode properties, and the fourth was refused on
+ * purpose.** Sentence terminals and quotation marks recede; closing
+ * punctuation (`\p{Pe}`) does not. The test is detachability: delete
+ * `(BRASIL, 1988)` and the clause still stands, so the parenthetical is an
+ * aside and a marker placed before it would attribute the source to the aside;
+ * delete the quoted material and the clause collapses, so the quote is inside
+ * the assertion the source supports.
+ *
+ * Opening marks (`«`, `「`) match `\p{Quotation_Mark}` too. They are harmless
+ * in a loop that only ever walks backwards from the end, and the check is not
+ * narrowed to closing marks because doing so would need a hand-kept list where
+ * a property already answers.
+ *
+ * `…` matches none of the three and is the only residue in the table, so it is
+ * named directly.
+ *
+ * **A clause that is punctuation all the way down keeps its anchor at `end`.**
+ * The walk floors at `start`, and reaching the floor means there is no text to
+ * sit in front of — so receding there would put the marker before everything
+ * it cites, which is the one position that has no reading. Falling back to
+ * `end` is the same output the package produced before the recede existed.
+ */
+export function recedeAnchor(points: readonly string[], start: number, end: number): number {
+    const RECEDES = /[\p{Sentence_Terminal}\p{Quotation_Mark}…]/u;
+    let at = end;
+    while (at > start && RECEDES.test(points[at - 1]!)) at--;
+    return at === start ? end : at;
+}

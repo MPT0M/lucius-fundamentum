@@ -19,7 +19,7 @@ import { luceneIdf } from './bm25.js';
 import { assertChunksFit, embedDocumentsChecked, EmbeddingCheckError } from './embedding.js';
 import type { EmbeddingProvider } from './embedding.js';
 import { dot } from './vector.js';
-import { sentencesOf, defaultSegmenter } from './sentences.js';
+import { sentencesOf, defaultSegmenter, recedeAnchor } from './sentences.js';
 import type { Segmenter } from './sentences.js';
 
 /**
@@ -70,11 +70,25 @@ export type ResolvedBy = 'lexical' | 'dense' | 'mixed';
  * other.
  */
 export interface AttributionSpan {
-    /** The clause being supported, in the answer. It never moves. */
+    /**
+     * The clause being supported, in the answer.
+     *
+     * **In engine coordinates it never moves**, whatever the density rules do
+     * to the anchor. In the coordinates `formatAttribution` returns it does:
+     * every offset is reindexed past the inserted markers, and a clause's span
+     * then covers the markers written inside it. The two spaces are different
+     * texts, and mixing them is the drift the formatter returns spans to
+     * prevent.
+     */
     readonly textSpan: Span;
     /**
-     * Where the marker goes, in the answer. Equal to `textSpan.end` until
-     * something pushes it — the anchor moves, the span does not.
+     * Where the marker goes, in the answer: the end of the clause receded past
+     * its trailing punctuation, so `'...corridos.'` anchors before the period
+     * and the marker reads `...corridos [1].`
+     *
+     * **In engine coordinates the anchor moves and the span does not** — the
+     * floor spaces it, fusion carries it to the later resting place. In
+     * formatted coordinates both move, for the reason on `textSpan`.
      */
     readonly anchorOffset: number;
     /** The stretch of the source document that supports the clause. */
@@ -286,6 +300,17 @@ export interface AttributeOptions {
 export interface Clause {
     readonly span: Span;
     readonly terms: ReadonlySet<string>;
+    /**
+     * Where a marker citing this clause goes: `span.end` receded past the
+     * trailing punctuation, so `...corridos.` anchors before the period.
+     *
+     * It is computed once here rather than at each use because it has two
+     * readers — `place`, which builds the span, and the `clauseAnchors` the floor
+     * measures distances against — and the two must never disagree. Two calls
+     * to the same helper is one edit away from one convention on screen and
+     * another in the spacing.
+     */
+    readonly anchorOffset: number;
 }
 
 /**
@@ -297,9 +322,11 @@ export interface Clause {
  */
 export function clausesOf(text: string, opts: AttributeOptions): Clause[] {
     const segmenter = opts.segmenter ?? defaultSegmenter();
+    const points = Array.from(text);
     return sentencesOf(text, segmenter, opts.abbreviations).map((span) => ({
         span,
         terms: distinctTerms(text.slice(...utf16Range(text, span)), opts.tokenizer),
+        anchorOffset: recedeAnchor(points, span.start, span.end),
     }));
 }
 
@@ -828,7 +855,7 @@ export function coalescePass(
  */
 export function applyFloor(
     items: readonly Placed[],
-    clauseEnds: readonly number[],
+    clauseAnchors: readonly number[],
     minCluster: number,
 ): Placed[] {
     if (minCluster <= 0) return [...items];
@@ -837,7 +864,7 @@ export function applyFloor(
     for (const item of items) {
         const anchor = item.span.anchorOffset;
         const tooClose = previousAnchor !== null && anchor - previousAnchor < minCluster;
-        const next = clauseEnds[item.lastClause + 1];
+        const next = clauseAnchors[item.lastClause + 1];
         if (tooClose && next !== undefined) {
             out.push({ ...item, span: { ...item.span, anchorOffset: next }, moved: true });
             previousAnchor = next;
@@ -878,7 +905,7 @@ export function applyFloor(
  */
 export function applyDensity(
     items: readonly Placed[],
-    clauseEnds: readonly number[],
+    clauseAnchors: readonly number[],
     recompute: (terms: ReadonlySet<string>, chunkId: string) => number,
     opts: { readonly coalesceMaxCodePoints?: number; readonly minClusterCodePoints?: number } = {},
 ): readonly AttributionSpan[] {
@@ -886,7 +913,7 @@ export function applyDensity(
     const floor = opts.minClusterCodePoints ?? DEFAULT_MIN_CLUSTER_CODE_POINTS;
 
     const fused = coalescePass(items, () => true, recompute, coalesce);
-    const spaced = applyFloor(fused, clauseEnds, floor);
+    const spaced = applyFloor(fused, clauseAnchors, floor);
     const settled = coalescePass(spaced, (a, b) => a.moved && b.moved, recompute, coalesce);
     return settled.map((item) => item.span);
 }
@@ -927,8 +954,8 @@ function utf16Range(text: string, span: Span): [number, number] {
  * it here.** `Omit` preserves optionality, so a new `foo?:` leaves this
  * literal compiling unchanged, and the default would be published, documented
  * and missing from the one object whose job is to state the defaults - with
- * the suite green. `granularity` was added in the commit that wrote this
- * paragraph, and this line is the half that no tool would have demanded.
+ * the suite green. Every entry below is a line no tool would have demanded,
+ * and a test asserts each one against its constant for that reason.
  */
 export const DEFAULT_ATTRIBUTE_OPTIONS: Readonly<
     Omit<AttributeOptions, 'tokenizer' | 'provider' | 'segmenter' | 'abbreviations'>
@@ -1042,7 +1069,7 @@ function place(
     return {
         span: {
             textSpan: clause.span,
-            anchorOffset: clause.span.end,
+            anchorOffset: clause.anchorOffset,
             sourceSpan: matched ? matched.span : chosen.span,
             chunkId: chosen.id,
             documentId: chosen.documentId,
@@ -1070,7 +1097,7 @@ function finish(
     const ordered = [...prepared.placed].sort((a, b) => a.firstClause - b.firstClause);
     const spans = applyDensity(
         ordered,
-        prepared.clauses.map((c) => c.span.end),
+        prepared.clauses.map((c) => c.anchorOffset),
         (terms, chunkId) =>
             coverageOf(
                 terms,

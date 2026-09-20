@@ -94,6 +94,28 @@ describe('attributeLexical — the door that needs no key', () => {
         expect(text.length).not.toBe(countCodePoints(text));
     });
 
+    it('anchors the marker BEFORE the trailing punctuation, in the engine itself', () => {
+        // The test the suite did not have, and its absence was the expensive
+        // part: every other assertion about `anchorOffset` is over a `Placed`
+        // built by hand, so a change to the marker convention passed with the
+        // whole suite green. This one reads the number the engine produced.
+        const results = search('prazo recurso dias');
+        const text = '💡 O prazo para recurso é de 15 dias corridos.';
+        const out = attributeLexical(text, results, { tokenizer });
+        const span = out.spans[0]!;
+        const points = Array.from(text);
+
+        // Absolute, not relative to `textSpan.end`: asserting the difference
+        // would hold just as well if both moved together, which is the failure
+        // this is here to catch.
+        expect(span.anchorOffset).toBe(points.length - 1);
+        expect(points[span.anchorOffset]).toBe('.');
+        expect(points[span.anchorOffset - 1]).toBe('s');
+        // And the clause still ends where it ended: the anchor receded, the
+        // span did not. In engine coordinates those are different things.
+        expect(span.textSpan.end).toBe(points.length);
+    });
+
     it('zero turns the floor off and puts an anchor on every supported clause', () => {
         const results = search('prazo recurso contagem dia');
         const text = 'O prazo é de 15 dias. A contagem exclui o dia inicial.';
