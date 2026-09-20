@@ -56,12 +56,14 @@ export {
     LEXICAL_MARGIN,
     DEFAULT_COALESCE_MAX_CODE_POINTS,
     DEFAULT_MIN_CLUSTER_CODE_POINTS,
+    DEFAULT_GRANULARITY,
     DEFAULT_ATTRIBUTE_OPTIONS,
 } from './attribute.js';
 export type {
     Attribution,
     AttributionSpan,
     AttributeOptions,
+    AttributionGranularity,
     RungCounts,
     ProviderFailure,
     AttributeState,

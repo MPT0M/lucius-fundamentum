@@ -31,6 +31,25 @@ All notable changes to this package are documented here. The format follows
 
 ### Added
 
+- **`AttributeOptions.granularity` gives the anchor density a name.**
+  `'cluster'` is the only value, it is the default, and it is exactly what the
+  package already produced: one anchor per clause, spaced by
+  `minClusterCodePoints` and fused by `coalesceMaxCodePoints`. Zero behaviour
+  changes — the addition is a word for the mode, so a second density can be
+  added later without the first one being "the way it works".
+
+  The union publishes only what exists. A value whose mode does not work gives
+  a compile error to a TypeScript caller and silence to a JavaScript one.
+  `'document'` is not planned at all: one marker for a whole answer is
+  `markerStyle: 'none'` plus a source list, decided at the layer that renders.
+
+  `DEFAULT_GRANULARITY` and `AttributionGranularity` are exported, and
+  `DEFAULT_ATTRIBUTE_OPTIONS` now states the default. That last line is worth
+  a sentence: `Omit` preserves optionality, so nothing in the compiler asks
+  for a new optional field to appear there, and the default would otherwise
+  be published, documented and missing from the object whose job is to state
+  it — with the suite green.
+
 - **`Index.denseArm` answers whether `search` can run, before you call it.**
   `'ready'`, or one of two refusals that do not cost the same. `'needs-provider'`
   means the vectors are in the artifact and `loadIndex` was called without a

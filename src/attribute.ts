@@ -215,6 +215,16 @@ export interface Attribution {
     readonly providerFailure?: ProviderFailure;
 }
 
+/**
+ * The density of anchors over an answer.
+ *
+ * Published with the values that EXIST. A caller passing a value this union
+ * does not carry gets a compile error from TypeScript; a JavaScript caller
+ * gets silence, which is the reason not to publish a name before the mode
+ * behind it works.
+ */
+export type AttributionGranularity = 'cluster';
+
 export interface AttributeOptions {
     /**
      * The SAME tokenizer that indexed the corpus.
@@ -242,6 +252,20 @@ export interface AttributeOptions {
      * separate are decided by the vectors, at the cost of two network calls.
      */
     readonly provider?: EmbeddingProvider;
+    /**
+     * How dense the anchors are, not whether they exist.
+     *
+     * `'cluster'` is what this package has always done and stays the default:
+     * one anchor per clause, spaced by `minClusterCodePoints` and fused by
+     * `coalesceMaxCodePoints`. Naming it changes no behaviour — it gives the
+     * existing mode a word, so a second one can be added without the first
+     * being "the way it works".
+     *
+     * `'document'` is deliberately absent. One marker for a whole answer is
+     * `markerStyle: 'none'` plus a source list the caller composes, which is
+     * the same output decided at the layer that knows how to render it.
+     */
+    readonly granularity?: AttributionGranularity;
     /** See `DEFAULT_COALESCE_MAX_CODE_POINTS`. */
     readonly coalesceMaxCodePoints?: number;
     /** See `DEFAULT_MIN_CLUSTER_CODE_POINTS`. Zero turns the floor off. */
@@ -647,6 +671,15 @@ export const DEFAULT_COALESCE_MAX_CODE_POINTS = 80;
  */
 export const DEFAULT_MIN_CLUSTER_CODE_POINTS = 70;
 
+/**
+ * The density this package has always produced, now with a name.
+ *
+ * Declaring it is what makes "naming the mode changes no behaviour" a fact
+ * rather than a promise: an absent `granularity` resolves to exactly the path
+ * that ran before.
+ */
+export const DEFAULT_GRANULARITY: AttributionGranularity = 'cluster';
+
 /** A span on its way through the density rules, with what they need to decide. */
 export interface Placed {
     readonly span: AttributionSpan;
@@ -889,10 +922,18 @@ function utf16Range(text: string, span: Span): [number, number] {
  * segmenter or the abbreviation list, for the same reason. So the default is
  * the options MINUS what has to be injected, which is the shape
  * `DEFAULT_CHUNK_OPTIONS` already uses for the same reason.
+ *
+ * **Adding an option to `AttributeOptions` does not make the compiler ask for
+ * it here.** `Omit` preserves optionality, so a new `foo?:` leaves this
+ * literal compiling unchanged, and the default would be published, documented
+ * and missing from the one object whose job is to state the defaults - with
+ * the suite green. `granularity` was added in the commit that wrote this
+ * paragraph, and this line is the half that no tool would have demanded.
  */
 export const DEFAULT_ATTRIBUTE_OPTIONS: Readonly<
     Omit<AttributeOptions, 'tokenizer' | 'provider' | 'segmenter' | 'abbreviations'>
 > = {
+    granularity: DEFAULT_GRANULARITY,
     coalesceMaxCodePoints: DEFAULT_COALESCE_MAX_CODE_POINTS,
     minClusterCodePoints: DEFAULT_MIN_CLUSTER_CODE_POINTS,
 };
