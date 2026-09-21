@@ -102,24 +102,39 @@ describe('an image query goes to the dense arm alone', () => {
         expect(results[0]!.score).toBeCloseTo(1 / 61, 9);
     });
 
-    it('is refused by a provider that cannot embed an image, and the message says what to change', async () => {
+    it('a provider that does not declare the modality is refused by the declaration, not by the method', async () => {
+        // The contract changed deliberately after audit: this door used to
+        // check only whether `embedImageQuery` existed, so a provider
+        // declaring `['text']` that happened to implement it embedded an
+        // image with no refusal — the failure the required field exists to
+        // prevent, through the door that skipped it. Both gates now run, in
+        // this order, and the message is the declaration's.
         const textOnly = deterministicProvider(DIMENSIONS);
         const index = await createDenseIndex(CORPUS, textOnly, { tokenizer });
 
-        await expect(index.search(picture)).rejects.toThrow(/cannot embed an image query/u);
-        await expect(index.search(picture)).rejects.toThrow(/embedImageQuery/u);
+        await expect(index.search(picture)).rejects.toThrow(/declares \[text\]/u);
+        await expect(index.search(picture)).rejects.toThrow(/asked to embed 1 image input/u);
     });
 
-    it('a provider that declares the modality but implements no query method is still refused', async () => {
-        // `embedImages` and `embedImageQuery` are separate methods, and an
-        // adapter can ship one without the other. The refusal names the one
-        // that is missing rather than the capability in general.
+    it('past the declaration, the missing query method is named — and the write path is not touched', async () => {
+        // The second gate, reachable only past the first. `embedImages` and
+        // `embedImageQuery` are separate methods and an adapter can ship one
+        // without the other, so the refusal names the one that is missing
+        // rather than the capability in general — and the one that IS there
+        // must not be reached, because embedding the query through the
+        // document method would pay for a vector on the wrong side of the
+        // pair.
+        //
+        // Written as one test after audit: this was two, with near-identical
+        // names, proving the same gate twice.
         const halfway: EmbeddingProvider = {
             ...deterministicProvider(DIMENSIONS),
             modalities: ['text', 'image'],
             embedImages: vi.fn(async () => []),
         };
         const index = await createDenseIndex(CORPUS, halfway, { tokenizer });
+
+        await expect(index.search(picture)).rejects.toThrow(/cannot embed an image query/u);
         await expect(index.search(picture)).rejects.toThrow(/embedImageQuery/u);
         expect(halfway.embedImages).not.toHaveBeenCalled();
     });

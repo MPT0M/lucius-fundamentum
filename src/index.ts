@@ -50,10 +50,11 @@ export { norm, normalize, dot, packVectors, unpackVectors } from './vector.js';
 export {
     assertChunkCeilingFits,
     assertChunksFit,
+    assertModalitySupported,
     deterministicProvider,
     EmbeddingCheckError,
 } from './embedding.js';
-export type { EmbeddingCheckReason } from './embedding.js';
+export type { EmbeddingCheckReason, EmbeddingModality } from './embedding.js';
 export type { EmbeddingProvider } from './embedding.js';
 export { openAiProvider } from './providers/openai.js';
 export { geminiProvider } from './providers/gemini.js';

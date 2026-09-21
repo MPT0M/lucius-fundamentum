@@ -120,16 +120,19 @@ export interface IndexOptions {
  * and translates it; a phrase emitted from here would be English in somebody
  * else's interface, and changing it later would be changing their UI.
  *
- * `embedded` counts chunks whose vector has come back, so the caller can show
- * progress against `total` without knowing how the work is batched. The two
- * are reported together because a count with no denominator is not progress.
+ * `embedded` and `total` are reported together so a caller can close a bar
+ * it opened on `embed-start`. THEY ARE EQUAL on every build that reaches
+ * this event: the routing sends each chunk down exactly one arm, so a
+ * difference would mean a chunk came back with no vector. The pair is a
+ * check on that invariant, not a running count — there is one emission and
+ * it is terminal.
  */
 export type IndexBuildState =
     /** Chunking and the lexical index are done; nothing has been paid yet. */
     | { readonly kind: 'lexical-done'; readonly chunks: number }
     /** Vectors are being fetched. Emitted once before the first call. */
     | { readonly kind: 'embed-start'; readonly total: number }
-    /** Every vector is in. `embedded` equals `total` on a build that finished. */
+    /** Every vector is in, and `embedded` equals `total`. See above. */
     | { readonly kind: 'embed-done'; readonly embedded: number; readonly total: number };
 
 /**
@@ -149,9 +152,11 @@ export interface DenseIndexOptions extends IndexOptions {
      *
      * Optional because an index build has always worked without it, and the
      * result is identical either way. It exists because the wait is long
-     * enough to look like a hang: at the concurrency this package defaults
-     * to, `gemini.ts:56-61` publishes 24s for 636 chunks, which is roughly
-     * 185s for a thousand pages once each page is sliced. Three minutes of a
+     * enough to look like a hang: `gemini.ts:56-61` publishes 24s for 636
+     * chunks at the concurrency this package defaults to, and a page with
+     * text becomes several slices, so a thousand pages is several thousand
+     * chunks. The worked figure, with the slices-per-page operand it needs,
+     * is in the CHANGELOG entry for this feature. Three minutes of a
      * blank screen is a product defect even when the library is behaving.
      */
     readonly onState?: (event: IndexBuildState) => void;
@@ -473,6 +478,12 @@ export function isImageQuery(query: Query): query is PageImage {
 
 async function embedTheQuery(query: Query, runtime: DenseRuntime): Promise<readonly number[]> {
     if (!isImageQuery(query)) return runtime.provider.embedQuery(query);
+    // Both gates, and in this order, so that the two doors ask the same
+    // question. Checking only for the method would let a provider that
+    // declares `['text']` and happens to implement `embedImageQuery` embed
+    // an image with no refusal — which is the failure the required field
+    // exists to prevent, arriving through the door that skipped it.
+    assertModalitySupported('image', runtime.provider, 1);
     if (runtime.provider.embedImageQuery === undefined) {
         throw new EmbeddingCheckError(
             'modality-unsupported',
