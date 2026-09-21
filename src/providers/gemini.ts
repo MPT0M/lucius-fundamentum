@@ -32,6 +32,7 @@
  * tier. Indexing a corpus with this adapter needs a paid tier.
  */
 
+import type { PageImage } from '../chunker.js';
 import type { EmbeddingModality, EmbeddingProvider } from '../embedding.js';
 import { postJson, assertShape, EmbeddingProviderError, requirePositiveInteger } from './http.js';
 
@@ -133,16 +134,15 @@ export function geminiProvider(opts: GeminiOptions): EmbeddingProvider {
     const concurrency = requirePositiveInteger(opts.concurrency ?? DEFAULT_CONCURRENCY, 'concurrency');
     const usesPrefix = model === 'gemini-embedding-2';
 
-    async function embedOne(text: string, task: Task): Promise<number[]> {
-        const prefixed = usesPrefix ? withPrefix(text, task) : text;
+    async function embedParts(parts: readonly unknown[], extra: Record<string, unknown>): Promise<number[]> {
         const payload = await postJson({
             url: `${base}/models/${model}:embedContent`,
             headers: { 'x-goog-api-key': opts.apiKey },
             body: {
                 model: `models/${model}`,
-                content: { parts: [{ text: prefixed }] },
+                content: { parts },
                 output_dimensionality: dimensions,
-                ...(usesPrefix ? {} : { task_type: TASK_TYPE[task] }),
+                ...extra,
             },
             providerId: id,
             ...(opts.timeoutMs === undefined ? {} : { timeoutMs: opts.timeoutMs }),
@@ -154,6 +154,11 @@ export function geminiProvider(opts: GeminiOptions): EmbeddingProvider {
             throw new EmbeddingProviderError(id, undefined, 'response has no `embedding.values` array');
         }
         return values as number[];
+    }
+
+    async function embedOne(text: string, task: Task): Promise<number[]> {
+        const prefixed = usesPrefix ? withPrefix(text, task) : text;
+        return embedParts([{ text: prefixed }], usesPrefix ? {} : { task_type: TASK_TYPE[task] });
     }
 
     return {
@@ -177,6 +182,38 @@ export function geminiProvider(opts: GeminiOptions): EmbeddingProvider {
             assertShape([vector], 1, dimensions, id);
             return vector;
         },
+
+        // Declared only when the configured model accepts images, so the
+        // presence of the method and the claim in `modalities` cannot drift
+        // apart — a test holds them equal for every adapter here.
+        ...(modalitiesOf(model).includes('image')
+            ? {
+                  async embedImages(images: readonly PageImage[]): Promise<readonly (readonly number[])[]> {
+                      if (images.length === 0) return [];
+                      // ONE image per request, for the same reason each text
+                      // gets its own: several parts in one request are fused
+                      // into a SINGLE vector by this endpoint. Batching by
+                      // stuffing pages into `parts` would return one vector
+                      // for the whole corpus. The six-part ceiling the API
+                      // documents is therefore never reached from here.
+                      //
+                      // No task prefix and no `task_type`: neither applies to
+                      // a part that is not text.
+                      const vectors = await inBatches(
+                          images.map(
+                              (image) => () =>
+                                  embedParts(
+                                      [{ inlineData: { mimeType: image.mimeType, data: image.data } }],
+                                      {},
+                                  ),
+                          ),
+                          concurrency,
+                      );
+                      assertShape(vectors, images.length, dimensions, id);
+                      return vectors;
+                  },
+              }
+            : {}),
     };
 }
 

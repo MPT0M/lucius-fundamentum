@@ -167,6 +167,19 @@ export function chunk(doc: SourceDoc, opts: ChunkOptions): readonly Chunk[] {
     }
     assertNotBothArms(doc);
 
+    // A page with no text has no sentences, so the loop below would return
+    // nothing and the page would be absent from the index with no error. One
+    // chunk stands for the whole sheet: the unit of retrieval for a scanned
+    // page is the page, because there is nothing smaller to point at.
+    //
+    // `text` is empty and stays empty. Putting a placeholder in it would put
+    // that placeholder in the lexical index, where it would match queries
+    // that have nothing to do with the page.
+    if (isImageOnly(doc)) {
+        const base = { id: `${doc.id}#0`, documentId: doc.id, text: '', span: { start: 0, end: 0 } };
+        return [doc.pageNumber === undefined ? base : { ...base, pageNumber: doc.pageNumber }];
+    }
+
     const sentences = sentencesOf(doc.text, opts.segmenter ?? defaultSegmenter(), opts.abbreviations);
     const chunks: Chunk[] = [];
     let i = 0;

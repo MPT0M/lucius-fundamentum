@@ -23,9 +23,11 @@ import type { Span } from './types.js';
 import {
     chunk,
     DEFAULT_CHUNK_OPTIONS,
+    isImageOnly,
     type BoundingBox,
     type Chunk,
     type ChunkOptions,
+    type PageImage,
     type SourceDoc,
 } from './chunker.js';
 import { maskProtectedRegions, type ProtectedSpan } from './mask.js';
@@ -36,7 +38,9 @@ import { dot, normalize, packVectors, unpackVectors } from './vector.js';
 import {
     assertChunkCeilingFits,
     assertChunksFit,
+    assertModalitySupported,
     embedDocumentsChecked,
+    embedImagesChecked,
     type EmbeddingProvider,
 } from './embedding.js';
 
@@ -62,7 +66,17 @@ export interface StoredChunk {
     readonly documentId: string;
     readonly text: string;
     readonly span: Span;
-    /** Identifies the text for vector reuse across reindexing. */
+    /**
+     * Identifies WHAT PRODUCED THE VECTOR, so that reindexing can skip paying
+     * for one it already has.
+     *
+     * Over the chunk's text for a text chunk, and over the page's bytes for a
+     * chunk that is a page image — because that is what the provider was
+     * given. Hashing the text of an image chunk would hash the empty string
+     * for every scanned page in a corpus: one key for all of them, and a
+     * reuse that hands one page's vector to another. Not cryptographic; it
+     * answers "is this the same input as before".
+     */
     readonly contentHash: string;
     readonly pageNumber?: number;
     /**
@@ -336,9 +350,10 @@ function fuseByRank(lists: readonly (readonly number[])[], k: number): Map<numbe
 /**
  * FNV-1a, twice with different offsets, concatenated to 64 bits of hex.
  *
- * Not cryptographic and not meant to be: it answers "is this the same text as
- * before", so that reindexing a document can skip paying for a vector it
- * already has. Two independent 32-bit passes rather than one because a single
+ * Not cryptographic and not meant to be: it answers "is this the same INPUT
+ * as before", so that reindexing a document can skip paying for a vector it
+ * already has. The caller passes the chunk's text, or a page's bytes when the
+ * chunk is a page — whichever the provider will be handed. Two independent 32-bit passes rather than one because a single
  * 32-bit space collides at a few tens of thousands of chunks, and a collision
  * here would reuse a vector belonging to different text — silently.
  */
@@ -373,6 +388,8 @@ interface Built {
     readonly postings: Map<string, [number, number][]>;
     readonly lengths: number[];
     readonly averageLength: number;
+    /** Chunks the lexical arm can retrieve — the collection BM25 averages over. */
+    readonly lexicalCount: number;
 }
 
 function build(docs: readonly SourceDoc[], tokenizer: Tokenizer, chunkOptions: ChunkOptions): Built {
@@ -382,6 +399,7 @@ function build(docs: readonly SourceDoc[], tokenizer: Tokenizer, chunkOptions: C
     const lengths: number[] = [];
     let totalTokens = 0;
 
+    let lexicalCount = 0;
     for (const doc of docs) {
         // The mask runs ONCE over the document. A chunk holding half a fenced
         // block has no closing fence, so regions computed from the chunk alone
@@ -396,7 +414,7 @@ function build(docs: readonly SourceDoc[], tokenizer: Tokenizer, chunkOptions: C
                 documentId: piece.documentId,
                 text: piece.text,
                 span: piece.span,
-                contentHash: contentHash(piece.text),
+                contentHash: contentHash(isImageOnly(doc) ? doc.page!.data : piece.text),
                 ...(piece.pageNumber === undefined ? {} : { pageNumber: piece.pageNumber }),
                 ...(piece.boxes === undefined ? {} : { boxes: piece.boxes }),
             });
@@ -414,6 +432,7 @@ function build(docs: readonly SourceDoc[], tokenizer: Tokenizer, chunkOptions: C
             }
             lengths.push(length);
             totalTokens += length;
+            if (!isImageOnly(doc)) lexicalCount += 1;
         }
     }
 
@@ -422,7 +441,15 @@ function build(docs: readonly SourceDoc[], tokenizer: Tokenizer, chunkOptions: C
         stored,
         postings,
         lengths,
-        averageLength: chunks.length === 0 ? 0 : totalTokens / chunks.length,
+        // Averaged over the LEXICAL collection, not over every chunk. A page
+        // image is a chunk with no terms, and it is not a short document —
+        // it is not a document this arm can retrieve at all. Counting it
+        // would drag `averageLength` down and, through `b`, penalise every
+        // real passage in a corpus that happens to contain scans: the length
+        // normalisation would be measuring against a denominator that
+        // includes documents the arm can never return.
+        averageLength: lexicalCount === 0 ? 0 : totalTokens / lexicalCount,
+        lexicalCount,
     };
 }
 
@@ -696,12 +723,18 @@ function defaultTokenizer(): Tokenizer {
 /**
  * Indexes `docs`.
  *
- * Refuses an index whose chunks produce no tokens at all. `averageLength`
- * would be zero, it sits in BM25's denominator, every score would be `NaN`,
- * and `NaN` in a comparator returns the order things arrived in — no error,
- * no log, and a ranking that looks like a ranking. Failing here is the same
- * decision as fixing the idf variant: refuse the state that orders wrongly in
- * silence.
+ * Refuses an index whose TEXT chunks produce no tokens at all.
+ * `averageLength` would be zero, it sits in BM25's denominator, every score
+ * would be `NaN`, and `NaN` in a comparator returns the order things arrived
+ * in — no error, no log, and a ranking that looks like a ranking. Failing
+ * here is the same decision as fixing the idf variant: refuse the state that
+ * orders wrongly in silence.
+ *
+ * A corpus of nothing but page images is NOT that state, and the distinction
+ * is why this asks about the lexical collection rather than about every
+ * chunk. Such a corpus has no terms by construction, and the lexical arm
+ * correctly returns nothing from it; refusing it would make a scanned
+ * document unindexable through the very door that was opened for it.
  */
 export function createIndex(docs: readonly SourceDoc[], opts: IndexOptions = {}): Index {
     const tokenizer = opts.tokenizer ?? defaultTokenizer();
@@ -712,9 +745,9 @@ export function createIndex(docs: readonly SourceDoc[], opts: IndexOptions = {})
     };
 
     const built = build(docs, tokenizer, chunkOptions);
-    if (built.chunks.length > 0 && built.averageLength === 0) {
+    if (built.lexicalCount > 0 && built.averageLength === 0) {
         throw new Error(
-            `createIndex produced ${built.chunks.length} chunks and 0 tokens, so average length is 0 ` +
+            `createIndex produced ${built.lexicalCount} text chunks and 0 tokens, so average length is 0 ` +
                 'and every BM25 score would be NaN. Check that the tokenizer matches the text: a corpus ' +
                 'in a script the tokenizer drops entirely gives exactly this.',
         );
@@ -748,19 +781,62 @@ export async function createDenseIndex(
     assertChunksFit(artifact.chunks, provider);
     opts.onState?.({ kind: 'lexical-done', chunks: artifact.chunks.length });
 
+    // THE ROUTING RULE, and this is the site that owns it. Until this commit
+    // the dense arm embedded `c.text` for every chunk, written as if there
+    // were no choice. There is: a chunk that stands for a page image has no
+    // text to embed, and its vector has to come from the page.
+    //
+    // The pages are found through the documents rather than carried on the
+    // chunk, and deliberately. Bytes on the chunk would travel into the
+    // serialized artifact, which is loaded from disk and over the network:
+    // a thousand pages at a modest JPEG each would add tens of megabytes to
+    // an index whose only new job would be to repeat a file the caller
+    // already has. `documentId` is enough to find the page again here, and
+    // it costs the artifact nothing.
+    const pageOf = new Map<string, PageImage>();
+    for (const doc of docs) if (isImageOnly(doc)) pageOf.set(doc.id, doc.page!);
+
+    const imageIndices: number[] = [];
+    const images: PageImage[] = [];
+    const textIndices: number[] = [];
+    const texts: string[] = [];
+    artifact.chunks.forEach((c, index) => {
+        const page = pageOf.get(c.documentId);
+        if (page === undefined) {
+            textIndices.push(index);
+            texts.push(c.text);
+        } else {
+            imageIndices.push(index);
+            images.push(page);
+        }
+    });
+
+    // Asked once, before anything is paid for, and only about the modalities
+    // this corpus actually contains: a text-only provider must stay usable
+    // for a text-only corpus.
+    if (texts.length > 0) assertModalitySupported('text', provider, texts.length);
+    if (images.length > 0) assertModalitySupported('image', provider, images.length);
+
     const total = artifact.chunks.length;
     // Emitted even for an empty corpus, and before the branch that skips the
     // call. A caller that shows a bar on `embed-start` and hides it on
     // `embed-done` would otherwise be left with a bar it never started for a
     // build that legitimately embeds nothing.
     opts.onState?.({ kind: 'embed-start', total });
-    const vectors = total === 0
-        ? []
-        : await embedDocumentsChecked(
-              artifact.chunks.map((c) => c.text),
-              provider,
-          );
-    opts.onState?.({ kind: 'embed-done', embedded: vectors.length, total });
+    const vectors = new Array<readonly number[]>(total);
+    if (texts.length > 0) {
+        const embedded = await embedDocumentsChecked(texts, provider);
+        embedded.forEach((vector, i) => {
+            vectors[textIndices[i]!] = vector;
+        });
+    }
+    if (images.length > 0) {
+        const embedded = await embedImagesChecked(images, provider);
+        embedded.forEach((vector, i) => {
+            vectors[imageIndices[i]!] = vector;
+        });
+    }
+    opts.onState?.({ kind: 'embed-done', embedded: vectors.filter(Boolean).length, total });
 
     return loadIndex(
         {
@@ -843,7 +919,17 @@ export function loadIndex(
         stored: artifact.chunks,
         postings,
         lengths,
+        // Taken from the artifact, never recomputed: the average that scored
+        // this index is the one it was built with, and recomputing here would
+        // let a loaded index disagree with the one that produced it.
         averageLength: artifact.bm25.averageLength,
+        // Read off the artifact rather than carried in it. A chunk with text
+        // is one the lexical arm can retrieve; a page image stores the empty
+        // string. Nothing downstream of loading reads this — the guard that
+        // does runs in `createIndex` — and it is filled truthfully rather
+        // than with a placeholder, so that a future reader is not told
+        // something false by a field nobody happened to need yet.
+        lexicalCount: artifact.chunks.filter((c) => c.text !== '').length,
     };
     const dense = denseFromArtifact(artifact, opts.provider);
     // `== null` and not `=== null`, for the reason `denseFromArtifact`

@@ -85,6 +85,37 @@ That rule governs changes made FROM the first release onward, so entries under
 
 ### Added
 
+- **A page supplied as an image is indexed as an image, and can be found.**
+  This is the half `SourceDoc.page` was waiting for. Such a page becomes
+  exactly one chunk — the page is the unit of retrieval because there is
+  nothing smaller to point at — and the dense arm sends the image where it
+  used to send `c.text` for everything. Its `text` stays empty, so it
+  contributes no lexical terms and matches no query by accident.
+
+  `EmbeddingProvider` gains an optional `embedImages`, present exactly when
+  `modalities` includes `'image'`. An adapter that claims the modality and
+  implements nothing gets a named error instead of a `TypeError`.
+
+  **`contentHash` now covers whatever produced the vector** — the text for a
+  text chunk, the page's bytes for a page. Hashing the text of a page would
+  hash the empty string for every scan in a corpus: one key for all of them,
+  and a reindex that hands one page's vector to another, silently. That is
+  the failure the field's own documentation warns about, arriving through a
+  door it predates.
+
+  **BM25's average length is now taken over the lexical collection**, not
+  over every chunk. A page image is not a short document; it is not a
+  document that arm can retrieve at all. Counting it dragged the average down
+  and, through `b`, penalised every real passage in a corpus that happened to
+  contain scans. The related guard changed with it: an index of nothing but
+  pages produces no terms by construction and is no longer refused, while
+  text chunks that produce no terms still are.
+
+  The pages are found through the documents rather than carried on the chunk,
+  so nothing new travels into the serialized artifact. A thousand pages of
+  base64 would add tens of megabytes to an index whose only new job would be
+  to repeat a file the caller already holds.
+
 - **`createDenseIndex` reports where it is, through `onState`.** Indexing was
   silent from the first chunk to the last vector, and the wait is long enough
   to read as a hang: at the concurrency this package defaults to,

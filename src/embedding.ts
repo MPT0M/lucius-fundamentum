@@ -9,6 +9,7 @@
  * no network, no key and no cost.
  */
 
+import type { PageImage } from './chunker.js';
 import { countCodePoints } from './unicode.js';
 import { normalize } from './vector.js';
 
@@ -108,6 +109,22 @@ export interface EmbeddingProvider {
      * without this method an adapter has no way to obey.
      */
     embedQuery(text: string): Promise<readonly number[]>;
+
+    /**
+     * Embeds already-rasterized pages, one vector per page.
+     *
+     * Present exactly when `modalities` includes `'image'`, and the two are
+     * checked against each other for every adapter this package ships. A
+     * third-party adapter that declares the modality without implementing
+     * this gets a named error from `embedImagesChecked` rather than a
+     * `TypeError` from calling undefined.
+     *
+     * Optional rather than required for the same reason `embedDocuments` is
+     * not: most embedding endpoints take strings and nothing else, and
+     * forcing every adapter to write a method that throws would put the
+     * refusal in three places instead of in the declaration.
+     */
+    embedImages?(images: readonly PageImage[]): Promise<readonly (readonly number[])[]>;
 
     /**
      * Exact token count, when the provider offers one.
@@ -213,6 +230,47 @@ export function assertModalitySupported(
         `provider ${provider.id} declares [${provider.modalities.join(', ')}] and was asked to embed ` +
             `${howMany} ${modality} input${howMany === 1 ? '' : 's'}`,
     );
+}
+
+/**
+ * Embeds pages through the provider, with the same count and dimension checks
+ * the text path gets.
+ *
+ * The checks are not duplicated for symmetry. A provider that returns one
+ * vector fewer than it was given pages would shift every page's vector onto
+ * the next page — the index would work, rank, and be wrong everywhere, with
+ * nothing to show for it. That is the failure `bad-count` exists for, and it
+ * does not care which modality produced the list.
+ */
+export async function embedImagesChecked(
+    images: readonly PageImage[],
+    provider: EmbeddingProvider,
+): Promise<readonly (readonly number[])[]> {
+    if (provider.embedImages === undefined) {
+        throw new EmbeddingCheckError(
+            'modality-unsupported',
+            `provider ${provider.id} declares [${provider.modalities.join(', ')}] but implements no ` +
+                'embedImages. An adapter that claims the modality has to provide the method.',
+        );
+    }
+    const raw = await provider.embedImages(images);
+    if (raw.length !== images.length) {
+        throw new EmbeddingCheckError(
+            'bad-count',
+            `provider ${provider.id} returned ${raw.length} vectors for ${images.length} images; ` +
+                'exactly one per image is needed, in order',
+        );
+    }
+    return raw.map((vector, index) => {
+        if (vector.length !== provider.dimensions) {
+            throw new EmbeddingCheckError(
+                'bad-dimensions',
+                `provider ${provider.id} returned a ${vector.length}-dimension vector for image ${index}, ` +
+                    `but reports ${provider.dimensions} dimensions`,
+            );
+        }
+        return normalize([...vector]);
+    });
 }
 
 /**
