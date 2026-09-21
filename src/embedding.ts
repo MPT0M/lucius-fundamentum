@@ -127,6 +127,18 @@ export interface EmbeddingProvider {
     embedImages?(images: readonly PageImage[]): Promise<readonly (readonly number[])[]>;
 
     /**
+     * Embeds an image used as the QUERY: photograph a diagram, find the
+     * material that covers it.
+     *
+     * Separate from `embedImages` for the same reason `embedQuery` is
+     * separate from `embedDocuments`: providers ask to be told which side of
+     * the pair they are embedding, and a flag is forgettable in a way two
+     * methods are not. Present under the same rule — exactly when
+     * `modalities` includes `'image'`.
+     */
+    embedImageQuery?(image: PageImage): Promise<readonly number[]>;
+
+    /**
      * Exact token count, when the provider offers one.
      *
      * NO ADAPTER IMPLEMENTS THIS YET, so nothing exercises it and the optional

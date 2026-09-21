@@ -212,6 +212,15 @@ export function geminiProvider(opts: GeminiOptions): EmbeddingProvider {
                       assertShape(vectors, images.length, dimensions, id);
                       return vectors;
                   },
+
+                  async embedImageQuery(image: PageImage): Promise<readonly number[]> {
+                      const vector = await embedParts(
+                          [{ inlineData: { mimeType: image.mimeType, data: image.data } }],
+                          {},
+                      );
+                      assertShape([vector], 1, dimensions, id);
+                      return vector;
+                  },
               }
             : {}),
     };

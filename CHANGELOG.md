@@ -85,6 +85,22 @@ That rule governs changes made FROM the first release onward, so entries under
 
 ### Added
 
+- **`search` accepts an image as the query.** Photograph a diagram and find
+  the material that covers it. `Query` is `string | PageImage`, and
+  `isImageQuery` is the one place that tells them apart.
+
+  An image query runs the dense arm alone, because there are no terms to look
+  up. That also settles the eligibility question for this path rather than
+  leaving it open: when nothing is eligible for the lexical list, the absence
+  is uniform, no candidate collects the second contribution that would
+  outrank a single arm's lead, and the ordering is the dense ordering.
+
+  `embedImageQuery` is separate from `embedImages` for the reason `embedQuery`
+  is separate from `embedDocuments`: providers ask to be told which side of
+  the pair they are embedding, and a flag is forgettable where two methods
+  are not. An index searched with an image by a provider that cannot embed
+  one is refused with a message naming the method to implement.
+
 - **A page supplied as an image is indexed as an image, and can be found.**
   This is the half `SourceDoc.page` was waiting for. Such a page becomes
   exactly one chunk — the page is the unit of retrieval because there is

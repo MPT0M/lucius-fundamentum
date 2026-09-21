@@ -40,6 +40,7 @@ import {
     assertChunksFit,
     assertModalitySupported,
     embedDocumentsChecked,
+    EmbeddingCheckError,
     embedImagesChecked,
     type EmbeddingProvider,
 } from './embedding.js';
@@ -239,7 +240,7 @@ export interface Index {
      * vectors — `searchLexical` is what answers then, and the refusal says so.
      * See `SearchResult.score`: the number it returns is not a similarity.
      */
-    search(query: string, opts?: SearchOptions): Promise<readonly SearchResult[]>;
+    search(query: Query, opts?: SearchOptions): Promise<readonly SearchResult[]>;
     serialize(): IndexArtifact;
 }
 
@@ -454,6 +455,36 @@ function build(docs: readonly SourceDoc[], tokenizer: Tokenizer, chunkOptions: C
 }
 
 /**
+ * A query is a string or a page image, and this is the one place that tells
+ * them apart.
+ *
+ * An image query does NOT reach the lexical arm, and that is not an omission:
+ * there are no terms to look up. `search` runs the dense arm alone for it,
+ * which also means the eligibility asymmetry of the fusion does not apply —
+ * when nothing is eligible for the lexical list, nothing collects the second
+ * contribution that would outrank a single arm's lead.
+ */
+export type Query = string | PageImage;
+
+/** True for the image side, and the only test of it in the package. */
+export function isImageQuery(query: Query): query is PageImage {
+    return typeof query !== 'string';
+}
+
+async function embedTheQuery(query: Query, runtime: DenseRuntime): Promise<readonly number[]> {
+    if (!isImageQuery(query)) return runtime.provider.embedQuery(query);
+    if (runtime.provider.embedImageQuery === undefined) {
+        throw new EmbeddingCheckError(
+            'modality-unsupported',
+            `provider ${runtime.providerId} cannot embed an image query. An index searched with an ` +
+                'image needs a provider that declares the image modality and implements ' +
+                'embedImageQuery.',
+        );
+    }
+    return runtime.provider.embedImageQuery(query);
+}
+
+/**
  * The dense arm as it lives in memory: vectors already unit length, and the
  * provider that has to embed the query with the same model that embedded the
  * chunks. The artifact stores the same thing packed; this is the unpacked side.
@@ -620,8 +651,8 @@ function makeIndex(
     }
 
     /** Cosine against every chunk vector. One provider call, for the query. */
-    async function denseScores(query: string, runtime: DenseRuntime): Promise<Map<number, number>> {
-        const raw = await runtime.provider.embedQuery(query);
+    async function denseScores(query: Query, runtime: DenseRuntime): Promise<Map<number, number>> {
+        const raw = await embedTheQuery(query, runtime);
         if (raw.length !== runtime.dimensions) {
             throw new Error(
                 `provider ${runtime.providerId} returned a ${raw.length}-dimension vector for the query, ` +
@@ -650,7 +681,7 @@ function makeIndex(
             return rankAndCap(lexicalScores(query), built.chunks, topK, opts.maxChunksPerPage);
         },
 
-        async search(query: string, opts: SearchOptions = {}): Promise<readonly SearchResult[]> {
+        async search(query: Query, opts: SearchOptions = {}): Promise<readonly SearchResult[]> {
             if (dense === null) {
                 // Naming which of the two, because the repairs are not the
                 // same size. The single message this replaced said "its
@@ -675,7 +706,13 @@ function makeIndex(
             // is not its relevance, and the fusion would read that absence as
             // the arm ranking it low. The cap belongs to the list a caller
             // receives, so it is applied once, at the end, to the fused list.
-            const lexical = rankIndices(lexicalScores(query), FUSION_DEPTH);
+            // An image query produces no terms, so the lexical list is empty
+            // rather than unranked: `fuseByRank` over one list is that list,
+            // and every candidate carries one contribution, which is the same
+            // for all of them. The ordering is the dense ordering, and no
+            // chunk is penalised for an absence that applies to the whole
+            // query.
+            const lexical = isImageQuery(query) ? [] : rankIndices(lexicalScores(query), FUSION_DEPTH);
             const semantic = rankIndices(await denseScores(query, dense), FUSION_DEPTH);
 
             const fused = fuseByRank([lexical, semantic], FUSION_K);

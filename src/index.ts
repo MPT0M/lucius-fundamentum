@@ -33,6 +33,7 @@ export {
     FUSION_K,
     FUSION_DEPTH,
 } from './index-build.js';
+export { isImageQuery } from './index-build.js';
 export type {
     DenseArm,
     DenseIndexOptions,
@@ -40,6 +41,7 @@ export type {
     IndexArtifact,
     IndexBuildState,
     IndexOptions,
+    Query,
     SearchOptions,
     SearchResult,
     StoredChunk,
