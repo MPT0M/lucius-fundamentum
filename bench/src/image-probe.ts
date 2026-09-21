@@ -10,7 +10,10 @@
  * `bench/` uses, and holds no path to anywhere. A probe that knows where one
  * machine keeps its secrets is a probe nobody else can run.
  *
- *     TEST_KEY=... npx vite-node bench/src/image-probe.ts
+ *     npm run bench:image-probe
+ *
+ * An earlier header here said `npx vite-node`, which is not a dependency of
+ * this package and does not run from a clean clone — the script above does.
  *
  * The fixtures are a 1x1 PNG and a 1x1 JPEG. That is enough to learn request
  * shape, refusal behaviour, and whether the declared MIME changes the result.
@@ -25,6 +28,9 @@
  * those needs a byte stream valid under both labels, which these fixtures are
  * not.
  */
+import { fileURLToPath } from 'node:url';
+import { resolve } from 'node:path';
+
 const BASE = 'https://generativelanguage.googleapis.com/v1beta';
 const MODEL = 'gemini-embedding-2';
 
@@ -150,9 +156,14 @@ function report(outcomes: readonly Outcome[]): void {
     }
 }
 
-const key = process.env.TEST_KEY;
-if (key === undefined || key === '') {
-    console.error('TEST_KEY is not set. This probe calls a paid endpoint and will not guess.');
-    process.exit(1);
+// Run directly, or merely imported? Comparing `import.meta.url` to `argv[1]`
+// is the convention the rest of `bench/` uses, and here it is load-bearing
+// rather than tidy: without it, importing this module calls a paid endpoint,
+// or kills the importing process when the key is absent.
+if (resolve(process.argv[1] ?? '') === resolve(fileURLToPath(import.meta.url))) {
+    const key = process.env.TEST_KEY;
+    if (key === undefined || key === '') {
+        throw new Error('TEST_KEY is not set. This probe calls a paid endpoint and will not guess.');
+    }
+    report(await run(key));
 }
-report(await run(key));
