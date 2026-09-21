@@ -37,6 +37,7 @@ function failing(error: unknown): EmbeddingProvider {
         id: 'failing',
         dimensions: 3,
         maxInputCodePoints: 100_000,
+        modalities: ['text'],
         async embedDocuments() {
             throw error;
         },

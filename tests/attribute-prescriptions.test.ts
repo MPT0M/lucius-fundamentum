@@ -56,6 +56,7 @@ function scripted(rules: [string, number[]][], fallback: number[]): EmbeddingPro
         id: 'scripted',
         dimensions: 3,
         maxInputCodePoints: 100000,
+        modalities: ['text'],
         async embedDocuments(texts) {
             return texts.map(vectorFor);
         },

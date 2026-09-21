@@ -117,6 +117,10 @@ export function openAiProvider(opts: OpenAiOptions): EmbeddingProvider {
         id,
         dimensions,
         maxInputCodePoints: WINDOW_TOKENS * CODE_POINTS_PER_TOKEN,
+        // The embeddings endpoint this adapter speaks to takes strings. Image
+        // input would be a different endpoint and a different request shape,
+        // neither of them written here.
+        modalities: ['text'],
         embedDocuments: embed,
         async embedQuery(text: string): Promise<readonly number[]> {
             // No prefix, no parameter, no separate call: this provider has no

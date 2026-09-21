@@ -31,34 +31,6 @@ That rule governs changes made FROM the first release onward, so entries under
   real reader in `maxChunksPerPage`, which the other three never had anywhere
   in `src/`.
 
-### Added
-
-- **`SourceDoc` accepts a rasterized page through `page`, for a page whose
-  text could not be extracted.** A scanned sheet with no text layer used to be
-  unindexable: the chunker produces chunks from sentences, an empty document
-  has none, and the page was simply absent from every result. The caller that
-  already had the page as an image had no way to hand it over.
-
-  `PageImage` carries `data` (base64) and `mimeType`, which is what a provider
-  needs and nothing more. The MIME type is **not** checked against the bytes:
-  checking means parsing an image header, and this package opens no binary.
-  The debt that leaves, named here: a lying `mimeType` is undetectable, raises
-  no error, and — measured against one provider — does not change the vector
-  either, because the bytes are what gets decoded.
-
-  **Supplying `page` together with usable text is refused, not merged**, and
-  the refusal is the part worth reading. The two together would describe a
-  page reachable by both arms through different fields, and reciprocal-rank
-  fusion has no rule for that: a chunk missing from the lexical list is scored
-  as ranked below every chunk present in it, which is correct while absence
-  means "the terms did not match" and wrong when it means "this could never
-  have matched". Rather than admit that case and rank it by a rule that does
-  not fit, the chunker refuses it. Whitespace does not count as text, so the
-  supported case — a blank `text` beside a `page` — passes.
-
-  What counts as usable text is the caller's judgement. This package only
-  checks that the two are not both present.
-
 ### Changed
 
 - **A marker is now written before the clause's trailing punctuation, preceded
@@ -92,6 +64,52 @@ That rule governs changes made FROM the first release onward, so entries under
   chunk identifier — the old comparator could legally emit `[3], [1]`.
 
 ### Added
+
+- **An embedding provider declares which modalities it accepts, and asking for
+  one it did not declare is refused before the network.** `EmbeddingProvider`
+  gains `modalities`, required. Required and not optional on purpose: an
+  optional field defaulting to text-only would silently demote an adapter
+  whose author never learned the field existed, which is the exact failure the
+  field is here to prevent. The compiler asks every adapter once. Cost,
+  measured by adding the field and reading the compiler: 19 errors across 11
+  files, four of them the adapters themselves.
+
+  The capability belongs to the adapter **as configured**, not to a list of
+  model names: `model` is open and the same model is served under different
+  identifiers by different hosts, so a name allowlist would refuse legitimate
+  deployments. The Gemini adapter claims `image` for `gemini-embedding-2`,
+  which was verified against the live endpoint, and text-only for every other
+  model, by assumption rather than measurement — the discipline the Qwen
+  adapter already follows for its window.
+
+  `EmbeddingCheckReason` gains `'modality-unsupported'`, so a caller can
+  classify the failure without matching prose.
+
+- **`SourceDoc` accepts a rasterized page through `page`, for a page whose
+  text could not be extracted.** A scanned sheet with no text layer used to be
+  unindexable: the chunker produces chunks from sentences, an empty document
+  has none, and the page was simply absent from every result. The caller that
+  already had the page as an image had no way to hand it over.
+
+  `PageImage` carries `data` (base64) and `mimeType`, which is what a provider
+  needs and nothing more. The MIME type is **not** checked against the bytes:
+  checking means parsing an image header, and this package opens no binary.
+  The debt that leaves, named here: a lying `mimeType` is undetectable, raises
+  no error, and — measured against one provider — does not change the vector
+  either, because the bytes are what gets decoded.
+
+  **Supplying `page` together with usable text is refused, not merged**, and
+  the refusal is the part worth reading. The two together would describe a
+  page reachable by both arms through different fields, and reciprocal-rank
+  fusion has no rule for that: a chunk missing from the lexical list is scored
+  as ranked below every chunk present in it, which is correct while absence
+  means "the terms did not match" and wrong when it means "this could never
+  have matched". Rather than admit that case and rank it by a rule that does
+  not fit, the chunker refuses it. Whitespace does not count as text, so the
+  supported case — a blank `text` beside a `page` — passes.
+
+  What counts as usable text is the caller's judgement. This package only
+  checks that the two are not both present.
 
 - **`granularity: 'paragraph'` puts one anchor per block instead of one per
   clause.** Every source used anywhere in a paragraph is cited once, at the

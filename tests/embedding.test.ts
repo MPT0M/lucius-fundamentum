@@ -12,6 +12,7 @@ import { norm, dot } from '../src/vector.js';
 
 /** A window small enough that ordinary fixtures cross it. */
 const narrow = (maxInputCodePoints: number): EmbeddingProvider => ({
+modalities: ['text'],
     id: 'narrow',
     dimensions: 4,
     maxInputCodePoints,
@@ -211,6 +212,7 @@ describe('a failed check says WHY in a field, not in a sentence', () => {
             id: 'short',
             dimensions: 4,
             maxInputCodePoints: 1000,
+            modalities: ['text'],
             async embedDocuments() {
                 return [[1, 0, 0, 0]];
             },

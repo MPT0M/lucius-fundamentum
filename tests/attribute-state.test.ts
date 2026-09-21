@@ -41,6 +41,7 @@ const scripted: EmbeddingProvider = {
     id: 'scripted',
     dimensions: 3,
     maxInputCodePoints: 100_000,
+    modalities: ['text'],
     async embedDocuments(texts) {
         return texts.map((t) =>
             /relator|suspensiv|agravo/i.test(t) ? unit([1, 0, 0]) : unit([-1, 1, 0]),

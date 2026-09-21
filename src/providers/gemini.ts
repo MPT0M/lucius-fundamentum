@@ -32,7 +32,7 @@
  * tier. Indexing a corpus with this adapter needs a paid tier.
  */
 
-import type { EmbeddingProvider } from '../embedding.js';
+import type { EmbeddingModality, EmbeddingProvider } from '../embedding.js';
 import { postJson, assertShape, EmbeddingProviderError, requirePositiveInteger } from './http.js';
 
 export interface GeminiOptions {
@@ -150,6 +150,7 @@ export function geminiProvider(opts: GeminiOptions): EmbeddingProvider {
         id,
         dimensions,
         maxInputCodePoints: WINDOW_TOKENS * CODE_POINTS_PER_TOKEN - PREFIX_CODE_POINTS,
+        modalities: modalitiesOf(model),
 
         async embedDocuments(texts: readonly string[]): Promise<readonly (readonly number[])[]> {
             if (texts.length === 0) return [];
@@ -167,6 +168,25 @@ export function geminiProvider(opts: GeminiOptions): EmbeddingProvider {
             return vector;
         },
     };
+}
+
+/**
+ * Which modalities a Gemini embedding model accepts.
+ *
+ * Derived from the CONFIGURED model, not fixed for the adapter, because
+ * `opts.model` is open and the two generations differ. Verified against the
+ * live endpoint for `gemini-embedding-2`: an `inlineData` part returns 200
+ * and a vector, and an absent `mimeType` returns 400 naming the field.
+ *
+ * Anything else is text-only here, and by assumption rather than by
+ * measurement — the same discipline as `qwen.ts:122`, which documents a
+ * ceiling for its default model "and for no other by assumption". Claiming
+ * image for an untested model would turn a capability claim into a guess,
+ * and the guard that reads this would then wave through a call that fails at
+ * the provider instead of at the configuration.
+ */
+function modalitiesOf(model: string): readonly EmbeddingModality[] {
+    return model === 'gemini-embedding-2' ? (['text', 'image'] as const) : (['text'] as const);
 }
 
 /**

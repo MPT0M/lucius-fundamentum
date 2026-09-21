@@ -12,6 +12,15 @@
 import { countCodePoints } from './unicode.js';
 import { normalize } from './vector.js';
 
+/**
+ * A kind of input an embedding provider can be asked to vectorize.
+ *
+ * A closed union rather than `string`, so that adding a kind is a change the
+ * compiler shows every adapter, and a typo in an adapter is caught where it
+ * is written instead of being read later as "this provider cannot do that".
+ */
+export type EmbeddingModality = 'text' | 'image';
+
 export interface EmbeddingProvider {
     /** Travels into the artifact, so an index says which provider produced it. */
     readonly id: string;
@@ -26,6 +35,27 @@ export interface EmbeddingProvider {
      * guard into decoration.
      */
     readonly maxInputCodePoints: number;
+    /**
+     * What this provider, configured as it is, can be asked to embed.
+     *
+     * REQUIRED, and the omission is why. An optional field defaulting to
+     * text-only would let an adapter that genuinely accepts images be treated
+     * as if it did not, because its author never learned the field existed —
+     * a capability lost in silence, which is the failure the field is here to
+     * prevent. Required, the compiler asks every adapter the question once.
+     *
+     * The capability belongs to the ADAPTER AS CONFIGURED, not to a global
+     * list of model names. `opts.model` is open, and the same model is served
+     * under different identifiers by different hosts, so a name allowlist
+     * would refuse legitimate deployments. What an adapter can answer for is
+     * which of ITS OWN models do what — the precedent is `qwen.ts:122`,
+     * "documented ceiling for the DEFAULT_MODEL, and for no other by
+     * assumption".
+     *
+     * `'text'` is in every adapter's list. Anything beyond it is a claim the
+     * adapter is making about the model it was handed.
+     */
+    readonly modalities: readonly EmbeddingModality[];
     /**
      * Embeds passages to be searched IN.
      *
@@ -116,7 +146,11 @@ export interface EmbeddingProvider {
  * every call with the same input, and degrading there would turn a caller's
  * configuration error into permanent silent behaviour. It throws.
  */
-export type EmbeddingCheckReason = 'input-too-large' | 'bad-count' | 'bad-dimensions';
+export type EmbeddingCheckReason =
+    | 'input-too-large'
+    | 'bad-count'
+    | 'bad-dimensions'
+    | 'modality-unsupported';
 
 /** Named so a caller can classify without reading the message. */
 export class EmbeddingCheckError extends Error {
@@ -151,6 +185,33 @@ export function assertChunkCeilingFits(maxChunkCodePoints: number, provider: Emb
         'input-too-large',
         `chunk ceiling ${maxChunkCodePoints} code points exceeds the window of provider ` +
             `${provider.id}: ${provider.maxInputCodePoints}`,
+    );
+}
+
+/**
+ * Rejects, before any call is paid for, asking a provider for a modality it
+ * did not declare.
+ *
+ * Refusing loudly is the whole point. The quiet alternatives are both worse
+ * than an error: dropping the pages leaves an index that is missing exactly
+ * the material the caller went to the trouble of rasterizing, and sending
+ * them anyway produces a provider error whose message is about a request
+ * shape rather than about a configuration choice the caller made.
+ *
+ * Sits beside `assertChunkCeilingFits` because it is the same kind of check —
+ * asked once, before the network, about a mismatch that would fail on every
+ * call with this configuration.
+ */
+export function assertModalitySupported(
+    modality: EmbeddingModality,
+    provider: EmbeddingProvider,
+    howMany: number,
+): void {
+    if (provider.modalities.includes(modality)) return;
+    throw new EmbeddingCheckError(
+        'modality-unsupported',
+        `provider ${provider.id} declares [${provider.modalities.join(', ')}] and was asked to embed ` +
+            `${howMany} ${modality} input${howMany === 1 ? '' : 's'}`,
     );
 }
 
@@ -251,6 +312,10 @@ export function deterministicProvider(dimensions = 32): EmbeddingProvider {
         // Large enough never to be the thing under test here; the guard has its
         // own fixtures with a deliberately small window.
         maxInputCodePoints: 1_000_000,
+        // Text only. A fake that claimed 'image' would let a test exercise the
+        // image path without any image ever being encoded, which is the kind
+        // of green this provider exists to refuse.
+        modalities: ['text'],
         async embedDocuments(texts: readonly string[]): Promise<readonly (readonly number[])[]> {
             return texts.map((text) => normalize(spread(text, dimensions)));
         },

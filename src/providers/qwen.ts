@@ -186,6 +186,12 @@ export function qwenProvider(opts: QwenOptions): EmbeddingProvider {
         id,
         dimensions,
         maxInputCodePoints: WINDOW_TOKENS * CODE_POINTS_PER_TOKEN,
+        // Text-only, and by ASSUMPTION rather than by measurement: a
+        // multimodal Qwen embedding model exists, and no request against one
+        // was made from here. Declaring 'image' without having sent one would
+        // make the guard wave through a call that then fails at the provider,
+        // which is worse than refusing a capability the adapter really has.
+        modalities: ['text'],
         embedDocuments: (texts) => embedAll(texts, 'document'),
         async embedQuery(text: string): Promise<readonly number[]> {
             const [vector] = await embedAll([text], 'query');

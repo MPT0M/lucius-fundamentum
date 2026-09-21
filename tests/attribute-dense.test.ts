@@ -72,6 +72,7 @@ function scripted(): EmbeddingProvider {
         id: 'scripted',
         dimensions: 3,
         maxInputCodePoints: 100000,
+        modalities: ['text'],
         async embedDocuments(texts) {
             return texts.map((t) => vectorFor(t));
         },

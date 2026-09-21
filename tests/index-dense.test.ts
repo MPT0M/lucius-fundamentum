@@ -19,6 +19,7 @@ const placed = (order: readonly string[]): EmbeddingProvider => ({
     id: 'placed',
     dimensions: 2,
     maxInputCodePoints: 1000,
+    modalities: ['text'],
     async embedDocuments(texts) {
         // Closer to [1,0] the earlier the text appears in `order`.
         return texts.map((text) => {
@@ -124,6 +125,7 @@ describe('dense — each door is used at the right end', () => {
             id: 'watcher',
             dimensions: 4,
             maxInputCodePoints: 1000,
+            modalities: ['text'],
             async embedDocuments(texts) {
                 seen.push(`documents:${texts.length}`);
                 return texts.map(() => [1, 0, 0, 0]);
@@ -153,6 +155,7 @@ describe('dense — a chunk pointing away from the query is absent, not last', (
             id: 'opposed',
             dimensions: 2,
             maxInputCodePoints: 1000,
+            modalities: ['text'],
             async embedDocuments(texts) {
                 return texts.map((text) => {
                     if (text.includes('alinhado')) return [1, 0];
@@ -200,6 +203,7 @@ describe('dense — the refusals', () => {
         id: 'outro-provedor',
         dimensions: 8,
         maxInputCodePoints: 1000,
+        modalities: ['text'],
         async embedDocuments(texts) {
             return texts.map(() => Array.from({ length: 8 }, () => 1 / Math.sqrt(8)));
         },
@@ -336,6 +340,7 @@ describe('dense — the window guard runs before anything is paid for', () => {
             id: 'narrow',
             dimensions: 8,
             maxInputCodePoints: 10,
+            modalities: ['text'],
             async embedDocuments(texts) {
                 calls += 1;
                 return texts.map(() => Array.from({ length: 8 }, () => 1 / Math.sqrt(8)));
@@ -359,6 +364,7 @@ describe('dense — the window guard runs before anything is paid for', () => {
             id: 'narrow',
             dimensions: 8,
             maxInputCodePoints: 20,
+            modalities: ['text'],
             async embedDocuments(texts) {
                 return texts.map(() => Array.from({ length: 8 }, () => 1 / Math.sqrt(8)));
             },
@@ -529,6 +535,7 @@ describe('fusion — the two cases production hits that the fixtures did not', (
             // about the call that is NOT made, and a refusal before the call
             // would satisfy it for the wrong reason.
             maxInputCodePoints: 1_000_000,
+            modalities: ['text'],
             async embedDocuments(texts) {
                 calls += 1;
                 return texts.map(() => Array.from({ length: 8 }, () => 1 / Math.sqrt(8)));
@@ -566,6 +573,7 @@ describe('fusion — the two cases production hits that the fixtures did not', (
             id: 'opposed',
             dimensions: 2,
             maxInputCodePoints: 1_000_000,
+            modalities: ['text'],
             async embedDocuments(texts) {
                 return texts.map((text) => (text.includes('Alfa') ? [-1, 0] : [1, 0]));
             },
