@@ -133,6 +133,7 @@ export function geminiProvider(opts: GeminiOptions): EmbeddingProvider {
     const base = opts.baseUrl ?? 'https://generativelanguage.googleapis.com/v1beta';
     const concurrency = requirePositiveInteger(opts.concurrency ?? DEFAULT_CONCURRENCY, 'concurrency');
     const usesPrefix = model === 'gemini-embedding-2';
+    const modalities = modalitiesOf(model);
 
     async function embedParts(parts: readonly unknown[], extra: Record<string, unknown>): Promise<number[]> {
         const payload = await postJson({
@@ -165,7 +166,7 @@ export function geminiProvider(opts: GeminiOptions): EmbeddingProvider {
         id,
         dimensions,
         maxInputCodePoints: WINDOW_TOKENS * CODE_POINTS_PER_TOKEN - PREFIX_CODE_POINTS,
-        modalities: modalitiesOf(model),
+        modalities,
 
         async embedDocuments(texts: readonly string[]): Promise<readonly (readonly number[])[]> {
             if (texts.length === 0) return [];
@@ -183,10 +184,11 @@ export function geminiProvider(opts: GeminiOptions): EmbeddingProvider {
             return vector;
         },
 
-        // Declared only when the configured model accepts images, so the
-        // presence of the method and the claim in `modalities` cannot drift
-        // apart — a test holds them equal for every adapter here.
-        ...(modalitiesOf(model).includes('image')
+        // Declared from the same `modalities` the field above reports, so
+        // the method and the claim cannot drift apart. The rule, and the
+        // test that holds it for every shipped adapter, are stated once on
+        // `EmbeddingProvider.embedImages`.
+        ...(modalities.includes('image')
             ? {
                   async embedImages(images: readonly PageImage[]): Promise<readonly (readonly number[])[]> {
                       if (images.length === 0) return [];
@@ -272,6 +274,16 @@ type Task = 'query' | 'document';
  *
  * An invented value returns 400 naming the enum, so the two constants below
  * are the API's own and not a guess.
+ *
+ * EVERY model that is not `gemini-embedding-2` gets `task_type`, including
+ * one that does not exist yet, and that default is an ASSUMPTION rather than
+ * a measurement. Said out loud because `modalitiesOf` makes the opposite
+ * choice for the same unknown model — two defaults pointing different ways
+ * in one file should each declare themselves. A later generation that drops
+ * the parameter the way `-2` did would accept it and discard it: this
+ * branch's own failure mode arriving from the other side, and just as
+ * quiet. What makes it tolerable is that it fails toward the older
+ * behaviour rather than toward none.
  */
 const TASK_TYPE: Record<Task, string> = {
     query: 'RETRIEVAL_QUERY',

@@ -29,6 +29,30 @@ describe('what each adapter declares', () => {
         expect(geminiProvider({ apiKey: 'k', model: 'something-new' }).modalities).toEqual(['text']);
     });
 
+    it('the method and the claim cannot disagree, for every adapter shipped here', () => {
+        // Two docblocks say this equivalence is held by a test —
+        // `EmbeddingProvider.embedImages` states the rule, and the Gemini
+        // adapter points at it. Until this assertion existed, both were
+        // describing an instrument that did not exist. The property was
+        // true, and nothing would have caught it becoming false.
+        const shipped: readonly EmbeddingProvider[] = [
+            geminiProvider({ apiKey: 'k' }),
+            geminiProvider({ apiKey: 'k', model: 'gemini-embedding-001' }),
+            openAiProvider({ apiKey: 'k' }),
+            qwenProvider({ apiKey: 'k' }),
+            deterministicProvider(),
+        ];
+        for (const provider of shipped) {
+            const claims = provider.modalities.includes('image');
+            expect(provider.embedImages !== undefined, `${provider.id} embedImages`).toBe(claims);
+            expect(provider.embedImageQuery !== undefined, `${provider.id} embedImageQuery`).toBe(claims);
+        }
+        // Non-vacuity: the loop must contain at least one of each side, or it
+        // would pass on a list where the question never arises.
+        expect(shipped.some((p) => p.modalities.includes('image'))).toBe(true);
+        expect(shipped.some((p) => !p.modalities.includes('image'))).toBe(true);
+    });
+
     it('the adapters that speak text-only endpoints say so', () => {
         expect(openAiProvider({ apiKey: 'k' }).modalities).toEqual(['text']);
         expect(qwenProvider({ apiKey: 'k' }).modalities).toEqual(['text']);

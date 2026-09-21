@@ -113,11 +113,13 @@ export interface EmbeddingProvider {
     /**
      * Embeds already-rasterized pages, one vector per page.
      *
-     * Present exactly when `modalities` includes `'image'`, and the two are
-     * checked against each other for every adapter this package ships. A
-     * third-party adapter that declares the modality without implementing
-     * this gets a named error from `embedImagesChecked` rather than a
-     * `TypeError` from calling undefined.
+     * Present exactly when `modalities` includes `'image'`. The equivalence
+     * is asserted for every adapter this package ships, in
+     * `tests/provider-modality.test.ts` — and until that assertion was
+     * written, this sentence and two others described an instrument that did
+     * not exist. A third-party adapter that declares the modality without
+     * implementing this gets a named error from `embedImagesChecked` rather
+     * than a `TypeError` from calling undefined.
      *
      * Optional rather than required for the same reason `embedDocuments` is
      * not: most embedding endpoints take strings and nothing else, and

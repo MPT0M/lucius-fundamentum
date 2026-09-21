@@ -70,7 +70,14 @@ export interface SourceDoc {
     readonly page?: PageImage;
 }
 
-/** True when the document is a page that carries no text to index. */
+/**
+ * True when the document carries a rasterized page.
+ *
+ * Says nothing about the text on its own — `chunk` refuses a document that
+ * carries a page alongside text, so INSIDE the builder this also means the
+ * document has no text to index. A caller that reaches for this directly
+ * has no such gate, and gets the question the name asks.
+ */
 export function isImageOnly(doc: SourceDoc): boolean {
     return doc.page !== undefined;
 }

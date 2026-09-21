@@ -134,10 +134,20 @@ That rule governs changes made FROM the first release onward, so entries under
 
 - **`createDenseIndex` reports where it is, through `onState`.** Indexing was
   silent from the first chunk to the last vector, and the wait is long enough
-  to read as a hang: at the concurrency this package defaults to,
-  `gemini.ts:56-61` publishes 24s for 636 chunks, which is roughly 185s for a
-  thousand pages once each page is sliced. Three minutes of blank screen is a
-  product defect even when the library is behaving.
+  to read as a hang. The operands, because the ratio alone is not checkable:
+  `gemini.ts:56-61` publishes **24s for 636 chunks** at the concurrency this
+  package defaults to, and a page with text becomes **about 4.9 slices** on
+  the material this was measured against — so a thousand pages is roughly
+  4,900 chunks and **about 185s**. Three minutes of blank screen is a product
+  defect even when the library is behaving.
+
+  Both operands carry a caveat and it points the same way. The slices figure
+  came from `bench/src/page-arms.ts`, whose `slice()` cuts every 1200 code
+  points flat, while the shipped chunker cuts at sentence boundaries and
+  repeats 160 code points between neighbours — so it produces **more** slices
+  per page than that. 4.9 is a floor, and 185s with it: the real wait is
+  longer, not shorter. And the corpus it was measured on cannot be published,
+  so the figure is reproducible only against an equivalent one.
 
   Three events — `lexical-done`, `embed-start`, `embed-done` — carrying counts
   and identifiers, never a sentence. A phrase emitted from here would be
@@ -157,7 +167,8 @@ That rule governs changes made FROM the first release onward, so entries under
   whose author never learned the field existed, which is the exact failure the
   field is here to prevent. The compiler asks every adapter once. Cost,
   measured by adding the field and reading the compiler: 19 errors across 11
-  files, four of them the adapters themselves.
+  files: three of them the adapters, and a fourth the deterministic provider
+  this package ships for testing.
 
   The capability belongs to the adapter **as configured**, not to a list of
   model names: `model` is open and the same model is served under different
@@ -194,7 +205,8 @@ That rule governs changes made FROM the first release onward, so entries under
   supported case — a blank `text` beside a `page` — passes.
 
   What counts as usable text is the caller's judgement. This package only
-  checks that the two are not both present.
+  checks that the two are not both present. `isImageOnly` is exported for a
+  caller that wants to ask the same question before building.
 
 - **`granularity: 'paragraph'` puts one anchor per block instead of one per
   clause.** Every source used anywhere in a paragraph is cited once, at the
