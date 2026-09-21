@@ -13,9 +13,9 @@
  *
  *     image    one vector per page, the whole sheet
  *     text     one vector per page, the whole extracted text   <- same unit
- *     sliced   several vectors per page, ~1200 code points each,
- *              the page scored by its best slice                <- what the
- *                                                                  library does
+ *     sliced   several vectors per page, cut every 1200 code points,
+ *              the page scored by its best slice               <- a FLOOR for
+ *                                                                what ships
  *
  * `image` against `text` isolates the modality: same unit, equivalent content.
  * `text` against `sliced` isolates granularity, and tests whether a whole page
@@ -53,7 +53,21 @@ const MODEL = 'gemini-embedding-2';
 const BASE = 'https://generativelanguage.googleapis.com/v1beta';
 const DIMENSIONS = 1536;
 
-/** Matches the package default, so `sliced` measures what the library ships. */
+/**
+ * The package's default ceiling, and the ONLY thing this arm shares with the
+ * chunker that ships.
+ *
+ * `slice()` below cuts every 1200 code points and stops there. The real
+ * chunker cuts at SENTENCE BOUNDARIES and repeats 160 code points of overlap
+ * between neighbours, so it produces more slices per page than this does,
+ * and better-formed ones. The `sliced` arm is therefore a FLOOR: what ships
+ * can only retrieve better.
+ *
+ * The second half of that travels outside this file. A slices-per-page
+ * figure taken from here UNDERCOUNTS, so any latency estimate derived from
+ * it is a lower bound rather than an approximation — whoever quotes the
+ * number owes that sentence with it.
+ */
 const MAX_CHUNK_CODE_POINTS = 1200;
 
 interface Question {
@@ -132,6 +146,15 @@ export async function run(dir: string, key: string): Promise<readonly Row[]> {
     const questions = JSON.parse(readFileSync(join(dir, 'questions.json'), 'utf8')) as readonly Question[];
 
     for (const { pages, question } of questions) {
+        // An entry with no pages scores as a perfect hit, and half the damage
+        // is silent. The loop below iterates over the pages, so it does
+        // nothing for none of them; then `accept.includes` is always false,
+        // `findIndex` returns -1, and `rankOf` returns 0 — which the hit
+        // counter reads as `0 <= 1`, first place. `mrr` divides by it and
+        // prints Infinity, which is loud, but the hit column stays plausible.
+        if (pages.length === 0) {
+            throw new Error(`answer key entry has no pages: ${question.slice(0, 60)}`);
+        }
         for (const page of pages) {
             if (page >= 1 && page <= pageCount) continue;
             throw new Error(`answer key names page ${page}, outside 1..${pageCount}: ${question.slice(0, 60)}`);
