@@ -85,6 +85,24 @@ That rule governs changes made FROM the first release onward, so entries under
 
 ### Added
 
+- **`createDenseIndex` reports where it is, through `onState`.** Indexing was
+  silent from the first chunk to the last vector, and the wait is long enough
+  to read as a hang: at the concurrency this package defaults to,
+  `gemini.ts:56-61` publishes 24s for 636 chunks, which is roughly 185s for a
+  thousand pages once each page is sliced. Three minutes of blank screen is a
+  product defect even when the library is behaving.
+
+  Three events — `lexical-done`, `embed-start`, `embed-done` — carrying counts
+  and identifiers, never a sentence. A phrase emitted from here would be
+  English inside somebody else's interface. Absent callback means no event is
+  produced, and the artifact is byte-identical either way.
+
+  The option lives on a new `DenseIndexOptions extends IndexOptions`, not on
+  `IndexOptions` itself. That type is shared with `createIndex`, which is
+  synchronous and has no step to report: a progress field declared there
+  would be public on both doors and inert on one, with the caller passing it,
+  nothing happening and no error.
+
 - **An embedding provider declares which modalities it accepts, and asking for
   one it did not declare is refused before the network.** `EmbeddingProvider`
   gains `modalities`, required. Required and not optional on purpose: an

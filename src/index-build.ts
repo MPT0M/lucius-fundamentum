@@ -98,6 +98,50 @@ export interface IndexOptions {
     readonly b?: number;
 }
 
+/**
+ * Where an index build is, for a caller with a screen to keep honest.
+ *
+ * Counts and identifiers, never a sentence. A caller writes its own wording
+ * and translates it; a phrase emitted from here would be English in somebody
+ * else's interface, and changing it later would be changing their UI.
+ *
+ * `embedded` counts chunks whose vector has come back, so the caller can show
+ * progress against `total` without knowing how the work is batched. The two
+ * are reported together because a count with no denominator is not progress.
+ */
+export type IndexBuildState =
+    /** Chunking and the lexical index are done; nothing has been paid yet. */
+    | { readonly kind: 'lexical-done'; readonly chunks: number }
+    /** Vectors are being fetched. Emitted once before the first call. */
+    | { readonly kind: 'embed-start'; readonly total: number }
+    /** Every vector is in. `embedded` equals `total` on a build that finished. */
+    | { readonly kind: 'embed-done'; readonly embedded: number; readonly total: number };
+
+/**
+ * Options for the dense build, which are the lexical ones plus what only a
+ * build that does I/O can have.
+ *
+ * A SEPARATE TYPE rather than a field on `IndexOptions`, because that type is
+ * shared with `createIndex`, which is synchronous and has no step to report.
+ * A progress field declared there would be public on both doors and inert on
+ * one: the caller passes it, nothing happens, no error. Extending keeps
+ * `IndexOptions` as the type both doors accept and leaves `createIndex`
+ * without a field it would have to explain.
+ */
+export interface DenseIndexOptions extends IndexOptions {
+    /**
+     * Follow the build. ABSENT MEANS NO EVENT IS PRODUCED.
+     *
+     * Optional because an index build has always worked without it, and the
+     * result is identical either way. It exists because the wait is long
+     * enough to look like a hang: at the concurrency this package defaults
+     * to, `gemini.ts:56-61` publishes 24s for 636 chunks, which is roughly
+     * 185s for a thousand pages once each page is sliced. Three minutes of a
+     * blank screen is a product defect even when the library is behaving.
+     */
+    readonly onState?: (event: IndexBuildState) => void;
+}
+
 export interface SearchOptions {
     /**
      * How many results to return. Defaults to 10.
@@ -694,7 +738,7 @@ export function createIndex(docs: readonly SourceDoc[], opts: IndexOptions = {})
 export async function createDenseIndex(
     docs: readonly SourceDoc[],
     provider: EmbeddingProvider,
-    opts: IndexOptions = {},
+    opts: DenseIndexOptions = {},
 ): Promise<Index> {
     const chunkOptions = opts.chunkOptions ?? DEFAULT_CHUNK_OPTIONS;
     assertChunkCeilingFits(chunkOptions.maxChunkCodePoints, provider);
@@ -702,13 +746,21 @@ export async function createDenseIndex(
     const lexical = createIndex(docs, opts);
     const artifact = lexical.serialize();
     assertChunksFit(artifact.chunks, provider);
+    opts.onState?.({ kind: 'lexical-done', chunks: artifact.chunks.length });
 
-    const vectors = artifact.chunks.length === 0
+    const total = artifact.chunks.length;
+    // Emitted even for an empty corpus, and before the branch that skips the
+    // call. A caller that shows a bar on `embed-start` and hides it on
+    // `embed-done` would otherwise be left with a bar it never started for a
+    // build that legitimately embeds nothing.
+    opts.onState?.({ kind: 'embed-start', total });
+    const vectors = total === 0
         ? []
         : await embedDocumentsChecked(
               artifact.chunks.map((c) => c.text),
               provider,
           );
+    opts.onState?.({ kind: 'embed-done', embedded: vectors.length, total });
 
     return loadIndex(
         {
