@@ -53,6 +53,13 @@ That rule governs changes made FROM the first release onward, so entries under
   The adapter now branches on the configured model: prefix for
   `gemini-embedding-2`, `task_type` for everything else, never both.
 
+  **If you built an index with this adapter on `gemini-embedding-001`, embed
+  it again.** Updating does not repair it: every passage already stored was
+  vectorised on the query side of the pair, and those vectors are in the
+  artifact. Nothing will error, and retrieval will go on being quietly worse
+  until the corpus is re-embedded. Indexes built on `gemini-embedding-2`, the
+  default, are unaffected.
+
 - **A marker is now written before the clause's trailing punctuation, preceded
   by a space, and a second marker at the same anchor joins with `, `.**
   `O prazo é de quinze dias [1], [2].` where the output used to be
