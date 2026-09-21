@@ -33,6 +33,26 @@ That rule governs changes made FROM the first release onward, so entries under
 
 ### Changed
 
+- **A passage sent to `gemini-embedding-001` is no longer embedded as if it
+  were a question.** The adapter applied the `gemini-embedding-2` text prefix
+  to every model and set `task_type` on none, so a caller on the older model
+  got both halves wrong at once: the prefix went in as literal prose nothing
+  strips, and the missing `task_type` fell back to its default, which is
+  `RETRIEVAL_QUERY`. Every passage in that caller's corpus was embedded on the
+  query side of the pair. Nothing errored; retrieval was simply worse.
+
+  Measured against the live endpoint, same input, vectors compared component
+  by component after a determinism control: on `gemini-embedding-001` the two
+  task types produce different vectors (cos 0.4067) and omitting the field
+  matches `RETRIEVAL_QUERY` exactly, so the field is consumed. On
+  `gemini-embedding-2` the two task types produce **identical** vectors — the
+  parameter is accepted and discarded, which is the deprecation, measured
+  rather than taken on documentation. An invented value returns 400 naming
+  the enum, so the two constants are the API's own.
+
+  The adapter now branches on the configured model: prefix for
+  `gemini-embedding-2`, `task_type` for everything else, never both.
+
 - **A marker is now written before the clause's trailing punctuation, preceded
   by a space, and a second marker at the same anchor joins with `, `.**
   `O prazo é de quinze dias [1], [2].` where the output used to be

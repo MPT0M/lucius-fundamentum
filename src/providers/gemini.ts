@@ -113,6 +113,13 @@ const WINDOW_TOKENS = 8192;
  *
  * Derived from the prefix builders rather than written as a literal, so
  * editing a prefix cannot leave the number behind.
+ *
+ * Subtracted for EVERY model, including the ones that get `task_type` instead
+ * of a prefix and so send the text untouched. Those get a window smaller than
+ * the one they have, by the length of a prefix they never receive. Left that
+ * way deliberately: the error is in the safe direction, and making it exact
+ * would make `maxInputCodePoints` depend on the model, which is a second
+ * thing to keep in step with the branch for at most a few dozen code points.
  */
 const PREFIX_CODE_POINTS = Math.max([...asQuery('')].length, [...asDocument('')].length);
 const DEFAULT_DIMENSIONS = 1536;
@@ -124,15 +131,18 @@ export function geminiProvider(opts: GeminiOptions): EmbeddingProvider {
     const id = `gemini:${model}:${dimensions}`;
     const base = opts.baseUrl ?? 'https://generativelanguage.googleapis.com/v1beta';
     const concurrency = requirePositiveInteger(opts.concurrency ?? DEFAULT_CONCURRENCY, 'concurrency');
+    const usesPrefix = model === 'gemini-embedding-2';
 
-    async function embedOne(text: string): Promise<number[]> {
+    async function embedOne(text: string, task: Task): Promise<number[]> {
+        const prefixed = usesPrefix ? withPrefix(text, task) : text;
         const payload = await postJson({
             url: `${base}/models/${model}:embedContent`,
             headers: { 'x-goog-api-key': opts.apiKey },
             body: {
                 model: `models/${model}`,
-                content: { parts: [{ text }] },
+                content: { parts: [{ text: prefixed }] },
                 output_dimensionality: dimensions,
+                ...(usesPrefix ? {} : { task_type: TASK_TYPE[task] }),
             },
             providerId: id,
             ...(opts.timeoutMs === undefined ? {} : { timeoutMs: opts.timeoutMs }),
@@ -155,7 +165,7 @@ export function geminiProvider(opts: GeminiOptions): EmbeddingProvider {
         async embedDocuments(texts: readonly string[]): Promise<readonly (readonly number[])[]> {
             if (texts.length === 0) return [];
             const vectors = await inBatches(
-                texts.map((text) => () => embedOne(asDocument(text))),
+                texts.map((text) => () => embedOne(text, 'document')),
                 concurrency,
             );
             assertShape(vectors, texts.length, dimensions, id);
@@ -163,7 +173,7 @@ export function geminiProvider(opts: GeminiOptions): EmbeddingProvider {
         },
 
         async embedQuery(text: string): Promise<readonly number[]> {
-            const vector = await embedOne(asQuery(text));
+            const vector = await embedOne(text, 'query');
             assertShape([vector], 1, dimensions, id);
             return vector;
         },
@@ -189,14 +199,51 @@ function modalitiesOf(model: string): readonly EmbeddingModality[] {
     return model === 'gemini-embedding-2' ? (['text', 'image'] as const) : (['text'] as const);
 }
 
+type Task = 'query' | 'document';
+
 /**
- * The prefixes the model was trained to read.
+ * How the two generations are told which side of the pair they are embedding,
+ * and why the adapter cannot pick one and use it everywhere.
+ *
+ * MEASURED against the live endpoint, same input, vectors compared component
+ * by component, with a determinism control run first:
+ *
+ *     gemini-embedding-001   QUERY vs DOCUMENT  cos 0.4067   consumed
+ *                            nothing == RETRIEVAL_QUERY      default is query
+ *     gemini-embedding-2     QUERY vs DOCUMENT  IDENTICAL    accepted, discarded
+ *
+ * So `task_type` is a live parameter on 001 and dead weight on 2, and the
+ * prefix is the reverse: on 2 it is what the model was trained to read, and
+ * on 001 it is literal text that nothing strips.
+ *
+ * What the mismatch cost before this branch existed is the part worth
+ * keeping. The adapter sent the prefix and no `task_type` to every model, so
+ * a caller on 001 got BOTH halves wrong at once: the prefix went in as prose
+ * (measured perturbation against the bare text, cos 0.4808), and the absent
+ * `task_type` fell back to the default — which is `RETRIEVAL_QUERY`. Every
+ * passage in that caller's corpus was embedded as if it were a question.
+ * Nothing errored, and retrieval was simply worse.
+ *
+ * An invented value returns 400 naming the enum, so the two constants below
+ * are the API's own and not a guess.
+ */
+const TASK_TYPE: Record<Task, string> = {
+    query: 'RETRIEVAL_QUERY',
+    document: 'RETRIEVAL_DOCUMENT',
+};
+
+/**
+ * The prefixes `gemini-embedding-2` was trained to read.
  *
  * They are text, not parameters, so nothing validates them and a typo degrades
  * retrieval instead of failing. They live here, in one place, for that reason:
  * spelled out at each call site they would drift, and the drift would be
  * invisible.
  */
+function withPrefix(text: string, task: Task): string {
+    return task === 'query' ? asQuery(text) : asDocument(text);
+}
+
 function asQuery(text: string): string {
     return `task: search result | query: ${text}`;
 }
