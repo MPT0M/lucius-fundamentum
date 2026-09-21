@@ -21,6 +21,23 @@ import type { Segmenter, Sentence } from './sentences.js';
 import type { AbbreviationList } from './abbreviations.js';
 
 /**
+ * A page already rasterized by the caller, ready to be embedded as-is.
+ *
+ * Both fields are what the provider's request needs and nothing more. The
+ * `mimeType` is required because providers reject a request without it, and
+ * it is NOT checked against the bytes: checking would mean parsing an image
+ * header, and this package opens no binary. A lying `mimeType` is therefore
+ * undetectable here — measured against one provider, it also does not change
+ * the vector, because the bytes are what gets decoded.
+ */
+export interface PageImage {
+    /** The image, base64-encoded. */
+    readonly data: string;
+    /** For example `image/jpeg`. Declared by the caller, never verified here. */
+    readonly mimeType: string;
+}
+
+/**
  * A document as the core receives it: text already extracted. The core opens
  * no binary — a PDF, a web page or a subtitle file is somebody else's job to
  * turn into this.
@@ -35,6 +52,43 @@ export interface SourceDoc {
      * those three had no reader in `src/` at all.
      */
     readonly pageNumber?: number;
+    /**
+     * The rasterized page, for a page whose text could not be extracted.
+     *
+     * Supplying this ALONGSIDE usable text is refused, not merged. The two
+     * together would describe a page eligible for both arms through different
+     * fields, and the fused ranking has no rule for that — a chunk absent
+     * from the lexical list is scored as ranked below every chunk present in
+     * it, which is right while absence means "the terms did not match" and
+     * wrong when it means "this could never have matched". Refusing keeps the
+     * one case the ranking cannot express out of the index entirely, rather
+     * than letting it in and ranking it by a rule that does not fit.
+     *
+     * The caller decides what "usable" means; this package only checks that
+     * the two are not both present.
+     */
+    readonly page?: PageImage;
+}
+
+/** True when the document is a page that carries no text to index. */
+export function isImageOnly(doc: SourceDoc): boolean {
+    return doc.page !== undefined;
+}
+
+/**
+ * Refuses a document that carries a page image and usable text at once.
+ *
+ * Called from `chunk`, which every path into the index goes through, so a
+ * caller cannot reach the builder around it.
+ */
+function assertNotBothArms(doc: SourceDoc): void {
+    if (doc.page !== undefined && doc.text.trim() !== '') {
+        throw new Error(
+            `SourceDoc ${doc.id} carries both a page image and text ` +
+                `(${[...doc.text.trim()].length} code points). Supply one: the page image is for ` +
+                `a page whose text could not be extracted. See SourceDoc.page.`,
+        );
+    }
 }
 
 /**
@@ -111,6 +165,7 @@ export function chunk(doc: SourceDoc, opts: ChunkOptions): readonly Chunk[] {
             `maxOverlapCodePoints must be in [0, maxChunkCodePoints), got ${opts.maxOverlapCodePoints}`,
         );
     }
+    assertNotBothArms(doc);
 
     const sentences = sentencesOf(doc.text, opts.segmenter ?? defaultSegmenter(), opts.abbreviations);
     const chunks: Chunk[] = [];
