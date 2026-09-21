@@ -155,9 +155,15 @@ export interface DenseIndexOptions extends IndexOptions {
      * enough to look like a hang: `gemini.ts:56-61` publishes 24s for 636
      * chunks at the concurrency this package defaults to, and a page with
      * text becomes several slices, so a thousand pages is several thousand
-     * chunks. The worked figure, with the slices-per-page operand it needs,
-     * is in the CHANGELOG entry for this feature. Three minutes of a
-     * blank screen is a product defect even when the library is behaving.
+     * chunks. The worked figure, with the slices-per-page operand it needs
+     * and the reason it is a lower bound, is in the CHANGELOG entry for this
+     * feature — and only there, because a number in two places is a number
+     * that will disagree with itself. A wait of MINUTES on a blank screen is
+     * a product defect even when the library is behaving.
+     *
+     * An earlier draft of this paragraph handed the figure to the CHANGELOG
+     * and then closed on "three minutes", which is the same number restated
+     * in prose, in the house that had just stopped carrying it.
      */
     readonly onState?: (event: IndexBuildState) => void;
 }
