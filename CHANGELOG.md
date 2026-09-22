@@ -224,6 +224,41 @@ That rule governs changes made FROM the first release onward, so entries under
   — there is no narrower span to point at — and inventing a highlight would be
   inventing a precision the index does not have.
 
+- **With a key in `.env`, the bench lights the dense arm — and the browser never
+  sees the key.** The server reads it, exposes one route that takes text and
+  returns vectors, and the page drives a provider that speaks to that route. A
+  Gemini or OpenAI key is the whole account and bills to a card, which is a
+  different thing from a scoped public key meant to live in a client.
+
+  Which adapter runs is decided by which variable you filled in, not by this
+  code. `id` and `dimensions` come back from the server rather than being
+  assumed in the page: they are written into the artifact and checked on every
+  later load, so a guess would build an index that cannot be reopened.
+
+  Search then fuses both arms and attribution climbs to its third rung. **The
+  progress indicator has no percentage, and that is the library's design
+  showing through rather than an omission** — `embed-start` and `embed-done`
+  are one emission each and the second is terminal, so those events explain
+  where the time is going instead of measuring it. A bar drawn from them would
+  be a number nobody took.
+
+  Embedding is offered only when the arm is `absent`. When it is
+  `needs-provider` the vectors are already there and one argument turns the arm
+  on, and offering to pay again is exactly what that state exists to prevent.
+
+  **Not verified against a live provider.** What is pinned runs with no network
+  and no key, on the package's own deterministic provider: the build states and
+  their order, the request shape, the HTTP status travelling into the failure,
+  and the trap below. The real round-trip is one `.env` line away for anyone who
+  wants to confirm it.
+
+  The trap, which the library documents and this code obeys: `attribute` emits
+  `local-done` always, and a chunk wider than the provider's window is checked
+  BEFORE the network — so the promise can reject with that event already
+  emitted. Anything a screen hangs on it has to be cleared by the `catch` too.
+  Proved by reversion: moving that clear off `finally` and onto the success
+  path fails the test.
+
 - **`search` accepts an image as the query.** Photograph a diagram and find
   the material that covers it. `Query` is `string | PageImage`, and
   `isImageQuery` is the one place that tells them apart.

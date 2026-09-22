@@ -14,9 +14,11 @@
 
 import {
     createIndex,
+    createDenseIndex,
     createTokenizer,
     sliceByCodePoints,
     countCodePoints,
+    attribute,
     attributeLexical,
     formatAttribution,
     DEFAULT_ATTRIBUTE_OPTIONS,
@@ -144,6 +146,118 @@ export function isPdf(name) {
  */
 export function documentFromFile(name, text) {
     return { id: name, text };
+}
+
+/**
+ * A provider that keeps the key on the other side of a socket.
+ *
+ * The browser sends text and receives vectors; the server holds the key and
+ * calls the real adapter. Nothing here knows which provider is behind it,
+ * which is the point — the `.env` decides, and a bench that hard-coded one
+ * would be teaching a choice rather than showing one.
+ *
+ * `id` and `dimensions` come from the server rather than being assumed,
+ * because they are what gets written into an artifact and what `loadIndex`
+ * later checks. Guessing them here would produce an index that cannot be
+ * reloaded.
+ *
+ * @param {{ id: string, dimensions: number, maxInputCodePoints: number, modalities: readonly import('../../dist/index.js').EmbeddingModality[] }} shape
+ * @param {typeof fetch} [fetcher] injected so a test can drive it without a server
+ * @returns {import('../../dist/index.js').EmbeddingProvider}
+ */
+export function remoteProvider(shape, fetcher = fetch) {
+    /**
+     * @param {object} body
+     * @returns {Promise<readonly (readonly number[])[]>}
+     */
+    async function ask(body) {
+        const response = await fetcher('/embed', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify(body),
+        });
+        if (!response.ok) {
+            // The STATUS travels in the message, because the rung above reads
+            // a number to decide whether a retry is honest and a sentence
+            // would tell it nothing.
+            throw new Error(`the embedding route answered ${response.status}`);
+        }
+        const payload = await response.json();
+        return payload.vectors;
+    }
+
+    return {
+        id: shape.id,
+        dimensions: shape.dimensions,
+        maxInputCodePoints: shape.maxInputCodePoints,
+        modalities: shape.modalities,
+        embedDocuments: (texts) => ask({ kind: 'documents', texts }),
+        embedQuery: async (text) => {
+            const vectors = await ask({ kind: 'query', text });
+            const first = vectors[0];
+            if (first === undefined) throw new Error('the embedding route returned no vector for the query');
+            return first;
+        },
+    };
+}
+
+/**
+ * Both arms, with progress a screen can show honestly.
+ *
+ * **The indicator this feeds is indeterminate, and that is the library's
+ * design rather than an omission here.** `embed-start` and `embed-done` are
+ * one emission each and `embed-done` is terminal — `IndexBuildState` says the
+ * `embedded`/`total` pair "is a check on that invariant, not a running count".
+ * So these events explain where the time is going; they do not measure it. A
+ * percentage drawn from them would be invented.
+ *
+ * @param {readonly SourceDoc[]} docs
+ * @param {import('../../dist/index.js').EmbeddingProvider} provider
+ * @param {(event: import('../../dist/index.js').IndexBuildState) => void} onState
+ * @returns {Promise<Index>}
+ */
+export function buildDenseIndex(docs, provider, onState) {
+    return createDenseIndex(docs, provider, { onState });
+}
+
+/**
+ * The full ladder, with the trap its own docblock warns about.
+ *
+ * `attribute` emits `local-done` ALWAYS — and then either continues to the
+ * provider, ends there, or rejects. A chunk wider than the provider's window
+ * is checked before the network, so the promise rejects AFTER `local-done` was
+ * already emitted: anything a screen hangs on that event has to be cleared by
+ * the `catch` as well as by the resolve. `onSettled` exists to make that one
+ * place instead of two.
+ *
+ * The bench does NOT paint the preview that rides on `local-done`. The final
+ * result replaces it whole rather than amending it — between the two a marker
+ * can move, change number and be fused away — so a consumer that patches
+ * marker by marker drifts. Showing "working" and then swapping the block is
+ * the version that cannot drift.
+ *
+ * @param {string} answer
+ * @param {readonly SearchResult[]} results
+ * @param {import('../../dist/index.js').EmbeddingProvider} provider
+ * @param {{ onWorking: () => void, onSettled: () => void }} screen
+ * @returns {Promise<Attribution>}
+ */
+export async function attributeWithKey(answer, results, provider, screen) {
+    try {
+        return await attribute(answer, results, {
+            ...DEFAULT_ATTRIBUTE_OPTIONS,
+            tokenizer: createTokenizer(),
+            provider,
+            onState: (event) => {
+                if (event.kind === 'local-done') screen.onWorking();
+            },
+        });
+    } finally {
+        // `finally` and not the resolve path: the rejection above happens with
+        // `local-done` already emitted, and an indicator cleared only on
+        // success stays lit forever on the input that was too large.
+        screen.onSettled();
+    }
 }
 
 /**

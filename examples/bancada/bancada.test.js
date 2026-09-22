@@ -34,8 +34,11 @@ import {
     classifyLoadFailure,
     highlightParts,
     viewerFor,
+    remoteProvider,
+    buildDenseIndex,
+    attributeWithKey,
 } from './bancada.js';
-import { loadIndex, packVectors } from '../../dist/index.js';
+import { loadIndex, packVectors, deterministicProvider } from '../../dist/index.js';
 
 /** @typedef {import('../../dist/index.js').SearchResult} SearchResult */
 
@@ -499,6 +502,108 @@ describe('the highlight lands where the library said it would', () => {
         // would be inventing a precision the index does not have.
         const imageHit = { chunk: { id: 'p#0', documentId: 'scan.pdf', text: '', span: { start: 0, end: 0 }, pageNumber: 4 }, score: 1, rank: 1 };
         expect(viewerFor(imageHit, undefined)).toEqual({ kind: 'page' });
+    });
+});
+
+describe('the key stays on the server side of the provider', () => {
+    /**
+     * @param {object} answer
+     * @param {number} [status]
+     */
+    function fakeRoute(answer, status = 200) {
+        /** @type {any[]} */
+        const sent = [];
+        /** @type {any} */
+        const fetcher = async (/** @type {string} */ url, /** @type {any} */ init) => {
+            sent.push({ url, body: JSON.parse(init.body) });
+            return { ok: status >= 200 && status < 300, status, json: async () => answer };
+        };
+        return { fetcher, sent };
+    }
+
+    it('asks for documents in one call, not one call per document', () => {
+        const { fetcher, sent } = fakeRoute({ vectors: [[1], [2]] });
+        const p = remoteProvider({ id: 'x', dimensions: 1, maxInputCodePoints: 100, modalities: ['text'] }, fetcher);
+
+        return p.embedDocuments(['um', 'dois']).then((vectors) => {
+            expect(vectors).toEqual([[1], [2]]);
+            expect(sent).toHaveLength(1);
+            expect(sent[0].url).toBe('/embed');
+            expect(sent[0].body).toEqual({ kind: 'documents', texts: ['um', 'dois'] });
+        });
+    });
+
+    it('carries the HTTP status into the message, because a retry decision reads a number', () => {
+        const { fetcher } = fakeRoute({ error: 'quota' }, 429);
+        const p = remoteProvider({ id: 'x', dimensions: 1, maxInputCodePoints: 100, modalities: ['text'] }, fetcher);
+
+        return expect(p.embedQuery('pergunta')).rejects.toThrow('429');
+    });
+
+    it('never puts a key in what it sends', () => {
+        const { fetcher, sent } = fakeRoute({ vectors: [[1]] });
+        const p = remoteProvider({ id: 'x', dimensions: 1, maxInputCodePoints: 100, modalities: ['text'] }, fetcher);
+
+        return p.embedQuery('pergunta').then(() => {
+            expect(JSON.stringify(sent[0])).not.toMatch(/key|token|secret/i);
+        });
+    });
+});
+
+describe('the dense arm, driven with no network and no key', () => {
+    const DOCS = [
+        documentFromPastedText('O prazo para a manifestacao e de quinze dias corridos.', 'prazos'),
+        documentFromPastedText('O recurso cabivel contra a decisao final e o agravo.', 'recursos'),
+    ];
+
+    it('reports `ready` and emits the three build states in order', async () => {
+        /** @type {string[]} */
+        const seen = [];
+        const built = await buildDenseIndex(DOCS, deterministicProvider(64), (event) => seen.push(event.kind));
+
+        expect(built.denseArm).toBe('ready');
+        expect(seen).toEqual(['lexical-done', 'embed-start', 'embed-done']);
+    });
+
+    it('gives no intermediate signal, which is why the indicator has no percentage', async () => {
+        // `embed-done` is one emission and it is terminal — the library says so
+        // in `IndexBuildState`. A screen that drew a bar from these events
+        // would be drawing a number nobody measured.
+        /** @type {string[]} */
+        const seen = [];
+        await buildDenseIndex(DOCS, deterministicProvider(64), (event) => seen.push(event.kind));
+
+        expect(seen.filter((k) => k === 'embed-done')).toHaveLength(1);
+        expect(seen.filter((k) => k === 'embed-start')).toHaveLength(1);
+    });
+
+    it('clears the indicator even when the promise rejects after `local-done`', async () => {
+        // The trap `attribute`'s own docblock warns about: a chunk wider than
+        // the provider's window is checked BEFORE the network, so the promise
+        // rejects with `local-done` already emitted. An indicator cleared only
+        // on success stays lit forever on that input.
+        // Two near-identical passages, so the words cannot separate the clause
+        // and it actually reaches the provider. With unrelated documents it
+        // resolves lexically, the window is never checked, and the promise
+        // resolves — an assertion passing on a rejection that never happened.
+        const ambiguous = buildLexicalIndex([
+            documentFromPastedText('O prazo e de quinze dias corridos.', 'corridos'),
+            documentFromPastedText('O prazo e de quinze dias uteis.', 'uteis'),
+        ]);
+        const answer = 'O prazo e de quinze dias.';
+        const tiny = { ...deterministicProvider(64), maxInputCodePoints: 4 };
+        let working = 0;
+        let settled = 0;
+
+        await expect(
+            attributeWithKey(answer, ambiguous.searchLexical(answer), tiny, {
+                onWorking: () => working++,
+                onSettled: () => settled++,
+            }),
+        ).rejects.toThrow();
+
+        expect(working).toBe(1);
+        expect(settled).toBe(1);
     });
 });
 

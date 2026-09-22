@@ -21,6 +21,9 @@ import {
     pageToDocument,
     classifyLoadFailure,
     viewerFor,
+    remoteProvider,
+    buildDenseIndex,
+    attributeWithKey,
 } from './bancada.js';
 import { readPdf } from './pdf.js';
 import { save, load, forget, approximateBytes } from './storage.js';
@@ -33,6 +36,13 @@ const SNIPPET_WIDTH = 240;
 
 /** @type {Index | null} */
 let index = null;
+
+/**
+ * The provider, when the server has a key. Null is the ordinary case.
+ *
+ * @type {import('../../dist/index.js').EmbeddingProvider | null}
+ */
+let provider = null;
 
 /**
  * Files dropped on the page, in the order they arrived.
@@ -69,10 +79,61 @@ function say(message) {
 function showArm() {
     if (index === null) {
         arm.textContent = '';
+        must('embed-button').hidden = true;
         return;
     }
     const state = describeArm(index.denseArm);
     arm.textContent = `${state.headline} ${state.detail}`;
+    // Offered for `absent` alone. `needs-provider` is one argument away and
+    // offering to embed again there is the mistake this whole field exists to
+    // prevent.
+    must('embed-button').hidden = !(state.offersEmbedding && provider !== null);
+}
+
+/**
+ * Asks the server what it has, before the page offers anything that costs.
+ *
+ * `id` and `dimensions` come from the server rather than being assumed here:
+ * they are written into the artifact and checked on every later load, so a
+ * guess would produce an index that cannot be reopened.
+ */
+async function askServerForProvider() {
+    try {
+        const shape = await (await fetch('/provider')).json();
+        if (shape.configured === true) provider = remoteProvider(shape);
+    } catch {
+        // The bench works without it. A failed probe is not worth a banner.
+    }
+}
+
+/**
+ * Embeds the corpus, which is the one action here that spends money.
+ *
+ * The indicator is deliberately without a percentage: `embed-start` and
+ * `embed-done` are one emission each and `embed-done` is terminal, so the
+ * library gives an explanation of where the time is going rather than a
+ * running count. Drawing a bar from them would be drawing a number nobody
+ * measured.
+ */
+async function doEmbed() {
+    if (index === null || provider === null) return;
+    const docs = [...dropped];
+    const text = source.value.trim();
+    if (text !== '') docs.push(documentFromPastedText(text, 'pasted'));
+
+    must('embed-button').hidden = true;
+    try {
+        index = await buildDenseIndex(docs, provider, (event) => {
+            if (event.kind === 'lexical-done') say(`Lexical index ready: ${event.chunks} chunks. Embedding…`);
+            if (event.kind === 'embed-start') say(`Embedding ${event.total} chunk(s). No progress to report until it finishes.`);
+            if (event.kind === 'embed-done') say(`Embedded ${event.embedded} of ${event.total}.`);
+        });
+        showArm();
+        void save(index.serialize(), pageImages, docTexts).then(showCacheSize);
+    } catch (error) {
+        say(`Embedding failed, and the lexical index is untouched. ${error instanceof Error ? error.message : String(error)}`);
+        showArm();
+    }
 }
 
 function showDropped() {
@@ -234,7 +295,7 @@ document.addEventListener('drop', (event) => {
     void takeFiles(event.dataTransfer);
 });
 
-function doSearch() {
+async function doSearch() {
     if (index === null) {
         say('Index something first.');
         return;
@@ -242,7 +303,10 @@ function doSearch() {
     const asked = query.value.trim();
     if (asked === '') return;
 
-    const found = index.searchLexical(asked);
+    // `search` fuses both arms and refuses while the dense one is not ready;
+    // `searchLexical` is the honest call when it is not. Reading `denseArm`
+    // rather than trying and catching keeps the failure out of the happy path.
+    const found = index.denseArm === 'ready' ? await index.search(asked) : index.searchLexical(asked);
     const hits = found.map((hit) => resultForScreen(hit, SNIPPET_WIDTH));
     results.replaceChildren(
         ...hits.map((hit, i) => {
@@ -327,7 +391,7 @@ function openViewer(result) {
     viewer.replaceChildren(...parts);
 }
 
-function doAttribute() {
+async function doAttribute() {
     if (index === null) {
         say('Index something first.');
         return;
@@ -340,12 +404,16 @@ function doAttribute() {
 
     // The candidates are what the answer itself retrieves. Attribution ranks
     // passages against clauses; it does not go looking for them.
-    const candidates = index.searchLexical(answer);
-    const attribution = attributeWithoutKey(answer, candidates);
+    const usesProvider = provider !== null && index.denseArm === 'ready';
+    const candidates = usesProvider ? await index.search(answer) : index.searchLexical(answer);
+    const attribution = usesProvider
+        ? await attributeWithKey(answer, candidates, /** @type {NonNullable<typeof provider>} */ (provider), {
+              onWorking: () => say('Local rungs done. Asking the provider for the rest…'),
+              onSettled: () => say('Attributed.'),
+          })
+        : attributeWithoutKey(answer, candidates);
     const marked = markedAnswer(attribution);
-    // No provider anywhere in this path, and saying so is the argument: this
-    // is the whole of what runs with no key.
-    const counts = describeRungs(attribution, false);
+    const counts = describeRungs(attribution, usesProvider);
 
     must('marked').textContent = marked.text;
     must('sources').replaceChildren(
@@ -367,7 +435,8 @@ function doAttribute() {
 }
 
 must('index-button').addEventListener('click', doIndex);
-must('attribute-button').addEventListener('click', doAttribute);
+must('attribute-button').addEventListener('click', () => void doAttribute());
+must('embed-button').addEventListener('click', () => void doEmbed());
 must('forget-button').addEventListener('click', () => {
     void forget().then(() => {
         index = null;
@@ -378,8 +447,8 @@ must('forget-button').addEventListener('click', () => {
     });
 });
 
-void restore();
-must('search-button').addEventListener('click', doSearch);
+void askServerForProvider().then(restore);
+must('search-button').addEventListener('click', () => void doSearch());
 query.addEventListener('keydown', (event) => {
-    if (/** @type {KeyboardEvent} */ (event).key === 'Enter') doSearch();
+    if (/** @type {KeyboardEvent} */ (event).key === 'Enter') void doSearch();
 });
