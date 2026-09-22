@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Fundamentum — bench</title>
+    <style>
+      :root {
+        --void: #0a0a0a;
+        --celadon: #7ecf80;
+        --ink: #e8e8e8;
+        --muted: #8a8a8a;
+        --line: #1f1f1f;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        padding: 2rem 1rem 4rem;
+        background: var(--void);
+        color: var(--ink);
+        font: 400 15px/1.6 ui-monospace, SFMono-Regular, "JetBrains Mono", Menlo, monospace;
+      }
+      main {
+        max-width: 54rem;
+        margin: 0 auto;
+      }
+      h1 {
+        margin: 0 0 0.25rem;
+        font-size: 1.1rem;
+        font-weight: 500;
+        letter-spacing: 0.02em;
+      }
+      h1 span {
+        color: var(--celadon);
+      }
+      .lede,
+      .note {
+        margin: 0 0 1.5rem;
+        color: var(--muted);
+        font-size: 0.85rem;
+      }
+      label {
+        display: block;
+        margin: 1.5rem 0 0.4rem;
+        color: var(--muted);
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+      textarea,
+      input {
+        width: 100%;
+        padding: 0.6rem 0.7rem;
+        background: #111;
+        color: var(--ink);
+        border: 1px solid var(--line);
+        border-radius: 3px;
+        font: inherit;
+      }
+      textarea {
+        min-height: 9rem;
+        resize: vertical;
+      }
+      textarea:focus,
+      input:focus {
+        outline: none;
+        border-color: var(--celadon);
+      }
+      .row {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+      }
+      button {
+        padding: 0.5rem 1rem;
+        background: transparent;
+        color: var(--celadon);
+        border: 1px solid var(--celadon);
+        border-radius: 3px;
+        font: inherit;
+        cursor: pointer;
+      }
+      button:hover {
+        background: rgba(126, 207, 128, 0.12);
+      }
+      #status,
+      #arm {
+        margin-top: 1rem;
+        color: var(--muted);
+        font-size: 0.82rem;
+      }
+      #arm {
+        color: var(--celadon);
+      }
+      #results {
+        list-style: none;
+        margin: 1.5rem 0 0;
+        padding: 0;
+      }
+      #results li {
+        padding: 0.9rem 0;
+        border-top: 1px solid var(--line);
+      }
+      .where {
+        display: block;
+        margin-bottom: 0.35rem;
+        color: var(--celadon);
+        font-size: 0.75rem;
+        letter-spacing: 0.04em;
+      }
+      #results p {
+        margin: 0;
+        color: var(--ink);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Lucius <span>Fundamentum</span> — bench</h1>
+      <p class="lede">
+        Empty on purpose. Paste your own text, index it, and search it. Nothing leaves this
+        machine: with no key configured, the whole of what runs here is BM25 in your browser.
+      </p>
+
+      <label for="source">Source text</label>
+      <textarea id="source" spellcheck="false"></textarea>
+      <div class="row"><button id="index-button" type="button">Index</button></div>
+
+      <label for="query">Query</label>
+      <input id="query" type="search" autocomplete="off" />
+      <div class="row"><button id="search-button" type="button">Search</button></div>
+
+      <p id="status"></p>
+      <p id="arm"></p>
+      <ul id="results"></ul>
+
+      <p class="note">
+        The library receives text that is already text. Extracting it from a PDF, keeping the
+        page, and drawing the highlight are this page's job, not the package's.
+      </p>
+    </main>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

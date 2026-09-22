@@ -1,0 +1,37 @@
+{
+    // Type-checks the example, which is `.js` with JSDoc rather than `.ts`.
+    // A `.ts` example would need a compiler of its own inside the example, and
+    // the browser could not load the files as they are; under `checkJs` the
+    // JSDoc is verified with the same `strict` the sources get, so the example
+    // is not second-class code. The README states the reason for the choice at
+    // a smaller scale: "a snippet nothing compiles rots at the first signature
+    // change".
+    //
+    // It is a FOURTH config rather than a flag on tsconfig.typecheck.json, and
+    // the reason is measured: turning on allowJs/checkJs there reports 12
+    // errors in the two versioned `.mjs` under bench/rounds/, which were never
+    // type-checked because checkJs was off. Excluding bench/.out does not
+    // remove them — that directory compiles clean and was never the source.
+    // Fixing or excluding those files is work in bench/rounds/, which this
+    // example has no business doing.
+    //
+    // `lib` is declared and not inherited. The root sets ES2022 + WebWorker,
+    // which for src/ is the guarantee that the core runs off Node — and
+    // WebWorker declares no `document`, so a page would not type-check under
+    // it. `lib` replaces rather than merges, so ES2022 is repeated here.
+    //
+    // The script that runs this builds first: the example imports from
+    // `../../dist/`, `dist/` is gitignored, and CI type-checks before it
+    // builds. Mapping the import to src/ with `paths` was measured and does
+    // not work — `paths` does not redirect a relative specifier.
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "rootDir": ".",
+        "noEmit": true,
+        "allowJs": true,
+        "checkJs": true,
+        "lib": ["ES2022", "DOM", "DOM.Iterable"],
+        "types": ["node"]
+    },
+    "include": ["examples"]
+}

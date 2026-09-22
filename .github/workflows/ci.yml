@@ -22,4 +22,10 @@ jobs:
       - run: npm ci
       - run: npm run typecheck
       - run: npm run build
+      # After the build, not with the other three: the example imports from
+      # `dist/`, which is gitignored and therefore absent when `typecheck`
+      # runs. The script builds again so that running it by hand works from a
+      # clean checkout; here that second compile is the declared cost of
+      # checking the example at all.
+      - run: npm run typecheck:example
       - run: npm test

@@ -92,6 +92,30 @@ That rule governs changes made FROM the first release onward, so entries under
 
 ### Added
 
+- **A bench you can run: `npm run example`.** The package had documentation and
+  no way to try it. `examples/bancada/` is a page that starts empty — you paste
+  your own text, index it and search it — served by a Node server of about a
+  hundred lines with no dependency. It ships nothing to npm: `files` is still
+  `["dist", "NOTICE"]`.
+
+  It comes with no corpus and no prebuilt artifact, and that is a decision
+  rather than an omission. An artifact records `providerId` and `dimensions`,
+  and loading one with a provider that does not match is refused — so shipping
+  an index would force whoever cloned the repository to use the provider and
+  the dimension chosen here.
+
+  The example is `.js` with JSDoc under `checkJs`, type-checked by
+  `tsconfig.example.json` and run by the suite, for the reason the README gives
+  at a smaller scale: a snippet nothing compiles rots at the first signature
+  change. It loads `dist/` directly, with no bundler, which is what `module:
+  NodeNext` buys — every relative import carries its `.js`.
+
+  **The known limit, stated here rather than discovered later:** nothing tests
+  the page itself. What is pinned is the part that holds rules — that a snippet
+  is cut on code point boundaries and never inside a character, and that the
+  two reasons the dense arm is off are never merged into one message. Clicking
+  and rendering have no net under them.
+
 - **`search` accepts an image as the query.** Photograph a diagram and find
   the material that covers it. `Query` is `string | PageImage`, and
   `isImageQuery` is the one place that tells them apart.
