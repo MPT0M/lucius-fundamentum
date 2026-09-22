@@ -27,6 +27,10 @@ import {
     describeRungs,
     looksReadable,
     documentFromFile,
+    isPdf,
+    pageToDocument,
+    hasUsableText,
+    MIN_USABLE_LETTERS,
 } from './bancada.js';
 
 /** @typedef {import('../../dist/index.js').SearchResult} SearchResult */
@@ -237,6 +241,78 @@ describe('the bench decides what it can read by extension', () => {
         const hits = index.searchLexical('agravo');
 
         expect(hits[0]?.chunk.documentId).toBe('recursos.md');
+    });
+});
+
+describe('the bench, not the library, decides which arm a page takes', () => {
+    const PROSE =
+        'A contagem do prazo exclui o dia do inicio e inclui o do vencimento, ' +
+        'conforme a regra geral aplicavel aos atos processuais.';
+    /** @type {import('../../dist/index.js').PageImage} */
+    const IMAGE = { data: 'aGVsbG8=', mimeType: 'image/png' };
+
+    it('sends a page of prose down the text arm and keeps the image out of it', () => {
+        const doc = pageToDocument('apostila.pdf', { pageNumber: 3, text: PROSE, image: IMAGE });
+        expect(doc?.text).toBe(PROSE);
+        expect(doc?.pageNumber).toBe(3);
+        expect(doc?.page).toBeUndefined();
+    });
+
+    it('sends a page whose text layer is debris down the image arm', () => {
+        // The direction of the error is the whole design: accepting debris as
+        // usable text would put dirty terms in the index AND keep the image
+        // out, leaving the page unreachable by either arm.
+        const debris = '. , ;; ~ ^ ... 1 |I| :: -- ' .repeat(4);
+        const doc = pageToDocument('scan.pdf', { pageNumber: 1, text: debris, image: IMAGE });
+
+        expect(doc?.text).toBe('');
+        expect(doc?.page).toEqual(IMAGE);
+    });
+
+    it('counts letters, not characters', () => {
+        // Sixty characters of punctuation is not sixty letters, and a page of
+        // scanner noise is mostly punctuation.
+        const noise = '.'.repeat(400);
+        expect(hasUsableText(noise)).toBe(false);
+        expect(noise.length).toBeGreaterThan(MIN_USABLE_LETTERS);
+    });
+
+    it('skips a page with neither usable text nor an image', () => {
+        // A `SourceDoc` with empty text and no image would take a slot and
+        // match nothing. Returning null says so instead.
+        expect(pageToDocument('x.pdf', { pageNumber: 9, text: '   ' })).toBeNull();
+    });
+
+    it('produces a document the library actually accepts', () => {
+        // The real contract, and the reason this assertion is a build rather
+        // than a shape check: `assertNotBothArms` throws on a doc carrying an
+        // image AND text, so the routing is only correct if `createIndex`
+        // takes what it produced.
+        const docs = [
+            pageToDocument('mixed.pdf', { pageNumber: 1, text: PROSE, image: IMAGE }),
+            pageToDocument('mixed.pdf', { pageNumber: 2, text: '. . .', image: IMAGE }),
+        ].filter((d) => d !== null);
+
+        expect(docs).toHaveLength(2);
+        expect(() => buildLexicalIndex(docs)).not.toThrow();
+    });
+
+    it('keeps the rejected text out of the lexical index', () => {
+        // Not merely "the image went in" — the junk must be absent. A routing
+        // that stored both would still pass the assertion above.
+        const debris = 'zzqqx '.repeat(3);
+        const docs = [pageToDocument('scan.pdf', { pageNumber: 1, text: debris, image: IMAGE })].filter(
+            (d) => d !== null,
+        );
+        const index = buildLexicalIndex(docs);
+
+        expect(index.searchLexical('zzqqx')).toEqual([]);
+    });
+
+    it('tells a PDF apart from a file merely named like one', () => {
+        expect(isPdf('apostila.pdf')).toBe(true);
+        expect(isPdf('APOSTILA.PDF')).toBe(true);
+        expect(isPdf('apostila.pdf.txt')).toBe(false);
     });
 });
 

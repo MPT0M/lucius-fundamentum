@@ -120,6 +120,14 @@ export function looksReadable(name) {
 }
 
 /**
+ * @param {string} name
+ * @returns {boolean}
+ */
+export function isPdf(name) {
+    return name.toLowerCase().endsWith('.pdf');
+}
+
+/**
  * One document out of a dropped file.
  *
  * The file NAME becomes the id, and that is not a shortcut — it is the only
@@ -158,6 +166,68 @@ export function snippetOf(result, width) {
     const text = result.chunk.text;
     if (countCodePoints(text) <= width) return text;
     return `${sliceByCodePoints(text, 0, width)}…`;
+}
+
+/**
+ * How many letters a page needs before its text counts as usable.
+ *
+ * **A demonstration, not a recommendation.** It was never calibrated against a
+ * corpus, and copying it into production inherits a decision nobody measured.
+ * What is worth copying is the shape: the page decides, the library does not.
+ */
+export const MIN_USABLE_LETTERS = 60;
+
+/**
+ * Whether this page's extracted text is worth indexing as text.
+ *
+ * **This decision belongs to the caller, and the library refuses to make it.**
+ * `assertNotBothArms` treats a `SourceDoc` carrying both a page image and text
+ * as an error rather than guessing which one was meant — so somebody has to
+ * choose, and it is whoever opened the file.
+ *
+ * **The error has a direction, which is why the threshold sits high.** Being
+ * lenient is worse than being strict: accepting OCR debris as usable text puts
+ * dirty terms in the index AND keeps the image out, so the page becomes
+ * unreachable by either arm. Being too strict costs one page a lexical route
+ * it might have had — the image still indexes, and the page is still findable.
+ *
+ * Letters rather than characters, because a scanned page's text layer is
+ * mostly punctuation and stray marks when it is junk, and a page of real prose
+ * is mostly letters.
+ *
+ * @param {string} text
+ * @returns {boolean}
+ */
+export function hasUsableText(text) {
+    return (text.match(/\p{L}/gu) ?? []).length >= MIN_USABLE_LETTERS;
+}
+
+/**
+ * One page, routed to the arm it can actually reach.
+ *
+ * The image passed here is the one bound for the LIBRARY. The bench keeps its
+ * own copy of every page for the viewer regardless — that is what makes the
+ * page appear beside a hit — and the two are different jobs: an artifact that
+ * stored page bytes would not fit in a browser, and a viewer that could only
+ * show pages the library happened to index would be a viewer with holes.
+ *
+ * Returns `null` for a page with neither usable text nor an image, which is a
+ * page nothing can index. Skipping it is the honest answer; a `SourceDoc` with
+ * an empty text and no image would occupy a slot and match nothing.
+ *
+ * @param {string} fileName
+ * @param {{ pageNumber: number, text: string, image?: import('../../dist/index.js').PageImage }} page
+ * @returns {SourceDoc | null}
+ */
+export function pageToDocument(fileName, page) {
+    const id = `${fileName}#p${page.pageNumber}`;
+    if (hasUsableText(page.text)) {
+        return { id, text: page.text, pageNumber: page.pageNumber };
+    }
+    if (page.image === undefined) return null;
+    // Empty text and not the extracted junk: `assertNotBothArms` refuses a doc
+    // carrying both, and the junk is what the threshold above just rejected.
+    return { id, text: '', pageNumber: page.pageNumber, page: page.image };
 }
 
 /**

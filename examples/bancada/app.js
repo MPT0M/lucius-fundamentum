@@ -17,7 +17,10 @@ import {
     looksReadable,
     documentFromFile,
     READABLE_TEXT,
+    isPdf,
+    pageToDocument,
 } from './bancada.js';
+import { readPdf } from './pdf.js';
 
 /** @typedef {import('../../dist/index.js').Index} Index */
 /** @typedef {import('../../dist/index.js').SourceDoc} SourceDoc */
@@ -94,17 +97,59 @@ function doIndex() {
     showArm();
 }
 
+/**
+ * Every page the bench has rendered, keyed by the document id the library
+ * will report back on a hit.
+ *
+ * This register is the reason the library never has to carry a page. It
+ * returns `documentId` and `pageNumber`; the page itself is looked up here.
+ *
+ * @type {Map<string, import('../../dist/index.js').PageImage>}
+ */
+const pageImages = new Map();
+
+/** @param {File} file */
+async function takePdf(file) {
+    say(`Reading ${file.name}…`);
+    const pages = await readPdf(await file.arrayBuffer());
+
+    let asText = 0;
+    let asImage = 0;
+    for (const page of pages) {
+        const doc = pageToDocument(file.name, page);
+        if (doc === null) continue;
+        // The image is kept for EVERY page, including the ones indexed as
+        // text: the viewer has to be able to show any hit's page, not only
+        // the pages the library happened to receive an image for.
+        pageImages.set(doc.id, page.image);
+        dropped.push(doc);
+        if (doc.text === '') asImage++;
+        else asText++;
+    }
+    return { asText, asImage, skipped: pages.length - asText - asImage };
+}
+
 /** @param {DataTransfer | null} transfer */
 async function takeFiles(transfer) {
     const files = [...(transfer?.files ?? [])];
-    const readable = files.filter((file) => looksReadable(file.name));
-    const rejected = files.filter((file) => !looksReadable(file.name));
+    const rejected = files.filter((file) => !looksReadable(file.name) && !isPdf(file.name));
+    let taken = 0;
+    let routed = '';
 
-    for (const file of readable) {
-        // `File.text()` decodes as UTF-8, which is the bench's assumption and
-        // worth saying: a file saved in a legacy encoding arrives mangled here,
-        // not in the library.
-        dropped.push(documentFromFile(file.name, await file.text()));
+    for (const file of files) {
+        if (looksReadable(file.name)) {
+            // `File.text()` decodes as UTF-8, which is the bench's assumption
+            // and worth saying: a file saved in a legacy encoding arrives
+            // mangled here, not in the library.
+            dropped.push(documentFromFile(file.name, await file.text()));
+            taken++;
+        } else if (isPdf(file.name)) {
+            const counts = await takePdf(file);
+            taken++;
+            routed +=
+                ` ${file.name}: ${counts.asText} page(s) indexed as text, ${counts.asImage} as images` +
+                (counts.skipped === 0 ? '.' : `, ${counts.skipped} skipped with neither.`);
+        }
     }
     showDropped();
 
@@ -113,8 +158,8 @@ async function takeFiles(transfer) {
     const refused =
         rejected.length === 0
             ? ''
-            : ` Ignored ${rejected.map((f) => f.name).join(', ')} — this commit reads ${READABLE_TEXT.join(' and ')}.`;
-    say(`${readable.length} file(s) ready to index.${refused}`);
+            : ` Ignored ${rejected.map((f) => f.name).join(', ')} — the bench reads ${READABLE_TEXT.join(', ')} and .pdf.`;
+    say(`${taken} file(s) ready to index.${routed}${refused}`);
 }
 
 document.addEventListener('dragover', (event) => {

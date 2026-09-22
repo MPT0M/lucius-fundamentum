@@ -152,6 +152,37 @@ That rule governs changes made FROM the first release onward, so entries under
   `application/octet-stream`. Anything else is named on screen rather than
   dropped silently, since a file that vanishes on drop reads as a broken page.
 
+- **The bench opens PDFs, and the extractor is visibly outside the library.**
+  Drop a PDF and each page is read twice — its text layer and a rendered image
+  — by `examples/bancada/pdf.js`, which uses pdf.js from a CDN. The package
+  never sees the binary. That is the point of showing the extractor here: the
+  commonest wrong expectation about this package is that it eats PDFs.
+
+  Each page is then routed by the BENCH, because the library refuses to guess:
+  `assertNotBothArms` treats a `SourceDoc` carrying both a page image and text
+  as an error rather than picking one. A page with real prose indexes as text;
+  a page whose text layer is scanner debris indexes as an image; a page with
+  neither is skipped rather than occupying a slot that matches nothing.
+
+  **The threshold sits high on purpose, and it is a demonstration rather than
+  a recommendation** — it was never calibrated against a corpus. Being lenient
+  is worse than being strict: accepting debris as usable text puts dirty terms
+  in the index AND keeps the image out, so the page becomes unreachable by
+  either arm. Being too strict costs one page a lexical route it might have
+  had, while the image still indexes.
+
+  The rendered page is kept for every page, including the ones indexed as text.
+  The library returns `documentId` and `pageNumber`; the page itself is looked
+  up in the bench's own register, which is what keeps an artifact small enough
+  to hold in a browser.
+
+  **Two limits stated here rather than discovered:** pdf.js is fetched from a
+  CDN at an exact version, so a bench with no network cannot open a PDF and
+  nothing verifies what came back — a URL is the weakest pin there is. And the
+  extraction path itself has no test: it needs a canvas and a network, and what
+  is pinned instead is the routing decision, which is the part that holds a
+  rule.
+
 - **`search` accepts an image as the query.** Photograph a diagram and find
   the material that covers it. `Query` is `string | PageImage`, and
   `isImageQuery` is the one place that tells them apart.
