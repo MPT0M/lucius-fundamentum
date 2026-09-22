@@ -20,6 +20,7 @@ import {
     isPdf,
     pageToDocument,
     classifyLoadFailure,
+    viewerFor,
 } from './bancada.js';
 import { readPdf } from './pdf.js';
 import { save, load, forget, approximateBytes } from './storage.js';
@@ -103,11 +104,12 @@ function doIndex() {
         say('Paste some text or drop a file first.');
         return;
     }
+    for (const doc of docs) docTexts.set(doc.id, doc.text);
     index = buildLexicalIndex(docs);
     results.replaceChildren();
     say(`Indexed ${docs.length} document(s). Search below.`);
     showArm();
-    void save(index.serialize(), pageImages).then(showCacheSize);
+    void save(index.serialize(), pageImages, docTexts).then(showCacheSize);
 }
 
 /**
@@ -126,6 +128,7 @@ async function restore() {
     try {
         index = loadIndex(cached.artifact);
         for (const [id, image] of cached.pages) pageImages.set(id, image);
+        for (const [id, text] of cached.texts) docTexts.set(id, text);
         say(`Restored an index from ${new Date(cached.savedAt).toLocaleString()}.`);
         showArm();
     } catch (error) {
@@ -153,6 +156,18 @@ async function restore() {
  * @type {Map<string, import('../../dist/index.js').PageImage>}
  */
 const pageImages = new Map();
+
+/**
+ * The text each document was indexed WITH, keyed the same way.
+ *
+ * The highlight depends on this being the very text the library received. A
+ * second extraction — another pass, a different normaliser, a trimmed copy —
+ * moves every offset after the first difference, and the highlight then lands
+ * on the wrong words while still looking certain.
+ *
+ * @type {Map<string, string>}
+ */
+const docTexts = new Map();
 
 /** @param {File} file */
 async function takePdf(file) {
@@ -227,16 +242,20 @@ function doSearch() {
     const asked = query.value.trim();
     if (asked === '') return;
 
-    const hits = index.searchLexical(asked).map((hit) => resultForScreen(hit, SNIPPET_WIDTH));
+    const found = index.searchLexical(asked);
+    const hits = found.map((hit) => resultForScreen(hit, SNIPPET_WIDTH));
     results.replaceChildren(
-        ...hits.map((hit) => {
+        ...hits.map((hit, i) => {
             const item = document.createElement('li');
-            const where = document.createElement('span');
+            const where = document.createElement('button');
+            where.type = 'button';
             where.className = 'where';
             where.textContent =
                 hit.pageNumber === undefined
                     ? hit.documentId
                     : `${hit.documentId}, page ${hit.pageNumber}`;
+            const source = found[i];
+            if (source !== undefined) where.addEventListener('click', () => openViewer(source));
             const body = document.createElement('p');
             body.textContent = hit.snippet;
             item.append(where, body);
@@ -248,6 +267,64 @@ function doSearch() {
     // comparing it with a 7.41 from another corpus, where it means something
     // else entirely.
     say(hits.length === 0 ? 'Nothing matched.' : `${hits.length} passage(s), best first.`);
+}
+
+/**
+ * Opens the document beside the result, with the retrieved stretch lit.
+ *
+ * A page indexed as an image opens whole and unlit: the page is the unit and
+ * there is no narrower span to point at, so a highlight there would be a
+ * precision the index does not have.
+ *
+ * @param {import('../../dist/index.js').SearchResult} result
+ */
+function openViewer(result) {
+    const viewer = must('viewer');
+    const text = docTexts.get(result.chunk.documentId);
+    const shown = viewerFor(result, text);
+    const image = pageImages.get(result.chunk.documentId);
+
+    /** @type {Node[]} */
+    const parts = [];
+    const caption = document.createElement('p');
+    caption.className = 'where';
+    caption.textContent =
+        result.chunk.pageNumber === undefined
+            ? result.chunk.documentId
+            : `${result.chunk.documentId}, page ${result.chunk.pageNumber}`;
+    parts.push(caption);
+
+    if (image !== undefined) {
+        const picture = document.createElement('img');
+        picture.src = `data:${image.mimeType};base64,${image.data}`;
+        picture.alt = caption.textContent;
+        parts.push(picture);
+    }
+
+    if (shown.kind === 'text') {
+        const body = document.createElement('p');
+        body.className = 'page-text';
+        body.append(
+            ...shown.parts.map((piece) => {
+                if (!piece.highlighted) return document.createTextNode(piece.text);
+                // An INLINE span, so the colour stops where the text stops.
+                // A block with padding paints a rectangle: the last line ends
+                // mid-way and the fill runs on to the margin, which does not
+                // read as a marker over words.
+                const lit = document.createElement('mark');
+                lit.textContent = piece.text;
+                return lit;
+            }),
+        );
+        parts.push(body);
+    } else {
+        const note = document.createElement('p');
+        note.className = 'note';
+        note.textContent = 'Indexed as an image: the page is the unit, so nothing narrower is lit.';
+        parts.push(note);
+    }
+
+    viewer.replaceChildren(...parts);
 }
 
 function doAttribute() {

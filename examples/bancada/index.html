@@ -143,6 +143,60 @@
         color: var(--muted);
         font-size: 0.82rem;
       }
+      #viewer:empty {
+        display: none;
+      }
+      #viewer {
+        margin-top: 1.5rem;
+        padding: 1rem;
+        background: #111;
+        border: 1px solid var(--line);
+        border-radius: 3px;
+      }
+      #viewer img {
+        display: block;
+        width: 100%;
+        margin: 0.8rem 0;
+        border: 1px solid var(--line);
+      }
+      .page-text {
+        margin: 0;
+        font-size: 0.8rem;
+        line-height: 1.9;
+        white-space: pre-wrap;
+      }
+      /* Inline, with no vertical padding and no ring: the fill has to stop
+         where the text stops. `box-decoration-break: clone` is what gives a
+         wrapped highlight a ragged end on each line instead of a rectangle
+         running to the margin. Heavier than ::selection on purpose — a
+         citation is permanent and a selection is passing. */
+      .page-text mark {
+        background: rgba(126, 207, 128, 0.3);
+        color: #fff;
+        padding: 0.15em 0.2em;
+        border-radius: 2px;
+        box-decoration-break: clone;
+        -webkit-box-decoration-break: clone;
+      }
+      ::selection {
+        background: rgba(126, 207, 128, 0.25);
+      }
+      button.where {
+        display: block;
+        margin-bottom: 0.35rem;
+        padding: 0;
+        background: none;
+        border: none;
+        color: var(--celadon);
+        font: inherit;
+        font-size: 0.75rem;
+        letter-spacing: 0.04em;
+        text-align: left;
+        cursor: pointer;
+      }
+      button.where:hover {
+        text-decoration: underline;
+      }
       .where {
         display: block;
         margin-bottom: 0.35rem;
@@ -181,6 +235,7 @@
       <p id="status"></p>
       <p id="arm"></p>
       <ul id="results"></ul>
+      <div id="viewer"></div>
 
       <label for="answer">Answer to verify</label>
       <textarea id="answer" spellcheck="false"></textarea>

@@ -208,6 +208,22 @@ That rule governs changes made FROM the first release onward, so entries under
   Nothing expires. This is a demo cache on your own machine, holding material
   whose originals are already on your disk, and there is a button to clear it.
 
+- **Clicking a result opens the document beside it, with the retrieved stretch
+  lit.** The highlight is cut by code points, because that is the unit `Span`
+  is written in: slicing the same offsets with `String.prototype.slice` drifts
+  by one for every astral character earlier in the page, and the drift is
+  silent — the highlight still appears, over the wrong words, still looking
+  certain.
+
+  It is rendered from the very text the library was given, which the bench
+  stores beside the page rather than re-deriving. A second extraction moves
+  every offset after the first difference, and an artifact holds chunks rather
+  than documents, so reassembling a page from them would move them too.
+
+  A page indexed as an image opens whole and unlit. The page is the unit there
+  — there is no narrower span to point at — and inventing a highlight would be
+  inventing a precision the index does not have.
+
 - **`search` accepts an image as the query.** Photograph a diagram and find
   the material that covers it. `Query` is `string | PageImage`, and
   `isImageQuery` is the one place that tells them apart.

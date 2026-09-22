@@ -45,18 +45,24 @@ function awaited(request) {
  * @typedef {object} Cached
  * @property {import('../../dist/index.js').IndexArtifact} artifact
  * @property {[string, import('../../dist/index.js').PageImage][]} pages
+ * @property {[string, string][]} texts the text each document was indexed WITH
  * @property {number} savedAt epoch milliseconds
  */
 
 /**
  * @param {import('../../dist/index.js').IndexArtifact} artifact
  * @param {Map<string, import('../../dist/index.js').PageImage>} pages
+ * @param {Map<string, string>} texts
  * @returns {Promise<void>}
  */
-export async function save(artifact, pages) {
+export async function save(artifact, pages, texts) {
     const db = await open();
+    // The indexed text is stored beside the artifact, not re-derived from it.
+    // A span is an offset into what the library RECEIVED, and an artifact
+    // holds chunks rather than documents — reassembling a page from chunks
+    // would move every offset after the first join.
     /** @type {Cached} */
-    const record = { artifact, pages: [...pages], savedAt: Date.now() };
+    const record = { artifact, pages: [...pages], texts: [...texts], savedAt: Date.now() };
     const tx = db.transaction(STORE, 'readwrite');
     await awaited(tx.objectStore(STORE).put(record, RECORD));
     db.close();

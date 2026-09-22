@@ -32,6 +32,8 @@ import {
     hasUsableText,
     MIN_USABLE_LETTERS,
     classifyLoadFailure,
+    highlightParts,
+    viewerFor,
 } from './bancada.js';
 import { loadIndex, packVectors } from '../../dist/index.js';
 
@@ -437,6 +439,66 @@ describe('a refused artifact does not get one blanket answer', () => {
         const artifact = buildLexicalIndex([documentFromPastedText('qualquer texto aqui', 'x')]).serialize();
         expect(() => loadIndex(artifact, {})).not.toThrow();
         expect(loadIndex(artifact, {}).denseArm).toBe('absent');
+    });
+});
+
+describe('the highlight lands where the library said it would', () => {
+    it('splits the page into before, lit and after', () => {
+        const page = 'antes GRIFADO depois';
+        const parts = highlightParts(page, { start: 6, end: 14 });
+
+        expect(parts).toEqual([
+            { text: 'antes ', highlighted: false },
+            { text: 'GRIFADO ', highlighted: true },
+            { text: 'depois', highlighted: false },
+        ]);
+    });
+
+    it('drops the empty stretch when the chunk starts the page', () => {
+        const parts = highlightParts('GRIFADO depois', { start: 0, end: 7 });
+        expect(parts).toHaveLength(2);
+        expect(parts[0]?.highlighted).toBe(true);
+    });
+
+    it('does not drift past an astral character', () => {
+        // The failure this guards is silent: `slice` counts UTF-16 units, so
+        // every astral character earlier in the page shifts the highlight by
+        // one and it lands over the wrong words — still visible, still
+        // confident, wrong. A reader trusts a highlight.
+        const page = '𝒳𝒴 alvo resto';
+        const span = { start: 3, end: 7 };
+        const parts = highlightParts(page, span);
+
+        expect(parts.find((p) => p.highlighted)?.text).toBe('alvo');
+        // The naive version on the same offsets, for contrast.
+        expect(page.slice(span.start, span.end)).not.toBe('alvo');
+    });
+
+    it('clamps a span that overran the page instead of throwing', () => {
+        const parts = highlightParts('curto', { start: 2, end: 9999 });
+        expect(parts.find((p) => p.highlighted)?.text).toBe('rto');
+    });
+
+    it('lights the real chunk of a real index, not a hand-written span', () => {
+        // The offsets come from the library rather than from this file, which
+        // is the only version of this test that proves the two agree.
+        const page =
+            'O prazo para a manifestacao e de quinze dias corridos. ' +
+            'O recurso cabivel contra a decisao final e o agravo.';
+        const index = buildLexicalIndex([documentFromPastedText(page, 'lei')]);
+        const found = index.searchLexical('agravo')[0];
+        if (found === undefined) throw new Error('the fixture retrieved nothing; the probe proves nothing');
+
+        const lit = highlightParts(page, found.chunk.span).find((p) => p.highlighted)?.text ?? '';
+        expect(lit).toBe(found.chunk.text);
+        expect(lit).toContain('agravo');
+    });
+
+    it('opens a page-image hit whole, with nothing lit', () => {
+        // There is no span narrower than the page, so inventing a highlight
+        // would be inventing a precision the index does not have.
+        const imageHit = { chunk: { id: 'p#0', documentId: 'scan.pdf', text: '', span: { start: 0, end: 0 }, pageNumber: 4 }, score: 1, rank: 1 };
+        expect(viewerFor(imageHit, undefined)).toEqual({ kind: 'page' });
     });
 });
 

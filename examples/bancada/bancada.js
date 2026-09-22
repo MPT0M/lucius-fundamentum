@@ -390,6 +390,57 @@ export function describeRungs(attribution, providerSupplied) {
 }
 
 /**
+ * A page split into the stretch a chunk covers and the stretches around it.
+ *
+ * **Cut by code points, because that is the unit `Span` is written in.** A
+ * `String.prototype.slice` at the same offsets drifts by one for every astral
+ * character earlier in the page, and the drift is silent: the highlight still
+ * appears, just over the wrong words. That is worse than no highlight, because
+ * a reader trusts it.
+ *
+ * **And it must be given the SAME text that was indexed.** The span is an
+ * offset into what the library received; rendering from a second extraction —
+ * another pass of the extractor, a different normaliser, a trimmed copy —
+ * moves every offset after the first difference. The bench stores the page
+ * text beside the page image at ingest for exactly this reason, rather than
+ * re-reading the PDF when a hit is clicked.
+ *
+ * Empty stretches are dropped, so a chunk at the very start of a page does not
+ * produce a leading empty piece for the renderer to reason about. Bounds are
+ * clamped by `sliceByCodePoints` rather than thrown, which is what keeps a
+ * stale span from breaking the render path.
+ *
+ * @param {string} pageText the text that was handed to the library
+ * @param {import('../../dist/index.js').Span} span
+ * @returns {{ text: string, highlighted: boolean }[]}
+ */
+export function highlightParts(pageText, span) {
+    const pieces = [
+        { text: sliceByCodePoints(pageText, 0, span.start), highlighted: false },
+        { text: sliceByCodePoints(pageText, span.start, span.end), highlighted: true },
+        { text: sliceByCodePoints(pageText, span.end), highlighted: false },
+    ];
+    return pieces.filter((piece) => piece.text !== '');
+}
+
+/**
+ * What the viewer should show for a hit, which is not the same for both arms.
+ *
+ * A text chunk has a span, so the page opens with that stretch lit. A page
+ * indexed as an image has none — the page IS the unit, there is nothing
+ * narrower to point at — so it opens whole, and inventing a highlight for it
+ * would be inventing a precision the index does not have.
+ *
+ * @param {SearchResult} result
+ * @param {string | undefined} pageText the text indexed for this document, if any
+ * @returns {{ kind: 'text', parts: { text: string, highlighted: boolean }[] } | { kind: 'page' }}
+ */
+export function viewerFor(result, pageText) {
+    if (result.chunk.text === '' || pageText === undefined) return { kind: 'page' };
+    return { kind: 'text', parts: highlightParts(pageText, result.chunk.span) };
+}
+
+/**
  * What the screen needs about one hit, with the page left as a number.
  *
  * The page IMAGE is never here: the library returns `pageNumber` and the bench
