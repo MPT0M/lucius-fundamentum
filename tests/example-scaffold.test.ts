@@ -84,15 +84,54 @@ describe('the example runs where there is no Node', () => {
         expect(scanned).not.toContain('bancada.test.js');
     });
 
-    it('rejects a Node import when it sees one', () => {
-        // The control for the scanner itself: the regexes above are only worth
-        // something if they fire. Feeding them a source they must reject
-        // separates "nothing to find" from "cannot find anything".
-        const planted = withoutComments("import { readFileSync } from 'node:fs';\nconst x = process.env.KEY;");
-        const hits = planted
-            .split('\n')
-            .filter((text) => NODE_ONLY_IMPORT.test(text) || NODE_ONLY_GLOBAL.test(text));
-        expect(hits).toHaveLength(2);
+    it('detects every shape it is supposed to detect', () => {
+        // The control for the scanner itself. Without it the sweep passes on
+        // a regex that matches nothing as loudly as on a clean directory, and
+        // the two are not the same result. Same five shapes `scaffold.test.ts`
+        // feeds its own guard.
+        const violations = [
+            "import { readFileSync } from 'node:fs';",
+            'const fs = require("fs");',
+            'const b = Buffer.from(text);',
+            'const n = process.env.PORT;',
+            'const here = __dirname;',
+        ];
+        for (const line of violations) {
+            const code = withoutComments(line);
+            expect(NODE_ONLY_IMPORT.test(code) || NODE_ONLY_GLOBAL.test(code), line).toBe(true);
+        }
+    });
+
+    it('does not fire on the comments that explain the absence', () => {
+        // The third way the sweep passes while blind: a stripper that ate the
+        // file leaves nothing to match. These are the real shapes from this
+        // folder — comments that name `process` and `node:` in order to say
+        // they are NOT used. A stripper that missed them would make the guard
+        // unusable, and the obvious repair would be to loosen the pattern,
+        // which removes the guard instead of fixing it.
+        const explanation = [
+            '/** The only Node here: it imports node:http, and nothing else may. */',
+            'const x = 1; // never reads process.env in the browser half',
+        ].join('\n');
+        const stripped = withoutComments(explanation);
+
+        expect(NODE_ONLY_IMPORT.test(stripped)).toBe(false);
+        expect(NODE_ONLY_GLOBAL.test(stripped)).toBe(false);
+        // And the stripper did not simply eat everything, which would pass the
+        // two assertions above for the wrong reason.
+        expect(stripped).toContain('const x = 1;');
+    });
+
+    it('leaves no script the sweep cannot see', () => {
+        // The sweep reads `.js` by design, so a `<script>` with a body in the
+        // page would be JavaScript that no guard here ever looks at. Keeping
+        // every line of script in a module file is what makes the sweep
+        // complete rather than merely green.
+        const html = readFileSync(join(EXAMPLE, 'index.html'), 'utf8');
+        const inline = [...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/g)].filter(
+            ([, , body]) => (body ?? '').trim() !== '',
+        );
+        expect(inline.map(([, attrs]) => attrs)).toEqual([]);
     });
 });
 
