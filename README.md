@@ -63,6 +63,39 @@ const chunks = chunk(
 // each chunk: { id, documentId, text, span: { start, end } }
 ```
 
+### Run it instead of reading it
+
+```
+npm install
+npm run example
+```
+
+That opens a bench at `examples/bancada/` — a page that starts **empty**. Paste
+your own text or drop `.txt`, `.md` and `.pdf` files on it, index them, search
+them, and paste an answer to see which passage supports which stretch of it.
+Clicking a result opens the document beside it with the retrieved stretch lit.
+
+With no key it is BM25 and the two local attribution rungs, running entirely in
+your browser. **Your documents** never leave the machine in that state — the
+page itself does fetch pdf.js from a CDN the first time you drop a PDF, which is
+a request for the library and never for your file. Put one key in `examples/bancada/.env`
+(copy `.env.example`) and the dense arm, the fusion and the third rung come on —
+the key stays in the server process and the page never sees it.
+
+It ships with no corpus and no prebuilt index, on purpose: an artifact records
+the provider and the dimensions it was built with, so a prebuilt one would
+force you onto the choices made here.
+
+Two things it is there to teach. **The extractor is visibly outside the
+library** — `examples/bancada/pdf.js` opens the PDF, and the package only ever
+receives text that is already text. And **the page decides which arm each PDF
+page takes**, because the library refuses to guess: a `SourceDoc` carrying both
+an image and text is an error rather than a coin flip.
+
+The same reasoning that keeps the worked example below in a test applies to it:
+the bench is type-checked and its decisions are covered by the suite, so it
+cannot rot quietly while the README goes on describing it.
+
 ## Attribution
 
 Given a text a model already wrote and the passages a search returned, the
