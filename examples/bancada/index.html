@@ -214,8 +214,10 @@
     <main>
       <h1>Lucius <span>Fundamentum</span> — bench</h1>
       <p class="lede">
-        Empty on purpose. Paste your own text, index it, and search it. Nothing leaves this
-        machine: with no key configured, the whole of what runs here is BM25 in your browser.
+        Empty on purpose. Paste your own text, index it, and search it. With no key configured,
+        the whole of what runs here is BM25 in your browser, and your documents stay on this
+        machine — the page does fetch pdf.js from a CDN the first time you drop a PDF, which is
+        a request for the library and never for your file.
       </p>
 
       <label for="source">Source text</label>
