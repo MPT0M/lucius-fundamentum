@@ -116,6 +116,26 @@ That rule governs changes made FROM the first release onward, so entries under
   two reasons the dense arm is off are never merged into one message. Clicking
   and rendering have no net under them.
 
+- **The bench attributes an answer, with no key.** Paste the text you want to
+  verify and it comes back with markers, each pointing at the passage that
+  supports that stretch — the sentence this package's description ends on, now
+  something you can watch happen. `attributeLexical` is synchronous and touches
+  no network, so this runs entirely in the browser.
+
+  The screen reports the rung counts rather than a score, and reports them the
+  way `RungCounts` documents them: `lexical + dense + unattributed` partition
+  the clauses examined, and `vetoed` is shown apart because it crosses two of
+  those three and never adds to them. It also separates clauses from markers.
+  They are not the same number — coalescence merges adjacent clauses resting on
+  the same passage into one marker, so a line reading "2 clauses carried a
+  marker" above a text with one marker in it sends the reader looking for
+  something that was never written.
+
+  With no provider the screen says the dense rung did not run, and says what
+  that costs: a clause the words cannot separate comes back with no marker at
+  all, so coverage in this state is structurally lower than any figure measured
+  with a provider.
+
 - **`search` accepts an image as the query.** Photograph a diagram and find
   the material that covers it. `Query` is `string | PageImage`, and
   `isImageQuery` is the one place that tells them apart.

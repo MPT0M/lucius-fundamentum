@@ -12,10 +12,20 @@
  * already text. Nothing here opens a binary.
  */
 
-import { createIndex, sliceByCodePoints, countCodePoints } from '../../dist/index.js';
+import {
+    createIndex,
+    createTokenizer,
+    sliceByCodePoints,
+    countCodePoints,
+    attributeLexical,
+    formatAttribution,
+    DEFAULT_ATTRIBUTE_OPTIONS,
+} from '../../dist/index.js';
 
+/** @typedef {import('../../dist/index.js').Attribution} Attribution */
 /** @typedef {import('../../dist/index.js').DenseArm} DenseArm */
 /** @typedef {import('../../dist/index.js').Index} Index */
+/** @typedef {import('../../dist/index.js').RungCounts} RungCounts */
 /** @typedef {import('../../dist/index.js').SearchResult} SearchResult */
 /** @typedef {import('../../dist/index.js').SourceDoc} SourceDoc */
 
@@ -109,6 +119,115 @@ export function snippetOf(result, width) {
     const text = result.chunk.text;
     if (countCodePoints(text) <= width) return text;
     return `${sliceByCodePoints(text, 0, width)}…`;
+}
+
+/**
+ * Which passage supports which stretch of an answer — the sentence the
+ * package's own description ends on, and it runs with no key at all.
+ *
+ * `attributeLexical` is synchronous and touches no network: the two local
+ * rungs and nothing else. That is the whole of what works in a browser with
+ * no provider configured, and it is the strongest thing this bench can show
+ * someone who has not decided to pay for anything yet.
+ *
+ * @param {string} answer the text to verify, pasted by whoever is at the bench
+ * @param {readonly SearchResult[]} results what the search returned for it
+ * @returns {Attribution}
+ */
+export function attributeWithoutKey(answer, results) {
+    return attributeLexical(answer, results, {
+        ...DEFAULT_ATTRIBUTE_OPTIONS,
+        tokenizer: createTokenizer(),
+    });
+}
+
+/**
+ * The answer with its markers written in, and the list they point at.
+ *
+ * `markerStyle: 'bracket'` because this commit renders plain text; the
+ * interactive marker belongs with the viewer that can open a page behind it.
+ * The formatter returns its own `spans` rather than the engine's, and the
+ * difference is not cosmetic: every offset here is reindexed past the markers
+ * just inserted. Mixing the two coordinate spaces is the drift the formatter
+ * returns spans to prevent, so a caller that renders from `formatted.text`
+ * must read `formatted.spans` and never the originals.
+ *
+ * The list is composed here, from the bench's own records — the library keeps
+ * no title, no URL and no file name, which is exactly why it can never put a
+ * wrong one in a citation.
+ *
+ * @param {Attribution} attribution
+ * @returns {{ text: string, sources: { marker: number, documentId: string, pageNumber: number | undefined }[] }}
+ */
+export function markedAnswer(attribution) {
+    const formatted = formatAttribution(attribution, { markerStyle: 'bracket' });
+    return {
+        text: formatted.text,
+        sources: formatted.sources.map((source, i) => ({
+            marker: i + 1,
+            documentId: source.chunk.documentId,
+            pageNumber: source.chunk.pageNumber,
+        })),
+    };
+}
+
+/**
+ * The rung counts, read out loud — including the one that does not add up.
+ *
+ * `lexical + dense + unattributed` partition the clauses examined. `vetoed`
+ * does not join that sum: it crosses the last two and never the first, because
+ * a vetoed winner sends its clause down a rung rather than being replaced by
+ * the runner-up. A screen that prints four numbers in a row invites adding
+ * them, so `vetoed` is reported apart, and it is the number that answers WHY a
+ * stretch ended up unattributed.
+ *
+ * **`dense === 0` does not read the same way in both states, which is why
+ * `providerSupplied` is an argument rather than a guess.** With no provider it
+ * means the rung never ran. With one it can also mean the rung ran and every
+ * clause had already resolved — or that the provider failed, which the library
+ * reports on `providerFailure` precisely because the degradation is otherwise
+ * silent: `attribute` does not throw on a provider failure, it degrades, so a
+ * `try/catch` around the call never fires. Telling someone to supply a key
+ * they already supplied is the failure this branch exists to prevent.
+ *
+ * **`markers` is not `lexical + dense`, and a screen that prints one and
+ * shows the other is lying quietly.** The rungs count CLAUSES, each once;
+ * `spans` counts the markers that survive coalescence, which merges adjacent
+ * clauses resolving to the same passage into one. A paragraph carrying one
+ * marker for four clauses is the library working as designed — but a line
+ * reading "4 clauses carried a marker" above a text with one marker in it
+ * sends the reader looking for three that were never written.
+ *
+ * @param {Attribution} attribution
+ * @param {boolean} providerSupplied whether a provider was handed to the call
+ * @returns {{ examined: number, lexical: number, dense: number, unattributed: number, vetoed: number, markers: number, note: string, retryWorthOffering: boolean }}
+ */
+export function describeRungs(attribution, providerSupplied) {
+    const { lexical, dense, unattributed, vetoed } = attribution.rungs;
+    const failure = attribution.providerFailure;
+
+    const note =
+        failure !== undefined
+            ? `The dense rung was tried and failed (${failure.reason}), so these counts are the ` +
+              `local rungs alone.`
+            : providerSupplied
+              ? 'The dense rung was available. Clauses it did not decide were already resolved locally.'
+              : 'The dense rung did not run: no provider. A clause the words cannot separate comes ' +
+                'back with no marker here, so coverage in this state is structurally lower than any ' +
+                'figure measured with one.';
+
+    return {
+        examined: lexical + dense + unattributed,
+        lexical,
+        dense,
+        unattributed,
+        vetoed,
+        markers: attribution.spans.length,
+        note,
+        // `retryable` reads the HTTP status, a standardised number, and never
+        // the provider's prose, which changes without notice.
+        retryWorthOffering: failure?.retryable ?? false,
+    };
 }
 
 /**

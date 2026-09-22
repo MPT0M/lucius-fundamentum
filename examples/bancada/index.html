@@ -103,6 +103,29 @@
         padding: 0.9rem 0;
         border-top: 1px solid var(--line);
       }
+      #marked {
+        margin: 1.5rem 0 0;
+        padding: 0.9rem;
+        background: #111;
+        border: 1px solid var(--line);
+        border-radius: 3px;
+        font: inherit;
+        white-space: pre-wrap;
+      }
+      #marked:empty {
+        display: none;
+      }
+      #sources {
+        margin: 1rem 0 0;
+        padding-left: 1.4rem;
+        color: var(--muted);
+        font-size: 0.82rem;
+      }
+      #rungs {
+        margin-top: 1rem;
+        color: var(--muted);
+        font-size: 0.82rem;
+      }
       .where {
         display: block;
         margin-bottom: 0.35rem;
@@ -135,6 +158,14 @@
       <p id="status"></p>
       <p id="arm"></p>
       <ul id="results"></ul>
+
+      <label for="answer">Answer to verify</label>
+      <textarea id="answer" spellcheck="false"></textarea>
+      <div class="row"><button id="attribute-button" type="button">Attribute</button></div>
+
+      <pre id="marked"></pre>
+      <ol id="sources"></ol>
+      <p id="rungs"></p>
 
       <p class="note">
         The library receives text that is already text. Extracting it from a PDF, keeping the

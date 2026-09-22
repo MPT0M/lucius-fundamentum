@@ -6,7 +6,15 @@
  * nodes — deliberately dull, because the dull half is the untested half.
  */
 
-import { describeArm, documentFromPastedText, buildLexicalIndex, resultForScreen } from './bancada.js';
+import {
+    describeArm,
+    documentFromPastedText,
+    buildLexicalIndex,
+    resultForScreen,
+    attributeWithoutKey,
+    markedAnswer,
+    describeRungs,
+} from './bancada.js';
 
 /** @typedef {import('../../dist/index.js').Index} Index */
 
@@ -89,7 +97,47 @@ function doSearch() {
     say(hits.length === 0 ? 'Nothing matched.' : `${hits.length} passage(s), best first.`);
 }
 
+function doAttribute() {
+    if (index === null) {
+        say('Index something first.');
+        return;
+    }
+    const answer = /** @type {HTMLTextAreaElement} */ (must('answer')).value.trim();
+    if (answer === '') {
+        say('Paste the answer you want to verify.');
+        return;
+    }
+
+    // The candidates are what the answer itself retrieves. Attribution ranks
+    // passages against clauses; it does not go looking for them.
+    const candidates = index.searchLexical(answer);
+    const attribution = attributeWithoutKey(answer, candidates);
+    const marked = markedAnswer(attribution);
+    // No provider anywhere in this path, and saying so is the argument: this
+    // is the whole of what runs with no key.
+    const counts = describeRungs(attribution, false);
+
+    must('marked').textContent = marked.text;
+    must('sources').replaceChildren(
+        ...marked.sources.map((source) => {
+            const item = document.createElement('li');
+            item.textContent =
+                source.pageNumber === undefined
+                    ? source.documentId
+                    : `${source.documentId}, page ${source.pageNumber}`;
+            return item;
+        }),
+    );
+    must('rungs').textContent =
+        `${counts.examined} clause(s) examined — ${counts.lexical} found support, ` +
+        `${counts.unattributed} none, shown as ${counts.markers} marker(s): adjacent clauses ` +
+        `resting on the same passage share one. ${counts.vetoed} winner(s) vetoed, which crosses ` +
+        `the counts rather than adding to them. ${counts.note}`;
+    say('Attributed.');
+}
+
 must('index-button').addEventListener('click', doIndex);
+must('attribute-button').addEventListener('click', doAttribute);
 must('search-button').addEventListener('click', doSearch);
 query.addEventListener('keydown', (event) => {
     if (/** @type {KeyboardEvent} */ (event).key === 'Enter') doSearch();
