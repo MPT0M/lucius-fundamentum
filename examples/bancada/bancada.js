@@ -100,6 +100,45 @@ export function buildLexicalIndex(docs) {
 }
 
 /**
+ * Which dropped files this bench knows how to read.
+ *
+ * Extension and not MIME type, and the reason is the file picker rather than
+ * taste: a `.md` dragged from a folder arrives with an empty `type` on every
+ * browser worth naming, and a `.txt` written by an editor can arrive as
+ * `application/octet-stream`. Reading the extension is the thing that behaves
+ * the same everywhere.
+ */
+export const READABLE_TEXT = ['.txt', '.md'];
+
+/**
+ * @param {string} name
+ * @returns {boolean}
+ */
+export function looksReadable(name) {
+    const lower = name.toLowerCase();
+    return READABLE_TEXT.some((ext) => lower.endsWith(ext));
+}
+
+/**
+ * One document out of a dropped file.
+ *
+ * The file NAME becomes the id, and that is not a shortcut — it is the only
+ * place a name can live. `SourceDoc` is `{ id, text, pageNumber?, page? }`;
+ * `title`, `sourceUri` and `metadata` were removed from it deliberately,
+ * because a library that knows a document's name can put a wrong one in a
+ * citation, and one that does not cannot. Whatever else the bench wants to
+ * remember about this file — a URL, a display name, the bytes of a page — it
+ * keeps in its own register, keyed by this id.
+ *
+ * @param {string} name
+ * @param {string} text
+ * @returns {SourceDoc}
+ */
+export function documentFromFile(name, text) {
+    return { id: name, text };
+}
+
+/**
  * A preview of a hit, cut to a width the screen can hold.
  *
  * **Cut by code points, never by `String.prototype.slice`.** A naive slice

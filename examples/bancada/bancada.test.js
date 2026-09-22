@@ -25,6 +25,8 @@ import {
     attributeWithoutKey,
     markedAnswer,
     describeRungs,
+    looksReadable,
+    documentFromFile,
 } from './bancada.js';
 
 /** @typedef {import('../../dist/index.js').SearchResult} SearchResult */
@@ -195,6 +197,46 @@ describe('the bench attributes an answer with no key at all', () => {
         const returned = attributeWithoutKey('O recurso cabivel e o agravo.', index.searchLexical('recurso agravo'));
         expect(returned).not.toBeInstanceOf(Promise);
         expect(returned.providerFailure).toBeUndefined();
+    });
+});
+
+describe('the bench decides what it can read by extension', () => {
+    it('accepts the two it reads and refuses the rest', () => {
+        expect(looksReadable('lei.txt')).toBe(true);
+        expect(looksReadable('notas.md')).toBe(true);
+        expect(looksReadable('apostila.pdf')).toBe(false);
+        expect(looksReadable('planilha.xlsx')).toBe(false);
+    });
+
+    it('ignores case, because a file picker does not normalise it', () => {
+        expect(looksReadable('LEI.TXT')).toBe(true);
+        expect(looksReadable('Notas.Md')).toBe(true);
+    });
+
+    it('does not match a name that merely contains the extension', () => {
+        // `.txt` in the middle of a name is not a text file, and a bare
+        // `includes` would say it is.
+        expect(looksReadable('nota.txt.pdf')).toBe(false);
+        expect(looksReadable('arquivo.md.zip')).toBe(false);
+    });
+
+    it('makes the file name the id, because nowhere else can hold it', () => {
+        // `SourceDoc` carries no title and no URL — removed on purpose, so the
+        // library can never put a wrong name in a citation. The id is the only
+        // handle the bench gets back on a result.
+        const doc = documentFromFile('lei-8078.txt', 'texto qualquer');
+        expect(doc.id).toBe('lei-8078.txt');
+        expect(Object.keys(doc).sort()).toEqual(['id', 'text']);
+    });
+
+    it('finds a passage under the file name it was dropped with', () => {
+        const index = buildLexicalIndex([
+            documentFromFile('prazos.md', 'O prazo para a manifestacao e de quinze dias corridos.'),
+            documentFromFile('recursos.md', 'O recurso cabivel contra a decisao final e o agravo.'),
+        ]);
+        const hits = index.searchLexical('agravo');
+
+        expect(hits[0]?.chunk.documentId).toBe('recursos.md');
     });
 });
 

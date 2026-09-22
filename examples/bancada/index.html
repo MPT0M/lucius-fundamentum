@@ -103,6 +103,23 @@
         padding: 0.9rem 0;
         border-top: 1px solid var(--line);
       }
+      body.dragging {
+        outline: 2px dashed var(--celadon);
+        outline-offset: -8px;
+      }
+      .drop-hint {
+        margin: 0.5rem 0 0;
+      }
+      #files {
+        list-style: none;
+        margin: 0.6rem 0 0;
+        padding: 0;
+        color: var(--celadon);
+        font-size: 0.8rem;
+      }
+      #files li::before {
+        content: "· ";
+      }
       #marked {
         margin: 1.5rem 0 0;
         padding: 0.9rem;
@@ -149,6 +166,8 @@
 
       <label for="source">Source text</label>
       <textarea id="source" spellcheck="false"></textarea>
+      <p class="note drop-hint">…or drop <code>.txt</code> and <code>.md</code> files anywhere on this page.</p>
+      <ul id="files"></ul>
       <div class="row"><button id="index-button" type="button">Index</button></div>
 
       <label for="query">Query</label>

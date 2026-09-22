@@ -142,6 +142,16 @@ That rule governs changes made FROM the first release onward, so entries under
   all, so coverage in this state is structurally lower than any figure measured
   with a provider.
 
+- **The bench takes dropped `.txt` and `.md` files.** Drop them anywhere on the
+  page and they join whatever was pasted; the file name becomes the document id,
+  which is the only place a name can live — `SourceDoc` carries no title and no
+  URL, deliberately, so the library can never put a wrong one in a citation.
+
+  Files are chosen by extension rather than MIME type, because a `.md` dragged
+  from a folder arrives with an empty `type` and a `.txt` can arrive as
+  `application/octet-stream`. Anything else is named on screen rather than
+  dropped silently, since a file that vanishes on drop reads as a broken page.
+
 - **`search` accepts an image as the query.** Photograph a diagram and find
   the material that covers it. `Query` is `string | PageImage`, and
   `isImageQuery` is the one place that tells them apart.

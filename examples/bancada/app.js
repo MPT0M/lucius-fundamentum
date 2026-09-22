@@ -14,14 +14,29 @@ import {
     attributeWithoutKey,
     markedAnswer,
     describeRungs,
+    looksReadable,
+    documentFromFile,
+    READABLE_TEXT,
 } from './bancada.js';
 
 /** @typedef {import('../../dist/index.js').Index} Index */
+/** @typedef {import('../../dist/index.js').SourceDoc} SourceDoc */
 
 const SNIPPET_WIDTH = 240;
 
 /** @type {Index | null} */
 let index = null;
+
+/**
+ * Files dropped on the page, in the order they arrived.
+ *
+ * They are held here and not in the index, because indexing is a separate
+ * button: dropping a file should not silently spend the time it takes to chunk
+ * and tokenize a long document.
+ *
+ * @type {SourceDoc[]}
+ */
+const dropped = [];
 
 /**
  * @param {string} id
@@ -53,18 +68,65 @@ function showArm() {
     arm.textContent = `${state.headline} ${state.detail}`;
 }
 
+function showDropped() {
+    must('files').replaceChildren(
+        ...dropped.map((doc) => {
+            const item = document.createElement('li');
+            item.textContent = doc.id;
+            return item;
+        }),
+    );
+}
+
 function doIndex() {
     const text = source.value.trim();
-    if (text === '') {
-        say('Paste something first.');
+    /** @type {SourceDoc[]} */
+    const docs = [...dropped];
+    if (text !== '') docs.push(documentFromPastedText(text, 'pasted'));
+
+    if (docs.length === 0) {
+        say('Paste some text or drop a file first.');
         return;
     }
-    const doc = documentFromPastedText(text, 'pasted');
-    index = buildLexicalIndex([doc]);
+    index = buildLexicalIndex(docs);
     results.replaceChildren();
-    say('Indexed. Search below.');
+    say(`Indexed ${docs.length} document(s). Search below.`);
     showArm();
 }
+
+/** @param {DataTransfer | null} transfer */
+async function takeFiles(transfer) {
+    const files = [...(transfer?.files ?? [])];
+    const readable = files.filter((file) => looksReadable(file.name));
+    const rejected = files.filter((file) => !looksReadable(file.name));
+
+    for (const file of readable) {
+        // `File.text()` decodes as UTF-8, which is the bench's assumption and
+        // worth saying: a file saved in a legacy encoding arrives mangled here,
+        // not in the library.
+        dropped.push(documentFromFile(file.name, await file.text()));
+    }
+    showDropped();
+
+    // Naming what was refused, rather than dropping it quietly: a file that
+    // vanishes on drop reads as a broken page.
+    const refused =
+        rejected.length === 0
+            ? ''
+            : ` Ignored ${rejected.map((f) => f.name).join(', ')} — this commit reads ${READABLE_TEXT.join(' and ')}.`;
+    say(`${readable.length} file(s) ready to index.${refused}`);
+}
+
+document.addEventListener('dragover', (event) => {
+    event.preventDefault();
+    document.body.classList.add('dragging');
+});
+document.addEventListener('dragleave', () => document.body.classList.remove('dragging'));
+document.addEventListener('drop', (event) => {
+    event.preventDefault();
+    document.body.classList.remove('dragging');
+    void takeFiles(event.dataTransfer);
+});
 
 function doSearch() {
     if (index === null) {
