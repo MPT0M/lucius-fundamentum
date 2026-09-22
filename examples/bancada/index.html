@@ -168,7 +168,11 @@
       <textarea id="source" spellcheck="false"></textarea>
       <p class="note drop-hint">…or drop <code>.txt</code>, <code>.md</code> and <code>.pdf</code> files anywhere on this page. The PDF is opened here, by this page — the library never sees a binary.</p>
       <ul id="files"></ul>
-      <div class="row"><button id="index-button" type="button">Index</button></div>
+      <div class="row">
+        <button id="index-button" type="button">Index</button>
+        <button id="forget-button" type="button">Forget cache</button>
+      </div>
+      <p id="cache" class="note"></p>
 
       <label for="query">Query</label>
       <input id="query" type="search" autocomplete="off" />

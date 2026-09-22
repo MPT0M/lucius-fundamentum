@@ -183,6 +183,31 @@ That rule governs changes made FROM the first release onward, so entries under
   is pinned instead is the routing decision, which is the part that holds a
   rule.
 
+- **The bench remembers what you indexed, and answers each refusal with the
+  answer it deserves.** The artifact and the rendered pages go to IndexedDB, so
+  reopening the page does not re-read the files. `localStorage` was not an
+  option before the first realistic corpus: the repository's own public corpus
+  serialises to about 1.5 MB of lexical artifact, against a five-to-ten megabyte
+  ceiling for the whole origin.
+
+  `loadIndex` refuses a stored artifact in eight different ways, and they do not
+  share one recovery. A stale format version or a different tokenizer rebuilds
+  for free, because that work is lexical and the text is still here. A damaged
+  posting, a malformed dense section or a vector count that does not match the
+  chunks is a **broken cache** — same action, different sentence, because
+  telling someone their provider changed when their browser storage was damaged
+  sends them chasing the wrong thing.
+
+  **A provider or dimension mismatch is not discarded.** Those vectors are
+  intact and they cost money; what is needed is the provider that built them,
+  which is one argument away. Discarding them is the anti-pattern `DenseArm`
+  names in cash: it "offers 're-read 40 documents' to someone who only had to
+  supply a key". An unrecognised refusal is not discarded either — guessing
+  "rebuild" on an unfamiliar message is the expensive guess.
+
+  Nothing expires. This is a demo cache on your own machine, holding material
+  whose originals are already on your disk, and there is a button to clear it.
+
 - **`search` accepts an image as the query.** Photograph a diagram and find
   the material that covers it. `Query` is `string | PageImage`, and
   `isImageQuery` is the one place that tells them apart.

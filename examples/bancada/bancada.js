@@ -147,6 +147,56 @@ export function documentFromFile(name, text) {
 }
 
 /**
+ * What a refused artifact costs to recover from, and it is not one answer.
+ *
+ * `loadIndex` throws eight different refusals, and they do NOT deserve the
+ * same response. Two of them mean the stored vectors are fine and only the
+ * provider is wrong — and throwing those away is the anti-pattern `DenseArm`'s
+ * docblock names in money: it "offers 're-read 40 documents' to someone who
+ * only had to supply a key".
+ *
+ * - `stale`  — the artifact was written by a build this one cannot read, or
+ *              with a different tokenizer. Rebuilding is free: it is lexical
+ *              work over text the bench still has. Discard and reindex.
+ * - `corrupt`— the stored bytes are damaged: a posting pointing past the end
+ *              of the chunk list, a non-positive frequency, a malformed dense
+ *              section, a vector count that does not match. Nothing to
+ *              salvage, and the honest message says the CACHE broke, not that
+ *              the provider changed.
+ * - `provider`— the vectors are intact and cost money. Do not discard. Ask
+ *              for the provider that built them.
+ * - `unknown`— a refusal this bench does not recognise. Also not discarded,
+ *              deliberately: guessing "rebuild" on an unfamiliar message is
+ *              the expensive guess, and a person can read the library's own
+ *              sentence and decide.
+ *
+ * **Classification is by message text, which is fragile, and the test is what
+ * makes it honest**: it provokes each refusal from `loadIndex` itself rather
+ * than asserting against strings copied into a fixture. When the library
+ * rewords one, the test fails here — which is exactly when this function is
+ * wrong.
+ *
+ * @param {unknown} error
+ * @returns {{ kind: 'stale' | 'corrupt' | 'provider' | 'unknown', discard: boolean, message: string }}
+ */
+export function classifyLoadFailure(error) {
+    const message = error instanceof Error ? error.message : String(error);
+
+    const says = (/** @type {RegExp} */ pattern) => pattern.test(message);
+
+    if (says(/cannot read format version/) || says(/was given tokenizer/)) {
+        return { kind: 'stale', discard: true, message };
+    }
+    if (says(/was given embedding provider/) || says(/dimensions but the artifact stores/)) {
+        return { kind: 'provider', discard: false, message };
+    }
+    if (says(/the posting for/) || says(/not shaped like one/) || says(/vectors for/)) {
+        return { kind: 'corrupt', discard: true, message };
+    }
+    return { kind: 'unknown', discard: false, message };
+}
+
+/**
  * A preview of a hit, cut to a width the screen can hold.
  *
  * **Cut by code points, never by `String.prototype.slice`.** A naive slice

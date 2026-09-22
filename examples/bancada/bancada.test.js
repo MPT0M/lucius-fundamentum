@@ -31,7 +31,9 @@ import {
     pageToDocument,
     hasUsableText,
     MIN_USABLE_LETTERS,
+    classifyLoadFailure,
 } from './bancada.js';
+import { loadIndex, packVectors } from '../../dist/index.js';
 
 /** @typedef {import('../../dist/index.js').SearchResult} SearchResult */
 
@@ -313,6 +315,128 @@ describe('the bench, not the library, decides which arm a page takes', () => {
         expect(isPdf('apostila.pdf')).toBe(true);
         expect(isPdf('APOSTILA.PDF')).toBe(true);
         expect(isPdf('apostila.pdf.txt')).toBe(false);
+    });
+});
+
+describe('a refused artifact does not get one blanket answer', () => {
+    /**
+     * A real artifact, then damaged one way at a time. Provoking the refusals
+     * from `loadIndex` itself is the whole point: a fixture holding strings
+     * copied from the source would keep passing after the library reworded
+     * them, which is precisely when the classifier is wrong.
+     *
+     * @param {(artifact: any) => any} damage
+     * @param {{ tokenizer?: any, provider?: any }} [opts]
+     * @returns {unknown}
+     */
+    function refusalFrom(damage, opts) {
+        const artifact = buildLexicalIndex([
+            documentFromPastedText('O prazo para a manifestacao e de quinze dias corridos.', 'lei'),
+        ]).serialize();
+        try {
+            loadIndex(damage(structuredClone(artifact)), opts ?? {});
+        } catch (error) {
+            return error;
+        }
+        throw new Error('loadIndex accepted the damaged artifact; the probe proves nothing');
+    }
+
+    it('rebuilds for a stale format version, which is free', () => {
+        const refusal = refusalFrom((a) => ({ ...a, formatVersion: a.formatVersion + 1 }));
+        const verdict = classifyLoadFailure(refusal);
+
+        expect(verdict.kind).toBe('stale');
+        expect(verdict.discard).toBe(true);
+    });
+
+    it('rebuilds for a different tokenizer', () => {
+        const refusal = refusalFrom((a) => ({ ...a, tokenizerId: 'some-other-tokenizer' }));
+        expect(classifyLoadFailure(refusal).kind).toBe('stale');
+    });
+
+    it('does NOT discard when only the provider is wrong', () => {
+        // The expensive mistake, in money: the vectors are in the artifact and
+        // a matching provider turns the arm on. `DenseArm`'s docblock names
+        // collapsing this case with the others — it "offers 're-read 40
+        // documents' to someone who only had to supply a key".
+        const refusal = refusalFrom(
+            (a) => ({ ...a, dense: { providerId: 'gemini-embedding-2', dimensions: 1536, vectors: '' } }),
+            { provider: { id: 'openai-text-3-small', dimensions: 1536, modalities: ['text'], embed: async () => [] } },
+        );
+        const verdict = classifyLoadFailure(refusal);
+
+        expect(verdict.kind).toBe('provider');
+        expect(verdict.discard).toBe(false);
+    });
+
+    it('does NOT discard when only the dimensions disagree', () => {
+        const refusal = refusalFrom(
+            (a) => ({ ...a, dense: { providerId: 'p', dimensions: 1536, vectors: '' } }),
+            { provider: { id: 'p', dimensions: 768, modalities: ['text'], embed: async () => [] } },
+        );
+        const verdict = classifyLoadFailure(refusal);
+
+        expect(verdict.kind).toBe('provider');
+        expect(verdict.discard).toBe(false);
+    });
+
+    it('calls a damaged posting a broken cache, not a changed provider', () => {
+        // Same action as `stale` — discard — but a different sentence. Telling
+        // someone their provider changed when their browser storage was
+        // damaged sends them chasing the wrong thing.
+        const refusal = refusalFrom((a) => {
+            const term = Object.keys(a.postings)[0];
+            if (term === undefined) throw new Error('the fixture produced no postings to damage');
+            return { ...a, postings: { ...a.postings, [term]: [[a.chunks.length + 5, 1]] } };
+        });
+        const verdict = classifyLoadFailure(refusal);
+
+        expect(verdict.kind).toBe('corrupt');
+        expect(verdict.discard).toBe(true);
+    });
+
+    it('calls a malformed dense section a broken cache', () => {
+        const refusal = refusalFrom((a) => ({ ...a, dense: { providerId: 7, dimensions: 'x', vectors: null } }), {
+            provider: { id: 'p', dimensions: 1536, modalities: ['text'], embed: async () => [] },
+        });
+        expect(classifyLoadFailure(refusal).kind).toBe('corrupt');
+    });
+
+    it('calls a vector count that does not match the chunks a broken cache', () => {
+        // The eighth refusal, and the one branch of the classifier no other
+        // case here reaches. A pattern nothing provokes is a pattern nothing
+        // checked. TWO vectors for the fixture's ONE chunk: one vector would
+        // match, and `loadIndex` would accept the artifact — which the helper
+        // reports rather than letting the assertion pass on a refusal that
+        // never happened.
+        const refusal = refusalFrom(
+            (a) => ({ ...a, dense: { providerId: 'p', dimensions: 2, vectors: packVectors([[1, 0], [0, 1]]) } }),
+            { provider: { id: 'p', dimensions: 2, modalities: ['text'], embed: async () => [] } },
+        );
+        const verdict = classifyLoadFailure(refusal);
+
+        expect(verdict.message).toContain('vectors for');
+        expect(verdict.kind).toBe('corrupt');
+        expect(verdict.discard).toBe(true);
+    });
+
+    it('refuses to guess on a refusal it does not recognise', () => {
+        // Guessing "rebuild" on an unfamiliar message is the expensive guess.
+        // The person reads the library's own sentence and decides.
+        const verdict = classifyLoadFailure(new Error('loadIndex: something this bench has never seen'));
+
+        expect(verdict.kind).toBe('unknown');
+        expect(verdict.discard).toBe(false);
+        expect(verdict.message).toContain('never seen');
+    });
+
+    it('missing a provider entirely is not a refusal at all', () => {
+        // It does not throw: `denseFromArtifact` returns null and the index
+        // reports `needs-provider`. Reaching the classifier for this case at
+        // all would already be the bug.
+        const artifact = buildLexicalIndex([documentFromPastedText('qualquer texto aqui', 'x')]).serialize();
+        expect(() => loadIndex(artifact, {})).not.toThrow();
+        expect(loadIndex(artifact, {}).denseArm).toBe('absent');
     });
 });
 

@@ -19,8 +19,11 @@ import {
     READABLE_TEXT,
     isPdf,
     pageToDocument,
+    classifyLoadFailure,
 } from './bancada.js';
 import { readPdf } from './pdf.js';
+import { save, load, forget, approximateBytes } from './storage.js';
+import { loadIndex } from '../../dist/index.js';
 
 /** @typedef {import('../../dist/index.js').Index} Index */
 /** @typedef {import('../../dist/index.js').SourceDoc} SourceDoc */
@@ -81,6 +84,15 @@ function showDropped() {
     );
 }
 
+async function showCacheSize() {
+    const bytes = await approximateBytes();
+    must('cache').textContent =
+        bytes === null
+            ? ''
+            : `Cached on this machine: about ${(bytes / 1_000_000).toFixed(1)} MB. ` +
+              'Approximate — the browser reports the whole origin, rounded.';
+}
+
 function doIndex() {
     const text = source.value.trim();
     /** @type {SourceDoc[]} */
@@ -95,6 +107,40 @@ function doIndex() {
     results.replaceChildren();
     say(`Indexed ${docs.length} document(s). Search below.`);
     showArm();
+    void save(index.serialize(), pageImages).then(showCacheSize);
+}
+
+/**
+ * Restores the last index, and answers a refusal with the answer that refusal
+ * actually deserves.
+ *
+ * The expensive branch is `provider`: the vectors are in the artifact and they
+ * cost money, so a mismatch is not a reason to throw them away. `discard` says
+ * which refusals are free to rebuild from text the bench still holds, and it
+ * is false for exactly the ones that are not.
+ */
+async function restore() {
+    const cached = await load();
+    if (cached === null) return;
+
+    try {
+        index = loadIndex(cached.artifact);
+        for (const [id, image] of cached.pages) pageImages.set(id, image);
+        say(`Restored an index from ${new Date(cached.savedAt).toLocaleString()}.`);
+        showArm();
+    } catch (error) {
+        const verdict = classifyLoadFailure(error);
+        if (verdict.discard) {
+            await forget();
+            say(`The cached index could not be read, so it was cleared. ${verdict.message}`);
+        } else {
+            // Not cleared, and the library's own sentence is shown rather than
+            // a paraphrase: it already explains the problem, and rewording it
+            // is how a caller starts saying something the library does not.
+            say(`The cached index was kept. ${verdict.message}`);
+        }
+    }
+    void showCacheSize();
 }
 
 /**
@@ -245,6 +291,17 @@ function doAttribute() {
 
 must('index-button').addEventListener('click', doIndex);
 must('attribute-button').addEventListener('click', doAttribute);
+must('forget-button').addEventListener('click', () => {
+    void forget().then(() => {
+        index = null;
+        showArm();
+        results.replaceChildren();
+        say('Cache cleared. The files on your disk are untouched.');
+        return showCacheSize();
+    });
+});
+
+void restore();
 must('search-button').addEventListener('click', doSearch);
 query.addEventListener('keydown', (event) => {
     if (/** @type {KeyboardEvent} */ (event).key === 'Enter') doSearch();
