@@ -99,10 +99,16 @@ That rule governs changes made FROM the first release onward, so entries under
   `["dist", "NOTICE"]`.
 
   It comes with no corpus and no prebuilt artifact, and that is a decision
-  rather than an omission. An artifact records `providerId` and `dimensions`,
-  and loading one with a provider that does not match is refused — so shipping
-  an index would force whoever cloned the repository to use the provider and
-  the dimension chosen here.
+  rather than an omission: a bench is a surface for your own material, and one
+  that arrives full is a showcase instead.
+
+  There is a second reason, and it holds for a **dense** artifact only — worth
+  saying precisely, because the imprecise version reads as if it covered both.
+  A dense artifact records `providerId` and `dimensions`, and loading one with
+  a provider that does not match is refused, so shipping a dense index would
+  force whoever cloned the repository onto the provider and the dimension
+  chosen here. `IndexArtifact.dense` is nullable and a lexical artifact has
+  none, so shipping a lexical index would force nobody onto anything.
 
   The example is `.js` with JSDoc under `checkJs`, type-checked by
   `tsconfig.example.json` and run by the suite, for the reason the README gives
