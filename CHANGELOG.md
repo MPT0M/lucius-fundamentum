@@ -33,6 +33,55 @@ That rule governs changes made FROM the first release onward, so entries under
 
 ### Changed
 
+- **The bench is the project's own prototype, and every control on it now
+  reaches the library.** The screen, its styles and its wording are the
+  prototype's; what changed is that it ran on fixtures and now asks the package.
+  The port left a set of controls drawn but not connected, and the pattern in
+  all of them is the same: nothing raised, because each reader was guarded by an
+  optional call that turns a dead wire into no behaviour at all.
+
+  **The switch over the composer is what decides whether a question leaves the
+  machine.** Search and grounding each read the index state on their own and
+  went to the provider whenever the dense arm was up — while the note under the
+  switch read "Matches words only." One predicate, `providerMayBeAsked`, now
+  answers for all three paths, and a guard in the suite fails if any of them
+  compares the arm directly again. The note itself says **your documents** stay
+  on this machine rather than that nothing does: the page fetches two typefaces
+  and, on the first PDF, pdf.js, and a bench about where documents go cannot be
+  loose about that sentence.
+
+  **Turning that switch on is what embeds the corpus**, which nothing on the
+  screen could do before: the function existed, was wired to the component, and
+  had no caller. Embedding is still offered only for an `absent` arm, and a
+  restored index is handed its provider so a cached artifact that already
+  carries vectors comes back ready instead of asking to be paid for twice.
+
+  **Removing a document removes it** — from the corpus, the index and the
+  cache — where it used to leave the shelf and stay everywhere else, only to
+  reappear on the next reindex. The answer on screen goes with it, because its
+  citations point at a file the bench no longer has.
+
+  **The marker density and the underline for unsupported text are the library's
+  options, not decoration.** "Per paragraph" passes `granularity: 'paragraph'`
+  and re-attributes; "Marked" underlines the stretches the attribution covers
+  nothing with, which needed the spans `formatAttribution` returns and which the
+  bench had been discarding.
+
+  **The underline is measured in code points.** The offsets come back in code
+  points and a JavaScript string indexes in UTF-16 units; they agree until the
+  answer carries one astral character, and from there the underline sits a
+  position early for each one before it — over the wrong words, looking exactly
+  as certain as a correct one. The same rule the viewer's highlight already
+  followed, applied to the second place that draws from those offsets.
+
+  Smaller, and all of them visible: the wait balloon shows what the bench says
+  instead of one fixed sentence, and a message no longer puts out an indicator a
+  network call is holding; a failed cache write says so rather than reaching the
+  console alone; the citation card closes; a text file stops being labelled
+  "p. 1" in the last of the four places that invented a page for it; the marker
+  whose passage is open is lit again; and a malformed percent-escape in a
+  request is refused instead of ending the server process.
+
 - **A passage sent to `gemini-embedding-001` is no longer embedded as if it
   were a question.** The adapter applied the `gemini-embedding-2` text prefix
   to every model and set `task_type` on none, so a caller on the older model
@@ -235,8 +284,8 @@ That rule governs changes made FROM the first release onward, so entries under
   — there is no narrower span to point at — and inventing a highlight would be
   inventing a precision the index does not have.
 
-- **With a key in `.env`, the bench lights the dense arm — and the browser never
-  sees the key.** The server reads it, exposes one route that takes text and
+- **With a key in `.env`, the dense arm becomes available — and the browser
+  never sees the key.** The server reads it, exposes one route that takes text and
   returns vectors, and the page drives a provider that speaks to that route. A
   Gemini or OpenAI key is the whole account and bills to a card, which is a
   different thing from a scoped public key meant to live in a client.
@@ -252,7 +301,8 @@ That rule governs changes made FROM the first release onward, so entries under
   assumed in the page: they are written into the artifact and checked on every
   later load, so a guess would build an index that cannot be reopened.
 
-  Search then fuses both arms and attribution climbs to its third rung. **The
+  With the arm available and the switch over the composer turned on, search
+  fuses both arms and attribution climbs to its third rung. **The
   progress indicator has no percentage, and that is the library's design
   showing through rather than an omission** — `embed-start` and `embed-done`
   are one emission each and the second is terminal, so those events explain
@@ -263,7 +313,7 @@ That rule governs changes made FROM the first release onward, so entries under
   `needs-provider` the vectors are already there and one argument turns the arm
   on, and offering to pay again is exactly what that state exists to prevent.
 
-  **Not verified against a live provider.** What is pinned runs with no network
+  **No test here touches a live provider.** What is pinned runs with no network
   and no key, on the package's own deterministic provider: the build states and
   their order, the request shape, the HTTP status travelling into the failure,
   and the trap below. The real round-trip is one `.env` line away for anyone who

@@ -9,10 +9,15 @@
  * `example-scaffold.test.ts` pins, for the same silent-drop reason
  * `scaffold.test.ts` pins the bench's.
  *
- * What is worth a test here is not that the page renders. It is the two rules
- * the bench must get right for the library's own promises to survive the trip
- * to a screen: never collapsing the two reasons the dense arm is off, and
- * never cutting text anywhere but a code point boundary.
+ * What is worth a test here is not that the page renders. It is the rules the
+ * bench must get right for the library's own promises to survive the trip to a
+ * screen — a property, not a count, because the list was written when there
+ * were two and five more arrived without it being revisited. Three of them are
+ * worth naming: never collapsing the two reasons the dense arm is off, never
+ * cutting text anywhere but a code point boundary, and never letting a question
+ * reach the provider while the screen says your documents stay here. The last
+ * one is the only one a reader sees stated on the screen, which is what makes
+ * it the one that costs most to get wrong.
  */
 
 import { describe, it, expect } from 'vitest';
@@ -39,6 +44,14 @@ import {
     remoteProvider,
     buildDenseIndex,
     attributeWithKey,
+    providerMayBeAsked,
+    pageIdOf,
+    fileOfId,
+    pageOfId,
+    unsupportedRanges,
+    codePointsOf,
+    paragraphBoundsOf,
+    markersIn,
 } from './bancada.js';
 import { loadIndex, packVectors, deterministicProvider } from '../../dist/index.js';
 
@@ -81,6 +94,158 @@ describe('the bench says which negative it is looking at', () => {
         // The contrast is the point: `absent` is the one state where that
         // sentence is honest.
         expect(describeArm('absent').detail).toContain('costs money');
+    });
+});
+
+describe('a page id is read the same way it is written', () => {
+    it('gives back the file and the page it was built from', () => {
+        const id = pageIdOf('lei.pdf', 7);
+        expect(fileOfId(id)).toBe('lei.pdf');
+        expect(pageOfId(id)).toBe(7);
+    });
+
+    it('leaves an id with no page alone', () => {
+        // A dropped `.txt` is one document with no page, and its id is the
+        // file name itself. Trimming something off it would key the register
+        // under a name no tile carries.
+        expect(fileOfId('notas.txt')).toBe('notas.txt');
+        expect(pageOfId('notas.txt')).toBeUndefined();
+    });
+
+    it('cuts at the last marker, not the first', () => {
+        // The separator is legal in a file name, and the reader that stops at
+        // the first one loses the rest of the name — silently, by keying the
+        // register under a file nothing else mentions.
+        const id = pageIdOf('draft#p1 final.pdf', 3);
+        expect(fileOfId(id)).toBe('draft#p1 final.pdf');
+        expect(pageOfId(id)).toBe(3);
+    });
+});
+
+describe('the answer is measured in the unit the library answers in', () => {
+    // `𝒳` is one code point and two UTF-16 units. The library returns every
+    // offset in code points and says so in three places in its own source;
+    // JavaScript indexes strings in units. They agree on ASCII and part ways
+    // at the first astral character — which is why the bug is invisible until
+    // somebody grounds an answer with an emoji in it, and then the dashed
+    // underline sits one character early for every astral character before it.
+    const ASTRAL = '𝒳';
+
+    it('counts a surrogate pair as one position', () => {
+        const points = codePointsOf(`${ASTRAL}ab`);
+        expect(points).toHaveLength(3);
+        // The naive version, for contrast: this is the count the drawing used
+        // to take, and it is what makes every later offset wrong.
+        expect(`${ASTRAL}ab`.length).toBe(4);
+    });
+
+    it('finds a marker at its code point position, not its unit position', () => {
+        const text = `${ASTRAL} o prazo [1].`;
+        const found = markersIn(codePointsOf(text), 0, codePointsOf(text).length);
+
+        expect(found).toHaveLength(1);
+        expect(found[0]).toEqual({ start: 10, end: 13, marker: 1 });
+        // Where a regex over the string puts it — one position later, because
+        // the astral character counts twice there. One character of drift per
+        // astral character before the marker.
+        expect(text.indexOf('[1]')).toBe(11);
+    });
+
+    it('slices the marked stretch at the same words after an astral character', () => {
+        const points = codePointsOf(`${ASTRAL}${ASTRAL} O prazo e de quinze dias.`);
+        const gaps = unsupportedRanges(points.length, [{ start: 0, end: 11 }]);
+
+        expect(gaps).toEqual([{ start: 11, end: points.length }]);
+        expect(points.slice(11).join('')).toBe('e de quinze dias.');
+        // What the same offsets produce read as UTF-16 units: two characters
+        // off, landing mid-word. The assertion above is what the fix buys.
+        expect(`${ASTRAL}${ASTRAL} O prazo e de quinze dias.`.slice(11)).not.toBe('e de quinze dias.');
+    });
+
+    it('ends a paragraph on a blank line and not on a wrapped one', () => {
+        const points = codePointsOf('um\ndois\n\ntres');
+        expect(paragraphBoundsOf(points)).toEqual([
+            [0, 7],
+            [9, 13],
+        ]);
+        expect(points.slice(0, 7).join('')).toBe('um\ndois');
+        expect(points.slice(9, 13).join('')).toBe('tres');
+    });
+
+    it('gives one bound back for a text with no blank line at all', () => {
+        // The control: a splitter that returned nothing here would draw an
+        // empty answer, and every assertion above would still pass.
+        expect(paragraphBoundsOf(codePointsOf('uma linha so'))).toEqual([[0, 12]]);
+    });
+
+    it('ignores a bracket that is not a marker', () => {
+        // Prose can contain brackets. A walk that accepted `[abc]` would eat
+        // the text around it and hand the chip a NaN.
+        const points = codePointsOf('o artigo [sic] diz [2].');
+        expect(markersIn(points, 0, points.length)).toEqual([{ start: 19, end: 22, marker: 2 }]);
+    });
+});
+
+describe('the bench can point at what rests on nothing', () => {
+    it('returns the stretches no span covers', () => {
+        const gaps = unsupportedRanges(20, [{ start: 5, end: 10 }]);
+        expect(gaps).toEqual([
+            { start: 0, end: 5 },
+            { start: 10, end: 20 },
+        ]);
+    });
+
+    it('returns nothing when the whole text is supported', () => {
+        expect(unsupportedRanges(10, [{ start: 0, end: 10 }])).toEqual([]);
+    });
+
+    it('returns the whole text when nothing is', () => {
+        // The case the screen shows most often on a first try: an answer the
+        // corpus does not back at all.
+        expect(unsupportedRanges(8, [])).toEqual([{ start: 0, end: 8 }]);
+    });
+
+    it('does not invent a gap between spans that touch or overlap', () => {
+        // Coalescence and paragraph mode both produce spans that meet, and a
+        // zero-width gap between them would underline a dash of nothing —
+        // visible, and wrong about what the attribution said.
+        expect(unsupportedRanges(10, [{ start: 0, end: 5 }, { start: 5, end: 10 }])).toEqual([]);
+        expect(unsupportedRanges(10, [{ start: 0, end: 7 }, { start: 3, end: 10 }])).toEqual([]);
+    });
+
+    it('reads spans that arrive out of order', () => {
+        // `formatAttribution` returns them in order today. Sorting here costs
+        // one pass and removes a dependency on that staying true, which the
+        // caller cannot check.
+        expect(unsupportedRanges(12, [{ start: 8, end: 12 }, { start: 0, end: 4 }])).toEqual([
+            { start: 4, end: 8 },
+        ]);
+    });
+});
+
+describe('the switch is what decides whether a question leaves the machine', () => {
+    // The bug this covers: search and grounding both read `denseArm ===
+    // 'ready'` and nothing else, so with the arm up a question went to the
+    // provider while the note under the switch read "Nothing leaves your
+    // machine." The screen made a promise the code did not keep.
+    it('keeps the question local while the switch is off, even with the arm up', () => {
+        expect(providerMayBeAsked(false, true, 'ready')).toBe(false);
+    });
+
+    it('lets it through only when all three hold', () => {
+        expect(providerMayBeAsked(true, true, 'ready')).toBe(true);
+    });
+
+    it('refuses with no provider, whatever the switch says', () => {
+        expect(providerMayBeAsked(true, false, 'ready')).toBe(false);
+    });
+
+    it('refuses an arm carrying vectors no live provider matches', () => {
+        // `needs-provider` is vectors without the provider that built them:
+        // asking anyway would compare this query against numbers from another
+        // model, which returns a ranking rather than an error.
+        expect(providerMayBeAsked(true, true, 'needs-provider')).toBe(false);
+        expect(providerMayBeAsked(true, true, 'absent')).toBe(false);
     });
 });
 
@@ -214,7 +379,7 @@ describe('the corpus survives a reload', () => {
         // library accepts, which a dense build turns into an index reporting
         // itself ready while holding nothing, which then overwrites the good
         // artifact. Empty is the dangerous answer here, not an edge case.
-        const docs = corpusFrom([], restored, '');
+        const docs = corpusFrom([], restored);
 
         expect(docs).toHaveLength(2);
         expect(docs.map((d) => d.id).sort()).toEqual(['lei.txt', 'recursos.md']);
@@ -224,16 +389,61 @@ describe('the corpus survives a reload', () => {
 
     it('does not duplicate a document dropped again this visit', () => {
         const dropped = [documentFromFile('lei.txt', 'texto novo desta visita')];
-        const docs = corpusFrom(dropped, restored, '');
+        const docs = corpusFrom(dropped, restored);
 
         expect(docs).toHaveLength(2);
         expect(docs.find((d) => d.id === 'lei.txt')?.text).toBe('texto novo desta visita');
     });
 
-    it('adds what was typed, and only once', () => {
-        expect(corpusFrom([], new Map(), 'texto colado')).toHaveLength(1);
-        expect(corpusFrom([], new Map(), '   ')).toHaveLength(0);
+    it('keeps one document per id, even dropped twice in the same visit', () => {
+        // Found in the browser, not by reading: a restore puts the cached
+        // documents back and dropping the same file again appended a second
+        // copy. Two identical passages tie on the lexical rung, the veto
+        // refuses a tied winner, and the clause comes back with NO marker —
+        // the screen showed the answer as though nothing supported it, with
+        // no error anywhere.
+        const first = documentFromFile('lei.txt', 'versao antiga');
+        const again = documentFromFile('lei.txt', 'versao nova');
+        const docs = corpusFrom([first, again], new Map());
+
+        expect(docs).toHaveLength(1);
+        // The last one wins: a file dropped again is the one meant.
+        expect(docs[0]?.text).toBe('versao nova');
     });
+
+    it('attributes a clause when the same file arrives twice in one visit', () => {
+        // **The duplicate has to be in `dropped` itself**, which is where it
+        // really comes from: `restore` pushes every cached document in, and a
+        // re-drop of the same file pushes it again. The earlier version of
+        // this case put one copy in `dropped` and one in `restoredTexts`, and
+        // the OLD code already skipped that one — measured: one document and
+        // one span either way, so the case was green before the fix and after
+        // it, proving nothing.
+        //
+        // With both copies in `dropped`, the old code returned two documents
+        // and the attribution returned ZERO spans: two identical passages tie
+        // on the lexical rung, the veto refuses a tied winner, and the clause
+        // comes back with no marker at all.
+        const text = 'O prazo para a manifestacao e de quinze dias corridos.';
+        const doc = documentFromFile('lei.txt', text);
+        const docs = corpusFrom([doc, doc], new Map());
+        const index = buildLexicalIndex(docs);
+        const answer = 'O prazo e de quinze dias corridos.';
+        const attributed = attributeWithoutKey(answer, index.searchLexical(answer), 'cluster');
+
+        expect(docs).toHaveLength(1);
+        expect(attributed.spans).toHaveLength(1);
+        expect(markedAnswer(attributed).text).toContain('[1]');
+    });
+
+    // REMOVED: `'adds what was typed, and only once'`. It pinned a third
+    // source of documents — text pasted into a field on the page — and that
+    // screen is gone: the two text areas the bench has now are the composer
+    // that grounds an answer and the one that asks a question, and neither
+    // feeds the corpus. The parameter it tested was passed `''` at both call
+    // sites, so the case was green over a path nothing could reach. §5 says a
+    // test whose behaviour stopped existing is removed with the reason, and
+    // this is the reason.
 });
 
 describe('the bench attributes an answer with no key at all', () => {
@@ -245,7 +455,7 @@ describe('the bench attributes an answer with no key at all', () => {
     it('marks a clause the source supports, and lists what supports it', () => {
         const index = buildLexicalIndex([documentFromPastedText(SOURCE, 'lei')]);
         const answer = 'O prazo para a manifestacao e de quinze dias corridos.';
-        const attributed = attributeWithoutKey(answer, index.searchLexical(answer));
+        const attributed = attributeWithoutKey(answer, index.searchLexical(answer), 'cluster');
 
         // Measured, then pinned. `toBeGreaterThan(0)` would pass on any
         // number and the case already pins the CONTENT of the first element
@@ -270,7 +480,7 @@ describe('the bench attributes an answer with no key at all', () => {
         // second one that was never written.
         const index = buildLexicalIndex([documentFromPastedText(SOURCE, 'lei')]);
         const answer = 'O prazo e de quinze dias corridos. O recurso cabivel e o agravo.';
-        const attributed = attributeWithoutKey(answer, index.searchLexical(answer));
+        const attributed = attributeWithoutKey(answer, index.searchLexical(answer), 'cluster');
         const counts = describeRungs(attributed, false);
 
         expect(counts.lexical).toBe(2);
@@ -283,9 +493,42 @@ describe('the bench attributes an answer with no key at all', () => {
         // network could not be, and the signature is the proof: there is no
         // promise to await.
         const index = buildLexicalIndex([documentFromPastedText(SOURCE, 'lei')]);
-        const returned = attributeWithoutKey('O recurso cabivel e o agravo.', index.searchLexical('recurso agravo'));
+        const returned = attributeWithoutKey('O recurso cabivel e o agravo.', index.searchLexical('recurso agravo'), 'cluster');
         expect(returned).not.toBeInstanceOf(Promise);
         expect(returned.providerFailure).toBeUndefined();
+    });
+
+    it('anchors a block at its end where it anchors each clause in place', () => {
+        // The switch over the answer promises this in words — "One marker per
+        // block" against "One marker per sentence" — and it promised it while
+        // the bench passed neither value and both modes drew the same markers.
+        // Two clauses in one block is the smallest text where the two answers
+        // differ, so it is the one that can fail when the option stops
+        // travelling.
+        // Two documents rather than one, because coalescence merges adjacent
+        // clauses resting on the SAME passage: with a single source both modes
+        // draw one marker and the case would pass without the option ever
+        // travelling. Separate passages are what makes the two answers differ.
+        const index = buildLexicalIndex([
+            documentFromPastedText('O prazo para a manifestacao e de quinze dias corridos.', 'prazos'),
+            documentFromPastedText('O recurso cabivel contra a decisao final e o agravo.', 'recursos'),
+        ]);
+        const answer = 'O prazo e de quinze dias corridos. O recurso cabivel e o agravo.';
+        const hits = index.searchLexical(answer);
+
+        const perClause = markedAnswer(attributeWithoutKey(answer, hits, 'cluster')).text;
+        const perBlock = markedAnswer(attributeWithoutKey(answer, hits, 'paragraph')).text;
+
+        // Both carry two sources — `paragraph` is collective, not sparser —
+        // so counting markers proves nothing. Where they sit is the whole
+        // difference: every marker at the end of the block against one beside
+        // each clause it supports. Measured by position rather than by a
+        // literal, so a change in how the formatter spells a marker does not
+        // read as a change in where the library anchors it.
+        /** @param {string} text */
+        const secondClause = (text) => text.indexOf('O recurso');
+        expect(perClause.indexOf('[')).toBeLessThan(secondClause(perClause));
+        expect(perBlock.indexOf('[')).toBeGreaterThan(secondClause(perBlock));
     });
 });
 
@@ -731,10 +974,13 @@ describe('the dense arm, driven with no network and no key', () => {
         let settled = 0;
 
         await expect(
-            attributeWithKey(answer, ambiguous.searchLexical(answer), tiny, {
-                onWorking: () => working++,
-                onSettled: () => settled++,
-            }),
+            attributeWithKey(
+                answer,
+                ambiguous.searchLexical(answer),
+                tiny,
+                { onWorking: () => working++, onSettled: () => settled++ },
+                'cluster',
+            ),
         ).rejects.toThrow();
 
         expect(working).toBe(1);
@@ -742,7 +988,7 @@ describe('the dense arm, driven with no network and no key', () => {
     });
 });
 
-describe('the bench indexes what was pasted', () => {
+describe('a document the bench assembled reaches the index whole', () => {
     it('finds a passage by a word that is in it', () => {
         const doc = documentFromPastedText(
             'O prazo para a manifestacao e de quinze dias corridos. A contagem exclui o dia do inicio.',

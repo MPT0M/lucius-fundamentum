@@ -77,6 +77,74 @@ export function describeArm(arm) {
 }
 
 /**
+ * Whether a question may reach the provider.
+ *
+ * The switch above the composer is a promise written in words: turned off, the
+ * note under it reads "Your documents stay on this machine." That promise is a
+ * function rather than a condition spelled out at each call site, because it
+ * was spelled out and the three sites did not agree — search and grounding both
+ * asked the index state directly, so a ready arm answered over the network
+ * while the screen said nothing did.
+ *
+ * The sentence is quoted here and written in `proto-logic.js`, and a guard in
+ * `example-scaffold.test.ts` fails when the two stop matching. It already
+ * happened once: the note was reworded and this docblock went on quoting the
+ * old wording — the line that exists to say the guarantee holds, describing a
+ * guarantee the screen had stopped making.
+ *
+ * All three have to hold. The switch is consent; the provider is whether there
+ * is anything to consent to; `ready` is whether the vectors exist, and a
+ * `needs-provider` arm carries vectors no live provider matches.
+ *
+ * @param {boolean} switchedOn what the screen's switch says
+ * @param {boolean} hasProvider whether a provider was configured at all
+ * @param {DenseArm} arm
+ * @returns {boolean}
+ */
+export function providerMayBeAsked(switchedOn, hasProvider, arm) {
+    return switchedOn === true && hasProvider === true && arm === 'ready';
+}
+
+/**
+ * The id of one page of one file, and the two ways back out of it.
+ *
+ * A `SourceDoc` id is the only thing the library hands back on a hit, so the
+ * bench packs the file name and the page into it and reads them out again —
+ * the register, the viewer, the library tile and the cache all key off the
+ * same string. The three of them live together because they are one decision:
+ * the reader that does not match the writer fails on the first file whose name
+ * happens to contain the separator, and it fails by finding nothing rather
+ * than by saying so.
+ */
+const PAGE_MARKER = /#p(\d+)$/;
+
+/**
+ * @param {string} fileName
+ * @param {number} pageNumber
+ * @returns {string}
+ */
+export function pageIdOf(fileName, pageNumber) {
+    return `${fileName}#p${pageNumber}`;
+}
+
+/**
+ * @param {string} id
+ * @returns {string} the file the id belongs to — the id itself when it carries no page
+ */
+export function fileOfId(id) {
+    return id.replace(PAGE_MARKER, '');
+}
+
+/**
+ * @param {string} id
+ * @returns {number | undefined} the page the id carries, if it carries one
+ */
+export function pageOfId(id) {
+    const found = PAGE_MARKER.exec(id);
+    return found === null ? undefined : Number(found[1]);
+}
+
+/**
  * One document out of a pasted block of text.
  *
  * The id is the bench's to choose, and so is everything else a reader would
@@ -151,28 +219,50 @@ export function documentFromFile(name, text) {
 /**
  * Every document the bench holds, whatever put it there.
  *
- * Three sources that do not overlap in time: files dropped this visit, the
- * text typed into the page, and — after a reload — the texts restored from the
- * cache. **The restored ones are the reason this exists as a rule rather than
- * an expression written twice.** A reload repopulates the cache but not the
- * list of dropped files, so a caller that reads only that list finds nothing
- * and builds an empty corpus. The library accepts one: `createIndex([])` does
- * not throw and a dense build over it skips the provider entirely, so what
- * comes back reports itself ready while holding nothing — and saving that over
- * a good artifact loses the corpus with no error anywhere.
+ * Two sources that do not overlap in time: files added this visit, and — after
+ * a reload — the texts restored from the cache. **The restored ones are the
+ * reason this exists as a rule rather than an expression written twice.** A
+ * reload repopulates the cache but not the list of added files, so a caller
+ * that reads only that list finds nothing and builds an empty corpus. The
+ * library accepts one: `createIndex([])` does not throw and a dense build over
+ * it skips the provider entirely, so what comes back reports itself ready while
+ * holding nothing — and saving that over a good artifact loses the corpus with
+ * no error anywhere.
  *
- * An id already present wins, so a document dropped this visit is not
- * duplicated by its restored copy.
+ * An id already present wins, so a document added this visit is not duplicated
+ * by its restored copy.
  *
- * @param {readonly SourceDoc[]} droppedThisVisit
+ * **There were three.** A third source, text pasted straight into a field on
+ * the page, went with the screen it belonged to: the two text areas here are
+ * the composer that grounds an answer and the one that asks a question, and
+ * neither feeds the corpus. The parameter survived the port for a while,
+ * passed `''` at both call sites, with a test still pinning it — a path no
+ * screen could reach, green.
+ *
+ * @param {readonly SourceDoc[]} addedThisVisit
  * @param {ReadonlyMap<string, string>} restoredTexts
- * @param {string} typedText
  * @returns {SourceDoc[]}
  */
-export function corpusFrom(droppedThisVisit, restoredTexts, typedText) {
+export function corpusFrom(addedThisVisit, restoredTexts) {
     /** @type {SourceDoc[]} */
-    const docs = [...droppedThisVisit];
-    const seen = new Set(docs.map((doc) => doc.id));
+    const docs = [];
+    const seen = new Set();
+
+    // **An id appears once.** A restore puts the cached documents back, and
+    // dropping the same file again appends a second copy under the same id —
+    // and the index accepts it. What follows is silent and hard to read back:
+    // two identical passages tie on the lexical rung, the veto refuses a tied
+    // winner, the clause goes down a rung, and with no provider it comes back
+    // with no marker at all. The screen shows the answer, unmarked, as though
+    // nothing supported it. The last copy wins, because a file dropped again
+    // is the one the person means.
+    for (const doc of addedThisVisit) {
+        if (seen.has(doc.id)) docs[docs.findIndex((d) => d.id === doc.id)] = doc;
+        else {
+            docs.push(doc);
+            seen.add(doc.id);
+        }
+    }
 
     for (const [id, text] of restoredTexts) {
         if (!seen.has(id) && text !== '') {
@@ -181,8 +271,6 @@ export function corpusFrom(droppedThisVisit, restoredTexts, typedText) {
         }
     }
 
-    const typed = typedText.trim();
-    if (typed !== '' && !seen.has('pasted')) docs.push(documentFromPastedText(typed, 'pasted'));
     return docs;
 }
 
@@ -278,13 +366,15 @@ export function buildDenseIndex(docs, provider, onState) {
  * @param {readonly SearchResult[]} results
  * @param {import('../../dist/index.js').EmbeddingProvider} provider
  * @param {{ onWorking: () => void, onSettled: () => void }} screen
+ * @param {import('../../dist/index.js').AttributionGranularity} granularity what the screen's two-way switch asked for
  * @returns {Promise<Attribution>}
  */
-export async function attributeWithKey(answer, results, provider, screen) {
+export async function attributeWithKey(answer, results, provider, screen, granularity) {
     try {
         return await attribute(answer, results, {
             ...DEFAULT_ATTRIBUTE_OPTIONS,
             tokenizer: createTokenizer(),
+            granularity,
             provider,
             onState: (event) => {
                 if (event.kind === 'local-done') screen.onWorking();
@@ -437,7 +527,7 @@ export function hasUsableText(text) {
  * @returns {SourceDoc | null}
  */
 export function pageToDocument(fileName, page) {
-    const id = `${fileName}#p${page.pageNumber}`;
+    const id = pageIdOf(fileName, page.pageNumber);
     if (hasUsableText(page.text)) {
         return { id, text: page.text, pageNumber: page.pageNumber };
     }
@@ -458,12 +548,14 @@ export function pageToDocument(fileName, page) {
  *
  * @param {string} answer the text to verify, pasted by whoever is at the bench
  * @param {readonly SearchResult[]} results what the search returned for it
+ * @param {import('../../dist/index.js').AttributionGranularity} granularity what the screen's two-way switch asked for
  * @returns {Attribution}
  */
-export function attributeWithoutKey(answer, results) {
+export function attributeWithoutKey(answer, results, granularity) {
     return attributeLexical(answer, results, {
         ...DEFAULT_ATTRIBUTE_OPTIONS,
         tokenizer: createTokenizer(),
+        granularity,
     });
 }
 
@@ -515,19 +607,144 @@ export function rungSentence(counts) {
  * no title, no URL and no file name, which is exactly why it can never put a
  * wrong one in a citation.
  *
+ * `spans` is passed along for the same reason the paragraph above gives for
+ * not mixing coordinate spaces: it is what tells a renderer which stretches of
+ * THIS text rest on a passage, and therefore which do not. Dropping it left
+ * the screen's "unsupported text: marked" setting with nothing to mark.
+ *
  * @param {Attribution} attribution
- * @returns {{ text: string, sources: { marker: number, documentId: string, pageNumber: number | undefined }[] }}
+ * @returns {{ text: string, spans: readonly { start: number, end: number }[], sources: { marker: number, documentId: string, pageNumber: number | undefined }[] }}
  */
 export function markedAnswer(attribution) {
     const formatted = formatAttribution(attribution, { markerStyle: 'bracket' });
     return {
         text: formatted.text,
+        // `textSpan` and not `sourceSpan`: one is the clause inside THIS text,
+        // the other is the stretch of the source document behind it, and they
+        // are offsets into different strings. In formatted coordinates the
+        // clause's span already covers the marker written inside it, so the
+        // underline never lands on a marker.
+        spans: formatted.spans.map((span) => ({ start: span.textSpan.start, end: span.textSpan.end })),
         sources: formatted.sources.map((source, i) => ({
             marker: i + 1,
             documentId: source.chunk.documentId,
             pageNumber: source.chunk.pageNumber,
         })),
     };
+}
+
+/**
+ * The answer split into code points, which is the unit every offset here uses.
+ *
+ * **This is the one conversion that makes the rest of the drawing correct.**
+ * `formatAttribution` returns offsets in CODE POINTS and says so three times in
+ * its own source; JavaScript strings index in UTF-16 code units. They agree
+ * until the answer contains one astral character — an emoji, a rare CJK glyph,
+ * a mathematical letter — and from that character onward every `slice` lands
+ * one position early per astral character before it. The underline for
+ * unsupported text would then cover the wrong words while looking exactly as
+ * confident as a correct one.
+ *
+ * An array of code points costs one pass and removes the whole class: after
+ * this, `.length` and `.slice` on it mean what the library meant.
+ *
+ * @param {string} text
+ * @returns {string[]}
+ */
+export function codePointsOf(text) {
+    return [...text];
+}
+
+/**
+ * Every paragraph of the answer as `[start, end)` in code points.
+ *
+ * A blank line separates paragraphs, which is what the attributor reads as a
+ * block boundary too, so the drawing and the attribution agree on where a
+ * paragraph ends.
+ *
+ * @param {readonly string[]} points
+ * @returns {[number, number][]}
+ */
+export function paragraphBoundsOf(points) {
+    /** @type {[number, number][]} */
+    const bounds = [];
+    let start = 0;
+    let at = 0;
+    while (at < points.length) {
+        if (points[at] !== '\n') {
+            at += 1;
+            continue;
+        }
+        let run = at;
+        while (run < points.length && points[run] === '\n') run += 1;
+        // One newline wraps a line; two or more end a paragraph. Below that
+        // threshold the break belongs to the paragraph and stays in it.
+        if (run - at >= 2) {
+            bounds.push([start, at]);
+            start = run;
+        }
+        at = run;
+    }
+    bounds.push([start, points.length]);
+    return bounds;
+}
+
+/**
+ * The markers `formatAttribution` wrote, located in code points.
+ *
+ * Found by walking rather than by a regular expression, because a regex reports
+ * `index` in code units and mixing the two is the drift this whole file is
+ * arranged to avoid. `[`, `]` and the digits are all outside the astral planes,
+ * so a walk cannot be confused by the text around them.
+ *
+ * @param {readonly string[]} points
+ * @param {number} from
+ * @param {number} to
+ * @returns {{ start: number, end: number, marker: number }[]}
+ */
+export function markersIn(points, from, to) {
+    /** @type {{ start: number, end: number, marker: number }[]} */
+    const found = [];
+    let at = from;
+    while (at < to) {
+        if (points[at] !== '[') {
+            at += 1;
+            continue;
+        }
+        let digits = at + 1;
+        while (digits < to && /^[0-9]$/.test(points[digits] ?? '')) digits += 1;
+        if (digits > at + 1 && points[digits] === ']') {
+            found.push({ start: at, end: digits + 1, marker: Number(points.slice(at + 1, digits).join('')) });
+            at = digits + 1;
+            continue;
+        }
+        at += 1;
+    }
+    return found;
+}
+
+/**
+ * The stretches of `text` that rest on nothing, as `[start, end)` pairs.
+ *
+ * The complement of the supported spans, which is what the screen offers to
+ * underline. It is computed here rather than in the page because it is
+ * arithmetic with an edge — spans arriving unsorted, or touching — and
+ * arithmetic with an edge is what a test can hold.
+ *
+ * @param {number} length how long the text is, IN CODE POINTS
+ * @param {readonly { start: number, end: number }[]} supported
+ * @returns {{ start: number, end: number }[]}
+ */
+export function unsupportedRanges(length, supported) {
+    const sorted = [...supported].sort((a, b) => a.start - b.start);
+    const gaps = [];
+    let cursor = 0;
+    for (const span of sorted) {
+        if (span.start > cursor) gaps.push({ start: cursor, end: span.start });
+        cursor = Math.max(cursor, span.end);
+    }
+    if (cursor < length) gaps.push({ start: cursor, end: length });
+    return gaps;
 }
 
 /**

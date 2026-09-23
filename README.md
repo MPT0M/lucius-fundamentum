@@ -70,17 +70,25 @@ npm install
 npm run example
 ```
 
-That opens a bench at `examples/bancada/` — a page that starts **empty**. Paste
-your own text or drop `.txt`, `.md` and `.pdf` files on it, index them, search
-them, and paste an answer to see which passage supports which stretch of it.
-Clicking a result opens the document beside it with the retrieved stretch lit.
+That opens a bench at `examples/bancada/` — a page that starts **empty**. Add
+`.txt`, `.md` and `.pdf` files with "Add sources", or drop them anywhere on the
+page; they are indexed as they arrive. Then search them, and paste an answer
+into the composer to see which passage supports which stretch of it. Clicking a
+result opens the document beside it with the retrieved stretch lit, and clicking
+a marker shows the passage it rests on.
 
 With no key it is BM25 and the two local attribution rungs, running entirely in
 your browser. **Your documents** never leave the machine in that state — the
-page itself does fetch pdf.js from a CDN the first time you drop a PDF, which is
-a request for the library and never for your file. Put one key in `examples/bancada/.env`
-(copy `.env.example`) and the dense arm, the fusion and the third rung come on —
-the key stays in the server process and the page never sees it.
+page does fetch its two typefaces from Google on every load, and pdf.js from a
+CDN the first time you open a PDF, which are requests for a font and for a
+library and never for your file.
+
+Put one key in `examples/bancada/.env` (copy `.env.example`) and the dense arm
+becomes **available**: the switch over the composer turns it on, and only then
+do search fuse both arms and attribution reach its third rung. The key is what
+makes the choice possible; the switch is what makes it happen, and its own note
+says which of the two states you are in. The key stays in the server process and
+the page never sees it.
 
 It ships with no corpus and no prebuilt index, on purpose. A **dense** artifact
 records the provider and the dimensions it was built with, and loading one with

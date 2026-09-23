@@ -1,262 +1,619 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Fundamentum — bench</title>
-    <style>
-      :root {
-        --void: #0a0a0a;
-        --celadon: #7ecf80;
-        --ink: #e8e8e8;
-        --muted: #8a8a8a;
-        --line: #1f1f1f;
-      }
-      * {
-        box-sizing: border-box;
-      }
-      body {
-        margin: 0;
-        padding: 2rem 1rem 4rem;
-        background: var(--void);
-        color: var(--ink);
-        font: 400 15px/1.6 ui-monospace, SFMono-Regular, "JetBrains Mono", Menlo, monospace;
-      }
-      main {
-        max-width: 54rem;
-        margin: 0 auto;
-      }
-      h1 {
-        margin: 0 0 0.25rem;
-        font-size: 1.1rem;
-        font-weight: 500;
-        letter-spacing: 0.02em;
-      }
-      h1 span {
-        color: var(--celadon);
-      }
-      .lede,
-      .note {
-        margin: 0 0 1.5rem;
-        color: var(--muted);
-        font-size: 0.85rem;
-      }
-      label {
-        display: block;
-        margin: 1.5rem 0 0.4rem;
-        color: var(--muted);
-        font-size: 0.78rem;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-      }
-      textarea,
-      input {
-        width: 100%;
-        padding: 0.6rem 0.7rem;
-        background: #111;
-        color: var(--ink);
-        border: 1px solid var(--line);
-        border-radius: 3px;
-        font: inherit;
-      }
-      textarea {
-        min-height: 9rem;
-        resize: vertical;
-      }
-      textarea:focus,
-      input:focus {
-        outline: none;
-        border-color: var(--celadon);
-      }
-      .row {
-        display: flex;
-        gap: 0.5rem;
-        margin-top: 0.5rem;
-      }
-      button {
-        padding: 0.5rem 1rem;
-        background: transparent;
-        color: var(--celadon);
-        border: 1px solid var(--celadon);
-        border-radius: 3px;
-        font: inherit;
-        cursor: pointer;
-      }
-      button:hover {
-        background: rgba(126, 207, 128, 0.12);
-      }
-      #status,
-      #arm {
-        margin-top: 1rem;
-        color: var(--muted);
-        font-size: 0.82rem;
-      }
-      #arm {
-        color: var(--celadon);
-      }
-      #results {
-        list-style: none;
-        margin: 1.5rem 0 0;
-        padding: 0;
-      }
-      #results li {
-        padding: 0.9rem 0;
-        border-top: 1px solid var(--line);
-      }
-      body.dragging {
-        outline: 2px dashed var(--celadon);
-        outline-offset: -8px;
-      }
-      .drop-hint {
-        margin: 0.5rem 0 0;
-      }
-      #files {
-        list-style: none;
-        margin: 0.6rem 0 0;
-        padding: 0;
-        color: var(--celadon);
-        font-size: 0.8rem;
-      }
-      #files li::before {
-        content: "· ";
-      }
-      #marked {
-        margin: 1.5rem 0 0;
-        padding: 0.9rem;
-        background: #111;
-        border: 1px solid var(--line);
-        border-radius: 3px;
-        font: inherit;
-        white-space: pre-wrap;
-      }
-      #marked:empty {
-        display: none;
-      }
-      #sources {
-        margin: 1rem 0 0;
-        padding-left: 1.4rem;
-        color: var(--muted);
-        font-size: 0.82rem;
-      }
-      #rungs {
-        margin-top: 1rem;
-        color: var(--muted);
-        font-size: 0.82rem;
-      }
-      #viewer:empty {
-        display: none;
-      }
-      #viewer {
-        margin-top: 1.5rem;
-        padding: 1rem;
-        background: #111;
-        border: 1px solid var(--line);
-        border-radius: 3px;
-      }
-      #viewer img {
-        display: block;
-        width: 100%;
-        margin: 0.8rem 0;
-        border: 1px solid var(--line);
-      }
-      .page-text {
-        margin: 0;
-        font-size: 0.8rem;
-        line-height: 1.9;
-        white-space: pre-wrap;
-      }
-      /* Inline, so the fill stops where the text stops.
-         `box-decoration-break: clone` is what gives a wrapped highlight a
-         ragged end on each line instead of a rectangle running to the margin.
-         The padding is in `em` and the line-height is 1.9, so the background
-         reads as a marker without reaching the line above. Heavier than
-         ::selection on purpose — a citation is permanent and a selection is
-         passing. */
-      .page-text mark {
-        background: rgba(126, 207, 128, 0.3);
-        color: #fff;
-        padding: 0.15em 0.2em;
-        border-radius: 2px;
-        box-decoration-break: clone;
-        -webkit-box-decoration-break: clone;
-      }
-      ::selection {
-        background: rgba(126, 207, 128, 0.25);
-      }
-      button.where {
-        display: block;
-        margin-bottom: 0.35rem;
-        padding: 0;
-        background: none;
-        border: none;
-        color: var(--celadon);
-        font: inherit;
-        font-size: 0.75rem;
-        letter-spacing: 0.04em;
-        text-align: left;
-        cursor: pointer;
-      }
-      button.where:hover {
-        text-decoration: underline;
-      }
-      .where {
-        display: block;
-        margin-bottom: 0.35rem;
-        color: var(--celadon);
-        font-size: 0.75rem;
-        letter-spacing: 0.04em;
-      }
-      #results p {
-        margin: 0;
-        color: var(--ink);
-      }
-    </style>
-  </head>
-  <body>
-    <main>
-      <h1>Lucius <span>Fundamentum</span> — bench</h1>
-      <p class="lede">
-        Empty on purpose. Paste your own text, index it, and search it. With no key configured,
-        the whole of what runs here is BM25 and the two local attribution rungs, and your documents stay on this
-        machine — the page does fetch pdf.js from a CDN the first time you drop a PDF, which is
-        a request for the library and never for your file.
-      </p>
+<!DOCTYPE html>
+<html lang="en" data-grain="on">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fundamentum — bench</title>
+<!--
+  This page is the project's own prototype, adjusted rather than rebuilt. The
+  markup, the styles and the wording below are its own; what changed is that
+  the prototype ran on fixtures and this one asks the package.
 
-      <label for="source">Source text</label>
-      <textarea id="source" spellcheck="false"></textarea>
-      <p class="note drop-hint">…or drop <code>.txt</code>, <code>.md</code> and <code>.pdf</code> files anywhere on this page. The PDF is opened here, by this page — the library never sees a binary.</p>
-      <ul id="files"></ul>
-      <div class="row">
-        <button id="index-button" type="button">Index</button>
-        <button id="forget-button" type="button">Forget cache</button>
+  Two things had to go. The artifact runtime that compiled the `{{ }}` bindings
+  is generated, unlicensed code, and a public repository cannot redistribute
+  it — so the bindings became `data-*` attributes and the wiring lives in
+  `app.js`. The React it expected went with it: the template is HTML, and HTML
+  is what a browser already runs.
+
+  WHAT THIS PAGE FETCHES, stated because the bench is about exactly this: two
+  stylesheets of fonts from Google on every load, and pdf.js from a CDN the
+  first time a PDF is dropped. Neither carries a word of anybody's document —
+  they are requests for typefaces and for a library. Your documents are read in
+  this tab and indexed in it; with a key in `.env` the excerpts a question needs
+  go to the provider you configured, through this page's own server, and only
+  while the "Compare by meaning" switch is on.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Jura:wght@300;400;500&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+<!-- The grain lives in a file of its own: a tool that rewrites camelCase
+     attributes inside a <style> block reaches into the data URI too, and the
+     SVG filter then loads without painting anything. -->
+<link rel="stylesheet" href="./grain.css" />
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #050507; }
+  a { color: #7ECF80; text-decoration: none; }
+  a:hover { color: #fff; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  @keyframes breathe { 0%, 100% { transform: scale(1); opacity: 0.9; } 50% { transform: scale(1.5); opacity: 0.4; } }
+  @keyframes emerge { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
+  /* Opacity only. Animating transform would fight the card's own positioning
+     while it fades in, and the card would drift away from its marker. */
+  @keyframes fdFade { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  ::selection { background: rgba(126, 207, 128, 0.25); }
+
+  /* A 6px scrollbar with a transparent track. The browser default is a wide
+     grey bar that reads as a different surface from everything else here.
+     It sits in the stylesheet because a pseudo-element cannot be written
+     inline. */
+  * { scrollbar-width: thin; scrollbar-color: #1A1A1F transparent; }
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #1A1A1F; border-radius: 3px; }
+  /* The divider: a 34px hairline that lights up and grows under the pointer.
+     Base and hover state live together in the stylesheet, because an inline
+     base would beat the sheet and the hover would never paint. */
+  .fd-grip { width: 1px; height: 34px; background: #1A1A1F; transition: background 0.2s ease, height 0.2s ease; }
+  .fd-divider:hover .fd-grip,
+  .fd-divider:active .fd-grip { background: #7ECF80; height: 60px; }
+  /* While dragging: no transition, because one is fighting a width written
+     on every frame; no pointer events on the content, so the gesture is not
+     stolen mid-drag; and `text-wrap: pretty` off, because rebalancing the last
+     lines of every paragraph is the expensive half of a reflow. */
+  /* The narrow/wide split is decided HERE, by media query, and deliberately
+     not in JavaScript. Measuring the width in script would read it once, at
+     mount, and nothing would make the page reconsider when the window
+     changes. */
+  .fd-pane {
+    position: relative;
+    flex-shrink: 0;
+    min-width: 0;
+    background: #050507;
+    overflow: hidden;
+    /* The width arrives inline, in plain px. A `var()` as the starting value
+       does not interpolate, so the transition simply refused to run. The
+       ceiling and the floor stay in properties that are not animated. */
+    /* A plain calc(): a nested max() here stopped the `width` transition from
+       running at all. A 320px lower bound was dead code — this rule only
+       applies above 900px, where the calc never falls below 480px. */
+    max-width: calc(100vw - 420px);
+    /* `min-width` is part of the transition. Left out, the open state's floor
+       jumped to the final width on the first frame and only the closing
+       direction animated, because there the floor drops to zero first. */
+    transition: width 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  /* 9px is a mouse target and disappears on touch. A coarse pointer gets 28px
+     of grab area without changing the drawing: the hairline stays 1px. */
+  @media (pointer: coarse) {
+    .fd-divider { width: 28px !important; margin-right: -14px !important; }
+  }
+  .fd-divider {
+    flex-shrink: 0;
+    width: 9px;
+    margin-right: -5px;
+    cursor: col-resize;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    touch-action: none;
+    z-index: 60;
+  }
+  .fd-panebtn {
+    width: 30px; height: 30px;
+    display: inline-flex; align-items: center; justify-content: center;
+    border: none; background: none; cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  .fd-text { flex: 1; min-width: 0; display: flex; flex-direction: column; position: relative; }
+  /* `relative`, so the citation card is positioned inside the document rather
+     than against the viewport. It then follows the scroll on its own instead
+     of needing a scroll handler to chase it. */
+  .fd-doc { position: relative; max-width: 720px; margin: 0 auto; padding: 2.6rem 2.2rem 3rem; }
+  .fd-block { padding-bottom: 2.2rem; }
+  .fd-pasted {
+      display: flex; align-items: stretch; margin: 0.55rem 0.55rem 0;
+      border: 1px solid #1A1A1F; background: #050507; position: relative;
+      transition: border-color 0.15s ease; animation: fd-pasted-in 0.35s ease;
+  }
+  .fd-pasted:hover { border-color: rgba(126,207,128,0.35); }
+  /* Base and hover together in the class: an inline base would beat the sheet
+     and the X would never appear. */
+  .fd-pasted__close { opacity: 0; transition: opacity 0.2s ease, color 0.2s ease; }
+  .fd-pasted:hover .fd-pasted__close { opacity: 1; }
+  .fd-pasted__close:hover { color: #7ECF80; }
+  /* The 8px radius is deliberate here and nowhere else: a popover is the one
+     surface in this design that is not square. */
+  .fd-attach-menu {
+      position: absolute; bottom: calc(100% + 6px); left: 0; min-width: 190px;
+      background: #050507; border: 1px solid #1A1A1F; border-radius: 8px;
+      padding: 0.3rem; display: flex; flex-direction: column;
+      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5); z-index: 210;
+      animation: fadeIn 0.15s ease;
+  }
+  .fd-attach-item {
+      display: flex; align-items: center; gap: 0.6rem; padding: 0.5rem 0.6rem;
+      background: none; border: 0; cursor: pointer; text-align: left;
+      color: #8A8A95; font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem; letter-spacing: 0.04em;
+      transition: color 0.2s ease, background 0.2s ease;
+  }
+  .fd-attach-item:hover:not(:disabled),
+  .fd-attach-item:focus-visible:not(:disabled) {
+      color: #7ECF80; background: rgba(126, 207, 128, 0.06); outline: none;
+  }
+  .fd-attach-item:disabled { opacity: 0.4; cursor: not-allowed; }
+  .fd-attach-icon { width: 16px; height: 16px; flex-shrink: 0; color: #4A4A55; display: inline-flex; }
+  .fd-attach-item:hover:not(:disabled) .fd-attach-icon { color: #7ECF80; }
+  .fd-attach-icon svg { width: 100%; height: 100%; }
+  /* The remove control: an X in the tile's corner, invisible until the tile is
+     hovered, red under the pointer. Hidden rather than absent, so the tile
+     does not change size when it appears. */
+  .fd-tile-remove {
+      position: absolute; top: 3px; right: 3px; width: 18px; height: 18px;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(5, 5, 7, 0.85); border: 1px solid #1A1A1F;
+      color: #8A8A95; cursor: pointer; opacity: 0;
+      transition: all 0.2s ease; padding: 0;
+  }
+  .fd-tile:hover .fd-tile-remove { opacity: 1; }
+  .fd-tile-remove:hover { color: #FF4455; border-color: rgba(255, 68, 85, 0.4); }
+  .fd-tile-remove svg { width: 10px; height: 10px; }
+  /* A gaveta desce do header: mesma faixa, borda embaixo, fadeIn da casa. */
+  .fd-drawer {
+      position: absolute; top: 100%; left: 0; right: 0; z-index: 290;
+      background: #050507; border-bottom: 1px solid #1A1A1F;
+      animation: fdFade 0.18s ease;
+  }
+  .fd-attach-note {
+      padding: 0.35rem 0.6rem 0.2rem; margin: 0.2rem 0 0;
+      border-top: 1px solid #1A1A1F; font-family: 'JetBrains Mono', monospace;
+      font-size: 0.55rem; line-height: 1.5; letter-spacing: 0.06em; color: #4A4A55;
+  }
+  @keyframes fd-pasted-in {
+      from { opacity: 0; transform: translateY(4px); }
+      to   { opacity: 1; transform: translateY(0); }
+  }
+  @media (prefers-reduced-motion: reduce) { .fd-pasted { animation: none; } }
+  .fd-block + .fd-block { border-top: 1px solid #1A1A1F; padding-top: 2.2rem; }
+  .fd-viewer, .fd-library { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; }
+  .fd-viewer { z-index: 20; background: #050507; }
+
+  /* The capsule's layout belongs in the class, never inline: an inline
+     display would beat the `display: none` in the media query below. */
+  .fd-capsule {
+    position: absolute; top: 0; left: 0; right: 0; z-index: 120;
+    display: flex; justify-content: center;
+    padding-top: 0.55rem; pointer-events: none;
+  }
+
+  @media (min-width: 900px) {
+    .fd-capsule { display: none; }
+    .fd-shell[data-pane='closed'] .fd-divider { display: none; }
+    /* No floor here: interpolating from `0px` to a `min()`/`max()` function is
+       discrete, so the floor jumped to its final value on the first frame and
+       hid the `width` transition behind it. The bound lives in script, where
+       the rail width is computed. */
+    .fd-shell[data-pane='open'] .fd-pane {
+      border-left: 1px solid #1A1A1F;
+    }
+  }
+
+  @media (max-width: 899px) {
+    .fd-divider, .fd-panebtn { display: none; }
+    .fd-doc { padding: 3.6rem 1.2rem 9rem; }
+    /* `inset: 0` already sets the width here; the !important beats the inline
+       width, which only means anything in the wide two-column layout. */
+    .fd-pane { position: absolute; inset: 0; width: auto !important; z-index: 80; transition: none; }
+    .fd-viewer, .fd-library { top: 3rem; }
+    .fd-shell[data-surface='text'] .fd-pane { display: none; }
+    .fd-shell[data-surface='pane'] .fd-text { display: none; }
+  }
+  body.fd-dragging { cursor: col-resize; user-select: none; }
+  body.fd-dragging .fd-text { pointer-events: none; }
+  body.fd-dragging .fd-pane { will-change: width; transition: none; }
+  body.fd-dragging .fd-doc { contain: layout paint; }
+  body.fd-dragging .fd-doc p { text-wrap: initial; }
+</style>
+</head>
+<body>
+
+<div data-screen-label="Fundamentum" class="fd-shell" data-attr-data-surface="surface" data-attr-data-pane="paneState" style="height: 100vh; height: 100dvh; display: flex; flex-direction: column; background: #050507; color: #8A8A95; font-family: 'JetBrains Mono', monospace; overflow: hidden;">
+
+  <header class="fd-head" style="flex-shrink: 0; position: relative; z-index: 300; padding: 1.2rem 2.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; border-bottom: 1px solid #1A1A1F; background: linear-gradient(to bottom, #050507 0%, rgba(5,5,7,0.95) 60%, rgba(5,5,7,0.8) 100%); backdrop-filter: blur(12px);">
+    <span style="font-family: 'Jura', sans-serif; font-weight: 300; font-size: 1.1rem; letter-spacing: 0.25em; color: #7ECF80;">FUNDAMENTUM</span>
+
+    <div style="display: flex; align-items: center; gap: 0.6rem;">
+    <!-- A gear, drawn rather than imported: the page ships no icon font and no
+         icon package. -->
+    <button type="button" data-on-click="toggleSettings" data-style="gearStyle" style-hover="color: #fff" aria-label="Settings" data-attr-aria-expanded="settingsOpen">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width: 16px; height: 16px;" aria-hidden="true">
+        <circle cx="12" cy="12" r="3"></circle>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+      </svg>
+    </button>
+
+    <!-- The button sits on the same side as the panel it controls. On the left
+         it promised a column that does not exist on that side. -->
+    <button type="button" class="fd-panebtn" data-on-click="togglePane" data-style="paneBtnStyle" style-hover="color: #fff" aria-label="Toggle sources panel">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width: 16px; height: 16px;" aria-hidden="true">
+        <path d="M4 5h16v14H4z" stroke-linejoin="round"></path>
+        <path d="M15 5.75v12.5" stroke-linecap="butt"></path>
+      </svg>
+    </button>
+    </div>
+
+    <!-- A drawer under the header, full width. These two settings change what
+         the markers mean, so they belong on the screen rather than behind a
+         developer-only switch nobody visiting the bench would find. -->
+    <div class="fd-drawer" data-if="settingsOpen" hidden>
+        <div style="max-width: 1100px; margin: 0 auto; padding: 1.1rem 2.5rem 1.3rem; display: flex; flex-wrap: wrap; align-items: flex-start; gap: 2.5rem;">
+          <div style="min-width: 0;">
+            <p style="margin: 0 0 0.6rem; font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase; color: #8A8A95;">Where markers fall</p>
+            <div style="display: flex; gap: 0.4rem;">
+              <button type="button" data-on-click="setSentence" data-style="modeSentenceStyle">Per sentence</button>
+              <button type="button" data-on-click="setParagraph" data-style="modeParagraphStyle">Per paragraph</button>
+            </div>
+            <p style="margin: 0.6rem 0 0; max-width: 42ch; font-size: 0.62rem; line-height: 1.7; color: #8A8A95; text-wrap: pretty;"><span data-text="modeNote"></span></p>
+          </div>
+
+          <div style="min-width: 0;">
+            <p style="margin: 0 0 0.6rem; font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase; color: #8A8A95;">Unsupported text</p>
+            <div style="display: flex; gap: 0.4rem;">
+              <button type="button" data-on-click="markOn" data-style="markOnStyle">Marked</button>
+              <button type="button" data-on-click="markOff" data-style="markOffStyle">Plain</button>
+            </div>
+            <p style="margin: 0.6rem 0 0; max-width: 42ch; font-size: 0.62rem; line-height: 1.7; color: #8A8A95; text-wrap: pretty;">A dashed underline on the stretches no source backs.</p>
+          </div>
+        </div>
       </div>
-      <p id="cache" class="note"></p>
+  </header>
 
-      <label for="query">Query</label>
-      <input id="query" type="search" autocomplete="off" />
-      <div class="row">
-        <button id="search-button" type="button">Search</button>
-        <button id="embed-button" type="button" hidden>Embed this corpus</button>
+  <div style="flex: 1; min-height: 0; display: flex; align-items: stretch; position: relative;">
+
+    <!-- Coluna do texto -->
+    <main class="fd-text">
+      <div data-ref="scrollerRef" style="flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain;">
+        <div class="fd-doc">
+          <span style="display: block; margin-bottom: 1.6rem; font-size: 0.62rem; letter-spacing: 0.3em; text-transform: uppercase; color: #8A8A95;">Grounded text</span>
+
+          <!-- A stack of blocks: each submission is a document rather than a turn in
+               a conversation — no bubble, left aligned, separated from the one
+               before it. The composer lives at the foot of the column. -->
+          <span data-if="grounded" hidden style="display: contents;">
+            <div class="fd-block">
+
+              <!-- The body is built from the attribution: the text that was pasted, with
+                   a marker on every stretch a passage supports. The markers are
+                   drawn and opened by the component's own `chip()` and
+                   `openChip()`, so what changed against the drawing is where the
+                   data comes from, not how it looks. -->
+              <div data-text="groundedBody" style="font-size: 0.88rem; line-height: 2.05; color: #8A8A95; text-wrap: pretty;"></div>
+
+              <!-- A collapsible footer: icon, count, chevron. The list is not numbered,
+                   because the numbering belongs to the markers in the text. -->
+              <div style="margin-top: 2.6rem; padding-top: 1.1rem; border-top: 1px solid #1A1A1F;">
+                <!-- 10px, small caps, wide tracking; a muted grey that takes the accent
+                     under the pointer. -->
+                <button type="button" data-on-click="toggleSources" style="display: flex; align-items: center; gap: 0.5rem; padding: 0; border: none; background: none; color: #8A8A95; font-family: 'JetBrains Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; line-height: normal; cursor: pointer; transition: color 0.2s ease;" style-hover="color: #7ECF80">
+                  <!-- No globe on the summary line: this list gathers documents that
+                       are on this machine, and a globe would claim something
+                       untrue about all of them at once. Each row carries its
+                       own icon instead. -->
+                  <span><span data-text="sourcesToggleLabel"></span></span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" data-style="chevronStyle" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg>
+                </button>
+
+                <!-- A wrapping row of small tiles; the name truncates at 150px and the
+                     page reference never does, because the reference is the
+                     citation. -->
+                <div style="margin-top: 12px; display: flex; flex-wrap: wrap; gap: 0.5rem; overflow: hidden;" data-if="sourcesOpen" hidden>
+                    <template data-for="sourceList" data-as="s">
+                      <button type="button" data-on-click="s.open" style="display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.25rem 0.5rem; background: #0A0A0F; border: 1px solid #1A1A1F; color: #8A8A95; font-size: 10px; font-family: 'JetBrains Mono', monospace; cursor: pointer; transition: border-color 0.2s ease;" style-hover="border-color: rgba(126,207,128,0.3)">
+                        <span data-text="s.icon"></span>
+                        <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 150px;"><span data-text="s.name"></span></span>
+                        <span style="white-space: nowrap; flex-shrink: 0; color: rgba(126,207,128,0.7);"><span data-text="s.where"></span></span>
+                      </button>
+                    </template>
+                  </div>
+
+              </div>
+
+              <!-- One action: copy. -->
+              <div style="margin-top: 0.9rem; display: flex; align-items: center; gap: 0.25rem;">
+                <button type="button" data-on-click="copyAll" data-style="copyBtnStyle" style-hover="color: #7ECF80" aria-label="Copy with sources">
+                  <span data-text="copyIcon"></span>
+                </button>
+              </div>
+            </div>
+          </span>
+
+          
+          
+
+          <div class="fd-block" data-if="pending" hidden>
+              <div style="display: flex; align-items: center; gap: 0.6rem;">
+                <span style="width: 11px; height: 11px; border: 1px solid #1A1A1F; border-top-color: #7ECF80; border-radius: 50%; animation: spin 0.8s linear infinite;"></span>
+                <span style="font-size: 0.68rem; letter-spacing: 0.06em; color: #8A8A95;">Grounding</span>
+              </div>
+            </div>
+
+          <!-- The citation card lives INSIDE `.fd-doc`, which is the containing
+               block it is measured against. Moved outside, the box it is
+               positioned in and the box it is measured against stop being the
+               same one, and the card lands away from its marker. -->
+          <div style="position: fixed; inset: 0; z-index: 190;" data-on-click="closeCard" data-if="cardOpen" hidden></div>
+            <div data-style="cardStyle">
+              <div style="display: flex; align-items: center; gap: 0.375rem; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(126,207,128,0.6); margin-bottom: 0.5rem;">
+                <span data-text="cardIcon"></span>
+                <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 140px;"><span data-text="card.name"></span></span>
+                <span style="flex-shrink: 0;"><span data-text="card.where"></span></span>
+              </div>
+              <p style="margin: 0 0 0.75rem; font-size: 0.75rem; line-height: 1.625; color: #d4d4d8; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;"><span data-text="card.line"></span></p>
+             <button type="button" data-on-click="openFromCard" style="display: block; width: 100%; text-align: center; padding: 0.375rem 0.75rem; background: rgba(126,207,128,0.05); border: 1px solid rgba(126,207,128,0.2); color: #7ECF80; font-family: 'JetBrains Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; transition: background 0.2s ease;" style-hover="background: rgba(126,207,128,0.1)"><span data-text="cardBtnLabel"></span></button>
+            </div>
+
+        </div>
       </div>
 
-      <p id="status"></p>
-      <p id="arm"></p>
-      <ul id="results"></ul>
-      <div id="viewer"></div>
+      <!-- A fixed band at the foot of the column. It does not float: the text
+           ends where the band begins, so nothing has to be faded out behind
+           it. -->
+      <div style="flex-shrink: 0; position: relative; padding: 0.8rem 1rem 0.4rem; border-top: 1px solid #1A1A1F; background: #050507;">
+        <div data-style="inputBoxStyle">
+          <!-- The attachment card lives inside the composer, above the field: it is
+               what goes WITH this submission, not a loose item on the page. -->
+          <div class="fd-pasted" data-if="hasFile" hidden>
+              <span style="width: 40px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: rgba(126,207,128,0.05); border-right: 1px solid #1A1A1F; color: #7ECF80;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width: 16px; height: 16px;" aria-hidden="true">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                  <line x1="8" y1="13" x2="15" y2="13"></line>
+                  <line x1="8" y1="17" x2="15" y2="17"></line>
+                </svg>
+              </span>
+              <span style="flex: 1; min-width: 0; padding: 0.55rem 0.7rem; display: flex; flex-direction: column; gap: 0.2rem;">
+                <span style="font-size: 0.72rem; color: #8A8A95; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><span data-text="fileName"></span></span>
+                <span style="font-size: 0.6rem; letter-spacing: 0.05em; color: #4A4A55;"><span data-text="fileMeta"></span></span>
+              </span>
+              <button type="button" class="fd-pasted__close" data-on-click="clearFile" data-style="pastedCloseStyle" aria-label="Remove attachment">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" style="width: 11px; height: 11px;" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+              </button>
+            </div>
 
-      <label for="answer">Answer to verify</label>
-      <textarea id="answer" spellcheck="false"></textarea>
-      <div class="row"><button id="attribute-button" type="button">Attribute</button></div>
+          <textarea rows="1" data-ref="groundRef" data-attr-placeholder="groundPlaceholder" data-attr-disabled="groundDisabled" data-on-focus="focusInput" data-on-blur="blurInput" data-on-input="onInputText" data-style="groundFieldStyle"></textarea>
+          <div style="display: flex; align-items: center; padding: 0 0.55rem 0.45rem; gap: 0.35rem;">
+            <!-- The positioned container the menu opens upward from. -->
+            <div style="position: relative; display: inline-flex;">
+              <button type="button" data-on-mousedown="keepFocus" data-on-click="toggleAttach" data-style="attachStyle" aria-label="Attach" aria-haspopup="menu" data-attr-aria-expanded="attachOpen">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 15px; height: 15px;" aria-hidden="true">
+                  <line x1="12" y1="5" x2="12" y2="19"></line>
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+              </button>
 
-      <pre id="marked"></pre>
-      <ol id="sources"></ol>
-      <p id="rungs"></p>
+              <div class="fd-attach-menu" data-ref="attachMenuRef" role="menu" data-if="attachOpen" hidden>
+                  <button type="button" role="menuitem" class="fd-attach-item" disabled title="This bench grounds text. Drop a PDF on the page to index its pages.">
+                    <span class="fd-attach-icon">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M3 8.5A1.5 1.5 0 0 1 4.5 7h2.2l1.2-2h8.2l1.2 2h2.2A1.5 1.5 0 0 1 21 8.5v9A1.5 1.5 0 0 1 19.5 19h-15A1.5 1.5 0 0 1 3 17.5z"></path>
+                        <circle cx="12" cy="13" r="3.4"></circle>
+                      </svg>
+                    </span>
+                    <span>Take a photo</span>
+                  </button>
 
-      <p class="note">
-        The library receives text that is already text. Extracting it from a PDF, keeping the
-        page, and drawing the highlight are this page's job, not the package's.
-      </p>
+                  <button type="button" role="menuitem" class="fd-attach-item" disabled title="This bench grounds text. Drop a PDF on the page to index its pages.">
+                    <span class="fd-attach-icon">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <rect x="3" y="4" width="18" height="16"></rect>
+                        <circle cx="8.5" cy="9.5" r="1.6"></circle>
+                        <polyline points="3 17 9 11 13 15 16.5 12 21 16"></polyline>
+                      </svg>
+                    </span>
+                    <span>Send an image</span>
+                  </button>
+
+                  <button type="button" role="menuitem" class="fd-attach-item" data-on-click="pickFile">
+                    <span class="fd-attach-icon">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="8" y1="13" x2="15" y2="13"></line>
+                        <line x1="8" y1="17" x2="15" y2="17"></line>
+                      </svg>
+                    </span>
+                    <span>Send a file</span>
+                  </button>
+
+                  <p class="fd-attach-note">Text only here: .txt and .md</p>
+                </div>
+            </div>
+            <input type="file" data-ref="fileRef" data-on-change="onFilePicked" accept=".txt,.md,.markdown,text/plain,text/markdown" style="display: none;" />
+            <span style="flex: 1;"></span>
+            <button type="button" data-on-mousedown="keepFocus" data-on-click="runGround" data-style="groundSendStyle" style-hover="box-shadow: 0 0 20px rgba(126,207,128,0.35)" aria-label="Ground">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width: 14px; height: 14px;" aria-hidden="true">
+                <line x1="12" y1="19" x2="12" y2="5"></line>
+                <polyline points="5 12 12 5 19 12"></polyline>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <p style="margin: 0; padding: 0.2rem 0 0.5rem; text-align: center; font-size: 0.6rem; line-height: 1.4; letter-spacing: 0.02em; color: #4A4A55;">Fundamentum checks support, not correctness.</p>
+      </div>
     </main>
-    <script type="module" src="./app.js"></script>
-  </body>
+
+    <!-- Divisor -->
+    <div class="fd-divider" data-on-pointerdown="startDrag" data-on-pointermove="onDrag" data-on-pointerup="endDrag" data-on-pointercancel="endDrag" role="separator" aria-orientation="vertical">
+      <span class="fd-grip"></span>
+    </div>
+
+    <!-- The source panel: the shelf behind, the open document in front. -->
+    <aside class="fd-pane" data-ref="paneRef" data-style="sourcePaneStyle">
+      <div style="height: 100%; display: flex; flex-direction: column; min-width: 0;">
+
+        <span data-if="viewerOpen" hidden style="display: contents;">
+          <div class="fd-viewer">
+            <!-- One way back, not two: the file name IS the button, and it returns to
+                 the shelf. No rule underneath, because the document already
+                 separates itself from the header. -->
+            <div style="flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; gap: 0.8rem; padding: 0.7rem 1rem 0.5rem; background: #050507;">
+              <button type="button" data-on-click="closeViewer" style="display: flex; align-items: center; gap: 0.45rem; min-width: 0; padding: 0; border: none; background: none; cursor: pointer; color: #8A8A95; font-family: 'JetBrains Mono', monospace; transition: color 0.3s ease;" style-hover="color: #fff" aria-label="Back to sources">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width: 14px; height: 14px; flex-shrink: 0;" aria-hidden="true"><path d="M14 6l-6 6 6 6"></path></svg>
+                <span style="font-size: 0.68rem; letter-spacing: 0.06em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><span data-text="docName"></span></span>
+              </button>
+              <span data-style="counterStyle"><span data-text="docPosition"></span></span>
+            </div>
+
+            <div data-on-scroll="onDocScroll" style="flex: 1; min-height: 0; overflow-y: auto; padding: 1.2rem 1.2rem 6.5rem; background: #050507;">
+              <span data-text="pageBody"></span>
+            </div>
+
+            <!-- Field on top, controls underneath. It lives inside the open document
+                 on purpose: searching here is about what is in front of you. -->
+            <div style="position: absolute; left: 0; right: 0; bottom: 1.4rem; z-index: 200; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; padding: 0 1.2rem; pointer-events: none;">
+              <!-- The wait sits above the composer, aligned with it. -->
+              <span data-if="waiting" hidden style="display: contents;">
+                <div style="display: flex; align-items: center; gap: 0.6rem; padding: 0.4rem 0.8rem; border: 1px solid #1A1A1F; background: #0A0A0F; animation: fadeIn 0.3s ease;">
+                  <span style="width: 11px; height: 11px; border: 1px solid #1A1A1F; border-top-color: #7ECF80; border-radius: 50%; animation: spin 0.8s linear infinite;"></span>
+                  <span style="font-size: 0.62rem; letter-spacing: 0.06em; color: #8A8A95;"><span data-text="waitLabel"></span></span>
+                </div>
+              </span>
+
+              <div data-style="composerStyle">
+                <textarea rows="1" placeholder="Ask across your sources" data-on-focus="focusComposer" data-on-blur="blurComposer" data-on-input="onComposerInput" style="width: 100%; box-sizing: border-box; padding: 0.7rem 0.9rem 0.35rem; min-height: 2.2rem; max-height: 200px; background: transparent; border: 0; outline: none; resize: none; overflow-y: auto; color: #fff; font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; line-height: 1.35;"></textarea>
+
+                <div style="display: flex; align-items: center; padding: 0 0.55rem 0.45rem; gap: 0.35rem;">
+                  <!-- The drawing had an "add" control here, for grounding a
+                       photo from inside the open document. This bench indexes
+                       text and page images and has no path for that, so the
+                       button is gone rather than present and inert: a control
+                       that does nothing is a worse answer than no control. -->
+                  <span style="flex: 1;"></span>
+                  <button type="button" data-on-mousedown="keepFocus" data-on-click="runSearch" data-style="sendStyle" style-hover="box-shadow: 0 0 20px rgba(126,207,128,0.35)" aria-label="Run">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width: 14px; height: 14px;" aria-hidden="true">
+                      <line x1="12" y1="19" x2="12" y2="5"></line>
+                      <polyline points="5 12 12 5 19 12"></polyline>
+                    </svg>
+                  </button>
+                </div>
+
+                <div style="display: flex; align-items: flex-start; gap: 0.7rem; padding: 0.6rem 0.9rem 0.7rem; border-top: 1px solid #1A1A1F;" data-if="showConsequence" hidden>
+                    <button type="button" data-on-click="toggleSemantic" role="switch" style="flex-shrink: 0; width: 26px; height: 14px; margin-top: 2px; padding: 0; border: 1px solid #1A1A1F; background: none; cursor: pointer; display: flex; align-items: center; transition: border-color 0.3s ease;">
+                      <span data-style="knobStyle"></span>
+                    </button>
+                    <div style="min-width: 0;">
+                      <p style="margin: 0 0 0.2rem; font-size: 0.68rem; letter-spacing: 0.04em; color: #8A8A95;">Compare by meaning</p>
+                      <p style="margin: 0; font-size: 0.62rem; line-height: 1.7; color: #8A8A95; text-wrap: pretty;"><span data-text="semanticNote"></span></p>
+                    </div>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </span>
+
+        <!-- The shelf, only while no document is open: otherwise it flashes
+             underneath as the viewer slides in. -->
+        <div class="fd-library" data-if="libraryVisible" hidden>
+          <div style="flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; gap: 0.8rem; padding: 0.7rem 1rem; border-bottom: 1px solid #1A1A1F;">
+            <span style="font-size: 0.62rem; letter-spacing: 0.26em; text-transform: uppercase; color: #8A8A95;">Sources</span>
+            <span style="font-size: 0.62rem; letter-spacing: 0.08em; color: #8A8A95;"><span data-text="docCountLabel"></span></span>
+          </div>
+
+          <div style="flex: 1; min-height: 0; overflow-y: auto; padding: 1rem;">
+            <template data-for="groups" data-as="g">
+              <div style="margin-bottom: 1.6rem;">
+                <p style="margin: 0 0 0.7rem; font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase; color: #8A8A95;"><span data-text="g.name"></span></p>
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(72px, 116px)); gap: 0.9rem 0.8rem;">
+                  <template data-for="g.docs" data-as="d">
+                    <!-- The name lives in the caption below the tile, not inside it. There
+                         is no thumbnail here, so reading the name is the whole
+                         task the tile exists for. -->
+                    <div class="fd-tile" style="position: relative; display: flex; flex-direction: column; gap: 0.4rem; min-width: 0;">
+                      <button type="button" class="fd-tile-remove" data-on-click="d.remove" aria-label="Remove source">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+                      </button>
+                      <button type="button" data-on-click="d.open" data-style="d.tileStyle" style-hover="border-color: rgba(126,207,128,0.4)" data-attr-aria-label="d.name">
+                        <span style="flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                          <span style="font-family: 'Jura', sans-serif; font-size: 1.1rem; letter-spacing: 0.1em; color: #7ECF80;"><span data-text="d.ext"></span></span>
+                        </span>
+                        <span style="flex-shrink: 0; display: flex; align-items: center; justify-content: flex-end; padding: 2px 4px; background: #050507;">
+                          <span style="font-size: 0.4rem; letter-spacing: 0.08em; color: #8A8A95;"><span data-text="d.meta"></span></span>
+                        </span>
+                      </button>
+                      <span style="font-size: 0.62rem; line-height: 1.6; letter-spacing: 0.02em; color: #8A8A95; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; word-break: break-word;"><span data-text="d.name"></span></span>
+                    </div>
+                  </template>
+                </div>
+              </div>
+            </template>
+
+            <!-- The way in, and the only one that is announced. Dropping files
+                 anywhere on the page works too, but nothing on screen says so,
+                 and a shelf whose one visible control does nothing is worse
+                 than a shelf with no control: choosing files LOOKS like it
+                 worked. -->
+            <label style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; padding: 1.5rem 1rem; border: 1px dashed #1A1A1F; cursor: pointer; transition: border-color 0.3s ease;" style-hover="border-color: rgba(126,207,128,0.35)">
+              <span style="font-size: 0.68rem; letter-spacing: 0.06em; color: #8A8A95;">Add sources</span>
+              <span style="font-size: 0.6rem; letter-spacing: 0.04em; color: #8A8A95; text-align: center;">Or drop them anywhere — indexed once, then reused</span>
+              <input type="file" multiple="" data-on-change="onSourcesPicked" style="display: none;" />
+            </label>
+          </div>
+        </div>
+
+      </div>
+    </aside>
+
+    <!-- The capsule: two surfaces, one at a time, on a narrow screen. -->
+    <div class="fd-capsule">
+        <div style="display: flex; align-items: center; gap: 0.15rem; padding: 4px; border: 1px solid #1A1A1F; border-radius: 2rem; background: rgba(10,10,15,0.92); backdrop-filter: blur(12px); pointer-events: auto; animation: fadeIn 0.22s ease;">
+          <button type="button" data-on-click="backToText" data-style="capTextStyle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="width: 15px; height: 15px;" aria-hidden="true">
+              <path d="M6 3h9l3 3v15H6z"></path>
+              <path d="M9 9h7M9 13h7M9 17h4"></path>
+            </svg>
+            <span data-style="capTextLabelStyle">Text</span>
+          </button>
+          <button type="button" data-on-click="toPane" data-style="capLibStyle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width: 15px; height: 15px;" aria-hidden="true">
+              <path d="M4 5h6v14H4zM14 5h6v14h-6z"></path>
+            </svg>
+            <span data-style="capLibLabelStyle">Sources</span>
+          </button>
+      </div>
+    </div>
+
+    <!-- Resultados da busca -->
+    <span data-if="resultsOpen" hidden style="display: contents;">
+      <!-- Always centred. Anchored to the bottom, one passage sat at the foot of
+           the screen and four climbed from it, so the list appeared to move
+           depending on how many results there were. -->
+      <div style="position: absolute; inset: 0; z-index: 180; background: rgba(5,5,7,0.82); backdrop-filter: blur(3px); display: flex; align-items: center; justify-content: center; padding: 1.2rem;" data-on-click="closeResults">
+        <div data-on-click="stopClick" style="width: 100%; max-width: 620px; max-height: 100%; display: flex; flex-direction: column; min-height: 0; border: 1px solid #1A1A1F; background: #0A0A0F; box-shadow: 0 0 40px rgba(126,207,128,0.06); animation: emerge 0.42s cubic-bezier(0.4,0,0.2,1);">
+          <div style="flex-shrink: 0; display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; padding: 0.8rem 1rem; border-bottom: 1px solid #1A1A1F;">
+            <span style="font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase; color: #8A8A95;"><span data-text="resultsHeading"></span></span>
+            <span style="font-size: 0.62rem; letter-spacing: 0.08em; color: #8A8A95;"><span data-text="resultsCount"></span></span>
+          </div>
+          <div style="flex: 1; min-height: 0; overflow-y: auto;">
+            <template data-for="results" data-as="r">
+              <button type="button" data-on-click="r.open" style="display: block; width: 100%; padding: 0.9rem 1rem; border: none; border-bottom: 1px solid #1A1A1F; background: none; text-align: left; cursor: pointer; transition: background 0.2s ease;" style-hover="background: rgba(126,207,128,0.04)">
+                <span style="display: flex; align-items: baseline; justify-content: space-between; gap: 0.8rem; margin-bottom: 0.4rem;">
+                  <span style="font-size: 0.62rem; letter-spacing: 0.06em; color: #7ECF80;"><span data-text="r.doc"></span></span>
+                  <span style="font-size: 0.62rem; letter-spacing: 0.06em; color: #8A8A95; white-space: nowrap;"><span data-text="r.where"></span></span>
+                </span>
+                <span style="display: block; font-size: 0.72rem; line-height: 1.75; color: #8A8A95; text-wrap: pretty;"><span data-text="r.snippet"></span></span>
+              </button>
+            </template>
+          </div>
+        </div>
+      </div>
+    </span>
+
+  </div>
+</div>
+
+<script type="module" src="./app.js"></script>
+
+</body>
 </html>
