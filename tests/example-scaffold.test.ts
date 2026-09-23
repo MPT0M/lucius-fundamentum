@@ -83,15 +83,18 @@ describe('the example runs where there is no Node', () => {
         // nothing: move the folder, or change the extension, and an empty list
         // of files yields an empty list of violations and a green test.
         const scanned = browserFilesUnder(EXAMPLE).map((f) => relative(EXAMPLE, f));
-        for (const name of ['app.js', 'bancada.js', 'pdf.js', 'storage.js', 'dc.js', 'proto-logic.js', 'registers.js']) {
+        for (const name of ['app.js', 'bancada.js', 'markdown.js', 'pdf.js', 'storage.js', 'dc.js', 'proto-logic.js', 'registers.js']) {
             expect(scanned, name).toContain(name);
         }
-        for (const name of ['server.mjs', 'server-paths.mjs', 'server-provider.mjs', 'bancada.test.js', 'server.test.js', 'dc.test.js']) {
+        for (const name of ['server.mjs', 'server-paths.mjs', 'server-provider.mjs', 'bancada.test.js', 'markdown.test.js', 'server.test.js', 'dc.test.js']) {
             expect(scanned, name).not.toContain(name);
         }
         // A count as well as the names: naming the files proves those are
-        // seen, and says nothing about one more arriving unscanned.
-        expect(scanned).toHaveLength(7);
+        // seen, and says nothing about one more arriving unscanned. Eight
+        // since `markdown.js`, the parser that takes an answer's syntax out
+        // before the library sees it — a deliberate change of this count,
+        // not a file that slipped past the sweep.
+        expect(scanned).toHaveLength(8);
     });
 
     it('detects every shape it is supposed to detect', () => {
