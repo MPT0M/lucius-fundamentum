@@ -289,7 +289,14 @@
                    drawn and opened by the component's own `chip()` and
                    `openChip()`, so what changed against the drawing is where the
                    data comes from, not how it looks. -->
-              <div data-text="groundedBody" style="font-size: 0.88rem; line-height: 2.05; color: #8A8A95; text-wrap: pretty;"></div>
+              <!-- `white-space: pre-wrap` so a single newline survives to the
+                   screen. `paragraphBoundsOf` ends a paragraph on a BLANK line
+                   and wraps on a single one, by decision; HTML then collapses
+                   the wrap, and three items written on three lines arrive as
+                   one run-on block. The property is inherited by the `<p>`
+                   elements `bodyFor` builds, and it changes no character of
+                   the text, so no offset drifts. -->
+              <div data-text="groundedBody" style="font-size: 0.88rem; line-height: 2.05; color: #8A8A95; text-wrap: pretty; white-space: pre-wrap;"></div>
 
               <!-- A collapsible footer: icon, count, chevron. The list is not numbered,
                    because the numbering belongs to the markers in the text. -->
@@ -468,7 +475,10 @@
             </div>
 
             <div data-on-scroll="onDocScroll" style="flex: 1; min-height: 0; overflow-y: auto; padding: 1.2rem 1.2rem 6.5rem; background: #050507;">
-              <span data-text="pageBody"></span>
+              <!-- Same reason as `groundedBody`: the source document keeps the
+                   line breaks it was written with. A statute read as one
+                   paragraph is the article and its items run together. -->
+              <span data-text="pageBody" style="white-space: pre-wrap;"></span>
             </div>
 
             <!-- Field on top, controls underneath. It lives inside the open document

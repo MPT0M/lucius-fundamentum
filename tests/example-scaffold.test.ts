@@ -164,6 +164,29 @@ describe('the example runs where there is no Node', () => {
         expect(html).toContain('pdf.js from a CDN');
     });
 
+    it('keeps the single newline visible on both text surfaces', () => {
+        // A SOURCE-TEXT guard, and the reason it cannot be a behavioural one
+        // is measured rather than assumed: `vitest.config.ts` runs this suite
+        // under `environment: 'node'`, so nothing here renders; every function
+        // `bancada.js` exports is pure, and `bodyFor` — which builds the `<p>`
+        // elements that would carry the break — lives in `app.js` and is not
+        // exported. There is no place in this suite where a rendered line
+        // break can be observed.
+        //
+        // What this pins is that the property does not leave without someone
+        // deciding to remove it. `paragraphBoundsOf` ends a paragraph on a
+        // blank line and only wraps on a single one, so without `pre-wrap`
+        // HTML collapses the wrap and a list written on three lines reaches
+        // the reader as one block. Both surfaces are named because the defect
+        // showed up on both: the grounded answer and the document viewer.
+        const html = readFileSync(join(EXAMPLE, 'index.html'), 'utf8');
+        const surfaces = ['data-text="groundedBody"', 'data-text="pageBody"'];
+        for (const surface of surfaces) {
+            const tag = html.slice(html.indexOf(surface)).slice(0, 400);
+            expect(tag).toContain('white-space: pre-wrap');
+        }
+    });
+
     it('quotes the promise exactly as the screen words it', () => {
         // The promise the bench makes about where documents go lives in two
         // files: `proto-logic.js` puts it on the screen, and the docblock of

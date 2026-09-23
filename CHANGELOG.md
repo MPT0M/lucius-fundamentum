@@ -33,6 +33,14 @@ That rule governs changes made FROM the first release onward, so entries under
 
 ### Changed
 
+- **The bench keeps the line breaks the text was written with.** A paragraph
+  ends on a blank line and wraps on a single one, by decision, and HTML then
+  collapsed the wrap: a list written on three lines reached the reader as one
+  block, in the grounded answer and in the document viewer alike. Both now
+  render with `white-space: pre-wrap`. No character of the text changes, so no
+  offset moves. The guard reads `index.html` as text, and says in the test why
+  it cannot be a behavioural one: the suite runs under Node and renders nothing.
+
 - **The bench is the project's own prototype, and every control on it now
   reaches the library.** The screen, its styles and its wording are the
   prototype's; what changed is that it ran on fixtures and now asks the package.
