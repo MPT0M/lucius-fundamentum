@@ -94,8 +94,8 @@ That rule governs changes made FROM the first release onward, so entries under
 
 - **A bench you can run: `npm run example`.** The package had documentation and
   no way to try it. `examples/bancada/` is a page that starts empty — you paste
-  your own text, index it and search it — served by a Node server of about a
-  hundred lines with no dependency. It ships nothing to npm: `files` is still
+  your own text, index it and search it — served by a Node server with no
+  dependency at all. It ships nothing to npm: `files` is still
   `["dist", "NOTICE"]`.
 
   It comes with no corpus and no prebuilt artifact, and that is a decision
@@ -116,11 +116,16 @@ That rule governs changes made FROM the first release onward, so entries under
   change. It loads `dist/` directly, with no bundler, which is what `module:
   NodeNext` buys — every relative import carries its `.js`.
 
-  **The known limit, stated here rather than discovered later:** nothing tests
+  **The known limits, stated here rather than discovered later:** nothing tests
   the page itself. What is pinned is the part that holds rules — that a snippet
   is cut on code point boundaries and never inside a character, and that the
   two reasons the dense arm is off are never merged into one message. Clicking
   and rendering have no net under them.
+
+  The Node-free guard over the example runs in one direction only: it refuses
+  Node in the browser half and says nothing about the reverse, and the example's
+  type-check gives `DOM` to the whole folder, so the server could reach for
+  `document` and pass both.
 
 - **The bench attributes an answer, with no key.** Paste the text you want to
   verify and it comes back with markers, each pointing at the passage that
@@ -162,7 +167,9 @@ That rule governs changes made FROM the first release onward, so entries under
   `assertNotBothArms` treats a `SourceDoc` carrying both a page image and text
   as an error rather than picking one. A page with real prose indexes as text;
   a page whose text layer is scanner debris indexes as an image; a page with
-  neither is skipped rather than occupying a slot that matches nothing.
+  neither would be skipped rather than occupying a slot that matches nothing.
+  The router covers that case; the bench's own extractor renders every page, so
+  nothing reaches it today.
 
   **The threshold sits high on purpose, and it is a demonstration rather than
   a recommendation** — it was never calibrated against a corpus. Being lenient
@@ -208,6 +215,10 @@ That rule governs changes made FROM the first release onward, so entries under
   Nothing expires. This is a demo cache on your own machine, holding material
   whose originals are already on your disk, and there is a button to clear it.
 
+  **The known limit:** the persistence path itself has no test — it wants an
+  IndexedDB. What is pinned is the decision above, which is where the money
+  is.
+
 - **Clicking a result opens the document beside it, with the retrieved stretch
   lit.** The highlight is cut by code points, because that is the unit `Span`
   is written in: slicing the same offsets with `String.prototype.slice` drifts
@@ -229,6 +240,12 @@ That rule governs changes made FROM the first release onward, so entries under
   returns vectors, and the page drives a provider that speaks to that route. A
   Gemini or OpenAI key is the whole account and bills to a card, which is a
   different thing from a scoped public key meant to live in a client.
+
+  That guarantee rests on the server REFUSING to serve the file the key is in,
+  not on the page being well behaved: the document root is the whole repository,
+  because the page loads the package from `dist/`, and any script the page runs
+  — including a module fetched from a CDN — can read a same-origin path. Dotfiles
+  and `node_modules` are refused, which covers `.env` and `.git` together.
 
   Which adapter runs is decided by which variable you filled in, not by this
   code. `id` and `dimensions` come back from the server rather than being

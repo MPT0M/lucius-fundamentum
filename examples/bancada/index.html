@@ -165,11 +165,13 @@
         line-height: 1.9;
         white-space: pre-wrap;
       }
-      /* Inline, with no vertical padding and no ring: the fill has to stop
-         where the text stops. `box-decoration-break: clone` is what gives a
-         wrapped highlight a ragged end on each line instead of a rectangle
-         running to the margin. Heavier than ::selection on purpose — a
-         citation is permanent and a selection is passing. */
+      /* Inline, so the fill stops where the text stops.
+         `box-decoration-break: clone` is what gives a wrapped highlight a
+         ragged end on each line instead of a rectangle running to the margin.
+         The padding is in `em` and the line-height is 1.9, so the background
+         reads as a marker without reaching the line above. Heavier than
+         ::selection on purpose — a citation is permanent and a selection is
+         passing. */
       .page-text mark {
         background: rgba(126, 207, 128, 0.3);
         color: #fff;
@@ -215,7 +217,7 @@
       <h1>Lucius <span>Fundamentum</span> — bench</h1>
       <p class="lede">
         Empty on purpose. Paste your own text, index it, and search it. With no key configured,
-        the whole of what runs here is BM25 in your browser, and your documents stay on this
+        the whole of what runs here is BM25 and the two local attribution rungs, and your documents stay on this
         machine — the page does fetch pdf.js from a CDN the first time you drop a PDF, which is
         a request for the library and never for your file.
       </p>

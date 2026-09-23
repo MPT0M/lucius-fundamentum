@@ -82,9 +82,12 @@ a request for the library and never for your file. Put one key in `examples/banc
 (copy `.env.example`) and the dense arm, the fusion and the third rung come on —
 the key stays in the server process and the page never sees it.
 
-It ships with no corpus and no prebuilt index, on purpose: an artifact records
-the provider and the dimensions it was built with, so a prebuilt one would
-force you onto the choices made here.
+It ships with no corpus and no prebuilt index, on purpose. A **dense** artifact
+records the provider and the dimensions it was built with, and loading one with
+a provider that does not match is refused, so a prebuilt dense index would force
+you onto the choices made here. A lexical one records neither and would force
+you onto nothing; it is left out because a bench that arrives full is a
+showcase.
 
 Two things it is there to teach. **The extractor is visibly outside the
 library** — `examples/bancada/pdf.js` opens the PDF, and the package only ever
