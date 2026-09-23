@@ -1,9 +1,14 @@
 /**
  * The bench's wiring: the half that reads the screen and writes to it.
  *
- * Every decision worth pinning lives in `bancada.js`, which no test can reach
- * if it touches `document`. What is left here is reading fields and appending
- * nodes — deliberately dull, because the dull half is the untested half.
+ * The rules live in `bancada.js`, which no test can reach if it touches
+ * `document`. What is left here is mostly reading fields and appending nodes.
+ *
+ * Mostly, and the exceptions are worth naming rather than glossed: this file
+ * still decides which arm to search with, whether a provider is in play, and
+ * how the rung counts are read out loud. None of those is dull, none has a
+ * test, and calling the whole file dull is what would stop anyone looking for
+ * a defect inside it.
  */
 
 import {
@@ -21,6 +26,7 @@ import {
     pageToDocument,
     classifyLoadFailure,
     viewerFor,
+    rungSentence,
     remoteProvider,
     buildDenseIndex,
     attributeWithKey,
@@ -70,6 +76,11 @@ const query = /** @type {HTMLInputElement} */ (must('query'));
 const arm = must('arm');
 const results = must('results');
 const status = must('status');
+
+/** @param {unknown} error */
+function asMessage(error) {
+    return error instanceof Error ? error.message : String(error);
+}
 
 /** @param {string} message */
 function say(message) {
@@ -240,9 +251,11 @@ async function takePdf(file) {
     for (const page of pages) {
         const doc = pageToDocument(file.name, page);
         if (doc === null) continue;
-        // The image is kept for EVERY page, including the ones indexed as
-        // text: the viewer has to be able to show any hit's page, not only
-        // the pages the library happened to receive an image for.
+        // The image is kept for every page that becomes a document,
+        // including the ones indexed as text: the viewer has to show any
+        // hit's page, not only the pages the library received an image for.
+        // A page with neither text nor image never gets here — `null` above
+        // skips it, and it has no hit to open.
         pageImages.set(doc.id, page.image);
         dropped.push(doc);
         if (doc.text === '') asImage++;
@@ -292,7 +305,7 @@ document.addEventListener('dragleave', () => document.body.classList.remove('dra
 document.addEventListener('drop', (event) => {
     event.preventDefault();
     document.body.classList.remove('dragging');
-    void takeFiles(event.dataTransfer);
+    void takeFiles(event.dataTransfer).catch((error) => say(`Could not read that file. ${asMessage(error)}`));
 });
 
 async function doSearch() {
@@ -409,7 +422,13 @@ async function doAttribute() {
     const attribution = usesProvider
         ? await attributeWithKey(answer, candidates, /** @type {NonNullable<typeof provider>} */ (provider), {
               onWorking: () => say('Local rungs done. Asking the provider for the rest…'),
-              onSettled: () => say('Attributed.'),
+              // Clears the indicator, and says NOTHING about the outcome. The
+              // rejection path runs this too — a chunk wider than the
+              // provider's window is checked before the network, so the
+              // promise rejects with `local-done` already emitted — and a
+              // success sentence hung here announces one over the previous
+              // answer's markers.
+              onSettled: () => say('Waiting is over.'),
           })
         : attributeWithoutKey(answer, candidates);
     const marked = markedAnswer(attribution);
@@ -426,16 +445,17 @@ async function doAttribute() {
             return item;
         }),
     );
-    must('rungs').textContent =
-        `${counts.examined} clause(s) examined — ${counts.lexical} found support, ` +
-        `${counts.unattributed} none, shown as ${counts.markers} marker(s): adjacent clauses ` +
-        `resting on the same passage share one. ${counts.vetoed} winner(s) vetoed, which crosses ` +
-        `the counts rather than adding to them. ${counts.note}`;
+    // Said on the resolution path, where it is true.
     say('Attributed.');
+    must('rungs').textContent = rungSentence(counts);
 }
 
 must('index-button').addEventListener('click', doIndex);
-must('attribute-button').addEventListener('click', () => void doAttribute());
+must('attribute-button').addEventListener('click', () => {
+    // Without the catch the rejection becomes an unhandled promise in the
+    // console and the screen keeps whatever it said last.
+    void doAttribute().catch((error) => say(`Attribution failed. ${asMessage(error)}`));
+});
 must('embed-button').addEventListener('click', () => void doEmbed());
 must('forget-button').addEventListener('click', () => {
     void forget().then(() => {
@@ -448,7 +468,10 @@ must('forget-button').addEventListener('click', () => {
 });
 
 void askServerForProvider().then(restore);
-must('search-button').addEventListener('click', () => void doSearch());
+must('search-button').addEventListener('click', () => {
+    void doSearch().catch((error) => say(`Search failed. ${asMessage(error)}`));
+});
 query.addEventListener('keydown', (event) => {
-    if (/** @type {KeyboardEvent} */ (event).key === 'Enter') void doSearch();
+    if (/** @type {KeyboardEvent} */ (event).key === 'Enter')
+        void doSearch().catch((error) => say(`Search failed. ${asMessage(error)}`));
 });

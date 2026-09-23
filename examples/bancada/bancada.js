@@ -263,8 +263,11 @@ export async function attributeWithKey(answer, results, provider, screen) {
 /**
  * What a refused artifact costs to recover from, and it is not one answer.
  *
- * `loadIndex` throws eight different refusals, and they do NOT deserve the
- * same response. Two of them mean the stored vectors are fine and only the
+ * `loadIndex` refuses a stored artifact in ways that do NOT share one
+ * recovery, and counting them is the wrong instrument: eight `throw`s live in
+ * `index-build.ts` itself, and `unpackVectors` adds more from underneath,
+ * reached when the packed vectors are decoded. What matters is the family, not
+ * the tally. Two families mean the stored vectors are fine and only the
  * provider is wrong — and throwing those away is the anti-pattern `DenseArm`'s
  * docblock names in money: it "offers 're-read 40 documents' to someone who
  * only had to supply a key".
@@ -274,9 +277,13 @@ export async function attributeWithKey(answer, results, provider, screen) {
  *              work over text the bench still has. Discard and reindex.
  * - `corrupt`— the stored bytes are damaged: a posting pointing past the end
  *              of the chunk list, a non-positive frequency, a malformed dense
- *              section, a vector count that does not match. Nothing to
- *              salvage, and the honest message says the CACHE broke, not that
- *              the provider changed.
+ *              section, a vector count that does not match, or a base64
+ *              payload that will not decode. Nothing to salvage, and the
+ *              honest message says the CACHE broke, not that the provider
+ *              changed. The decoder's own refusals belong here and were the
+ *              last to arrive: damaged bytes in browser storage is literally
+ *              the case this family is for, and it was the one the classifier
+ *              did not recognise.
  * - `provider`— the vectors are intact and cost money. Do not discard. Ask
  *              for the provider that built them.
  * - `unknown`— a refusal this bench does not recognise. Also not discarded,
@@ -304,7 +311,15 @@ export function classifyLoadFailure(error) {
     if (says(/was given embedding provider/) || says(/dimensions but the artifact stores/)) {
         return { kind: 'provider', discard: false, message };
     }
-    if (says(/the posting for/) || says(/not shaped like one/) || says(/vectors for/)) {
+    // `vectors for` is a loose fragment — the embedding checks phrase their
+    // own errors as "returned N vectors for M inputs" — and it is safe here
+    // only because the sole input to this function is what `loadIndex` threw.
+    // A second caller would need a narrower pattern.
+    // `unpackVectors:` prefixes every refusal the decoder raises — bad
+    // dimensions, a length that does not divide, padding-only input, a stray
+    // symbol. All of them mean the stored bytes are damaged, which is what
+    // `corrupt` is for.
+    if (says(/^unpackVectors:/) || says(/the posting for/) || says(/not shaped like one/) || says(/vectors for/)) {
         return { kind: 'corrupt', discard: true, message };
     }
     return { kind: 'unknown', discard: false, message };
@@ -415,10 +430,43 @@ export function attributeWithoutKey(answer, results) {
 }
 
 /**
+ * The rung counts as one sentence, and it has to ADD UP.
+ *
+ * It is here rather than in the wiring because it is a decision, not a format
+ * string: which numbers appear decides whether a reader can reconstruct the
+ * whole. Leaving `dense` out is what broke it once — with no provider it is
+ * always zero and the line looked exact, and the moment a provider made it
+ * reachable the printed numbers stopped summing to `examined`, with nothing to
+ * explain where the rest went.
+ *
+ * `markers` is stated apart from the rungs, because coalescence merges
+ * adjacent clauses resting on the same passage and it is not a fourth term of
+ * the sum. `vetoed` is apart for the opposite reason: it crosses two of the
+ * three and adding it would count clauses twice.
+ *
+ * @param {ReturnType<typeof describeRungs>} counts
+ * @returns {string}
+ */
+export function rungSentence(counts) {
+    return (
+        `${counts.examined} clause(s) examined — ${counts.lexical} on the words, ` +
+        `${counts.dense} on the vectors, ${counts.unattributed} none, ` +
+        `shown as ${counts.markers} marker(s): adjacent clauses resting on the same passage ` +
+        `share one. ${counts.vetoed} winner(s) vetoed, which crosses the counts rather than ` +
+        `adding to them. ${counts.note}`
+    );
+}
+
+/**
  * The answer with its markers written in, and the list they point at.
  *
- * `markerStyle: 'bracket'` because this commit renders plain text; the
- * interactive marker belongs with the viewer that can open a page behind it.
+ * `markerStyle: 'bracket'` because this is the plain-text rendering. Wiring a
+ * marker to the viewer that opens a page is possible — the viewer exists — and
+ * is NOT done: a marker would have to carry its index into `sources` through
+ * `formatted.spans`, which is the coordinate space the paragraph below is
+ * about. Said here because the shape of the debt is only visible from this
+ * function.
+ *
  * The formatter returns its own `spans` rather than the engine's, and the
  * difference is not cosmetic: every offset here is reindexed past the markers
  * just inserted. Mixing the two coordinate spaces is the drift the formatter

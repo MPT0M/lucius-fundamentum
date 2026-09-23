@@ -51,13 +51,23 @@ let loading = null;
 function loadPdfjs() {
     if (loading === null) {
         const url = `${PDFJS_BASE}/pdf.mjs`;
-        loading = import(url).then((mod) => {
-            // The worker has to be told where it lives when the library is
-            // loaded cross-origin; without this it looks beside the page and
-            // 404s, and the failure surfaces as a document that never resolves.
-            mod.GlobalWorkerOptions.workerSrc = `${PDFJS_BASE}/pdf.worker.mjs`;
-            return mod;
-        });
+        loading = import(url)
+            .then((mod) => {
+                // The worker has to be told where it lives when the library is
+                // loaded cross-origin; without this it looks beside the page
+                // and 404s, and the failure surfaces as a document that never
+                // resolves.
+                mod.GlobalWorkerOptions.workerSrc = `${PDFJS_BASE}/pdf.worker.mjs`;
+                return mod;
+            })
+            .catch((error) => {
+                // Forget the failed attempt. A rejected promise cached here
+                // would poison the tab: one flaky moment from the CDN and no
+                // PDF opens again for the rest of the session, network back or
+                // not, with nothing on screen to explain it.
+                loading = null;
+                throw error;
+            });
     }
     return loading;
 }

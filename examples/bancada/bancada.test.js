@@ -32,6 +32,7 @@ import {
     hasUsableText,
     MIN_USABLE_LETTERS,
     classifyLoadFailure,
+    rungSentence,
     highlightParts,
     viewerFor,
     remoteProvider,
@@ -126,8 +127,11 @@ describe('the bench reads the rung counts without lying about them', () => {
         // `lexical + dense + unattributed` partition the clauses examined;
         // `vetoed` crosses the last two and never the first, so adding all
         // four counts some clauses twice.
-        const read = describeRungs(attribution({ lexical: 6, dense: 2, unattributed: 4, vetoed: 3 }), true);
-        expect(read.examined).toBe(12);
+        // 5 + 2 + 4, deliberately not 6 + 2 + 4: with a 6 the expected 12 is
+        // also `lexical * 2`, so an implementation that ignored the other two
+        // rungs would pass.
+        const read = describeRungs(attribution({ lexical: 5, dense: 2, unattributed: 4, vetoed: 3 }), true);
+        expect(read.examined).toBe(11);
         expect(read.vetoed).toBe(3);
     });
 
@@ -162,6 +166,41 @@ describe('the bench reads the rung counts without lying about them', () => {
     });
 });
 
+describe('the sentence the screen shows adds up', () => {
+    /** @param {Partial<import('../../dist/index.js').RungCounts>} rungs */
+    const read = (rungs) =>
+        describeRungs(
+            {
+                text: 'x',
+                spans: [],
+                sources: [],
+                rungs: { lexical: 0, vetoed: 0, dense: 0, unattributed: 0, ...rungs },
+            },
+            true,
+        );
+
+    it('prints every rung, so the numbers reconstruct what was examined', () => {
+        // The defect this exists for: with no provider `dense` is always zero
+        // and a sentence that omits it looks exact. The first provider makes
+        // it reachable and the printed numbers stop summing, with nothing on
+        // screen to say where the rest went.
+        const counts = read({ lexical: 5, dense: 3, unattributed: 2 });
+        const sentence = rungSentence(counts);
+        const numbers = (sentence.match(/\d+/g) ?? []).map(Number);
+
+        expect(counts.examined).toBe(10);
+        expect(sentence).toContain('10 clause(s) examined');
+        const rungs = numbers.slice(1, 4);
+        expect(rungs).toEqual([5, 3, 2]);
+        expect(rungs.reduce((a, b) => a + b, 0)).toBe(counts.examined);
+    });
+
+    it('keeps markers and vetoes out of the sum', () => {
+        const sentence = rungSentence(read({ lexical: 4, dense: 0, unattributed: 1, vetoed: 2 }));
+        expect(sentence).toContain('crosses the counts rather than adding to them');
+    });
+});
+
 describe('the bench attributes an answer with no key at all', () => {
     const SOURCE =
         'O prazo para a manifestacao e de quinze dias corridos. ' +
@@ -173,8 +212,12 @@ describe('the bench attributes an answer with no key at all', () => {
         const answer = 'O prazo para a manifestacao e de quinze dias corridos.';
         const attributed = attributeWithoutKey(answer, index.searchLexical(answer));
 
-        expect(attributed.spans.length).toBeGreaterThan(0);
-        expect(attributed.sources.length).toBeGreaterThan(0);
+        // Measured, then pinned. `toBeGreaterThan(0)` would pass on any
+        // number and the case already pins the CONTENT of the first element
+        // below — conferring what is inside a list while leaving how many
+        // there are unstated is the half that drifts.
+        expect(attributed.spans).toHaveLength(1);
+        expect(attributed.sources).toHaveLength(1);
         expect(attributed.rungs.dense).toBe(0);
 
         const marked = markedAnswer(attributed);
@@ -400,6 +443,25 @@ describe('a refused artifact does not get one blanket answer', () => {
         expect(verdict.discard).toBe(true);
     });
 
+    it('calls a non-positive frequency a broken cache, like the posting it rides with', () => {
+        // The eighth refusal. Without this probe it classified correctly only
+        // by accident: it shares the `the posting for` opening with the
+        // out-of-range case, which IS probed — so a rewording of one and not
+        // the other would drop this into `unknown` with nothing to say so.
+        // That accident is exactly what provoking the refusals is supposed to
+        // rule out, and it was the one of the eight left standing.
+        const refusal = refusalFrom((a) => {
+            const term = Object.keys(a.postings)[0];
+            if (term === undefined) throw new Error('the fixture produced no postings to damage');
+            return { ...a, postings: { ...a.postings, [term]: [[0, 0]] } };
+        });
+        const verdict = classifyLoadFailure(refusal);
+
+        expect(verdict.message).toContain('occurrences');
+        expect(verdict.kind).toBe('corrupt');
+        expect(verdict.discard).toBe(true);
+    });
+
     it('calls a malformed dense section a broken cache', () => {
         const refusal = refusalFrom((a) => ({ ...a, dense: { providerId: 7, dimensions: 'x', vectors: null } }), {
             provider: { id: 'p', dimensions: 1536, modalities: ['text'], embed: async () => [] },
@@ -421,6 +483,25 @@ describe('a refused artifact does not get one blanket answer', () => {
         const verdict = classifyLoadFailure(refusal);
 
         expect(verdict.message).toContain('vectors for');
+        expect(verdict.kind).toBe('corrupt');
+        expect(verdict.discard).toBe(true);
+    });
+
+    it('calls a base64 payload that will not decode a broken cache', () => {
+        // The refusal that arrives from UNDERNEATH `loadIndex`: it calls
+        // `unpackVectors`, whose errors carry their own prefix and match none
+        // of the patterns written for `index-build.ts`. Damaged bytes in
+        // browser storage is the case `corrupt` exists for, and it was the one
+        // falling into `unknown` — so the bench kept a cache it could never
+        // read again and showed the decoder's message as something to think
+        // about.
+        const refusal = refusalFrom(
+            (a) => ({ ...a, dense: { providerId: 'p', dimensions: 2, vectors: 'nao e base64!' } }),
+            { provider: { id: 'p', dimensions: 2, modalities: ['text'], embed: async () => [] } },
+        );
+        const verdict = classifyLoadFailure(refusal);
+
+        expect(verdict.message).toContain('unpackVectors');
         expect(verdict.kind).toBe('corrupt');
         expect(verdict.discard).toBe(true);
     });
@@ -515,7 +596,11 @@ describe('the key stays on the server side of the provider', () => {
         const sent = [];
         /** @type {any} */
         const fetcher = async (/** @type {string} */ url, /** @type {any} */ init) => {
-            sent.push({ url, body: JSON.parse(init.body) });
+            // The WHOLE request. Capturing only url and body was the defect
+            // this helper used to carry: a field dropped here can never fail
+            // an assertion downstream, so the test read as a guarantee about
+            // the request while measuring a subset of it.
+            sent.push({ url, method: init.method, headers: init.headers, body: JSON.parse(init.body) });
             return { ok: status >= 200 && status < 300, status, json: async () => answer };
         };
         return { fetcher, sent };
@@ -530,6 +615,11 @@ describe('the key stays on the server side of the provider', () => {
             expect(sent).toHaveLength(1);
             expect(sent[0].url).toBe('/embed');
             expect(sent[0].body).toEqual({ kind: 'documents', texts: ['um', 'dois'] });
+            // The verb is contract, not style: `server.mjs` answers /embed on
+            // POST alone, so any other method falls through to the static
+            // server and comes back 404 — a failure that would surface as
+            // "the embedding route answered 404" with nothing pointing here.
+            expect(sent[0].method).toBe('POST');
         });
     });
 
@@ -540,12 +630,22 @@ describe('the key stays on the server side of the provider', () => {
         return expect(p.embedQuery('pergunta')).rejects.toThrow('429');
     });
 
-    it('never puts a key in what it sends', () => {
+    it('sends exactly one header and two fields, so a key has nowhere to ride', () => {
+        // An ALLOWLIST, because a denial list only catches what someone
+        // remembered to forbid: `/key|token|secret/i` misses
+        // `Authorization: Bearer ...`, which is the commonest shape of all.
+        // Enumerating what may travel fails on anything new, named or not.
+        //
+        // What this does NOT prove, said plainly because the case is named
+        // after a guarantee: there is no key in this function's scope to leak.
+        // The guarantee lives in `server.mjs`, which holds the key and answers
+        // /provider with the shape and never with it.
         const { fetcher, sent } = fakeRoute({ vectors: [[1]] });
         const p = remoteProvider({ id: 'x', dimensions: 1, maxInputCodePoints: 100, modalities: ['text'] }, fetcher);
 
         return p.embedQuery('pergunta').then(() => {
-            expect(JSON.stringify(sent[0])).not.toMatch(/key|token|secret/i);
+            expect(Object.keys(sent[0].headers)).toEqual(['content-type']);
+            expect(Object.keys(sent[0].body).sort()).toEqual(['kind', 'text']);
         });
     });
 });
@@ -616,7 +716,7 @@ describe('the bench indexes what was pasted', () => {
         const index = buildLexicalIndex([doc]);
         const hits = index.searchLexical('prazo manifestacao');
 
-        expect(hits.length).toBeGreaterThan(0);
+        expect(hits).toHaveLength(1);
         expect(hits[0]?.chunk.documentId).toBe('pasted');
     });
 
