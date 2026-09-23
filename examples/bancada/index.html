@@ -15,10 +15,11 @@
   `app.js`. The React it expected went with it: the template is HTML, and HTML
   is what a browser already runs.
 
-  WHAT THIS PAGE FETCHES, stated because the bench is about exactly this: two
-  stylesheets of fonts from Google on every load, and pdf.js from a CDN the
-  first time a PDF is dropped. Neither carries a word of anybody's document —
-  they are requests for typefaces and for a library. Your documents are read in
+  WHAT THIS PAGE FETCHES, stated because the bench is about exactly this: one
+  stylesheet from `fonts.googleapis.com` on every load and the font files it
+  pulls from `fonts.gstatic.com`, plus pdf.js from a CDN the first time a PDF
+  is opened. None of the three carries a word of anybody's document: they are
+  requests for typefaces and for a library. Your documents are read in
   this tab and indexed in it; with a key in `.env` the excerpts a question needs
   go to the provider you configured, through this page's own server, and only
   while the "Compare by meaning" switch is on.

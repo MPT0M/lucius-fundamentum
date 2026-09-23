@@ -374,8 +374,11 @@ export function bind(root, component) {
                 });
             }
             // `style-hover` is literal CSS, not a binding: the markup carries
-            // thirteen of them and nothing here read one, so thirteen controls
-            // did not answer the pointer. It cannot be a stylesheet rule
+            // one on most of its controls and nothing here read them, so those
+            // controls did not answer the pointer at all — the count is left
+            // out because it already went stale once, when a button carrying
+            // one was removed and this line went on saying thirteen. It cannot
+            // be a stylesheet rule
             // because these elements are styled inline and an inline
             // declaration beats a class; it is applied and removed by hand for
             // the same reason. The declarations it removes are exactly the

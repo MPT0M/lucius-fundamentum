@@ -241,7 +241,15 @@ async function takePdf(file) {
     }
 }
 
-/** @param {FileList | null} files */
+/**
+ * Both shapes, because both arrive. The drop target hands a `FileList`;
+ * the shelf's picker hands an array, because it copies the selection before
+ * clearing the field. **Nothing here would catch the annotation being wrong**
+ * — the only caller reaches this through the component, which is `@ts-nocheck`
+ * — so it is written to match what the function actually accepts.
+ *
+ * @param {readonly File[] | FileList | null} files
+ */
 async function take(files) {
     const list = [...(files ?? [])];
     const refused = list.filter((f) => !looksReadable(f.name) && !isPdf(f.name));
@@ -701,7 +709,7 @@ wired.report = say;
 wired.dropDoc = dropDoc;
 // The shelf's own way in. Dropping on the page always worked and nothing on
 // screen said so, so this is the path most people will use.
-wired.takeFiles = (/** @type {FileList} */ files) =>
+wired.takeFiles = (/** @type {readonly File[] | FileList} */ files) =>
     void take(files).catch((error) => say(error instanceof Error ? error.message : String(error)));
 wired.regroundForMode = regroundForMode;
 wired.redrawBody = redrawBody;
