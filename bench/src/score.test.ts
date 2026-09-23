@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import {
     scoreResponse,
     DEFAULT_CITATION_OVERLAP_THRESHOLD,
+    PASSAGE_CLASSES,
     type CitationCandidate,
     type CitationSource,
     type LabeledFixture,
@@ -305,7 +306,8 @@ describe('scoreResponse — passages are classified by coverage, not presence', 
         const r = score([cite(S0, [exact('A', 0, 23)])]);
         expect(r.scoredClassMass.formula).toBeCloseTo(3 / 23, 10);
         expect(r.scoredClassMass.plain).toBeCloseTo(20 / 23, 10);
-        expect(r.scoredClassMass.code + r.scoredClassMass.url + r.scoredClassMass.abbreviation).toBe(0);
+        const others = PASSAGE_CLASSES.filter((k) => k !== 'formula' && k !== 'plain');
+        expect(others.reduce((sum, k) => sum + r.scoredClassMass[k], 0)).toBe(0);
     });
 
     it('gold spans are classified against the document and counted per class', () => {

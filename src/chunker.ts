@@ -7,10 +7,11 @@
  * covers, so a citation can point at the character and not at the page.
  *
  * Boundaries fall on sentence ends, never inside a sentence, and never inside
- * a formula, a code span, a URL, or right after an abbreviation: those regions
- * are masked before the segmenter sees the text (see `mask.ts`), and the mask
- * is length-preserving, so every position the segmenter reports on the masked
- * text is a valid position on the original. `Chunk.text` is always cut from
+ * a formula, a code span, a URL, the period numbering a list item, or right
+ * after an abbreviation: those regions are masked before the segmenter sees
+ * the text (see `mask.ts`), and the mask is length-preserving, so every
+ * position the segmenter reports on the masked text is a valid position on
+ * the original. `Chunk.text` is always cut from
  * the ORIGINAL — a chunk never carries a mask character.
  */
 

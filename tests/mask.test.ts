@@ -122,11 +122,52 @@ describe('maskProtectedRegions — abbreviations come last', () => {
 });
 
 describe('maskProtectedRegions — every region says which pass painted it', () => {
-    it('code, URL, formula and abbreviation each come back with their own kind', () => {
-        const text = 'Veja `a.b`, https://x.y/z, $x^2$ e o Dr. Silva.';
+    it('code, URL, formula, enumerator and abbreviation each come back with their own kind', () => {
+        const text = '1. Veja `a.b`, https://x.y/z, $x^2$ e o Dr. Silva.';
         const { spans } = maskProtectedRegions(text);
-        expect(spans.map((s) => s.kind)).toEqual(['code', 'url', 'formula', 'abbreviation']);
-        expect(spans.map((s) => at(text, s))).toEqual(['`a.b`', 'https://x.y/z', '$x^2$', '.']);
+        expect(spans.map((s) => s.kind)).toEqual(['enumerator', 'code', 'url', 'formula', 'abbreviation']);
+        expect(spans.map((s) => at(text, s))).toEqual(['.', '`a.b`', 'https://x.y/z', '$x^2$', '.']);
+    });
+
+    it('an enumerator masks the period and leaves the number indexable', () => {
+        // The numeral is real content. A region covering it would make
+        // `classMassOf` report ordinary text as non-`plain`, and the digits
+        // would stop being searchable. One code point is all the segmenter
+        // needs taken away from it.
+        const { spans } = maskProtectedRegions('1. Primeiro');
+        expect(spans).toEqual([{ start: 1, end: 2, kind: 'enumerator' }]);
+    });
+
+    it('a number inside a fenced block gets no enumerator region', () => {
+        // THE TEST THAT FALSIFIES THE PASS ORDER, and the only one that does.
+        // The enumerator pass runs AFTER code, and its defence is that `paint`
+        // overwrites every code point of a region, newlines included — so a
+        // `1.` inside a fence has no line start left to anchor to. Run this
+        // pass before code and the region appears, the fenced block is then
+        // skipped for overlapping it, and no other test in this suite goes
+        // red.
+        const { spans } = maskProtectedRegions('```\n1. nao e lista\n```');
+        expect(spans.map((s) => s.kind)).toEqual(['code']);
+    });
+
+    it('a number mid-sentence is not an enumerator', () => {
+        // The anchor is what keeps the debt small: only a line start counts.
+        expect(maskProtectedRegions('Em 1985. O ano virou.').spans).toEqual([]);
+    });
+
+    it('a number opening a line gets an enumerator region even when no list follows', () => {
+        // The span the debt is made of. What the debt COSTS is behaviour, and is
+        // pinned in `tests/sentences.test.ts`; this shows only that the pass does
+        // not ask whether a list follows the number.
+        expect(maskProtectedRegions('1985. O ano virou.').spans)
+            .toEqual([{ start: 4, end: 5, kind: 'enumerator' }]);
+    });
+
+    it('a roman numeral opening a line is an abbreviation, not an enumerator', () => {
+        // The pass is digits only. If it widened to roman numerals it would paint
+        // this period first and the kind would flip, while every behavioural test
+        // stayed green — the masked text is the same either way.
+        expect(maskProtectedRegions('I. Um').spans.map((s) => s.kind)).toEqual(['abbreviation']);
     });
 
     it('a fenced block and an inline span are both "code"', () => {

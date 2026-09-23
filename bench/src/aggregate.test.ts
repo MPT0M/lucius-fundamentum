@@ -149,7 +149,7 @@ describe('aggregateRun — sums, never rates, until here', () => {
     });
 });
 
-describe('aggregateRun — the class table is four mean fractions and one ratio', () => {
+describe('aggregateRun — the class table is one mean fraction per class and one ratio', () => {
     it('each column divides the summed mass by its own population', () => {
         const r = report({
             citationsScored: 2,

@@ -1,10 +1,10 @@
 /**
- * Every region a sentence cut must not enter: formulas, code, URLs, and the
- * period after an abbreviation.
+ * Every region a sentence cut must not enter: formulas, code, URLs, the period
+ * of a numbered list item, and the period after an abbreviation.
  *
  * `math.ts` protects formulas. This module applies the same rule — replace the
  * region with a run of the mask character of identical code point length,
- * return the spans — to the three other kinds of text that carry sentence-like
+ * return the spans — to the four other kinds of text that carry sentence-like
  * punctuation inside them and mean something different if cut:
  *
  *   - code, fenced or inline: `obj.method()` has a period a segmenter will
@@ -12,6 +12,9 @@
  *     two half-blocks that neither render nor index as code;
  *   - URLs: `https://example.com/a.b` is one token to a reader and three
  *     sentences to a naive segmenter;
+ *   - the period numbering a list item: `1. Um` at the start of a line is one
+ *     item, and a segmenter that reads the period as a terminator returns the
+ *     numeral by itself as a sentence;
  *   - the period after an abbreviation: `Dr. Silva` is one name, and the
  *     period alone is masked (see `abbreviations.ts`).
  *
@@ -21,10 +24,12 @@
  * the raw text, and only then is `maskFormulas` run — on text where any `$`
  * inside code has already become a mask character and cannot match. Running
  * formulas first would claim a span inside the code block, and the block's own
- * span would then be skipped as overlapping. Abbreviations come FOURTH and
- * last, for the same reason one step further: `Dr.` inside a code block is
- * code and the period of `example.com` is a URL's, and by then both are mask
- * characters that no word pattern can match.
+ * span would then be skipped as overlapping. Enumerators come FOURTH, for a
+ * reason of the same family that needs no overlap check: `paint` overwrites
+ * newlines too, so a `1.` inside a fenced block has lost the line start it
+ * would anchor to. Abbreviations come FIFTH and last, one step further still:
+ * `Dr.` inside a code block is code and the period of `example.com` is a
+ * URL's, and by then both are mask characters that no word pattern can match.
  *
  * One exception to "a later pass cannot match inside an earlier region": a
  * URL stops at `$` and leaves that `$` in the text, and the formula pattern
@@ -66,6 +71,31 @@ const INLINE_CODE = /`[^`\n]+`/g;
 const URL = /https?:\/\/[^\s<>"'\])$`\uE000]+/g;
 const URL_TRAILING = /[.,;:!?]+$/u;
 
+/**
+ * The period of a numbered list item, anchored to the start of a line.
+ *
+ * `Intl.Segmenter` obeys UAX #29, where `.` is `Sentence_Terminal`, so
+ * `1. Um\n2. Dois` segments into FOUR units — `1.`, `Um`, `2.`, `Dois` — and
+ * half of them are a numeral alone. A twelve-item list becomes twenty-four
+ * units, and a citation that lands on one of them shows the reader a number
+ * and nothing else. `chunker.ts` documents what that already cost once, with
+ * the eight code points of `Art. 12.` cut away from the article they number.
+ *
+ * Roman numerals and letters do not have this problem and are not handled
+ * here: `PT_BR_ABBREVIATIONS.always` already carries I–XX and every single
+ * letter, and `a)` never terminated a sentence because `)` is `Pe`, which
+ * extends an existing terminator rather than being one. The digit is the
+ * whole hole.
+ *
+ * ANCHORED TO LINE START, which is what keeps the debt small: `1985.` in the
+ * middle of running prose still ends its sentence. What it does cost is
+ * declared — a line that opens with a number and a period, where that period
+ * really did end a sentence and the next one continues on the same line,
+ * comes back as one sentence instead of two. A number alone on its own line
+ * is unaffected: the newline is a sentence break of its own.
+ */
+const ENUMERATOR = /(?<=^[ \t]*)\d+\./gmu;
+
 /** Options of `maskProtectedRegions`; every field has a default. */
 export interface MaskOptions {
     /** Abbreviations whose period is hidden from the segmenter. Default: pt-BR list. */
@@ -76,7 +106,7 @@ export interface MaskOptions {
  * The kind of region a span was painted by. One value per pass of
  * `maskProtectedRegions`, in the order the passes run.
  */
-export type ProtectedRegionKind = 'code' | 'url' | 'formula' | 'abbreviation';
+export type ProtectedRegionKind = 'code' | 'url' | 'formula' | 'enumerator' | 'abbreviation';
 
 /**
  * A protected span that says which pass painted it. Structurally a `Span` — a
@@ -89,7 +119,8 @@ export type ProtectedSpan = Span & { readonly kind: ProtectedRegionKind };
  * `MaskResult` whose spans carry their kind. Narrower than `MaskResult`, never
  * wider: the only thing added is `kind`. It exists because a consumer that
  * measures HOW MUCH of an interval falls inside code, inside a URL, inside a
- * formula or on an abbreviation period cannot do so from an anonymous list of
+ * formula, on a list item's number or on an abbreviation period cannot do so
+ * from an anonymous list of
  * spans — and the passes already know, so the information is free to report.
  */
 export interface ClassifiedMaskResult extends MaskResult {
@@ -97,10 +128,11 @@ export interface ClassifiedMaskResult extends MaskResult {
 }
 
 /**
- * Masks code and URLs first, then formulas, then abbreviation periods, and
- * reports every region with the kind of the pass that painted it. Same
- * contract as `maskFormulas`: `countCodePoints(text) === countCodePoints(result.text)`,
- * spans in order, non-overlapping, delimiters included (for an abbreviation
+ * Masks code and URLs first, then formulas, then enumerator periods, then
+ * abbreviation periods, and reports every region with the kind of the pass
+ * that painted it. Same contract as `maskFormulas`:
+ * `countCodePoints(text) === countCodePoints(result.text)`, spans in order,
+ * non-overlapping, delimiters included (for an abbreviation or an enumerator
  * the region is the period alone).
  */
 export function maskProtectedRegions(text: string, opts: MaskOptions = {}): ClassifiedMaskResult {
@@ -130,6 +162,22 @@ export function maskProtectedRegions(text: string, opts: MaskOptions = {}): Clas
     const formulas = maskFormulas(masked).spans.filter((s) => !overlapsAny(s, regions));
     regions.push(...withKind(formulas, 'formula'));
     masked = paint(masked, formulas);
+
+    // Enumerators go AFTER code, and the order is the whole defence of the
+    // anchor: `paint` overwrites every code point of a region, newlines
+    // included, so a `1.` inside a fenced block no longer has a line start to
+    // anchor to by the time this pass runs. The anchor protects itself, with
+    // no overlap check needed for that case.
+    //
+    // Only the PERIOD is painted, never the digits. The numeral is real
+    // content — `classMassOf` would report ordinary text as non-`plain` if a
+    // region covered it — and masking one code point is enough: the segmenter
+    // needs the terminator gone, not the number hidden.
+    const enumerators = matchSpans(masked, ENUMERATOR)
+        .map((s) => ({ start: s.end - 1, end: s.end }))
+        .filter((s) => !overlapsAny(s, regions));
+    regions.push(...withKind(enumerators, 'enumerator'));
+    masked = paint(masked, enumerators);
 
     // Abbreviations go LAST, on text where code, URLs and formulas are already
     // mask characters: a `Dr.` inside a code block is code, and the period of

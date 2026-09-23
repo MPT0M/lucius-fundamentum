@@ -24,11 +24,11 @@ citation in the right place, so does everything else.
 **Positions and slicing.** `countCodePoints`, `sliceByCodePoints`,
 `normalizeUnicode` — count, cut and normalize without letting a position slip.
 
-**Length-preserving masking.** LaTeX formulas, code spans, URLs and abbreviation
-periods are masked before the segmenter sees the text. Because the mask is the
-same length as what it covers, every position the segmenter reports on the
-masked text is a valid position on the original. This is the core idea of the
-package.
+**Length-preserving masking.** LaTeX formulas, code spans, URLs, numbered-list
+periods and abbreviation periods are masked before the segmenter sees the
+text. Because the mask is the same length as what it covers, every position
+the segmenter reports on the masked text is a valid position on the original.
+This is the core idea of the package.
 
 **Portuguese abbreviations.** `PT_BR_ABBREVIATIONS` and
 `maskAbbreviationPeriods`, so that "Dr." and "art." do not become sentence ends.
@@ -41,10 +41,11 @@ cannot be compared with another one.
 
 **Chunking.** `chunk()` cuts a document into pieces that know exactly where they
 came from. Boundaries always fall on sentence ends — never inside a formula, a
-code span, a URL, or right after an abbreviation. Each chunk carries its `span`
-in the source text, and the chunk's text is cut from the original, never from
-the masked version. Overlap is configurable in whole sentences, so a fact
-straddling a boundary stays findable from both sides.
+code span, a URL, on the period numbering a list item, or right after an
+abbreviation. Each chunk carries its `span` in the source text, and the chunk's
+text is cut from the original, never from the masked version. Overlap is
+configurable in whole sentences, so a fact straddling a boundary stays
+findable from both sides.
 
 `Span` has `start` and `end` always present, with no optional and no default: a
 citation opening at offset zero is the most common one there is, and a format
@@ -225,10 +226,11 @@ computed from, so that anyone can compute them again and disagree.
 
 ### What this round does not cover
 
-One book, one language, one day, one model. The ruler recognises four kinds of
-protected region — code, URLs, formulas, abbreviations — and this corpus
-exercises one: 99.9% of the gold is ordinary prose, because Machado de Assis
-wrote no source listings and no equations. Twelve claims carry no gold on
+One book, one language, one day, one model. The ruler recognised four kinds
+of protected region when this round ran — code, URLs, formulas,
+abbreviations — and this corpus exercises one: 99.9% of the gold is ordinary
+prose, because Machado de Assis wrote no source listings and no equations.
+Twelve claims carry no gold on
 purpose, because the book does not support them. Each of those is a judgement,
 and the labels are published so that it can be contested.
 

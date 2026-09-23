@@ -43,7 +43,8 @@ export function defaultSegmenter(): Segmenter {
 
 /**
  * Sentence spans of `text`, in code points, computed on the MASKED text so no
- * boundary can land inside a formula, code, URL or after an abbreviation.
+ * boundary can land inside a formula, code, URL, on the period of a numbered
+ * list item, or after an abbreviation.
  * Because the mask preserves length, the spans are valid on the original.
  *
  * The spans are relative to `text`. A caller holding a fragment of a larger

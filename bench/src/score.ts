@@ -45,7 +45,7 @@
  * document's regions, which arrive ready-made in the corpus. A snippet that
  * was not located has no position, so it is measured against its own regions
  * — the one piece of masking this module does itself, and the weakest of the
- * four columns, since the snippet may be the altered text.
+ * class columns, since the snippet may be the altered text.
  *
  * ASSUMED of the caller: every span in the fixture and in the located sources
  * has `end > start`. The fixture schema enforces it for gold and text spans;
@@ -71,7 +71,7 @@ export type PassageClass = ProtectedSpan['kind'] | 'plain';
  * package fails the typecheck here — and `PASSAGE_CLASSES` is derived from
  * it, so the list cannot fall behind the type while still compiling.
  */
-const EMPTY_MASS: ClassMass = { code: 0, url: 0, formula: 0, abbreviation: 0, plain: 0 };
+const EMPTY_MASS: ClassMass = { code: 0, url: 0, formula: 0, enumerator: 0, abbreviation: 0, plain: 0 };
 export const PASSAGE_CLASSES: readonly PassageClass[] = Object.keys(EMPTY_MASS) as PassageClass[];
 
 export interface CitationSource {

@@ -787,6 +787,39 @@ That rule governs changes made FROM the first release onward, so entries under
 
 ### Fixed
 
+- **A numbered list item is one sentence, not the number and then the text.**
+  `Intl.Segmenter` follows UAX #29, where `.` terminates a sentence, so
+  `1. Um\n2. Dois\n3. Tres` came back as six units — `1.`, `Um`, `2.`,
+  `Dois`, `3.`, `Tres` — and half of them were a numeral alone. A citation
+  that landed on one showed the reader a number and nothing else.
+  `maskProtectedRegions` gains a fifth pass, `enumerator`, that masks the
+  period of a run of digits anchored to the start of a line. It runs after
+  code, URLs and formulas and before abbreviations, and that order is its own
+  defence: `paint` overwrites newlines too, so a `1.` inside a fenced block
+  has no line start left to anchor to. Only the period is masked; the digits
+  stay indexable and count as plain text.
+
+  Roman numerals and letter items never had the problem and do not change:
+  the abbreviation list already carries I–XX and every single letter, and
+  `)` extends a terminator rather than being one.
+
+  `ProtectedRegionKind` gains `'enumerator'`. Code that is exhaustive over the
+  union — a `switch` over every kind, a `Record<ProtectedRegionKind, …>` —
+  stops compiling, which is how `bench/src/score.ts` noticed; its `ClassMass`
+  now carries a sixth class.
+
+  **The debt, stated here:** a line that opens with a number and a period,
+  where that period really did end a sentence and the next one continues on
+  the same line — `1985. O ano virou.` — comes back as one sentence instead
+  of two. A number in running prose still ends its sentence, and a number
+  alone on its own line is unaffected, because a newline is a sentence break
+  of its own. The cost and the running-prose control are both pinned by
+  tests.
+
+  The two reports in `bench/reports/` were not regenerated. They measure the
+  code of the September round, which had no such class to report; the column
+  appears from the next round onward.
+
 - **Saving an index loaded without a provider no longer deletes its vectors.**
   `serialize` wrote the dense section from what the process had LOADED, and an
   index loaded without a provider loads none — so a round trip through a
@@ -842,7 +875,8 @@ That rule governs changes made FROM the first release onward, so entries under
   URL passes always did, so the spans stay disjoint when a `$` before a URL
   meets the `$` the URL released.
 - `maskProtectedRegions` now returns a `ClassifiedMaskResult`: every span
-  carries `kind` (`'code' | 'url' | 'formula' | 'abbreviation'`), the pass that
+  carries `kind` (`'code' | 'url' | 'formula' | 'abbreviation'`; `'enumerator'`
+  joined later), the pass that
   painted it. `ClassifiedMaskResult` is a subtype of `MaskResult` — nothing was
   removed and no position changed — so code that reads `start`/`end`, or
   assigns the result to a `MaskResult`, keeps compiling and behaving the same.

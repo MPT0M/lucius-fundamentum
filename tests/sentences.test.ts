@@ -43,6 +43,49 @@ describe('sentencesOf — the boundary the chunker and the attributor share', ()
     });
 });
 
+describe('sentencesOf — a numbered list is items, not numbers and leftovers', () => {
+    it('a numbered item is one sentence, not the number and then the text', () => {
+        // THE DEFECT THIS COVERS, measured on the real path before the fix:
+        // `1. Um\n2. Dois\n3. Tres` came back as SIX units — "1.", "Um",
+        // "2.", "Dois", "3.", "Tres" — half of them a numeral alone. A
+        // citation landing on one showed the reader a number and nothing
+        // else, and `chunker.ts` documents the same shape costing a real
+        // search result once already.
+        expect(texts('1. Um\n2. Dois\n3. Tres')).toEqual(['1. Um', '2. Dois', '3. Tres']);
+    });
+
+    it('roman numerals and letter items were never the defect and do not change', () => {
+        // The control for the case above. These two pass for reasons that
+        // predate this fix — `PT_BR_ABBREVIATIONS.always` carries I–XX and
+        // every single letter, and `)` is `Pe`, which extends a terminator
+        // rather than being one — so what this pins is the OUTPUT, not the
+        // pass behind it. Widening the enumerator to roman numerals would
+        // repaint the same period before the abbreviation pass runs, leave the
+        // masked text identical, and leave these three unchanged.
+        // `tests/mask.test.ts` pins the `kind`, which is where that widening
+        // does show.
+        expect(texts('I. Um\nII. Dois\nIII. Tres')).toEqual(['I. Um', 'II. Dois', 'III. Tres']);
+        expect(texts('a) Um\nb) Dois\nc) Tres')).toEqual(['a) Um', 'b) Dois', 'c) Tres']);
+    });
+
+    it('a number in running prose still ends its sentence', () => {
+        // The anchor is the whole reason the debt stays small: only a line
+        // start counts as an enumerator. Without this the fix would swallow
+        // every year, price and measurement that ends a sentence.
+        expect(texts('Em 1985. O ano virou.')).toEqual(['Em 1985.', 'O ano virou.']);
+    });
+
+    it('a year opening a line stops ending its sentence, and that is the declared debt', () => {
+        // The cost of anchoring to the line start, as behaviour. Before the
+        // enumerator pass these were two sentences.
+        // `'1985.\nO ano virou.'` is NOT the shape that pays: a newline is a
+        // sentence break of its own under UAX #29, so the cut lands in the same
+        // place whether the period is masked or not. The text has to continue on
+        // the SAME line for anything to be lost.
+        expect(texts('1985. O ano virou.')).toEqual(['1985. O ano virou.']);
+    });
+});
+
 describe('trimmedSpan — the bound is the sentence, not what surrounds it', () => {
     it('a segment that is only whitespace produces no sentence', () => {
         expect(trimmedSpan('   \n\t ', 0)).toBeNull();
