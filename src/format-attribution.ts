@@ -52,13 +52,41 @@ import type { Attribution, AttributionSpan } from './attribute.js';
  *
  * `rungs` does not travel: it is what the ruler reads, not what the page shows.
  */
-export interface FormattedAttribution {
+export interface FormattedAttribution<T extends CarriedSpan = CarriedSpan> {
     readonly text: string;
     readonly spans: readonly AttributionSpan[];
     readonly sources: readonly SearchResult[];
+    /**
+     * `opts.carry`, in the coordinates of `text`: the same entries, in the same
+     * order, with only `start` and `end` replaced. Empty when nothing was
+     * asked for.
+     */
+    readonly carried: readonly T[];
 }
 
-export interface FormatOptions {
+/**
+ * A stretch of the ANSWER — not of a source document — that the caller needs
+ * moved through the markers along with the spans: style ranges, syntax
+ * removed before the text was marked, anything positioned on it beforehand.
+ *
+ * **A whole line is the one thing not to carry.** A marker written at the
+ * very end of a line lands exactly at the stretch's `end`, which does not
+ * count it, so the line comes back without the marker that belongs to it. A
+ * consumer that needs lines matches them by line number, which no insertion
+ * moves, because no marker holds a newline.
+ *
+ * `attach` matters only when `start === end`, and it is required there. A
+ * point has no inside for a marker to fall into, so something has to say which
+ * side of an insertion at that point it lands on: `'left'` keeps it before the
+ * marker, `'right'` puts it after. The name describes where the POINT goes,
+ * not where the marker goes — the two are inverse, and reading one as the
+ * other puts a delimiter on the wrong side of `[1]` without any symptom.
+ */
+export interface CarriedSpan extends Span {
+    readonly attach?: 'left' | 'right';
+}
+
+export interface FormatOptions<T extends CarriedSpan = CarriedSpan> {
     /**
      * A marker is written BEFORE the clause's trailing punctuation, preceded
      * by a space, and a second marker at the same anchor is joined with `, `:
@@ -86,6 +114,34 @@ export interface FormatOptions {
      * needs is in `sources` and `spans`, not in the text.
      */
     readonly markerStyle?: 'interactive' | 'bracket' | 'none';
+
+    /**
+     * Stretches of the answer to move through the markers, returned as
+     * `carried`. The arithmetic of the move lives here and nowhere else, so a
+     * caller that styles or annotates the answer never recounts marker widths.
+     *
+     * **The two ends of a stretch move by different rules.** An insertion at
+     * P sits BEFORE the code point at P in the marked text. So `start` counts
+     * insertions at `offset <= start` — a stretch that begins at P begins
+     * after the marker — and `end`, being exclusive, counts `offset < end` —
+     * a stretch that ends at P ends before it. A stretch that crosses P comes
+     * back containing the marker; one that only touches it, on either side,
+     * never swallows it.
+     *
+     * **A point (`start === end`) uses its `attach` at both ends.** The two-end
+     * rule would invert it — `start` would pass the marker and `end` would
+     * not, leaving `end < start`. `'left'` counts `<` at both ends, `'right'`
+     * counts `<=`. A point without `attach` is refused, since either answer
+     * would be a guess the caller cannot see.
+     *
+     * **Entries that land on the same position keep their order.** `carried`
+     * is `carry` mapped, never re-sorted, and a caller may depend on that —
+     * two removed delimiters at one point are restored in the order they had.
+     *
+     * This is NOT the rule `spans` are moved by. Those use `<` at both ends,
+     * and that is correct for them: see `shiftSpan`.
+     */
+    readonly carry?: readonly T[];
 }
 
 /** One marker to be written into the text: what, and where. */
@@ -96,10 +152,10 @@ interface Insertion {
     readonly sourceIndex: number;
 }
 
-export function formatAttribution(
+export function formatAttribution<T extends CarriedSpan = CarriedSpan>(
     attribution: Attribution,
-    opts: FormatOptions = {},
-): FormattedAttribution {
+    opts: FormatOptions<T> = {},
+): FormattedAttribution<T> {
     const markerStyle = opts.markerStyle ?? 'interactive';
 
     // 1. NUMBER, before anything is built. The width of a marker depends on the
@@ -172,9 +228,21 @@ export function formatAttribution(
         sourceSpan: span.sourceSpan,
     }));
 
+    // The same count with `<=`, for the one place `<` is wrong: the start of a
+    // carried stretch, and a point attached to the right.
+    const shiftPast = (position: number): number => {
+        let total = position;
+        for (const insertion of insertions) {
+            if (insertion.offset <= position) total += countCodePoints(insertion.text);
+        }
+        return total;
+    };
+
+    const carried = (opts.carry ?? []).map((entry) => carryThrough(entry, shift, shiftPast));
+
     const text = writeMarkers(attribution.text, insertions);
 
-    return { text, spans, sources: attribution.sources };
+    return { text, spans, sources: attribution.sources, carried };
 }
 
 /**
@@ -200,8 +268,40 @@ function marker(style: 'interactive' | 'bracket', sourceIndex: number): string {
     return style === 'bracket' ? `[${number}]` : `[${number}](#cite-${sourceIndex})`;
 }
 
+/**
+ * `<` at BOTH ends, which a carried stretch must not use and a clause may.
+ *
+ * The start of a clause can never coincide with an insertion: markers go at
+ * `anchorOffset`, and `recedeAnchor` places that strictly after the clause's
+ * start — it walks back from the end and returns the end itself if it reaches
+ * the start. So the rule that would be wrong at a start is never exercised
+ * here. Unifying this with `carryThrough` would look like a cleanup and would
+ * change nothing for spans; the reverse, giving carried stretches this rule,
+ * is the defect `carryThrough` exists to avoid.
+ */
 function shiftSpan(span: Span, shift: (p: number) => number): Span {
     return { start: shift(span.start), end: shift(span.end) };
+}
+
+/** One entry of `carry` through the markers, by the rule `FormatOptions.carry` states. */
+function carryThrough<T extends CarriedSpan>(
+    entry: T,
+    shift: (p: number) => number,
+    shiftPast: (p: number) => number,
+): T {
+    if (entry.end < entry.start) {
+        throw new RangeError(`carry: entry ends before it starts (start ${entry.start}, end ${entry.end})`);
+    }
+    if (entry.end > entry.start) {
+        return { ...entry, start: shiftPast(entry.start), end: shift(entry.end) };
+    }
+    if (entry.attach === undefined) {
+        throw new RangeError(
+            `carry: a point at ${entry.start} needs \`attach\` — nothing else says which side of a marker it lands on`,
+        );
+    }
+    const at = entry.attach === 'left' ? shift(entry.start) : shiftPast(entry.start);
+    return { ...entry, start: at, end: at };
 }
 
 /** Writes the markers in, working in code points because every offset is one. */

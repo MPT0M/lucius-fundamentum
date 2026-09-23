@@ -185,3 +185,123 @@ describe('formatAttribution — the marker axis, and what rides alongside it', (
         expect(out.sources).toBe(sources);
     });
 });
+
+describe('formatAttribution — carry moves stretches of the answer through the markers', () => {
+    // `Uma frase. Outra.` with one citation anchored before the first period:
+    // the marker ` [1]`, four code points, goes in at 9, so P = 9 and w = 4.
+    //
+    //   clean:   U m a _ f r a s e . _ O u t r a .
+    //            0 1 2 3 4 5 6 7 8 9 ...
+    //   marked:  `Uma frase [1]. Outra.`
+    const TEXT = 'Uma frase. Outra.';
+    const P = 9;
+    const at = (text: string, s: { start: number; end: number }) =>
+        Array.from(text).slice(s.start, s.end).join('');
+    const carry = <T extends { start: number; end: number; attach?: 'left' | 'right' }>(entries: T[]) => {
+        const out = formatAttribution(attribution(TEXT, [span(P, 'doc#0')], [result('doc#0', 'doc', 1)]), {
+            markerStyle: 'bracket',
+            carry: entries,
+        });
+        // No entry may come back inverted, in any test here. This is the
+        // defect a point would have under the two-end rule.
+        for (const c of out.carried) expect(c.end).toBeGreaterThanOrEqual(c.start);
+        return out;
+    };
+
+    it('the marked text is the one the offsets below are counted against', () => {
+        expect(carry([]).text).toBe('Uma frase [1]. Outra.');
+    });
+
+    it('a stretch before the marker does not move', () => {
+        const out = carry([{ start: 0, end: 3 }]);
+        expect(at(out.text, out.carried[0]!)).toBe('Uma');
+    });
+
+    it('a stretch after the marker moves by its width', () => {
+        const out = carry([{ start: 11, end: 16 }]);
+        expect(out.carried[0]).toEqual({ start: 15, end: 20 });
+        expect(at(out.text, out.carried[0]!)).toBe('Outra');
+    });
+
+    it('a stretch that crosses the marker comes back containing it', () => {
+        const out = carry([{ start: 4, end: 10 }]);
+        expect(at(out.text, out.carried[0]!)).toBe('frase [1].');
+    });
+
+    it('a stretch that ends where the marker goes ends before it', () => {
+        const out = carry([{ start: 4, end: P }]);
+        expect(at(out.text, out.carried[0]!)).toBe('frase');
+    });
+
+    it('a stretch that starts where the marker goes starts after it', () => {
+        // THE CASE THAT NEEDS `<=` AT THE START. Moved by the rule `spans` use,
+        // `<` at both ends, this stretch would start at 9 and come back as
+        // ` [1].` — a bold run that begins at an anchor would swallow the
+        // marker in front of it.
+        const out = carry([{ start: P, end: 10 }]);
+        expect(at(out.text, out.carried[0]!)).toBe('.');
+    });
+
+    it('a point lands on the side its attach names', () => {
+        const out = carry([
+            { start: P, end: P, attach: 'left' as const },
+            { start: P, end: P, attach: 'right' as const },
+        ]);
+        expect(out.carried.map((c) => c.start)).toEqual([P, P + 4]);
+        const marked = Array.from(out.text);
+        expect(marked.slice(0, out.carried[0]!.start).join('')).toBe('Uma frase');
+        expect(marked.slice(0, out.carried[1]!.start).join('')).toBe('Uma frase [1]');
+    });
+
+    it('entries that land on one point come back in the order they were given', () => {
+        // Two delimiters removed from the same place are restored in the order
+        // they had; `carried` is `carry` mapped, never re-sorted.
+        const out = carry([
+            { start: 0, end: 0, attach: 'right' as const, id: 'first' },
+            { start: 0, end: 0, attach: 'right' as const, id: 'second' },
+        ]);
+        expect(out.carried.map((c) => c.id)).toEqual(['first', 'second']);
+    });
+
+    it('the payload travels untouched and only the offsets change', () => {
+        const out = carry([{ start: 11, end: 16, kind: 'strong', level: 2 }]);
+        expect(out.carried[0]).toEqual({ start: 15, end: 20, kind: 'strong', level: 2 });
+    });
+
+    it('with no markers written, nothing carried moves', () => {
+        const entries = [{ start: 4, end: 10 }, { start: P, end: P, attach: 'right' as const }];
+        const out = formatAttribution(attribution(TEXT, [span(P, 'doc#0')], [result('doc#0', 'doc', 1)]), {
+            markerStyle: 'none',
+            carry: entries,
+        });
+        expect(out.carried).toEqual(entries);
+    });
+
+    it('asking for nothing returns an empty carried list', () => {
+        const out = formatAttribution(attribution(TEXT, [span(P, 'doc#0')], [result('doc#0', 'doc', 1)]));
+        expect(out.carried).toEqual([]);
+    });
+
+    it('refuses a stretch that ends before it starts', () => {
+        expect(() => carry([{ start: 5, end: 3 }])).toThrow(/ends before it starts/);
+    });
+
+    it('an astral character before the marker does not move a carried stretch by a unit', () => {
+        // The package positions in code points and JavaScript indexes in UTF-16
+        // units. `💡` is one code point and two units, so arithmetic written
+        // against `.length` puts every offset here one short.
+        const text = '💡 Uma frase. Outra.';
+        const anchor = 11;
+        const out = formatAttribution(
+            attribution(text, [span(anchor, 'doc#0')], [result('doc#0', 'doc', 1)]),
+            { markerStyle: 'bracket', carry: [{ start: 2, end: anchor }] },
+        );
+        expect(out.text).toBe('💡 Uma frase [1]. Outra.');
+        expect(at(out.text, out.carried[0]!)).toBe('Uma frase');
+    });
+
+    it('refuses a point that does not say which side it attaches to', () => {
+        // Either side would be a guess the caller could not see in the output.
+        expect(() => carry([{ start: P, end: P }])).toThrow(/needs `attach`/);
+    });
+});

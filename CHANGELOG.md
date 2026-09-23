@@ -155,6 +155,27 @@ That rule governs changes made FROM the first release onward, so entries under
 
 ### Added
 
+- **`formatAttribution` carries the caller's own stretches through the
+  markers.** `FormatOptions.carry` takes stretches of the answer — style
+  ranges, syntax removed before the text was marked, anything positioned on
+  it beforehand — and `FormattedAttribution.carried` returns them in the
+  coordinates of the marked text, with the payload untouched and the order
+  kept. The arithmetic of the move stays in one place, so a caller never
+  recounts marker widths. A whole LINE is the one thing not to carry: a
+  marker written at the very end of one lands exactly at the stretch's `end`,
+  which does not count it, so the line comes back without the marker that
+  belongs to it. Lines are matched by line number, which no insertion moves.
+
+  The two ends move by different rules, and this is not the rule `spans` use.
+  `start` counts insertions at `offset <= start` and `end` counts `offset <
+  end`, so a stretch that begins or ends exactly where a marker goes never
+  swallows it. A point (`start === end`) takes its side from `attach`, and a
+  point without one is refused. `spans` keep `<` at both ends, which is
+  correct for them: a clause never starts at an anchor. A caller that passes
+  no `carry` gets `carried: []` and nothing else changes; `carried` is a
+  required field of `FormattedAttribution`, so code that builds that type by
+  hand rather than from this function has one more property to supply.
+
 - **A bench you can run: `npm run example`.** The package had documentation and
   no way to try it. `examples/bancada/` is a page that starts empty — you paste
   your own text, index it and search it — served by a Node server with no
