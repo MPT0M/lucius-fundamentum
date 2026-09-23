@@ -149,6 +149,44 @@ export function documentFromFile(name, text) {
 }
 
 /**
+ * Every document the bench holds, whatever put it there.
+ *
+ * Three sources that do not overlap in time: files dropped this visit, the
+ * text typed into the page, and — after a reload — the texts restored from the
+ * cache. **The restored ones are the reason this exists as a rule rather than
+ * an expression written twice.** A reload repopulates the cache but not the
+ * list of dropped files, so a caller that reads only that list finds nothing
+ * and builds an empty corpus. The library accepts one: `createIndex([])` does
+ * not throw and a dense build over it skips the provider entirely, so what
+ * comes back reports itself ready while holding nothing — and saving that over
+ * a good artifact loses the corpus with no error anywhere.
+ *
+ * An id already present wins, so a document dropped this visit is not
+ * duplicated by its restored copy.
+ *
+ * @param {readonly SourceDoc[]} droppedThisVisit
+ * @param {ReadonlyMap<string, string>} restoredTexts
+ * @param {string} typedText
+ * @returns {SourceDoc[]}
+ */
+export function corpusFrom(droppedThisVisit, restoredTexts, typedText) {
+    /** @type {SourceDoc[]} */
+    const docs = [...droppedThisVisit];
+    const seen = new Set(docs.map((doc) => doc.id));
+
+    for (const [id, text] of restoredTexts) {
+        if (!seen.has(id) && text !== '') {
+            docs.push({ id, text });
+            seen.add(id);
+        }
+    }
+
+    const typed = typedText.trim();
+    if (typed !== '' && !seen.has('pasted')) docs.push(documentFromPastedText(typed, 'pasted'));
+    return docs;
+}
+
+/**
  * A provider that keeps the key on the other side of a socket.
  *
  * The browser sends text and receives vectors; the server holds the key and
@@ -460,13 +498,8 @@ export function rungSentence(counts) {
 /**
  * The answer with its markers written in, and the list they point at.
  *
- * `markerStyle: 'bracket'` because this is the plain-text rendering. Wiring a
- * marker to the viewer that opens a page is possible — the viewer exists — and
- * is NOT done: a marker would have to carry its index into `sources` through
- * `formatted.spans`, which is the coordinate space the paragraph below is
- * about. Said here because the shape of the debt is only visible from this
- * function.
- *
+ * `markerStyle: 'bracket'` because this is the plain-text rendering; the
+ * interactive marker belongs with the viewer that can open a page behind it.
  * The formatter returns its own `spans` rather than the engine's, and the
  * difference is not cosmetic: every offset here is reindexed past the markers
  * just inserted. Mixing the two coordinate spaces is the drift the formatter

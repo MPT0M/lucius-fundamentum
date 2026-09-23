@@ -26,6 +26,7 @@ import {
     pageToDocument,
     classifyLoadFailure,
     viewerFor,
+    corpusFrom,
     rungSentence,
     remoteProvider,
     buildDenseIndex,
@@ -128,9 +129,19 @@ async function askServerForProvider() {
  */
 async function doEmbed() {
     if (index === null || provider === null) return;
-    const docs = [...dropped];
-    const text = source.value.trim();
-    if (text !== '') docs.push(documentFromPastedText(text, 'pasted'));
+    const docs = corpusOnScreen();
+
+    // A restored index repopulates `docTexts` but not `dropped`, so without
+    // this the second visit embeds NOTHING: `createIndex([])` does not throw,
+    // `createDenseIndex` skips the provider call for an empty corpus, and what
+    // comes back reports `ready` while holding nothing. It would then be saved
+    // over the good artifact. `corpusOnScreen` is what makes the dense arm
+    // reachable at all for a corpus that came from the cache, which is the
+    // ordinary case from the second visit onward.
+    if (docs.length === 0) {
+        say('Nothing to embed: index something first.');
+        return;
+    }
 
     must('embed-button').hidden = true;
     try {
@@ -166,11 +177,13 @@ async function showCacheSize() {
               'Approximate — the browser reports the whole origin, rounded.';
 }
 
+/** @returns {SourceDoc[]} */
+function corpusOnScreen() {
+    return corpusFrom(dropped, docTexts, source.value);
+}
+
 function doIndex() {
-    const text = source.value.trim();
-    /** @type {SourceDoc[]} */
-    const docs = [...dropped];
-    if (text !== '') docs.push(documentFromPastedText(text, 'pasted'));
+    const docs = corpusOnScreen();
 
     if (docs.length === 0) {
         say('Paste some text or drop a file first.');

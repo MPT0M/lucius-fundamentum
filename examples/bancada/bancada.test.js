@@ -32,6 +32,7 @@ import {
     hasUsableText,
     MIN_USABLE_LETTERS,
     classifyLoadFailure,
+    corpusFrom,
     rungSentence,
     highlightParts,
     viewerFor,
@@ -198,6 +199,40 @@ describe('the sentence the screen shows adds up', () => {
     it('keeps markers and vetoes out of the sum', () => {
         const sentence = rungSentence(read({ lexical: 4, dense: 0, unattributed: 1, vetoed: 2 }));
         expect(sentence).toContain('crosses the counts rather than adding to them');
+    });
+});
+
+describe('the corpus survives a reload', () => {
+    const restored = new Map([
+        ['lei.txt', 'O prazo para a manifestacao e de quinze dias corridos.'],
+        ['recursos.md', 'O recurso cabivel contra a decisao final e o agravo.'],
+    ]);
+
+    it('rebuilds from the restored texts when nothing was dropped this visit', () => {
+        // The defect: a reload repopulates the cache and not the drop list, so
+        // reading only the drop list yields an EMPTY corpus — which the
+        // library accepts, which a dense build turns into an index reporting
+        // itself ready while holding nothing, which then overwrites the good
+        // artifact. Empty is the dangerous answer here, not an edge case.
+        const docs = corpusFrom([], restored, '');
+
+        expect(docs).toHaveLength(2);
+        expect(docs.map((d) => d.id).sort()).toEqual(['lei.txt', 'recursos.md']);
+        expect(() => buildLexicalIndex(docs)).not.toThrow();
+        expect(buildLexicalIndex(docs).searchLexical('agravo')[0]?.chunk.documentId).toBe('recursos.md');
+    });
+
+    it('does not duplicate a document dropped again this visit', () => {
+        const dropped = [documentFromFile('lei.txt', 'texto novo desta visita')];
+        const docs = corpusFrom(dropped, restored, '');
+
+        expect(docs).toHaveLength(2);
+        expect(docs.find((d) => d.id === 'lei.txt')?.text).toBe('texto novo desta visita');
+    });
+
+    it('adds what was typed, and only once', () => {
+        expect(corpusFrom([], new Map(), 'texto colado')).toHaveLength(1);
+        expect(corpusFrom([], new Map(), '   ')).toHaveLength(0);
     });
 });
 
