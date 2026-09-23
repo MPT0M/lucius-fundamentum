@@ -35,7 +35,24 @@ import { relative, resolve, sep } from 'node:path';
  * @returns {string | null} an absolute path inside `root`, or null when refused
  */
 export function resolveInsideRoot(root, urlPath) {
-    const decoded = decodeURIComponent(urlPath.split('?')[0] ?? '/');
+    /** @type {string} */
+    let decoded;
+    try {
+        decoded = decodeURIComponent(urlPath.split('?')[0] ?? '/');
+    } catch {
+        // **A malformed escape is a third refusal, and it belongs here.**
+        // `decodeURIComponent('/%')` throws `URIError`, and the caller is an
+        // async request handler: the throw became an unhandled rejection and
+        // Node took the process down with it. Measured, not reasoned about —
+        // one `curl http://127.0.0.1:8123/%` and the next request to a good
+        // path answered nothing, because there was no longer a server.
+        //
+        // `null` rather than a re-throw because that is what this function
+        // already means by "not a page asset": deciding whether a string is a
+        // servable path is this file's job, and a string that is not a path at
+        // all is the easiest case of it.
+        return null;
+    }
     const target = resolve(root, `.${decoded}`);
     const rel = relative(root, target);
 

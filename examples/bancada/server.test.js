@@ -47,6 +47,24 @@ describe('the bench server hands out page assets and nothing else', () => {
     it('reads the path and not the query string', () => {
         expect(resolveInsideRoot(ROOT_DIR, '/examples/bancada/.env?x=1')).toBeNull();
     });
+
+    it('refuses a malformed escape instead of throwing', () => {
+        // The bug this covers took the whole bench down, and it was measured
+        // rather than argued: `curl http://127.0.0.1:8123/%` and the next
+        // request to a path that works answered nothing, because the process
+        // was gone. `decodeURIComponent` throws `URIError` on a half-written
+        // escape, the caller is an async handler, and an unhandled rejection
+        // ends the process in Node.
+        expect(resolveInsideRoot(ROOT_DIR, '/%')).toBeNull();
+        expect(resolveInsideRoot(ROOT_DIR, '/%zz')).toBeNull();
+        expect(resolveInsideRoot(ROOT_DIR, '/examples/bancada/%E0%A4%A')).toBeNull();
+    });
+
+    it('still decodes an escape that is well formed', () => {
+        // The control: returning null for everything encoded would pass the
+        // case above and stop serving any path with a space in it.
+        expect(resolveInsideRoot(ROOT_DIR, '/examples/bancada/a%20b.txt')).toContain('a b.txt');
+    });
 });
 
 describe('the page learns the provider shape and never the key', () => {
