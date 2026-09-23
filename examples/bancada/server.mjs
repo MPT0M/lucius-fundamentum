@@ -1,11 +1,13 @@
 /**
- * The only Node in this example, and the only file here allowed to import it.
+ * The Node half of this example: this file and `server-paths.mjs`, which are
+ * the only ones allowed to import `node:`.
  *
- * It exists for two reasons, and the second is the one that matters later. A
- * module script is subject to the same-origin rules, so the page wants an HTTP
- * origin rather than the filesystem; and from the commit that lights the dense
- * arm, this process is where the API key lives. The browser sends text and
- * receives vectors, and never sees the key.
+ * It exists for two reasons. A module script is subject to the same-origin
+ * rules, so the page wants an HTTP origin rather than the filesystem. And this
+ * process is where the API key lives: the browser sends text and receives
+ * vectors, and never sees the key — a guarantee that rests on
+ * `server-paths.mjs` refusing to serve the file the key is in, not on whatever
+ * the page happens to load being polite.
  *
  * Node's http module and nothing else: an example that starts by installing a
  * web framework teaches the framework, not the package.
@@ -14,9 +16,11 @@
 import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
 import { existsSync, readFileSync } from 'node:fs';
-import { extname, join, relative, resolve, sep } from 'node:path';
+import { extname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { geminiProvider, openAiProvider, qwenProvider } from '../../dist/index.js';
+import { resolveInsideRoot } from './server-paths.mjs';
+import { publicProviderShape } from './server-provider.mjs';
 
 const HERE = fileURLToPath(new URL('.', import.meta.url));
 // The document root is the repository, not this folder: the page loads the
@@ -49,24 +53,6 @@ const TYPES = {
 if (!existsSync(join(ROOT, 'dist', 'index.js'))) {
     console.error('dist/ is missing. Run `npm run build` first, or `npm run example`, which does both.');
     process.exit(1);
-}
-
-/**
- * Keeps a request inside the document root.
- *
- * `..` in a URL is normally collapsed by the client, but a request does not
- * have to come from a browser, and a static server that reads whatever path it
- * is handed serves the whole disk.
- *
- * @param {string} urlPath
- * @returns {string | null} an absolute path inside ROOT, or null
- */
-function resolveInsideRoot(urlPath) {
-    const decoded = decodeURIComponent(urlPath.split('?')[0] ?? '/');
-    const target = resolve(ROOT, `.${decoded}`);
-    const rel = relative(ROOT, target);
-    if (rel.startsWith('..') || rel.startsWith(`..${sep}`)) return null;
-    return target;
 }
 
 /**
@@ -141,19 +127,7 @@ createServer(async (req, res) => {
     // with the provider's identity and shape and never with the key.
     if (urlPath === '/provider') {
         res.writeHead(200, { 'content-type': 'application/json; charset=utf-8' });
-        res.end(
-            JSON.stringify(
-                provider === null
-                    ? { configured: false }
-                    : {
-                          configured: true,
-                          id: provider.id,
-                          dimensions: provider.dimensions,
-                          maxInputCodePoints: provider.maxInputCodePoints,
-                          modalities: provider.modalities,
-                      },
-            ),
-        );
+        res.end(JSON.stringify(publicProviderShape(provider)));
         return;
     }
 
@@ -184,9 +158,9 @@ createServer(async (req, res) => {
         return;
     }
 
-    const file = resolveInsideRoot(urlPath);
+    const file = resolveInsideRoot(ROOT, urlPath);
     if (file === null) {
-        res.writeHead(403, { 'content-type': 'text/plain; charset=utf-8' }).end('outside the document root');
+        res.writeHead(403, { 'content-type': 'text/plain; charset=utf-8' }).end('not a page asset');
         return;
     }
 
