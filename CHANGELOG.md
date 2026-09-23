@@ -33,6 +33,28 @@ That rule governs changes made FROM the first release onward, so entries under
 
 ### Changed
 
+- **The bench renders the markdown of a grounded answer, and the markers stay
+  on the words they cite.** Headings, list items, quotes, bold and italic are
+  drawn instead of showing their symbols. The syntax is taken out BEFORE the
+  library sees the answer (`examples/bancada/markdown.js`), so a `**` it never
+  receives cannot move a coordinate; the style ranges then travel through the
+  markers with `carry`. A heading is found by its line number rather than
+  carried, because a marker written at the very end of a heading's line would
+  otherwise fall outside it. Code and formulas keep their delimiters, since
+  those are what the mask protects them by.
+
+  The copy button returns the markdown that went in, with the markers where
+  the screen shows them: taking the markers out of the answer gives back the
+  pasted text, code point for code point. The source list the button appends
+  after the answer is unchanged. The document viewer stays raw — a
+  document someone drops in is not markdown by contract. Copying a SELECTION
+  with Ctrl+C is not covered: the browser copies the screen as it is, and a
+  chip comes out as a bare number.
+
+  What the parser does not read, stated: `_x_` as emphasis, links, tables,
+  images, emphasis across a line, delimiter runs of different lengths
+  (`***a** b*` stays literal), and more than one block prefix on a line.
+
 - **The bench keeps the line breaks the text was written with.** A paragraph
   ends on a blank line and wraps on a single one, by decision, and HTML then
   collapsed the wrap: a list written on three lines reached the reader as one

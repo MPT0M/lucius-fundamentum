@@ -29,6 +29,7 @@ import {
     buildLexicalIndex,
     attributeWithoutKey,
     markedAnswer,
+    copiedAnswer,
     describeRungs,
     looksReadable,
     documentFromFile,
@@ -52,8 +53,10 @@ import {
     codePointsOf,
     paragraphBoundsOf,
     markersIn,
+    piecesOf,
 } from './bancada.js';
-import { loadIndex, packVectors, deterministicProvider } from '../../dist/index.js';
+import { loadIndex, packVectors, deterministicProvider, formatAttribution } from '../../dist/index.js';
+import { renderableFrom, restoreRemovals } from './markdown.js';
 
 /** @typedef {import('../../dist/index.js').SearchResult} SearchResult */
 
@@ -1004,5 +1007,134 @@ describe('a document the bench assembled reaches the index whole', () => {
     it('reports `absent` before anything has been embedded', () => {
         const index = buildLexicalIndex([documentFromPastedText('qualquer texto', 'pasted')]);
         expect(index.denseArm).toBe('absent');
+    });
+});
+
+describe('markedAnswer and copiedAnswer — the markdown on screen and in the copy', () => {
+    // The five `markedAnswer(attribution)` calls above pass no renderable, and
+    // that is the path that did not change: `marks` and `blocks` come back
+    // empty and the text is what it was. The second parameter is a deliberate
+    // extension for the markdown, not a new contract for them.
+
+    const PRAZO = 'O prazo para a manifestacao e de quinze dias corridos.';
+    const RECURSO = 'O recurso cabivel contra a decisao final e o agravo.';
+
+    /** @param {string} raw */
+    function grounded(raw) {
+        const index = buildLexicalIndex([
+            documentFromPastedText(PRAZO, 'prazos'),
+            documentFromPastedText(RECURSO, 'recursos'),
+        ]);
+        const renderable = renderableFrom(raw);
+        const attribution = attributeWithoutKey(renderable.text, index.searchLexical(renderable.text), 'cluster');
+        return { renderable, attribution };
+    }
+
+    /** @param {string} text @param {{ start: number, end: number }} s */
+    const cut = (text, s) => Array.from(text).slice(s.start, s.end).join('');
+
+    it('without a renderable, nothing about the old answer changes', () => {
+        const { attribution } = grounded('O prazo e de quinze dias corridos.');
+        const marked = markedAnswer(attribution);
+        expect(marked.marks).toEqual([]);
+        expect(marked.blocks).toEqual([]);
+        expect(copiedAnswer(attribution)).toBe(marked.text);
+    });
+
+    it('with no marks the pieces are what the gaps alone cut, which is what it drew before', () => {
+        // The equivalence with the drawing before markdown existed: with the
+        // gaps as the only ranges, the cuts are exactly the gap boundaries.
+        expect(piecesOf(0, 10, [{ start: 3, end: 6 }], [])).toEqual([
+            { start: 0, end: 3, kinds: [], gapped: false },
+            { start: 3, end: 6, kinds: [], gapped: true },
+            { start: 6, end: 10, kinds: [], gapped: false },
+        ]);
+    });
+
+    it('a gap and a mark that overlap cut each other, and every piece says what covers it', () => {
+        expect(piecesOf(0, 10, [{ start: 0, end: 5 }], [{ start: 3, end: 10, kind: 'strong' }])).toEqual([
+            { start: 0, end: 3, kinds: [], gapped: true },
+            { start: 3, end: 5, kinds: ['strong'], gapped: true },
+            { start: 5, end: 10, kinds: ['strong'], gapped: false },
+        ]);
+    });
+
+    it('a bold stretch lands on the same words once the markers are in', () => {
+        const { renderable, attribution } = grounded('O prazo e de **quinze dias** corridos.');
+        const marked = markedAnswer(attribution, renderable);
+        expect(marked.text).toContain('[1]');
+        expect(marked.marks.map((m) => `${m.kind}=${cut(marked.text, m)}`)).toEqual(['strong=quinze dias']);
+    });
+
+    it('a heading keeps the marker written at the end of its line', () => {
+        // THE CASE THAT TOOK THE BLOCKS OUT OF `carry`. A heading with no
+        // closing punctuation gets its marker exactly at the end of the line,
+        // where a carried stretch's end does not count it, so a carried
+        // heading would come back without its own marker. Measured on the
+        // library's path: the marked text read `Título [1]` and the carried
+        // stretch `Título`. Found by line number, the heading owns the whole
+        // line, marker included.
+        const { renderable, attribution } = grounded('## O prazo e de quinze dias corridos\nOutra linha.');
+        const marked = markedAnswer(attribution, renderable);
+        const lines = marked.text.split('\n');
+        expect(lines).toHaveLength(renderable.text.split('\n').length);
+        expect(marked.blocks.map((b) => `${b.line}:${b.kind}`)).toEqual(['0:heading']);
+        expect(lines[0]).toMatch(/^O prazo e de quinze dias corridos \[\d+\]$/);
+    });
+
+    it('a marker at a closing delimiter is copied after it, outside the bold', () => {
+        // The round-trip below cannot see this. Taking the marker out gives the
+        // raw text back whichever side of `**` it was on, so the side needs an
+        // assertion of its own: `left` on the closer keeps the marker outside.
+        const { renderable, attribution } = grounded('O prazo e de **quinze dias corridos**.');
+        expect(copiedAnswer(attribution, renderable)).toBe('O prazo e de **quinze dias corridos** [1].');
+    });
+
+    it('two removals at one point are copied back in the order they had', () => {
+        // `## ` and `**` are both taken out at the start of the line. Put back
+        // in the wrong order the copy would open `**## `.
+        const { renderable, attribution } = grounded('## **O prazo e de quinze dias corridos**');
+        expect(copiedAnswer(attribution, renderable)).toBe('## **O prazo e de quinze dias corridos** [1]');
+    });
+
+    it('the copy is the markdown that went in, with the markers where the screen has them', () => {
+        // The format that goes in is the format that comes out. The markers are
+        // taken back out BY POSITION, not by pattern: the raw text already
+        // holds a hand-written `, [3]`, which a pattern would eat along with
+        // the real markers and pass or fail for the wrong reason.
+        const raw = '## O prazo e de quinze dias corridos\nVeja o item, [3] do anexo. **O recurso cabivel e o agravo.**';
+        const { renderable, attribution } = grounded(raw);
+        const copy = copiedAnswer(attribution, renderable);
+        expect(copy).not.toBe(raw);
+
+        // Where each marker group sits in the copy, from the library's own
+        // arithmetic: a point either side of every anchor, carried through the
+        // markers together with the removals.
+        const anchors = [...new Set(attribution.spans.map((s) => s.anchorOffset))];
+        const probes = anchors.flatMap((a) => [
+            { start: a, end: a, attach: /** @type {const} */ ('left'), probe: 'open' },
+            { start: a, end: a, attach: /** @type {const} */ ('right'), probe: 'close' },
+        ]);
+        const formatted = formatAttribution(attribution, {
+            markerStyle: 'bracket',
+            carry: [...renderable.removals, ...probes],
+        });
+        const removals = formatted.carried.filter((c) => !('probe' in c));
+        const opens = formatted.carried.filter((c) => 'probe' in c && c.probe === 'open');
+        const closes = formatted.carried.filter((c) => 'probe' in c && c.probe === 'close');
+        expect(restoreRemovals(formatted.text, /** @type {any} */ (removals))).toBe(copy);
+
+        // A removal at or before a group's start is written before the group;
+        // none can fall inside one, because a point lands on one side of an
+        // insertion or the other.
+        const restoredBefore = (/** @type {number} */ q) =>
+            removals.reduce((sum, r) => (r.start <= q ? sum + Array.from(/** @type {any} */ (r).text).length : sum), 0);
+        const groups = opens.map((open, i) => {
+            const start = open.start + restoredBefore(open.start);
+            return { start, end: start + ((closes[i]?.start ?? open.start) - open.start) };
+        });
+        const points = Array.from(copy);
+        for (const g of [...groups].sort((a, b) => b.start - a.start)) points.splice(g.start, g.end - g.start);
+        expect(points.join('')).toBe(raw);
     });
 });

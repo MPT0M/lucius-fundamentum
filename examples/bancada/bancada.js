@@ -23,8 +23,11 @@ import {
     formatAttribution,
     DEFAULT_ATTRIBUTE_OPTIONS,
 } from '../../dist/index.js';
+import { restoreRemovals } from './markdown.js';
 
 /** @typedef {import('../../dist/index.js').Attribution} Attribution */
+/** @typedef {import('./markdown.js').Renderable} Renderable */
+/** @typedef {import('./markdown.js').Mark} Mark */
 /** @typedef {import('../../dist/index.js').DenseArm} DenseArm */
 /** @typedef {import('../../dist/index.js').Index} Index */
 /** @typedef {import('../../dist/index.js').RungCounts} RungCounts */
@@ -612,11 +615,20 @@ export function rungSentence(counts) {
  * THIS text rest on a passage, and therefore which do not. Dropping it left
  * the screen's "unsupported text: marked" setting with nothing to mark.
  *
+ * **`renderable` is what the markdown parser took out of the answer**, and it
+ * is optional: without it the result is what it always was, with `marks` and
+ * `blocks` empty. With it, the style ranges go through `carry`, so they land on
+ * the same words once the markers are in. The blocks do not need carrying — a
+ * block is a whole line, a marker never holds a newline, and the k-th line of
+ * the marked text is the k-th line of the clean one — so they come back as the
+ * parser gave them, found by their `line`.
+ *
  * @param {Attribution} attribution
- * @returns {{ text: string, spans: readonly { start: number, end: number }[], sources: { marker: number, documentId: string, pageNumber: number | undefined }[] }}
+ * @param {Renderable | null} [renderable]
+ * @returns {{ text: string, spans: readonly { start: number, end: number }[], sources: { marker: number, documentId: string, pageNumber: number | undefined }[], marks: readonly Mark[], blocks: readonly { line: number, kind: import('./markdown.js').BlockKind, level?: number }[] }}
  */
-export function markedAnswer(attribution) {
-    const formatted = formatAttribution(attribution, { markerStyle: 'bracket' });
+export function markedAnswer(attribution, renderable = null) {
+    const formatted = formatAttribution(attribution, { markerStyle: 'bracket', carry: renderable?.marks ?? [] });
     return {
         text: formatted.text,
         // `textSpan` and not `sourceSpan`: one is the clause inside THIS text,
@@ -630,7 +642,75 @@ export function markedAnswer(attribution) {
             documentId: source.chunk.documentId,
             pageNumber: source.chunk.pageNumber,
         })),
+        marks: formatted.carried,
+        // A block's `start` and `end` are offsets into the CLEAN text, and
+        // `text` above is the MARKED one. They are not carried, and the
+        // paragraph above says why they do not need to be: a block is found
+        // by its `line`. Dropping them here is what keeps two coordinate
+        // spaces from meeting in one object.
+        blocks: (renderable?.blocks ?? []).map(({ line, kind, level }) =>
+            level === undefined ? { line, kind } : { line, kind, level }),
     };
+}
+
+/**
+ * The answer the copy button puts on the clipboard, before the source list it
+ * appends: the markdown the person wrote, with the markers in the places the
+ * screen shows them.
+ *
+ * The format that goes in is the format that comes out. The library grounded
+ * the CLEAN text, so the markers are positioned on it; the syntax the parser
+ * took out is carried through the markers as points, and put back with the
+ * same kind of cursor pass the library uses to write the markers in. Take the
+ * markers out of what this returns and what is left is the raw input, code
+ * point for code point.
+ *
+ * Without `renderable` there was no syntax to take out, and the answer is the
+ * marked text itself.
+ *
+ * @param {Attribution} attribution
+ * @param {Renderable | null} [renderable]
+ * @returns {string}
+ */
+export function copiedAnswer(attribution, renderable = null) {
+    if (renderable === null) return markedAnswer(attribution).text;
+    const formatted = formatAttribution(attribution, { markerStyle: 'bracket', carry: renderable.removals });
+    return restoreRemovals(formatted.text, formatted.carried);
+}
+
+/**
+ * The pieces a drawn stretch is cut into, and the only part of that drawing
+ * with a rule in it: where to cut, and which ranges cover each cut.
+ *
+ * Pure, and separate from the DOM for that reason — the suite runs under Node
+ * and cannot see an element, but it can see this. A piece is cut wherever a
+ * gap or a style range begins or ends inside the stretch, so each one is
+ * covered by a fixed set of them: it carries every mark that spans it and the
+ * dashed underline when any gap does.
+ *
+ * @param {number} from
+ * @param {number} to
+ * @param {readonly { start: number, end: number }[]} gaps
+ * @param {readonly { start: number, end: number, kind: 'strong' | 'em' }[]} marks
+ * @returns {{ start: number, end: number, kinds: ('strong' | 'em')[], gapped: boolean }[]}
+ */
+export function piecesOf(from, to, gaps, marks) {
+    if (to <= from) return [];
+    const edges = new Set([from, to]);
+    for (const range of [...gaps, ...marks]) {
+        if (range.start > from && range.start < to) edges.add(range.start);
+        if (range.end > from && range.end < to) edges.add(range.end);
+    }
+    const cuts = [...edges].sort((a, b) => a - b);
+    /** @type {{ start: number, end: number, kinds: ('strong' | 'em')[], gapped: boolean }[]} */
+    const out = [];
+    for (let k = 0; k + 1 < cuts.length; k++) {
+        const start = /** @type {number} */ (cuts[k]);
+        const end = /** @type {number} */ (cuts[k + 1]);
+        const covers = (/** @type {{ start: number, end: number }} */ r) => r.start <= start && r.end >= end;
+        out.push({ start, end, kinds: marks.filter(covers).map((m) => m.kind), gapped: gaps.some(covers) });
+    }
+    return out;
 }
 
 /**

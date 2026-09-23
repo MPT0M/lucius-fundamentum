@@ -22,6 +22,7 @@ import {
     attributeWithoutKey,
     attributeWithKey,
     markedAnswer,
+    copiedAnswer,
     describeRungs,
     highlightParts,
     resultForScreen,
@@ -35,12 +36,14 @@ import {
     codePointsOf,
     paragraphBoundsOf,
     markersIn,
+    piecesOf,
     fileOfId,
     pageOfId,
     remoteProvider,
     READABLE_TEXT,
 } from './bancada.js';
 import { readPdf } from './pdf.js';
+import { renderableFrom } from './markdown.js';
 import { save, load, forget } from './storage.js';
 import { loadIndex } from '../../dist/index.js';
 
@@ -78,6 +81,17 @@ let lastGrounded = null;
 
 /** @type {import('../../dist/index.js').Attribution | null} */
 let lastAttribution = null;
+
+/**
+ * What the markdown parser took out of the answer `lastAttribution` was built
+ * from. The two are set together and cleared together, because every redraw
+ * reads both: `redrawBody` runs when a chip opens a document, on the highlight
+ * flash and on both sides of the underline switch, and a redraw without this
+ * would put the answer back on screen with its headings, lists and bold gone.
+ *
+ * @type {import('./markdown.js').Renderable | null}
+ */
+let lastRenderable = null;
 
 // `false` until the probe below answers: the switch and its note are the only
 // place the screen mentions a provider, and showing them before anything is
@@ -216,6 +230,7 @@ function dropDoc(file) {
     // put a citation to this file back on a screen that no longer has it, and
     // with `SOURCES` empty its markers open nothing.
     lastAttribution = null;
+    lastRenderable = null;
     lastGrounded = null;
     const wasOpen = component.state.docKey === file;
     component.setState({ results: null, groundedBody: null, ...(wasOpen ? { docKey: null, where: null } : {}) });
@@ -530,12 +545,20 @@ async function runGround(text, attached) {
     if (whole === null || whole.trim() === '') return;
     text = whole;
     lastGrounded = text;
+    // The library grounds the text WITHOUT its markdown, so a `**` it never
+    // sees cannot move a coordinate (`markdown.js`). This comes AFTER
+    // `lastGrounded`, which keeps the raw text on purpose: the density switch
+    // grounds `lastGrounded` again, and cleaning is not idempotent — `\*x\*`
+    // becomes `*x*` on the first pass and `x` on a second. The search sees the
+    // clean text too, where `**` and `##` are not terms.
+    const renderable = renderableFrom(text);
+    const clean = renderable.text;
     const usesProvider = meaningIsLive();
     const granularity = askedGranularity();
-    const candidates = usesProvider ? await index.search(text) : index.searchLexical(text);
+    const candidates = usesProvider ? await index.search(clean) : index.searchLexical(clean);
     const attribution = usesProvider
         ? await attributeWithKey(
-              text,
+              clean,
               candidates,
               /** @type {NonNullable<typeof provider>} */ (provider),
               {
@@ -551,12 +574,13 @@ async function runGround(text, attached) {
               },
               granularity,
           )
-        : attributeWithoutKey(text, candidates, granularity);
+        : attributeWithoutKey(clean, candidates, granularity);
 
     lastAttribution = attribution;
+    lastRenderable = renderable;
     rememberSources(attribution.sources);
     component.setState({
-        groundedBody: bodyFor(attribution),
+        groundedBody: bodyFor(attribution, renderable),
         rungs: describeRungs(attribution, usesProvider),
     });
 }
@@ -591,10 +615,11 @@ function regroundForMode() {
  * changed is that the passage behind them is real.
  *
  * @param {import('../../dist/index.js').Attribution} attribution
+ * @param {import('./markdown.js').Renderable | null} [renderable] what the parser took out of the answer
  * @returns {Element}
  */
-function bodyFor(attribution) {
-    const marked = markedAnswer(attribution);
+function bodyFor(attribution, renderable = null) {
+    const marked = markedAnswer(attribution, renderable);
     const screen = /** @type {any} */ (component);
     // CODE POINTS, once, and everything below indexes into this array.
     // `formatAttribution` answers in code points and a JavaScript string
@@ -606,49 +631,140 @@ function bodyFor(attribution) {
     // The setting the screen offers under "Unsupported text", which had
     // nothing to act on while the spans were being thrown away.
     const gaps = component.state.mark === true ? unsupportedRanges(points.length, marked.spans) : [];
+    const marks = marked.marks;
+    // A block is found by its line number in the WHOLE text, never by a count
+    // kept inside the loop below: `paragraphBoundsOf` skips the blank lines,
+    // and a per-paragraph count would put every block after the first blank
+    // line on the wrong line.
+    const blockOn = new Map(marked.blocks.map((block) => [block.line, block]));
+    const lineAt = lineNumbersOf(points);
     const body = createElement('div', null);
 
     for (const [from, to] of paragraphBoundsOf(points)) {
         const p = createElement('p', { style: { margin: '0 0 1.15rem' } });
-        let at = from;
-        for (const found of markersIn(points, from, to)) {
-            appendText(p, points, at, found.start, gaps, screen);
-            p.append(chipFor(found.marker, screen));
-            at = found.end;
+        let lineStart = from;
+        while (lineStart < to) {
+            let lineEnd = lineStart;
+            while (lineEnd < to && points[lineEnd] !== '\n') lineEnd++;
+            const block = blockOn.get(/** @type {number} */ (lineAt[lineStart]));
+            if (block !== undefined) {
+                const element = blockElement(block);
+                appendRun(element, points, lineStart, lineEnd, gaps, marks, screen);
+                p.append(element);
+            } else {
+                appendRun(p, points, lineStart, lineEnd, gaps, marks, screen);
+                // A newline between two ordinary lines stays text, and
+                // `pre-wrap` draws it. Next to a block it is dropped: the block
+                // breaks the line itself, and the newline would add a blank one.
+                const nextIsBlock = blockOn.has(/** @type {number} */ (lineAt[lineStart]) + 1);
+                if (lineEnd < to && !nextIsBlock) p.append(document.createTextNode('\n'));
+            }
+            lineStart = lineEnd + 1;
         }
-        appendText(p, points, at, to, gaps, screen);
         body.append(p);
     }
     return body;
 }
 
 /**
- * Appends `points[from, to)`, cut so the stretches resting on nothing carry the
- * dashed underline and the rest is plain text.
+ * The line number of every code point: how many newlines come before it.
  *
- * With marking off the list of gaps is empty and this is one text node, which
- * is what it was before the setting did anything.
+ * @param {readonly string[]} points
+ * @returns {number[]}
+ */
+function lineNumbersOf(points) {
+    const lineAt = new Array(points.length + 1);
+    let line = 0;
+    for (let i = 0; i <= points.length; i++) {
+        lineAt[i] = line;
+        if (points[i] === '\n') line++;
+    }
+    return lineAt;
+}
+
+/**
+ * One stretch of the answer on screen, with its markers turned into chips.
+ *
+ * The stretch never crosses a newline, and that is what makes calling
+ * `markersIn` on it safe: `markersIn` reads one code point past the end it is
+ * given, and a marker cannot straddle a line boundary because no marker holds
+ * a newline.
+ *
+ * @param {Element} into
+ * @param {readonly string[]} points
+ * @param {number} from
+ * @param {number} to
+ * @param {readonly { start: number, end: number }[]} gaps
+ * @param {readonly { start: number, end: number, kind: 'strong' | 'em' }[]} marks
+ * @param {any} screen
+ */
+function appendRun(into, points, from, to, gaps, marks, screen) {
+    let at = from;
+    for (const found of markersIn(points, from, to)) {
+        appendText(into, points, at, found.start, gaps, marks, screen);
+        into.append(chipFor(found.marker, screen));
+        at = found.end;
+    }
+    appendText(into, points, at, to, gaps, marks, screen);
+}
+
+/**
+ * The element a block line is drawn in. The bullet of a list item is part of
+ * the drawing, not of the text: it is not a code point of the answer, and no
+ * offset counts it.
+ *
+ * @param {{ kind: import('./markdown.js').BlockKind, level?: number }} block
+ * @returns {Element}
+ */
+function blockElement(block) {
+    if (block.kind === 'heading') {
+        const size = block.level === 1 ? '1.12rem' : block.level === 2 ? '1.02rem' : '0.94rem';
+        return createElement('span', {
+            style: { display: 'block', fontSize: size, fontWeight: 500, color: '#d6d2c8', margin: '0.35rem 0 0.15rem' },
+        });
+    }
+    if (block.kind === 'item') {
+        return createElement(
+            'span',
+            { style: { display: 'block', position: 'relative', paddingLeft: '1.1rem' } },
+            createElement('span', { style: { position: 'absolute', left: '0.25rem', color: '#7ECF80' } }, '•'),
+        );
+    }
+    return createElement('span', {
+        style: { display: 'block', borderLeft: '2px solid #1A1A1F', paddingLeft: '0.8rem', fontStyle: 'italic' },
+    });
+}
+
+/**
+ * Appends `points[from, to)`, cut wherever a gap or a style range begins or
+ * ends, so each piece carries exactly the dashed underline, strong and
+ * emphasis that cover it.
+ *
+ * With marking off and no markdown the lists are empty and this is one text
+ * node, which is what it was before either existed.
  *
  * @param {Element} into
  * @param {readonly string[]} points the answer in code points
  * @param {number} from
  * @param {number} to
  * @param {readonly { start: number, end: number }[]} gaps
+ * @param {readonly { start: number, end: number, kind: 'strong' | 'em' }[]} marks
  * @param {any} screen the prototype's component, for its own dashed style
  */
-function appendText(into, points, from, to, gaps, screen) {
-    if (to <= from) return;
-    const said = (/** @type {number} */ start, /** @type {number} */ end) => points.slice(start, end).join('');
-    let at = from;
-    for (const gap of gaps) {
-        const start = Math.max(gap.start, from);
-        const end = Math.min(gap.end, to);
-        if (end <= start) continue;
-        if (start > at) into.append(document.createTextNode(said(at, start)));
-        into.append(createElement('span', { style: screen.unsupported() }, said(start, end)));
-        at = end;
+function appendText(into, points, from, to, gaps, marks, screen) {
+    // Where to cut and what covers each cut is decided by `piecesOf`, which the
+    // suite can reach; this only turns the pieces into nodes.
+    for (const { start, end, kinds, gapped } of piecesOf(from, to, gaps, marks)) {
+        /** @type {Node} */
+        let piece = document.createTextNode(points.slice(start, end).join(''));
+        for (const kind of kinds) {
+            piece = kind === 'strong'
+                ? createElement('strong', { style: { fontWeight: 500, color: '#d6d2c8' } }, piece)
+                : createElement('em', null, piece);
+        }
+        if (gapped) piece = createElement('span', { style: screen.unsupported() }, piece);
+        into.append(piece);
     }
-    if (at < to) into.append(document.createTextNode(said(at, to)));
 }
 
 /**
@@ -679,21 +795,22 @@ function chipFor(n, screen) {
 }
 
 function redrawBody() {
-    if (lastAttribution !== null) component.setState({ groundedBody: bodyFor(lastAttribution) });
+    if (lastAttribution !== null) component.setState({ groundedBody: bodyFor(lastAttribution, lastRenderable) });
 }
 
 /**
- * The answer on screen as plain text, markers and all — what the copy button
- * puts on the clipboard.
+ * The answer the copy button puts on the clipboard, before the source list it
+ * appends: the markdown the person wrote, with the markers where the screen
+ * shows them.
  *
- * `markedAnswer` rather than the DOM: it is the same string the body was drawn
- * from, so the copy carries the markers the reader is looking at rather than
- * whatever the rendering happened to produce.
+ * `copiedAnswer` rather than the DOM: it is built from the same data the body
+ * was drawn from, so the copy carries the markers the reader is looking at,
+ * and the format that went in is the format that comes out.
  *
  * @returns {string | null} null while nothing has been grounded
  */
 function groundedText() {
-    return lastAttribution === null ? null : markedAnswer(lastAttribution).text;
+    return lastAttribution === null ? null : copiedAnswer(lastAttribution, lastRenderable);
 }
 
 // —————————————————————————————————————————————————————————————————
