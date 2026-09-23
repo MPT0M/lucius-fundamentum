@@ -498,8 +498,13 @@ export function rungSentence(counts) {
 /**
  * The answer with its markers written in, and the list they point at.
  *
- * `markerStyle: 'bracket'` because this is the plain-text rendering; the
- * interactive marker belongs with the viewer that can open a page behind it.
+ * `markerStyle: 'bracket'` because this is the plain-text rendering. Wiring a
+ * marker to the viewer that opens a page is possible — the viewer exists — and
+ * is NOT done: a marker would have to carry its index into `sources` through
+ * `formatted.spans`, which is the coordinate space the paragraph below is
+ * about. Said here because the shape of the debt is only visible from this
+ * function.
+ *
  * The formatter returns its own `spans` rather than the engine's, and the
  * difference is not cosmetic: every offset here is reindexed past the markers
  * just inserted. Mixing the two coordinate spaces is the drift the formatter
