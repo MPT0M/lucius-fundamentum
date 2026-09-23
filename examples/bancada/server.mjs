@@ -166,7 +166,14 @@ createServer(async (req, res) => {
 
     try {
         const body = await readFile(file);
-        res.writeHead(200, { 'content-type': TYPES[extname(file)] ?? 'application/octet-stream' });
+        // `no-store`, because this is a bench you edit while it is open. A
+        // browser caches an ES module hard, and a stale one is the worst kind
+        // of confusion here: the page runs code that is no longer on disk and
+        // every measurement taken against it is about a file nobody has.
+        res.writeHead(200, {
+            'content-type': TYPES[extname(file)] ?? 'application/octet-stream',
+            'cache-control': 'no-store',
+        });
         res.end(body);
     } catch {
         res.writeHead(404, { 'content-type': 'text/plain; charset=utf-8' }).end(`no ${urlPath}`);
