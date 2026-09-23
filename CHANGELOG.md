@@ -41,6 +41,12 @@ That rule governs changes made FROM the first release onward, so entries under
   offset moves. The guard reads `index.html` as text, and says in the test why
   it cannot be a behavioural one: the suite runs under Node and renders nothing.
 
+- **The dashed underline on unsupported text starts off.** An answer whose
+  every clause is cited read, with it on, as one long dashed rule with nothing
+  to say. The control is still on screen under "Unsupported text". The default
+  is set in `app.js`; `proto-logic.js`, which declares itself a port with three
+  changed lines, is not touched.
+
 - **The bench is the project's own prototype, and every control on it now
   reaches the library.** The screen, its styles and its wording are the
   prototype's; what changed is that it ran on fixtures and now asks the package.

@@ -84,6 +84,16 @@ let lastAttribution = null;
 // known offers a choice that may not exist.
 const component = new Component({ semanticAvailable: false });
 
+// The dashed underline on unsupported stretches starts OFF, which is the
+// bench's decision and not the prototype's. `proto-logic.js` ships `mark: true`
+// and stays untouched: that file declares itself a port with three changed
+// lines, and a fourth would make the claim false for a default this file can
+// set. The control that flips it is on screen either way, under "Unsupported
+// text" — what changes is which side the screen opens on. An answer whose every
+// clause is cited reads, with the underline on, as one long dashed rule with
+// nothing to say.
+component.setState({ mark: false });
+
 /** The one question the three network-bound paths ask, in the screen's terms. */
 const meaningIsLive = () =>
     index !== null && providerMayBeAsked(component.state.semantic === true, provider !== null, index.denseArm);
